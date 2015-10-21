@@ -30,3 +30,27 @@
 
 # Debug files
 *.dSYM/
+
+# Gamestudio-specific
+
+# General
+*.bmp
+*.tga
+*.wav
+*.mp3
+*.ogg
+*.zip
+*.rar
+
+# WED
+*.pcx
+*.$$M
+*.$$w
+*.bak
+*.raw
+*.wed
+*.wmb
+*.wmp
+
+# MED
+*.mdl
