@@ -17,5 +17,47 @@
 #ifndef    _UTILITIES_H_ 
 #define    _UTILITIES_H_ 
 
+#define extern 
+#define __In
+#define __Out
+
+#define Pi (3.141592) /* After more than 1.5hrs of surfing around the Internet, watching Pink Panther. */
+
+#define __namespace(namespace)             {}
+#define ARRAY_LENGTH(array)                (sizeof(array)/sizeof(array[0]))
+#define MALLOC(number, type)               ((type *) malloc(number * sizeof(type)))
+#define ASSERT(condition, message)         do { if( !(condition) ) __assert(message); } while(false)
+#define WAIT_PROCESS(process)              while( proc_status(process) ) wait(1.0)
+#define KILL_PROCESS(process)              proc_kill(4) /* This macro exists because it helps eliminating magic numbers. */
+#define DEFER(argument)                    wait(1.0)
+#define WALK_THROUGH(object, function)     object = ptr_first(object); while(object) { function(object); o = o.link.next; wait(1.0); }
+#define SWAP(a, b, type)                   { type X = a; a = b; b = X; } while(false)
+
+#define COLOR_RANDOM                       (vector( rand() % 255, rand() % 255, rand() % 255 ))
+#define COLOR_SOFT_PURPLE                  (vector(219, 112, 147))
+#define COLOR_LIME                         (vector(29, 230, 181))
+#define COLOR_CHERRY                       (vector(99, 49, 222))
+#define COLOR_INDIGO                       (vector(130, 0, 75))
+#define COLOR_CRIMSON                      (vector(60, 20, 220))
+#define COLOR_YELLOW                       (vector(0, 255, 255))
+#define COLOR_LAVENDER_ROSE                (vector(227, 160, 251))
+#define COLOR_LEMON_BITTER                 (vector(202, 224, 13))
+#define COLOR_PEACH_ORANGE                 (vector(153, 204, 255))
+#define COLOR_PALE_LILAC                   (vector(187, 187, 255))
+#define COLOR_TEAL                         (vector(136, 117, 54))
+
+__namespace(pair) {
+	typedef struct {
+		float first;
+		float second;
+	} pair;
+}
+
+__namespace() {
+	char *strtok( __In const char *str, __In const char *delimiter );
+	void swap( __In __Out int *a, __In __Out int *b );
+	void swap( __In __Out pair *p );
+}
+
 #include "utilities.c"
 #endif /* utilities.h */

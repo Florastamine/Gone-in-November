@@ -14,10 +14,18 @@
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
+#include <acknex.h>
+#include "utilities.h"
+
+pair *p;
 
 int main( int argc, char **argl )
 {
-	vec_set( &screen_color, vector(255, 0, 0) );
+	char *c = MALLOC(15, char);
+	p = MALLOC(1, pair);
+	p->second = 2;
+	
+	printf("%i", (int) p->second);
 	
 	return 0;
 }

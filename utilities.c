@@ -14,3 +14,9 @@
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
+void swap( int *a, int *b )
+{
+	int c = *a + *b;
+	*a = c - *a;
+	*b = c - *b;
+}
