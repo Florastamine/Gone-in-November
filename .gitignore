@@ -1,12 +1,12 @@
 # Object files
 *.o
 *.ko
-*.obj
+# *.obj # Don't! Could be mistaken with Wavefront object.
 *.elf
 
 # Precompiled Headers
-*.gch
-*.pch
+# *.gch
+# *.pch
 
 # Libraries
 *.lib
