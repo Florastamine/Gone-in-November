@@ -15,17 +15,28 @@
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
 #include <acknex.h>
+#include <stdio.h>
 #include "utilities.h"
-
-pair *p;
 
 int main( int argc, char **argl )
 {
-	char *c = MALLOC(15, char);
-	p = MALLOC(1, pair);
-	p->second = 2;
+	//split(NULL, 234532578);
+	//int a[8];
+	//printf("%i", (int)sizeof(a));
+	//int *p = malloc(4);
+	//printf("%i", p);
+	int *a = (int *) malloc(4 * 5);
+	split(a, 12345);
+	reverse(a, 5);
 	
-	printf("%i", (int) p->second);
+	int i = 0;
+	while(i < 5)
+	{
+		printf("%i", (int) *(a + i));
+		i++;
+		
+		wait(1.0);
+	}
 	
 	return 0;
 }

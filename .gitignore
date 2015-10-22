@@ -41,6 +41,8 @@
 *.ogg
 *.zip
 *.rar
+*.txt
+*.log
 
 # WED
 *.pcx
