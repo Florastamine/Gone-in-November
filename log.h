@@ -14,3 +14,8 @@
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
+#ifndef    _LOG_H_
+#define    _LOG_H_
+
+#include "log.c"
+#endif /* log.h */
