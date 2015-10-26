@@ -1,4 +1,4 @@
-/* DPFL.c */
+/* char_to_string.c */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -16,11 +16,19 @@
  */
 #include <acknex.h>
 #include <stdio.h>
-#include "utilities.h"
+#include "..\utilities.h"
 
 int main( int argc, char **argl )
 {
 	while( !ready() ) wait(1.0);
+	
+	const char *cstr = MALLOC(12, char);
+	PRINT_INT(strlen(cstr));
+	
+	const STRING *sstr = str_create(cstr);
+	PRINT_INT(str_len(sstr));
+	
+	free(cstr);
 	
 	return 0;
 }

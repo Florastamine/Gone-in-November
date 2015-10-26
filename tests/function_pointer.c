@@ -1,4 +1,4 @@
-/* DPFL.c */
+/* function_pointer.c */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -16,11 +16,24 @@
  */
 #include <acknex.h>
 #include <stdio.h>
-#include "utilities.h"
+#include "..\utilities.h"
+
+void f()
+{
+	PRINT_STRING("f()");
+}
+
+void g(void *f)
+{
+	void h();
+	h = f;
+	h();
+}
 
 int main( int argc, char **argl )
 {
 	while( !ready() ) wait(1.0);
+	g(f);
 	
 	return 0;
 }

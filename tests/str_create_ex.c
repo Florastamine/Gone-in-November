@@ -1,4 +1,4 @@
-/* DPFL.c */
+/* str_create_ex.c */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -16,11 +16,17 @@
  */
 #include <acknex.h>
 #include <stdio.h>
-#include "utilities.h"
+#include "..\utilities.h"
 
 int main( int argc, char **argl )
 {
 	while( !ready() ) wait(1.0);
+	
+	String *ordinary = str_create("#42");
+	PRINT_INT(str_len(ordinary));
+	
+	String *extraordinary = str_create_ex(42);
+	PRINT_INT(str_len(extraordinary));
 	
 	return 0;
 }

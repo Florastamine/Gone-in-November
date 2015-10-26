@@ -1,4 +1,4 @@
-/* DPFL.c */
+/* strlen.c */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -16,11 +16,17 @@
  */
 #include <acknex.h>
 #include <stdio.h>
-#include "utilities.h"
+#include "..\utilities.h"
 
 int main( int argc, char **argl )
 {
 	while( !ready() ) wait(1.0);
+	
+	String *sstr = str_create("This is a string!");
+	PRINT_INT(str_len(sstr));
+	
+	str_cpy(sstr, " ");
+	PRINT_INT(str_len(sstr));
 	
 	return 0;
 }

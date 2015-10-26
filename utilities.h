@@ -26,6 +26,7 @@
 #define __Out
 
 #define Pi (3.141592) /* After more than 1.5hrs of surfing around the Internet, watching Pink Panther. */
+#define ASSERT_MESSAGE_LENGTH 384
 
 #define __namespace(namespace)             {}
 #define STATIC_ASSERT(condition)           {}
@@ -41,6 +42,7 @@
 #define PRINT_INT(i)                       printf("%i", (int) i)
 #define PRINT_DOUBLE(d)                    printf("%f", (double) d)
 #define PRINT_STRING(string)               printf("%s", (char *) string)
+#define PRINT_BOOL(comparison)             printf("%s", (char *) ifelse(comparison, _chr("true"), _chr("false")))
 
 #define COLOR_RANDOM                       (vector( rand() % 255, rand() % 255, rand() % 255 ))
 #define COLOR_SOFT_PURPLE                  (vector(219, 112, 147))
@@ -54,6 +56,13 @@
 #define COLOR_PEACH_ORANGE                 (vector(153, 204, 255))
 #define COLOR_PALE_LILAC                   (vector(187, 187, 255))
 #define COLOR_TEAL                         (vector(136, 117, 54))
+
+/*
+ * Defined constants for inkey() and inchar().
+ */
+#define KEY_ENTER                          13
+#define KEY_ESC                            27
+#define KEY_TAB                            9
 
 /*
  * Because no one likes capitalizing their structs' names all the way.
@@ -74,32 +83,73 @@ typedef ANGLE                              Angle;
 typedef COLOR                              Color;
 typedef BOOL                               bool;
 
+/*
+ * A set of default, immutable (really?) fonts.
+ * Mostly because literals are evil.
+ */
+const Font *Arial_10 = "Arial#10";
+const Font *Arial_14 = "Arial#14";
+const Font *Arial_18 = "Arial#18";
+const Font *Arial_25 = "Arial#25";
+
 __namespace(error) {
 	#define ERROR_CONTAINER_CAPACITY     256
+	#define ERROR_HISTORY_CAPACITY       128
+	#define ERROR_HISTORY_MESSAGE_LENGTH 96
 	
 	typedef struct {
 		int pos;
+		int count;
 		int stack[ERROR_CONTAINER_CAPACITY];
+		int history[ERROR_HISTORY_CAPACITY];
 		Text *message;
 	} Error;
 	
 	Error *Error_active = NULL;
 	Error *Error_singleton = NULL;
+	
+	void error_bind( __In Error *table );
+	void error_new();
+	void error_new( __In __Out Error **table );
+	void error_free();
+	void error_free( __In Error *table );
+	
+	void error_code_push( __In Error *table, __In const unsigned int code );
+	void error_code_push( __In const unsigned int code );
+	void error_push( __In const unsigned int code, __In const char *message );
+	char *error_message_get( __In int id );
+	int error_history_capacity_get();
+	int error_history_cursor_get();
 }
 
 __namespace(console) {
 	#define CONSOLE_CONTAINER_CAPACITY     256
+	#define CONSOLE_COMMAND_MAX_LENGTH	   32
+	
+	void *__CommandTable_action[CONSOLE_CONTAINER_CAPACITY];
+	Text *__CommandTable_command;
+	int __CommandTable_pointer;
+	
+	void command_table_new();
+	void command_table_free();
+	void command_table_add( __In const char *command, __In const void *func );
+	void command_table_remove( __In int id );
+	void command_table_remove( __In const char *command );
+	void command_table_call( __In int id );
+	void command_table_call( __In const char *command );
 	
 	typedef struct {
 		Bitmap *background;
 		Panel *__background_container;
 		Text *data;
 		Text *history;
+		bool ready;
 	} Channel;
 	
 	Channel *Channel_active = NULL;
 	Channel *Channel_singleton = NULL;
 	
+	void console_bind( __In Channel *console );
 	void console_new( __In __Out Channel **console );
 	void console_new();
 	
@@ -113,14 +163,19 @@ __namespace(console) {
 	Bitmap *console_background_get( __In Channel *console );
 	Bitmap *console_background_get();
 	
-	void console_show( __In Channel *console );
+	/*
+	void console_command_add( __In Channel *console, __In const char *command, __In const void *func );
+	void console_command_add( __In const char *command, __In const void *func );
+	void console_command_remove( __In Channel *console, __In const char *command );
+	void console_command_remove( __In const char *command );
+	*/
+	
+	void console_update();
 	void console_show();
-	
-	void console_hide( __In Channel *console );
 	void console_hide();
-	
-	void console_toggle( __In Channel *console );
-	void console_toggle();
+	bool console_state_get_invisibility();
+	bool console_state_get_ready( __In Channel *console );
+	bool console_state_get_ready();
 }
 
 __namespace(pair) {
@@ -135,13 +190,16 @@ __namespace(pair) {
 
 __namespace() {
 	void __assert( const char *message );
+	char *function_name_get( __In const void *f );
 	char *strtok( __In const char *str, __In const char *delimiter );
-	void reverse( __In __Out int *array, __In int count);
+	void reverse( __In __Out int *array, __In unsigned int count);
 	void swap( __In __Out int *a, __In __Out int *b );
 	double log10( __In double d );
 	long join( __In int i, __In int j );
 	void split( __In __Out int *__result, __In int value, __In int slot);
 	void split( __In __Out int *__result, __In int value);
+	int search( __In Text *container, __In const String *str );
+	int search( __In Text *container, __In const char *cstr );
 	double deg2rad( __In double d );
 	double rad2deg( __In double d );
 	bool ready();
@@ -175,7 +233,14 @@ __namespace(window) {
 }
 
 __namespace(string) {
-	String *str_clip_ex( __In String *str, __In int n );
+	String *str_clip_ex( __In String *str, __In unsigned int n );
+	String *str_create_ex( __In const int length );
+	void str_init( __In String *gstr );
+	void str_init( __In char *cstr );
+}
+
+__namespace(text) {
+	void txt_remove_ex( __In __Out Text *object );
 }
 
 __namespace(object) {
