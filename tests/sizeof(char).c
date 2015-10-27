@@ -1,4 +1,4 @@
-/* log.h */
+/* sizeof(char).c */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -14,8 +14,16 @@
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
-#ifndef    _LOG_H_
-#define    _LOG_H_
+#include <acknex.h>
+#include <stdio.h>
+#include "..\utilities.h"
 
-#include "log.c"
-#endif /* log.h */
+int main( int argc, char **argl )
+{
+	while( !ready() ) wait(1.0);
+	
+	PRINT_INT(sizeof(char));
+	PRINT_INT(sizeof('A'));
+	
+	return 0;
+}

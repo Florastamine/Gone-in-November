@@ -17,10 +17,13 @@
 #include <acknex.h>
 #include <stdio.h>
 #include "utilities.h"
+#include "file.h"
 
 int main( int argc, char **argl )
 {
 	while( !ready() ) wait(1.0);
+	
+	level_load(0);
 	
 	return 0;
 }

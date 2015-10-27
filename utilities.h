@@ -25,8 +25,8 @@
 #define __In
 #define __Out
 
-#define Pi (3.141592) /* After more than 1.5hrs of surfing around the Internet, watching Pink Panther. */
-#define ASSERT_MESSAGE_LENGTH 384
+#define Pi                                 (3.141592) /* After more than 1.5hrs of surfing around the Internet, watching Pink Panther. */
+#define ASSERT_MESSAGE_LENGTH              384
 
 #define __namespace(namespace)             {}
 #define STATIC_ASSERT(condition)           {}
