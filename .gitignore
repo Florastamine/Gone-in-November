@@ -54,6 +54,8 @@
 *.wed
 *.wmb
 *.wmp
+*.$$p
+*.wad
 
 # MED
 *.mdl

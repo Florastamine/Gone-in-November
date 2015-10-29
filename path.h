@@ -1,4 +1,4 @@
-/* common.h */
+/* path.h */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -14,12 +14,27 @@
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
-#ifndef    _COMMON_H_
-#define    _COMMON_H_
+#ifndef    _PATH_H_
+#define    _PATH_H_
 
-#ifndef    0
-    #define PRAGMA_PATH "fx"
+#ifndef    __0__
+    #define PRAGMA_PATH "./2d/"
+    #define PRAGMA_PATH "./2d/fx/"
+    #define PRAGMA_PATH "./2d/gui/"
+    #define PRAGMA_PATH "./2d/sprites/"
+    
+    #define PRAGMA_PATH "./fx/"
+    
+    #define PRAGMA_PATH "./object/"
+    
+    #define PRAGMA_PATH "./scene/"
+    
+    #define PRAGMA_PATH "./sound/"
+    #define PRAGMA_PATH "./sound/stream/"
+    
+    #define PRAGMA_PATH "./translation/"
+    
+    #define PRAGMA_PATH "./utils/"
 #endif
 
-#endif /* common.h */
- 
+#endif /* path.h */

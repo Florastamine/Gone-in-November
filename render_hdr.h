@@ -40,10 +40,11 @@ typedef struct {
 
 HDRState *HDRState_singleton = NULL;
 
+HDRState *HDRState_get_singleton();
 void render_hdr_new();
 void render_hdr_free();
+void render_hdr_set_active( __In BOOL state );
 BOOL render_hdr_is_active();
-HDRState *HDRState_get_singleton();
 
 void render_hdr_setup(
                        __In float RT,
@@ -56,8 +57,9 @@ void render_hdr_setup(
                        __In float highpass_white_cutoff,
                        __In float adaption_speed );
 
-void render_hdr_initialize();
 void render_hdr();
+
+__static void __render_hdr_initialize();
 
 MATERIAL *sc_mtl_hdrDownsample   = { effect = "sc_hdrDownsample.fx"; }
 MATERIAL *sc_mtl_hdrHighpass     = { effect = "sc_hdrHighpass.fx"; }

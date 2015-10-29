@@ -16,14 +16,45 @@
  */
 #include <acknex.h>
 #include <stdio.h>
+#include <default.c>
+
+#include "path.h"
+
 #include "utilities.h"
 #include "file.h"
+
+#include "render.h"
+#include "render_hdr.h"
+#include "render_dof.h"
+#include "render_utils.h"
+
+#define __RENDER_DOF__
+#define __RENDER_HDR__
 
 int main( int argc, char **argl )
 {
 	while( !ready() ) wait(1.0);
 	
-	level_load(0);
+	window_size_set(1280, 720);
+	
+	level_load("scene/kathetrale02.wmb");
+	
+	render_new();
+	
+	#ifdef    __RENDER_DOF__
+	    render_dof_new();
+	    render_dof_depth_set(200, 5000, 0.1);
+	    
+	    render_dof_set_active(true);
+	#endif
+	
+	#ifdef    __RENDER_HDR__
+	    render_hdr_new();
+	    
+	    render_hdr_set_active(true);
+	#endif
+	
+	render_queue_start();
 	
 	return 0;
 }

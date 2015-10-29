@@ -41,6 +41,17 @@ void render_hdr_free()
 }
 
 /*
+ * void render_hdr_set_active( __In BOOL state )
+ * 
+ * Sets HDR active. (queried for rendering.)
+ * 
+ */
+void render_hdr_set_active( __In BOOL state )
+{
+	if(HDRState_singleton) HDRState_singleton->active = state;
+}
+
+/*
  * void render_hdr_new()
  * 
  * Allocates memory for the HDR state singleton, and set to default values.
@@ -60,12 +71,14 @@ void render_hdr_new()
 	HDRState_singleton->highpass_middle_grey = 0.18;
 	HDRState_singleton->highpass_white_cutoff = 0.8;
 	HDRState_singleton->adaption_speed = 2;
+	
+	HDRState_singleton->active = false;
 }
 
 /*
  * BOOL render_hdr_is_active()
  * 
- * Yields true if HDR is successfully initialized and activated, false otherwise.
+ * Yields true if HDR is active (queried for activation), false otherwise.
  */
 BOOL render_hdr_is_active()
 {
@@ -111,9 +124,11 @@ void render_hdr_setup(
  */
 void render_hdr()
 {
+	__render_hdr_initialize();
+	
 	#ifdef __DOF
 	{
-		if((DOFState_get_singleton())->active)	
+		if((render_dof_is_active())	
 		    sc_view_dof->stage = sc_view_hdrDownsample;
 		else
 		    camera->stage = sc_view_hdrDownsample;
@@ -127,18 +142,9 @@ void render_hdr()
 	sc_view_hdrBlur->stage = sc_view_hdrHBlur;
 	sc_view_hdrHBlur->stage = sc_view_hdrVBlur;
 	sc_view_hdrVBlur->stage = sc_view_hdr;
-	
-	HDRState_singleton->active = (true);
 }
 
-/*
- * void render_hdr_initialize()
- * 
- * Initializes HDR.
- * After this call, arguments passed to render_hdr_setup() no longer works (it is "locked"),
- * and you can activate HDR with render_hdr().
- */
-void render_hdr_initialize()
+__static void __render_hdr_initialize()
 {
 	sc_view_hdrGamma->flags |= (SHOW);
 	

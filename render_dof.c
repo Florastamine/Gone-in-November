@@ -14,4 +14,209 @@
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
- 
+__static void __sc_mtl_depth_event()
+{
+	mtl->skill1 = floatv((DOFState_get_singleton())->sharpness);
+	mtl->skill2 = floatv((DOFState_get_singleton())->position);
+	mtl->skill3 = floatv(0);
+	mtl->skill4 = floatv((DOFState_get_singleton())->scene_max_depth);
+	
+	if(my)
+	{
+		if(my->skill99 != 0)
+		{
+			Attribute *temp = (Attribute *) (my->skill99);
+			
+			mtl->skill3 = floatv(temp->depth);
+			mtl->skill7 = floatv(temp->volpart);
+		}
+	}
+}
+
+__static void __render_dof_depth_setup()
+{
+	(RenderState_get_singleton())->sc_map_depth = bmap_createblack(screen_size.x, screen_size.y,(DOFState_get_singleton())->bit_depth);
+	sc_view_depth->bmap = (RenderState_get_singleton())->sc_map_depth;
+	set(sc_view_depth,SHOW);
+	
+	proc_mode = PROC_LATE;
+	
+	sc_view_depth.clip_far = (DOFState_get_singleton())->scene_max_depth;
+	sc_view_depth.clip_near = 0;
+	
+	while((RenderState_get_singleton())->ready)
+	{
+		vec_set(sc_view_depth.x, camera.x);
+		vec_set(sc_view_depth.pan, camera.pan);
+		sc_view_depth.arc = camera.arc;
+		wait(1);
+	}
+}
+
+/*
+ * void render_dof_depth_set( float focus_speed, float max_depth, float b0n )
+ * 
+ * Activates auto focus, and set focus speed and maximum depth.
+ * The third parameter should be set to 0.1.
+ */
+__static float __focus_temp[3];
+void render_dof_depth_set( float focus_speed, float max_depth, float b0n )
+{
+	if(__focus_temp[2] == b0n) return;
+	
+	float hit_dist;
+	VECTOR cam_trace;
+	
+	__focus_temp[0] = focus_speed;
+	__focus_temp[1] = max_depth;
+	__focus_temp[2] = b0n;
+	
+	while(__focus_temp[2] > 0)
+	{
+		vec_set(&cam_trace, vector(screen_size.x / 2, screen_size.y / 2, __focus_temp[1]));
+		vec_for_screen(&cam_trace, camera);
+		hit_dist = c_trace( &camera->x, cam_trace.x, USE_POLYGON | IGNORE_ME | IGNORE_PASSABLE );
+		
+		if(hit_dist > 0)
+		{
+			if(hit_dist > (DOFState_get_singleton())->position) (DOFState_get_singleton())->position += __focus_temp[0] * time_step;
+			if(hit_dist < (DOFState_get_singleton())->position) (DOFState_get_singleton())->position -= __focus_temp[0] * time_step;
+		}
+		
+		wait(1.0);
+	}
+}
+
+/*
+ * DOFState *DOFState_get_singleton()
+ * 
+ * Returns the DOF state object singleton.
+ * Can then be used to query DOF-related parameters.
+ */
+DOFState *DOFState_get_singleton()
+{
+	return DOFState_singleton;
+}
+
+/*
+ * void render_dof_new()
+ * 
+ * Allocates memory for the DOF state object singleton.
+ * Once DOF is activated, this state can be safely freed (via render_dof_free()/free()), but you won't be able to query DOF parameters or 
+ * the state singleton afterwards.
+ */
+void render_dof_new()
+{
+	DOFState_singleton = (DOFState *) malloc(sizeof(DOFState));
+	
+	DOFState_singleton->rt_factor = 2.0;
+	DOFState_singleton->bit_depth = 32.0;
+	DOFState_singleton->scene_max_depth = 50000.0;
+	
+	DOFState_singleton->sharpness = 800.0;
+	DOFState_singleton->position = 400.0;
+	DOFState_singleton->blurness = 0.8;
+	
+	DOFState_singleton->active = false; // Ironed out a bug in <render_utils>/render_queue_start() 1-0.
+	
+	sc_mtl_depth->event = __sc_mtl_depth_event;
+}
+
+/*
+ * void render_dof_free()
+ * 
+ * Frees the DOF state object singleton.
+ */
+void render_dof_free()
+{
+	if(DOFState_singleton) free(DOFState_singleton);
+}
+
+/*
+ * BOOL render_dof_is_active()
+ * 
+ * Returns true if DOF is being queried for rendering, false otherwise.
+ */
+BOOL render_dof_is_active()
+{
+	if(DOFState_singleton) return DOFState_singleton->active;
+}
+
+/*
+ * void render_dof_set_active( __In BOOL state )
+ * 
+ * Queries DOF for rendering later (with render_queue_start() in <render_utils>)
+ */
+void render_dof_set_active( __In BOOL state )
+{
+	if(DOFState_singleton) DOFState_singleton->active = true;
+}
+
+/*
+ * void render_dof_setup( __In int rt_factor, __In int bit_depth, __In int scene_max_depth, __In int sharpness, __In int position, __In int blurness )
+ * 
+ * Overrides the default values in the DOF state singleton.
+ * Certain arguments can be ignored; simply pass (-1) to which parameters you want to ignore.
+ */
+void render_dof_setup( __In int rt_factor, __In int bit_depth, __In int scene_max_depth, __In int sharpness, __In int position, __In int blurness )
+{
+	if(DOFState_singleton)
+	{
+		DOFState_singleton->rt_factor       = ifelse(rt_factor == -1, DOFState_singleton->rt_factor, rt_factor);
+		DOFState_singleton->bit_depth       = ifelse(bit_depth == -1, DOFState_singleton->bit_depth, bit_depth);
+		DOFState_singleton->scene_max_depth = ifelse(scene_max_depth == -1, DOFState_singleton->scene_max_depth, scene_max_depth);
+		DOFState_singleton->sharpness       = ifelse(sharpness == -1, DOFState_singleton->sharpness, sharpness);
+		DOFState_singleton->position        = ifelse(position == -1, DOFState_singleton->position, position);
+		DOFState_singleton->blurness        = ifelse(blurness == -1, DOFState_singleton->blurness, blurness);
+	}
+}
+
+/*
+ * void render_dof()
+ * 
+ * Performs DOF rendering.
+ */
+void render_dof()
+{
+	__render_dof_initialize();
+	
+	camera->stage = sc_view_dofDownsample;
+	sc_view_dofDownsample->stage = sc_view_dofHBlur;
+	sc_view_dofHBlur->stage = sc_view_dofVBlur;
+	sc_view_dofVBlur->stage = sc_view_dof;
+}
+
+__static void __render_dof_initialize()
+{
+	__render_dof_depth_setup();
+	
+	__static float RT = (DOFState_get_singleton())->rt_factor;
+	__static float bits = (DOFState_get_singleton())->bit_depth;
+	
+	sc_mtl_dofDownsample.effect = "sc_dofDownsample.fx";
+	sc_mtl_dof->skill4 = floatv(RT);
+	sc_mtl_dofDownsample->skill1 = floatv(RT);
+	sc_view_dofDownsample->size_x = screen_size.x/RT;
+	sc_view_dofDownsample->size_y = screen_size.y/RT;
+	sc_view_dofDownsample->bmap = bmap_createblack(screen_size.x/RT,screen_size.y/RT,bits);
+	sc_view_dofHBlur->size_x = screen_size.x/RT;
+	sc_view_dofHBlur->size_y = screen_size.y/RT;
+	sc_view_dofHBlur->bmap = bmap_createblack(screen_size.x/RT,screen_size.y/RT,bits);
+	sc_view_dofVBlur->size_x = screen_size.x/RT;
+	sc_view_dofVBlur->size_y = screen_size.y/RT;
+	sc_view_dofVBlur->bmap = bmap_createblack(screen_size.x/RT,screen_size.y/RT,bits);
+	
+	#ifdef __HDR
+		if(render_hdr_is_active())
+		{
+			(RenderState_get_singleton())->sc_bmap_dof = bmap_createblack(screen_size.x, screen_size.y,bits);
+			sc_view_dof->bmap = (RenderState_get_singleton())->sc_bmap_dof;
+		}
+	#endif
+	
+	sc_mtl_dofDownsample->skin1 = (RenderState_get_singleton())->sc_map_depth;
+	sc_mtl_dof->skin1 = (RenderState_get_singleton())->sc_map_scene;
+	sc_mtl_dof->skin2 = (RenderState_get_singleton())->sc_map_depth;
+	sc_mtl_dofHBlur->skill1 = floatv((DOFState_get_singleton())->blurness);
+	sc_mtl_dofVBlur->skill1 = floatv((DOFState_get_singleton())->blurness);
+}

@@ -29,7 +29,9 @@ RenderState *RenderState_get_singleton()
  * void render_new()
  * 
  * Allocates a new render state.
+ * Useful for screen-space shaders, like high dynamic rendering and depth of field.
  * 
+ * Not required when using surface shaders.
  */
 void render_new()
 {
@@ -45,11 +47,24 @@ void render_new()
 	RenderState_singleton->ready = true;
 }
 
+/*
+ * void render_free()
+ * 
+ * Frees the render state singleton.
+ * You should not arbitrary free the render state (as it contains data required for screen-space effects as noted above on render_new()).
+ * However, render state is not required (and thus can bypassed) when using object-based shaders.
+ */
 void render_free()
 {
 	if(RenderState_singleton) free(RenderState_singleton);
 }
 
+/* 
+ * Attribute *attribute_new()
+ * 
+ * Allocates a new object attribute. 
+ * Attributes allocated this way must be freed later with attribute_free()/free().
+ */
 Attribute *attribute_new()
 {
 	Attribute *attribute = (Attribute *) malloc(sizeof(Attribute));
@@ -64,12 +79,22 @@ Attribute *attribute_new()
 	return attribute;
 }
 
-void attribute_free( __In __Out Attribute *attribute )
+/*
+ * void attribute_free( Attribute *attribute )
+ * 
+ * Frees an object attribute that was allocated before with attribute_new()/malloc().
+ */
+void attribute_free( Attribute *attribute )
 {
 	if(attribute) free(attribute);
 }
 
-void render_attribute_setup( __In ENTITY *object, __In const int mode, __In int value )
+/*
+ * void render_attribute_setup( ENTITY *object, const int mode, int value )
+ * 
+ * Sets up a shader attribute for an object. 
+ */
+void render_attribute_setup( ENTITY *object, const int mode, int value )
 {
 	Attribute *attribute = attribute_new();
 	if(object)
@@ -114,6 +139,16 @@ void render_attribute_setup( __In ENTITY *object, __In const int mode, __In int 
 	attribute_free(attribute);
 }
 
+/*
+ * void render_setup_rt()
+ * 
+ * Sets up scene RT. 
+ * This is required for using screen-space effects such as HDR.
+ * Must be called prior to invoking HDR/DOF functions, and they 
+ * must be enabled together. 
+ * 
+ * Not required by surface shaders.
+ */
 void render_setup_rt()
 {
 	(RenderState_get_singleton())->sc_map_scene = bmap_createblack(screen_size.x, screen_size.y,32);
@@ -121,12 +156,22 @@ void render_setup_rt()
 	(RenderState_get_singleton())->rt = true;
 }
 
+/*
+ * void render_reset_rt()
+ * 
+ * Resets the scene RT.
+ */
 void render_reset_rt()
 {
 	camera->bmap = NULL;
 	(RenderState_get_singleton())->rt = false;
 }
 
+/*
+ * BOOL render_is_rt()
+ * 
+ * Returns true if scene RT is active, false otherwise.
+ */
 BOOL render_is_rt()
 {
 	return (RenderState_get_singleton())->rt;

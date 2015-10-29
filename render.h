@@ -30,7 +30,7 @@
 #define ATTRIBUTE_TEXMOV                   5
 #define ATTRIBUTE_REFRACTION_COL           6
 
-__namespace(shader) {
+__namespace(render) {
 	typedef struct {
 		float depth;
 		float volpart;
@@ -55,12 +55,12 @@ __namespace(shader) {
 	
 	RenderState *RenderState_singleton = NULL;
 	
+	RenderState *RenderState_get_singleton();
 	void render_new();
 	void render_free();
 	void render_setup_rt();
 	void render_reset_rt();
 	BOOL render_is_rt();
-	RenderState *RenderState_get_singleton();
 	
 	Attribute *attribute_new();
 	void attribute_free( __In __Out Attribute *attribute );

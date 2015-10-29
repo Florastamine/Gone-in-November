@@ -1,4 +1,4 @@
-/* common.h */
+/* render_utils.h */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -14,12 +14,10 @@
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
-#ifndef    _COMMON_H_
-#define    _COMMON_H_
+#ifndef    _RENDER_UTILS_H_
+#define    _RENDER_UTILS_H_
 
-#ifndef    0
-    #define PRAGMA_PATH "fx"
-#endif
+void render_queue_start();
 
-#endif /* common.h */
- 
+#include "render_utils.c"
+#endif /* render_utils.h */
