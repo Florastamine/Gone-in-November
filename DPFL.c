@@ -16,7 +16,6 @@
  */
 #include <acknex.h>
 #include <stdio.h>
-#include <default.c>
 
 #include "path.h"
 
@@ -27,6 +26,8 @@
 #include "render_hdr.h"
 #include "render_dof.h"
 #include "render_utils.h"
+
+#include "common.h"
 
 #define __RENDER_DOF__
 #define __RENDER_HDR__
