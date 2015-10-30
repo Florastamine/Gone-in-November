@@ -29,4 +29,12 @@ void render_queue_start()
 	#ifdef    __HDR
 	    if( render_hdr_get_queued() ) render_hdr();
 	#endif
+	
+	#ifdef    __REFLECT
+	    if( render_reflect_is_queued() ) render_reflect();
+	#endif
+	
+	#ifdef    __REFRACT
+	    if( render_refract_is_queued() ) render_refract();
+	#endif
 } 
