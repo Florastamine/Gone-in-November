@@ -16,10 +16,10 @@
  */
 __static void __sc_mtl_depth_event()
 {
-	mtl->skill1 = floatv((DOFState_get_singleton())->sharpness);
-	mtl->skill2 = floatv((DOFState_get_singleton())->position);
+	mtl->skill1 = floatv((render_dof_get_singleton())->sharpness);
+	mtl->skill2 = floatv((render_dof_get_singleton())->position);
 	mtl->skill3 = floatv(0);
-	mtl->skill4 = floatv((DOFState_get_singleton())->scene_max_depth);
+	mtl->skill4 = floatv((render_dof_get_singleton())->scene_max_depth);
 	
 	if(my)
 	{
@@ -35,13 +35,13 @@ __static void __sc_mtl_depth_event()
 
 __static void __render_dof_depth_setup()
 {
-	(RenderState_get_singleton())->sc_map_depth = bmap_createblack(screen_size.x, screen_size.y,(DOFState_get_singleton())->bit_depth);
+	(RenderState_get_singleton())->sc_map_depth = bmap_createblack(screen_size.x, screen_size.y,(render_dof_get_singleton())->bit_depth);
 	sc_view_depth->bmap = (RenderState_get_singleton())->sc_map_depth;
 	set(sc_view_depth,SHOW);
 	
 	proc_mode = PROC_LATE;
 	
-	sc_view_depth.clip_far = (DOFState_get_singleton())->scene_max_depth;
+	sc_view_depth.clip_far = (render_dof_get_singleton())->scene_max_depth;
 	sc_view_depth.clip_near = 0;
 	
 	while((RenderState_get_singleton())->ready)
@@ -79,8 +79,8 @@ void render_dof_depth_set( float focus_speed, float max_depth, float b0n )
 		
 		if(hit_dist > 0)
 		{
-			if(hit_dist > (DOFState_get_singleton())->position) (DOFState_get_singleton())->position += __focus_temp[0] * time_step;
-			if(hit_dist < (DOFState_get_singleton())->position) (DOFState_get_singleton())->position -= __focus_temp[0] * time_step;
+			if(hit_dist > (render_dof_get_singleton())->position) (render_dof_get_singleton())->position += __focus_temp[0] * time_step;
+			if(hit_dist < (render_dof_get_singleton())->position) (render_dof_get_singleton())->position -= __focus_temp[0] * time_step;
 		}
 		
 		wait(1.0);
@@ -88,12 +88,12 @@ void render_dof_depth_set( float focus_speed, float max_depth, float b0n )
 }
 
 /*
- * DOFState *DOFState_get_singleton()
+ * DOFState *render_dof_get_singleton()
  * 
  * Returns the DOF state object singleton.
  * Can then be used to query DOF-related parameters.
  */
-DOFState *DOFState_get_singleton()
+DOFState *render_dof_get_singleton()
 {
 	return DOFState_singleton;
 }
@@ -117,7 +117,7 @@ void render_dof_new()
 	DOFState_singleton->position = 400.0;
 	DOFState_singleton->blurness = 0.8;
 	
-	DOFState_singleton->active = false; // Ironed out a bug in <render_utils>/render_queue_start() 1-0.
+	DOFState_singleton->queued = false; // Ironed out a bug in <render_utils>/render_queue_start() 1-0.
 	
 	sc_mtl_depth->event = __sc_mtl_depth_event;
 }
@@ -133,23 +133,23 @@ void render_dof_free()
 }
 
 /*
- * BOOL render_dof_is_active()
+ * BOOL render_dof_get_queued()
  * 
  * Returns true if DOF is being queried for rendering, false otherwise.
  */
-BOOL render_dof_is_active()
+BOOL render_dof_get_queued()
 {
-	if(DOFState_singleton) return DOFState_singleton->active;
+	if(DOFState_singleton) return DOFState_singleton->queued;
 }
 
 /*
- * void render_dof_set_active( __In BOOL state )
+ * void render_dof_set_queued( __In BOOL state )
  * 
  * Queries DOF for rendering later (with render_queue_start() in <render_utils>)
  */
-void render_dof_set_active( __In BOOL state )
+void render_dof_set_queued( __In BOOL state )
 {
-	if(DOFState_singleton) DOFState_singleton->active = true;
+	if(DOFState_singleton) DOFState_singleton->queued = true;
 }
 
 /*
@@ -190,8 +190,8 @@ __static void __render_dof_initialize()
 {
 	__render_dof_depth_setup();
 	
-	__static float RT = (DOFState_get_singleton())->rt_factor;
-	__static float bits = (DOFState_get_singleton())->bit_depth;
+	__static float RT = (render_dof_get_singleton())->rt_factor;
+	__static float bits = (render_dof_get_singleton())->bit_depth;
 	
 	sc_mtl_dofDownsample.effect = "sc_dofDownsample.fx";
 	sc_mtl_dof->skill4 = floatv(RT);
@@ -207,7 +207,7 @@ __static void __render_dof_initialize()
 	sc_view_dofVBlur->bmap = bmap_createblack(screen_size.x/RT,screen_size.y/RT,bits);
 	
 	#ifdef __HDR
-		if(render_hdr_is_active())
+		if(render_hdr_get_queued())
 		{
 			(RenderState_get_singleton())->sc_bmap_dof = bmap_createblack(screen_size.x, screen_size.y,bits);
 			sc_view_dof->bmap = (RenderState_get_singleton())->sc_bmap_dof;
@@ -217,6 +217,6 @@ __static void __render_dof_initialize()
 	sc_mtl_dofDownsample->skin1 = (RenderState_get_singleton())->sc_map_depth;
 	sc_mtl_dof->skin1 = (RenderState_get_singleton())->sc_map_scene;
 	sc_mtl_dof->skin2 = (RenderState_get_singleton())->sc_map_depth;
-	sc_mtl_dofHBlur->skill1 = floatv((DOFState_get_singleton())->blurness);
-	sc_mtl_dofVBlur->skill1 = floatv((DOFState_get_singleton())->blurness);
+	sc_mtl_dofHBlur->skill1 = floatv((render_dof_get_singleton())->blurness);
+	sc_mtl_dofVBlur->skill1 = floatv((render_dof_get_singleton())->blurness);
 }

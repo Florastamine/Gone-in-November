@@ -831,7 +831,7 @@ void command_table_call( const char *command )
 /*
  * void command_table_free()
  *
- * Command tables are not recommended to be released in-game, as for the notes with console_free().
+ * Command tables are not recommended to be freed in-game, as for the notes with console_free().
  * (Ctrl-F for console_free() command section and have a quick look).
  */
 void command_table_free()
@@ -898,12 +898,12 @@ void str_init( String *gstr )
 	{
 		int i = 0;
 		*(gstr->chars) = ' ';
-		while(i < strlen(gstr->chars) - 1)
+		while(i < gstr->length - 1)
 		{
 			*((gstr->chars) + i) = ' ';
 			i++;
 		}
-		*((gstr->chars) + strlen(gstr->chars) - 1) = '\0';
+		*((gstr->chars) + gstr->length - 1) = '\0';
 	}
 }
 

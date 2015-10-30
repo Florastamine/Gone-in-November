@@ -32,21 +32,21 @@ typedef struct {
 	float position;
 	float blurness;
 	
-	BOOL active;
+	BOOL queued;
 } DOFState;
 
 DOFState *DOFState_singleton = NULL;
 
-DOFState *DOFState_get_singleton();
+DOFState *render_dof_get_singleton();
 void render_dof_new();
 void render_dof_free();
-void render_dof_set_active( __In BOOL state );
-BOOL render_dof_is_active();
+void render_dof_set_queued( __In BOOL state );
+BOOL render_dof_get_queued();
 
 void render_dof_setup( __In int rt_factor, __In int bit_depth, __In int scene_max_depth, __In int sharpness, __In int position, __In int blurness );
 void render_dof_depth_set( __In float focus_speed, __In float max_depth, __In float b0n );
 
-void render_dof();
+void __render_dof();
 
 __static void __sc_mtl_depth_event();
 __static void __render_dof_initialize();

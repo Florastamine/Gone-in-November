@@ -35,16 +35,16 @@ typedef struct {
 	float highpass_white_cutoff;
 	float adaption_speed;
 	
-	BOOL active;
+	BOOL queued;
 } HDRState;
 
 HDRState *HDRState_singleton = NULL;
 
-HDRState *HDRState_get_singleton();
+HDRState *render_hdr_get_singleton();
 void render_hdr_new();
 void render_hdr_free();
-void render_hdr_set_active( __In BOOL state );
-BOOL render_hdr_is_active();
+void render_hdr_set_queued( __In BOOL state );
+BOOL render_hdr_get_queued();
 
 void render_hdr_setup(
                        __In float RT,

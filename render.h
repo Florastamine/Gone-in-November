@@ -65,6 +65,9 @@ __namespace(render) {
 	Attribute *attribute_new();
 	void attribute_free( __In __Out Attribute *attribute );
 	void render_attribute_setup( __In ENTITY *object, __In const int mode, __In int value );
+	
+	VIEW *shader_pp_add( __In MATERIAL *material, __In VIEW *view, __In BMAP *bmap );
+	void shader_pp_remove( __In MATERIAL *material, __In VIEW *view, __In VIEW *stage_view );
 }
 
 #include "render.c" 

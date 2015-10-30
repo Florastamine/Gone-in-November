@@ -18,17 +18,15 @@
 /*
  * void render_queue_start()
  * 
- * Processes items marked as active for rendering.
+ * Processes items marked as queued for rendering.
  */
 void render_queue_start()
 {
 	#ifdef    __DOF
-	    if(!(RenderState_get_singleton())->rt) render_setup_rt(); // scene RT wasn't manually activated by the user?
-	    if(render_dof_is_active()) render_dof();
+	    if( render_dof_get_queued() ) render_dof();
 	#endif
 	
 	#ifdef    __HDR
-	    if(!(RenderState_get_singleton())->rt) render_setup_rt();
-	    if(render_hdr_is_active()) render_hdr();
+	    if( render_hdr_get_queued() ) render_hdr();
 	#endif
 } 

@@ -176,3 +176,65 @@ BOOL render_is_rt()
 {
 	return (RenderState_get_singleton())->rt;
 }
+
+/*
+ * void shader_pp_remove( MATERIAL *material, VIEW *view, VIEW *stage_view )
+ * 
+ * Removes an effect from the effect chain.
+ * If stage_view is not NULL/0, removes the view with the ID of stage_view from the view chain.
+ */
+void shader_pp_remove( MATERIAL *material, VIEW *view, VIEW *stage_view )
+{
+	// Find the view with the material selected or "stage_view" and the previous view
+	RenderState_singleton->sc_view_last = view;
+	
+	while(RenderState_singleton->sc_view_last->material != material && ((stage_view == NULL)+(RenderState_singleton->sc_view_last->stage != NULL)) != NULL)
+	{
+		view = RenderState_singleton->sc_view_last;
+		RenderState_singleton->sc_view_last = RenderState_singleton->sc_view_last->stage;
+		
+		// Stage doesn't exist?
+		if(RenderState_singleton->sc_view_last == NULL) return;
+	}
+	
+	//pass the views stage to the previous view
+	view->stage = RenderState_singleton->sc_view_last->stage;
+	
+	//reset the views bmap to null
+	RenderState_singleton->sc_view_last->bmap = NULL;
+	
+	// Remove it.
+	ptr_remove(RenderState_singleton->sc_view_last);
+}
+
+/*
+ * VIEW *shader_pp_add( MATERIAL *material, VIEW *view, BMAP *bmap )
+ * 
+ * Adds a post-process effect to the effect chain.
+ * If "bmap" is given, the view is rendered into this bitmap.
+ */
+VIEW *shader_pp_add( MATERIAL *material, VIEW *view, BMAP *bmap )
+{
+	// Find the last view of the effect chain and store its pointer
+	RenderState_singleton->sc_view_last = view;
+	while(RenderState_singleton->sc_view_last->stage != NULL)
+	{
+		RenderState_singleton->sc_view_last = RenderState_singleton->sc_view_last->stage;
+	}
+	
+	// Creates a new view
+	RenderState_singleton->sc_view_last->stage = view_create(0);
+	set(RenderState_singleton->sc_view_last->stage, PROCESS_TARGET);
+	
+	// Puts the effect in the newly created view
+	RenderState_singleton->sc_view_last = RenderState_singleton->sc_view_last->stage;
+	RenderState_singleton->sc_view_last->material = material;
+	
+	if(bmap)
+	{
+		RenderState_singleton->sc_view_last->bmap = bmap;
+	}
+	
+	return RenderState_singleton->sc_view_last;
+}
+

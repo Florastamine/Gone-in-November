@@ -16,12 +16,12 @@
  */
 
 /*
- * HDRState *HDRState_get_singleton()
+ * HDRState *render_hdr_get_singleton()
  * 
  * Returns the singleton of the HDR state object.
  * Can be used to query HDR parameters.
  */
-HDRState *HDRState_get_singleton()
+HDRState *render_hdr_get_singleton()
 {
 	return HDRState_singleton;
 }
@@ -41,21 +41,21 @@ void render_hdr_free()
 }
 
 /*
- * void render_hdr_set_active( __In BOOL state )
+ * void render_hdr_set_queued( __In BOOL state )
  * 
- * Sets HDR active. (queried for rendering.)
+ * Queue HDR for rendering.
  * 
  */
-void render_hdr_set_active( __In BOOL state )
+void render_hdr_set_queued( __In BOOL state )
 {
-	if(HDRState_singleton) HDRState_singleton->active = state;
+	if(HDRState_singleton) HDRState_singleton->queued = state;
 }
 
 /*
  * void render_hdr_new()
  * 
  * Allocates memory for the HDR state singleton, and set to default values.
- * Overriding values is done through direct query of the singleton (HDRState_get_singleton()->field), 
+ * Overriding values is done through direct query of the singleton (render_hdr_get_singleton()->field), 
  * or through render_hdr_setup(). Neither must be done before HDR is activated with render_hdr().
  */
 void render_hdr_new()
@@ -72,17 +72,17 @@ void render_hdr_new()
 	HDRState_singleton->highpass_white_cutoff = 0.8;
 	HDRState_singleton->adaption_speed = 2;
 	
-	HDRState_singleton->active = false;
+	HDRState_singleton->queued = false;
 }
 
 /*
- * BOOL render_hdr_is_active()
+ * BOOL render_hdr_get_queued()
  * 
- * Yields true if HDR is active (queried for activation), false otherwise.
+ * Yields true if HDR is queued (queried for rendering), false otherwise.
  */
-BOOL render_hdr_is_active()
+BOOL render_hdr_get_queued()
 {
-	if(HDRState_singleton) return HDRState_singleton->active;
+	if(HDRState_singleton) return HDRState_singleton->queued;
 }
 
 /*
@@ -128,7 +128,7 @@ void render_hdr()
 	
 	#ifdef __DOF
 	{
-		if((render_dof_is_active())	
+		if((render_dof_is_queued())	
 		    sc_view_dof->stage = sc_view_hdrDownsample;
 		else
 		    camera->stage = sc_view_hdrDownsample;
@@ -148,20 +148,20 @@ __static void __render_hdr_initialize()
 {
 	sc_view_hdrGamma->flags |= (SHOW);
 	
-	__static float rt_factor = (HDRState_get_singleton())->rt_factor;
-	__static float bits = (HDRState_get_singleton())->bit_depth;
+	__static float rt_factor = (render_hdr_get_singleton())->rt_factor;
+	__static float bits = (render_hdr_get_singleton())->bit_depth;
 	
 	sc_mtl_hdr->skill4 = floatv(rt_factor);
 	sc_mtl_hdrDownsample->skill1 = floatv(rt_factor);
-	sc_mtl_hdrBlur->skill1 = floatv((HDRState_get_singleton())->light_scattering);
-	sc_mtl_hdrHBlur->skill1 = floatv((HDRState_get_singleton())->blur);
-	sc_mtl_hdrVBlur->skill1 = floatv((HDRState_get_singleton())->blur);
-	sc_mtl_hdrHighpass->skill1 = floatv((HDRState_get_singleton())->bloom_strength);
-	sc_mtl_hdrHighpass->skill2 = floatv((HDRState_get_singleton())->highpass_luminance);
-	sc_mtl_hdrHighpass->skill3 = floatv((HDRState_get_singleton())->highpass_middle_grey);
-	sc_mtl_hdrHighpass->skill4 = floatv((HDRState_get_singleton())->highpass_white_cutoff);
-	sc_mtl_hdrGamma3->skill1 = floatv((HDRState_get_singleton())->adaption_speed);
-	sc_mtl_hdr->skill1 = floatv((HDRState_get_singleton())->highpass_luminance);
+	sc_mtl_hdrBlur->skill1 = floatv((render_hdr_get_singleton())->light_scattering);
+	sc_mtl_hdrHBlur->skill1 = floatv((render_hdr_get_singleton())->blur);
+	sc_mtl_hdrVBlur->skill1 = floatv((render_hdr_get_singleton())->blur);
+	sc_mtl_hdrHighpass->skill1 = floatv((render_hdr_get_singleton())->bloom_strength);
+	sc_mtl_hdrHighpass->skill2 = floatv((render_hdr_get_singleton())->highpass_luminance);
+	sc_mtl_hdrHighpass->skill3 = floatv((render_hdr_get_singleton())->highpass_middle_grey);
+	sc_mtl_hdrHighpass->skill4 = floatv((render_hdr_get_singleton())->highpass_white_cutoff);
+	sc_mtl_hdrGamma3->skill1 = floatv((render_hdr_get_singleton())->adaption_speed);
+	sc_mtl_hdr->skill1 = floatv((render_hdr_get_singleton())->highpass_luminance);
 	
 	sc_view_hdrDownsample->arc = camera->arc;
 	sc_view_hdrDownsample->size_x = screen_size.x/rt_factor;
@@ -195,7 +195,7 @@ __static void __render_hdr_initialize()
 	sc_mtl_hdr->skin1 = (RenderState_get_singleton())->sc_map_scene;
 	
 	#ifdef __DOF
-		if( (DOFState_get_singleton())->active)
+		if( (render_dof_get_singleton())->queued)
 		{
 			sc_mtl_hdr->skin1 = sc_bmap_dof;
 		}
