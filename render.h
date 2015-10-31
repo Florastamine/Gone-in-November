@@ -42,12 +42,12 @@ __namespace(render) {
 	} Attribute;
 	
 	typedef struct {	
-		BMAP *sc_map_scene;
-		BMAP *sc_map_depth;
-		BMAP *sc_bmap_dof;
-		BMAP *sc_bmap_gamma;
+		BMAP *map_scene;
+		BMAP *map_depth;
+		BMAP *bmap_dof;
+		BMAP *bmap_gamma;
 		
-		VIEW *sc_view_last;
+		VIEW *view_last;
 		
 		BOOL ready;
 		BOOL rt;

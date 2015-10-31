@@ -19,6 +19,10 @@
 
 #define    __REFRACT
 
+#define __In 
+#define __Out 
+#define __static 
+
 typedef struct {
 	float rt_factor;
 	BMAP* map_refract;

@@ -129,80 +129,80 @@ void render_hdr()
 	#ifdef __DOF
 	{
 		if((render_dof_is_queued())	
-		    sc_view_dof->stage = sc_view_hdrDownsample;
+		    view_dof->stage = view_hdrDownsample;
 		else
-		    camera->stage = sc_view_hdrDownsample;
+		    camera->stage = view_hdrDownsample;
 	}
 	#else
-		camera->stage = sc_view_hdrDownsample;
+		camera->stage = view_hdrDownsample;
 	#endif
 	
-	sc_view_hdrDownsample->stage = sc_view_hdrHighpass;
-	sc_view_hdrHighpass->stage = sc_view_hdrBlur;
-	sc_view_hdrBlur->stage = sc_view_hdrHBlur;
-	sc_view_hdrHBlur->stage = sc_view_hdrVBlur;
-	sc_view_hdrVBlur->stage = sc_view_hdr;
+	view_hdrDownsample->stage = view_hdrHighpass;
+	view_hdrHighpass->stage = view_hdrBlur;
+	view_hdrBlur->stage = view_hdrHBlur;
+	view_hdrHBlur->stage = view_hdrVBlur;
+	view_hdrVBlur->stage = view_hdr;
 }
 
 __static void __render_hdr_initialize()
 {
-	sc_view_hdrGamma->flags |= (SHOW);
+	view_hdrGamma->flags |= (SHOW);
 	
 	__static float rt_factor = (render_hdr_get_singleton())->rt_factor;
 	__static float bits = (render_hdr_get_singleton())->bit_depth;
 	
-	sc_mtl_hdr->skill4 = floatv(rt_factor);
-	sc_mtl_hdrDownsample->skill1 = floatv(rt_factor);
-	sc_mtl_hdrBlur->skill1 = floatv((render_hdr_get_singleton())->light_scattering);
-	sc_mtl_hdrHBlur->skill1 = floatv((render_hdr_get_singleton())->blur);
-	sc_mtl_hdrVBlur->skill1 = floatv((render_hdr_get_singleton())->blur);
-	sc_mtl_hdrHighpass->skill1 = floatv((render_hdr_get_singleton())->bloom_strength);
-	sc_mtl_hdrHighpass->skill2 = floatv((render_hdr_get_singleton())->highpass_luminance);
-	sc_mtl_hdrHighpass->skill3 = floatv((render_hdr_get_singleton())->highpass_middle_grey);
-	sc_mtl_hdrHighpass->skill4 = floatv((render_hdr_get_singleton())->highpass_white_cutoff);
-	sc_mtl_hdrGamma3->skill1 = floatv((render_hdr_get_singleton())->adaption_speed);
-	sc_mtl_hdr->skill1 = floatv((render_hdr_get_singleton())->highpass_luminance);
+	mtl_hdr->skill4 = floatv(rt_factor);
+	mtl_hdrDownsample->skill1 = floatv(rt_factor);
+	mtl_hdrBlur->skill1 = floatv((render_hdr_get_singleton())->light_scattering);
+	mtl_hdrHBlur->skill1 = floatv((render_hdr_get_singleton())->blur);
+	mtl_hdrVBlur->skill1 = floatv((render_hdr_get_singleton())->blur);
+	mtl_hdrHighpass->skill1 = floatv((render_hdr_get_singleton())->bloom_strength);
+	mtl_hdrHighpass->skill2 = floatv((render_hdr_get_singleton())->highpass_luminance);
+	mtl_hdrHighpass->skill3 = floatv((render_hdr_get_singleton())->highpass_middle_grey);
+	mtl_hdrHighpass->skill4 = floatv((render_hdr_get_singleton())->highpass_white_cutoff);
+	mtl_hdrGamma3->skill1 = floatv((render_hdr_get_singleton())->adaption_speed);
+	mtl_hdr->skill1 = floatv((render_hdr_get_singleton())->highpass_luminance);
 	
-	sc_view_hdrDownsample->arc = camera->arc;
-	sc_view_hdrDownsample->size_x = screen_size.x/rt_factor;
-	sc_view_hdrDownsample->size_y = screen_size.y/rt_factor;
-	sc_view_hdrDownsample->bmap = bmap_createblack(screen_size.x/rt_factor,screen_size.y/rt_factor,bits);
-	sc_view_hdrHighpass->arc = camera->arc;
-	sc_view_hdrHighpass->size_x = screen_size.x/rt_factor;
-	sc_view_hdrHighpass->size_y = screen_size.y/rt_factor;
-	sc_view_hdrHighpass->bmap = bmap_createblack(screen_size.x/rt_factor,screen_size.y/rt_factor,bits);
-	sc_view_hdrBlur->arc = camera->arc;
-	sc_view_hdrBlur->size_x = screen_size.x/rt_factor;
-	sc_view_hdrBlur->size_y = screen_size.y/rt_factor;
-	sc_view_hdrBlur->bmap = bmap_createblack(screen_size.x/rt_factor,screen_size.y/rt_factor,bits);
-	sc_view_hdrHBlur->arc = camera->arc;
-	sc_view_hdrHBlur->size_x = screen_size.x/rt_factor;
-	sc_view_hdrHBlur->size_y = screen_size.y/rt_factor;
-	sc_view_hdrHBlur->bmap = bmap_createblack(screen_size.x/rt_factor,screen_size.y/rt_factor,bits);
-	sc_view_hdrVBlur->arc = camera->arc;
-	sc_view_hdrVBlur->size_x = screen_size.x/rt_factor;
-	sc_view_hdrVBlur->size_y = screen_size.y/rt_factor;
-	sc_view_hdrVBlur->bmap = bmap_createblack(screen_size.x/rt_factor,screen_size.y/rt_factor,bits);
-	sc_view_hdr->arc = camera->arc;
-	sc_view_hdr->size_x = screen_size.x;
-	sc_view_hdr->size_y = screen_size.y;
+	view_hdrDownsample->arc = camera->arc;
+	view_hdrDownsample->size_x = screen_size.x/rt_factor;
+	view_hdrDownsample->size_y = screen_size.y/rt_factor;
+	view_hdrDownsample->bmap = bmap_createblack(screen_size.x/rt_factor,screen_size.y/rt_factor,bits);
+	view_hdrHighpass->arc = camera->arc;
+	view_hdrHighpass->size_x = screen_size.x/rt_factor;
+	view_hdrHighpass->size_y = screen_size.y/rt_factor;
+	view_hdrHighpass->bmap = bmap_createblack(screen_size.x/rt_factor,screen_size.y/rt_factor,bits);
+	view_hdrBlur->arc = camera->arc;
+	view_hdrBlur->size_x = screen_size.x/rt_factor;
+	view_hdrBlur->size_y = screen_size.y/rt_factor;
+	view_hdrBlur->bmap = bmap_createblack(screen_size.x/rt_factor,screen_size.y/rt_factor,bits);
+	view_hdrHBlur->arc = camera->arc;
+	view_hdrHBlur->size_x = screen_size.x/rt_factor;
+	view_hdrHBlur->size_y = screen_size.y/rt_factor;
+	view_hdrHBlur->bmap = bmap_createblack(screen_size.x/rt_factor,screen_size.y/rt_factor,bits);
+	view_hdrVBlur->arc = camera->arc;
+	view_hdrVBlur->size_x = screen_size.x/rt_factor;
+	view_hdrVBlur->size_y = screen_size.y/rt_factor;
+	view_hdrVBlur->bmap = bmap_createblack(screen_size.x/rt_factor,screen_size.y/rt_factor,bits);
+	view_hdr->arc = camera->arc;
+	view_hdr->size_x = screen_size.x;
+	view_hdr->size_y = screen_size.y;
 	
-	sc_view_hdrGamma->stage = sc_view_hdrGamma2;
-	sc_view_hdrGamma2->stage = sc_view_hdrGamma3;
-	sc_view_hdrGamma3->stage = sc_view_hdrGamma4;
-	sc_view_hdrGamma4->bmap = (RenderState_get_singleton())->sc_bmap_gamma;
+	view_hdrGamma->stage = view_hdrGamma2;
+	view_hdrGamma2->stage = view_hdrGamma3;
+	view_hdrGamma3->stage = view_hdrGamma4;
+	view_hdrGamma4->bmap = (RenderState_get_singleton())->bmap_gamma;
 	
-	sc_mtl_hdr->skin1 = (RenderState_get_singleton())->sc_map_scene;
+	mtl_hdr->skin1 = (RenderState_get_singleton())->map_scene;
 	
 	#ifdef __DOF
 		if( (render_dof_get_singleton())->queued)
 		{
-			sc_mtl_hdr->skin1 = sc_bmap_dof;
+			mtl_hdr->skin1 = bmap_dof;
 		}
 	#endif
 	
-	sc_mtl_hdr->skin2 = (RenderState_get_singleton())->sc_bmap_gamma;
-	sc_mtl_hdrHighpass->skin1 = (RenderState_get_singleton())->sc_bmap_gamma;
-	sc_mtl_hdrGamma->skin1 = (RenderState_get_singleton())->sc_map_scene;
-	sc_mtl_hdrGamma->skin2 = (RenderState_get_singleton())->sc_bmap_gamma;
+	mtl_hdr->skin2 = (RenderState_get_singleton())->bmap_gamma;
+	mtl_hdrHighpass->skin1 = (RenderState_get_singleton())->bmap_gamma;
+	mtl_hdrGamma->skin1 = (RenderState_get_singleton())->map_scene;
+	mtl_hdrGamma->skin2 = (RenderState_get_singleton())->bmap_gamma;
 }

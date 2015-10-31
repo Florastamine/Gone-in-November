@@ -19,6 +19,10 @@
 
 #define    __REFLECT
 
+#define __In 
+#define __Out 
+#define __static 
+
 typedef struct {
 	float rt_factor_x;
 	float rt_factor_y;
@@ -35,7 +39,7 @@ void render_reflect_free();
 void render_reflect_setup( __In float rtx, __In float rty );
 
 void render_reflect_set_queued( __In BOOL state );
-BOOL render_reflect_is_queued();
+BOOL render_reflect_get_queued();
 
 void render_reflect();
 

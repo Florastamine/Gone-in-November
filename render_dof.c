@@ -14,7 +14,7 @@
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
-__static void __sc_mtl_depth_event()
+__static void __mtl_depth_event()
 {
 	mtl->skill1 = floatv((render_dof_get_singleton())->sharpness);
 	mtl->skill2 = floatv((render_dof_get_singleton())->position);
@@ -35,20 +35,20 @@ __static void __sc_mtl_depth_event()
 
 __static void __render_dof_depth_setup()
 {
-	(RenderState_get_singleton())->sc_map_depth = bmap_createblack(screen_size.x, screen_size.y,(render_dof_get_singleton())->bit_depth);
-	sc_view_depth->bmap = (RenderState_get_singleton())->sc_map_depth;
-	set(sc_view_depth,SHOW);
+	(RenderState_get_singleton())->map_depth = bmap_createblack(screen_size.x, screen_size.y,(render_dof_get_singleton())->bit_depth);
+	view_depth->bmap = (RenderState_get_singleton())->map_depth;
+	set(view_depth,SHOW);
 	
 	proc_mode = PROC_LATE;
 	
-	sc_view_depth.clip_far = (render_dof_get_singleton())->scene_max_depth;
-	sc_view_depth.clip_near = 0;
+	view_depth.clip_far = (render_dof_get_singleton())->scene_max_depth;
+	view_depth.clip_near = 0;
 	
 	while((RenderState_get_singleton())->ready)
 	{
-		vec_set(sc_view_depth.x, camera.x);
-		vec_set(sc_view_depth.pan, camera.pan);
-		sc_view_depth.arc = camera.arc;
+		vec_set(view_depth.x, camera.x);
+		vec_set(view_depth.pan, camera.pan);
+		view_depth.arc = camera.arc;
 		wait(1);
 	}
 }
@@ -119,7 +119,7 @@ void render_dof_new()
 	
 	DOFState_singleton->queued = false; // Ironed out a bug in <render_utils>/render_queue_start() 1-0.
 	
-	sc_mtl_depth->event = __sc_mtl_depth_event;
+	mtl_depth->event = __mtl_depth_event;
 }
 
 /*
@@ -180,10 +180,10 @@ void render_dof()
 {
 	__render_dof_initialize();
 	
-	camera->stage = sc_view_dofDownsample;
-	sc_view_dofDownsample->stage = sc_view_dofHBlur;
-	sc_view_dofHBlur->stage = sc_view_dofVBlur;
-	sc_view_dofVBlur->stage = sc_view_dof;
+	camera->stage = view_dofDownsample;
+	view_dofDownsample->stage = view_dofHBlur;
+	view_dofHBlur->stage = view_dofVBlur;
+	view_dofVBlur->stage = view_dof;
 }
 
 __static void __render_dof_initialize()
@@ -193,30 +193,30 @@ __static void __render_dof_initialize()
 	__static float RT = (render_dof_get_singleton())->rt_factor;
 	__static float bits = (render_dof_get_singleton())->bit_depth;
 	
-	sc_mtl_dofDownsample.effect = "sc_dofDownsample.fx";
-	sc_mtl_dof->skill4 = floatv(RT);
-	sc_mtl_dofDownsample->skill1 = floatv(RT);
-	sc_view_dofDownsample->size_x = screen_size.x/RT;
-	sc_view_dofDownsample->size_y = screen_size.y/RT;
-	sc_view_dofDownsample->bmap = bmap_createblack(screen_size.x/RT,screen_size.y/RT,bits);
-	sc_view_dofHBlur->size_x = screen_size.x/RT;
-	sc_view_dofHBlur->size_y = screen_size.y/RT;
-	sc_view_dofHBlur->bmap = bmap_createblack(screen_size.x/RT,screen_size.y/RT,bits);
-	sc_view_dofVBlur->size_x = screen_size.x/RT;
-	sc_view_dofVBlur->size_y = screen_size.y/RT;
-	sc_view_dofVBlur->bmap = bmap_createblack(screen_size.x/RT,screen_size.y/RT,bits);
+	mtl_dofDownsample.effect = "dofDownsample.fx";
+	mtl_dof->skill4 = floatv(RT);
+	mtl_dofDownsample->skill1 = floatv(RT);
+	view_dofDownsample->size_x = screen_size.x/RT;
+	view_dofDownsample->size_y = screen_size.y/RT;
+	view_dofDownsample->bmap = bmap_createblack(screen_size.x/RT,screen_size.y/RT,bits);
+	view_dofHBlur->size_x = screen_size.x/RT;
+	view_dofHBlur->size_y = screen_size.y/RT;
+	view_dofHBlur->bmap = bmap_createblack(screen_size.x/RT,screen_size.y/RT,bits);
+	view_dofVBlur->size_x = screen_size.x/RT;
+	view_dofVBlur->size_y = screen_size.y/RT;
+	view_dofVBlur->bmap = bmap_createblack(screen_size.x/RT,screen_size.y/RT,bits);
 	
 	#ifdef __HDR
 		if(render_hdr_get_queued())
 		{
-			(RenderState_get_singleton())->sc_bmap_dof = bmap_createblack(screen_size.x, screen_size.y,bits);
-			sc_view_dof->bmap = (RenderState_get_singleton())->sc_bmap_dof;
+			(RenderState_get_singleton())->bmap_dof = bmap_createblack(screen_size.x, screen_size.y,bits);
+			view_dof->bmap = (RenderState_get_singleton())->bmap_dof;
 		}
 	#endif
 	
-	sc_mtl_dofDownsample->skin1 = (RenderState_get_singleton())->sc_map_depth;
-	sc_mtl_dof->skin1 = (RenderState_get_singleton())->sc_map_scene;
-	sc_mtl_dof->skin2 = (RenderState_get_singleton())->sc_map_depth;
-	sc_mtl_dofHBlur->skill1 = floatv((render_dof_get_singleton())->blurness);
-	sc_mtl_dofVBlur->skill1 = floatv((render_dof_get_singleton())->blurness);
+	mtl_dofDownsample->skin1 = (RenderState_get_singleton())->map_depth;
+	mtl_dof->skin1 = (RenderState_get_singleton())->map_scene;
+	mtl_dof->skin2 = (RenderState_get_singleton())->map_depth;
+	mtl_dofHBlur->skill1 = floatv((render_dof_get_singleton())->blurness);
+	mtl_dofVBlur->skill1 = floatv((render_dof_get_singleton())->blurness);
 }

@@ -61,26 +61,26 @@ void render_hdr();
 
 __static void __render_hdr_initialize();
 
-MATERIAL *sc_mtl_hdrDownsample   = { effect = "sc_hdrDownsample.fx"; }
-MATERIAL *sc_mtl_hdrHighpass     = { effect = "sc_hdrHighpass.fx"; }
-MATERIAL *sc_mtl_hdrBlur         = { effect = "sc_hdrBlur.fx"; }
-MATERIAL *sc_mtl_hdrHBlur        = { effect = "sc_hdrHBlur.fx"; }
-MATERIAL *sc_mtl_hdrVBlur        = { effect = "sc_hdrVBlur.fx";	}
-MATERIAL *sc_mtl_hdr             = { effect = "sc_hdr.fx"; }
-MATERIAL *sc_mtl_hdrGamma        = { effect = "sc_hdrGamma.fx"; }
-MATERIAL *sc_mtl_hdrGamma2       = { effect = "sc_hdrGamma2.fx"; }
-MATERIAL *sc_mtl_hdrGamma3       = { effect = "sc_hdrGamma3.fx"; }
+MATERIAL *mtl_hdrDownsample   = { effect = "hdrDownsample.fx"; }
+MATERIAL *mtl_hdrHighpass     = { effect = "hdrHighpass.fx"; }
+MATERIAL *mtl_hdrBlur         = { effect = "hdrBlur.fx"; }
+MATERIAL *mtl_hdrHBlur        = { effect = "hdrHBlur.fx"; }
+MATERIAL *mtl_hdrVBlur        = { effect = "hdrVBlur.fx";	}
+MATERIAL *mtl_hdr             = { effect = "hdr.fx"; }
+MATERIAL *mtl_hdrGamma        = { effect = "hdrGamma.fx"; }
+MATERIAL *mtl_hdrGamma2       = { effect = "hdrGamma2.fx"; }
+MATERIAL *mtl_hdrGamma3       = { effect = "hdrGamma3.fx"; }
 
-VIEW *sc_view_hdrDownsample  = { material = sc_mtl_hdrDownsample; flags = PROCESS_TARGET; }
-VIEW *sc_view_hdrHighpass    = { material = sc_mtl_hdrHighpass; flags = PROCESS_TARGET; }
-VIEW *sc_view_hdrBlur        = { material = sc_mtl_hdrBlur; flags = PROCESS_TARGET; }
-VIEW *sc_view_hdrHBlur       = { material = sc_mtl_hdrHBlur; flags = PROCESS_TARGET; }
-VIEW *sc_view_hdrVBlur       = { material = sc_mtl_hdrVBlur; flags = PROCESS_TARGET; }
-VIEW *sc_view_hdr            = { material = sc_mtl_hdr; flags = PROCESS_TARGET; }
-VIEW *sc_view_hdrGamma       = { material = sc_mtl_hdrGamma; flags = PROCESS_TARGET; layer = -10; bmap="#64x64x32"; }
-VIEW *sc_view_hdrGamma2      = { material = sc_mtl_hdrGamma2; flags = PROCESS_TARGET;size_x = 16; size_y = 16; bmap="#16x16x32"; }
-VIEW *sc_view_hdrGamma3      = { material = sc_mtl_hdrGamma2; flags = PROCESS_TARGET;size_x = 4; size_y = 4; bmap="#4x4x32"; }
-VIEW *sc_view_hdrGamma4      = { material = sc_mtl_hdrGamma3; flags = PROCESS_TARGET;size_x = 1; size_y = 1; }
+VIEW *view_hdrDownsample  = { material = mtl_hdrDownsample; flags = PROCESS_TARGET; }
+VIEW *view_hdrHighpass    = { material = mtl_hdrHighpass; flags = PROCESS_TARGET; }
+VIEW *view_hdrBlur        = { material = mtl_hdrBlur; flags = PROCESS_TARGET; }
+VIEW *view_hdrHBlur       = { material = mtl_hdrHBlur; flags = PROCESS_TARGET; }
+VIEW *view_hdrVBlur       = { material = mtl_hdrVBlur; flags = PROCESS_TARGET; }
+VIEW *view_hdr            = { material = mtl_hdr; flags = PROCESS_TARGET; }
+VIEW *view_hdrGamma       = { material = mtl_hdrGamma; flags = PROCESS_TARGET; layer = -10; bmap="#64x64x32"; }
+VIEW *view_hdrGamma2      = { material = mtl_hdrGamma2; flags = PROCESS_TARGET;size_x = 16; size_y = 16; bmap="#16x16x32"; }
+VIEW *view_hdrGamma3      = { material = mtl_hdrGamma2; flags = PROCESS_TARGET;size_x = 4; size_y = 4; bmap="#4x4x32"; }
+VIEW *view_hdrGamma4      = { material = mtl_hdrGamma3; flags = PROCESS_TARGET;size_x = 1; size_y = 1; }
 
 #include "render_hdr.c"
 #endif /* render_hdr.h */

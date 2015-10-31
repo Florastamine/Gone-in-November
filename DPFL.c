@@ -24,27 +24,37 @@
 #include "file.h"
 
 #include "render.h"
-#include "render_hdr.h"
-#include "render_dof.h"
+//#include "render_hdr.h"
+//#include "render_dof.h"
 #include "render_refract.h"
 #include "render_reflect.h"
+#include "render_water.h"
 #include "render_utils.h"
 
 #include "common.h"
 
-#define __RENDER_DOF__
+//#define __RENDER_DOF__
 //#define __RENDER_HDR__
+
+void water()
+{
+	render_water(my);
+}
 
 int main( int argc, char **argl )
 {
 	while( !ready() ) wait(1.0);
 	
+	warn_level = 6.0;
+	
 	window_size_set(1280, 720);
 	
-	level_load("scene/kathetrale02.wmb");
+	level_load("scene/scene.wmb");
 	
 	render_new();
-	render_setup_rt();
+	//render_setup_rt();
+	
+	render_water_new();
 	
 	render_refract_new();
 	render_refract_set_queued(true);
@@ -66,8 +76,6 @@ int main( int argc, char **argl )
 	#endif
 	
 	render_queue_start();
-	render_refract();
-	render_reflect();
 	
 	return 0;
 }

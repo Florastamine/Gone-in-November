@@ -31,10 +31,10 @@ void render_queue_start()
 	#endif
 	
 	#ifdef    __REFLECT
-	    if( render_reflect_is_queued() ) render_reflect();
+	    if( render_reflect_get_queued() ) render_reflect();
 	#endif
 	
 	#ifdef    __REFRACT
-	    if( render_refract_is_queued() ) render_refract();
+	    if( render_refract_get_queued() ) render_refract();
 	#endif
 } 

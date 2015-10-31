@@ -37,12 +37,12 @@ void render_new()
 {
 	RenderState_singleton = (RenderState *) malloc(sizeof(RenderState) + 4 * sizeof(BMAP) + sizeof(VIEW));
 	
-	RenderState_singleton->sc_map_scene = NULL;
-	RenderState_singleton->sc_map_depth = NULL;
-	RenderState_singleton->sc_bmap_dof = NULL;
-	RenderState_singleton->sc_bmap_gamma = bmap_create("#1x1x32");
+	RenderState_singleton->map_scene = NULL;
+	RenderState_singleton->map_depth = NULL;
+	RenderState_singleton->bmap_dof = NULL;
+	RenderState_singleton->bmap_gamma = bmap_create("#1x1x32");
 	
-	RenderState_singleton->sc_view_last = NULL;
+	RenderState_singleton->view_last = NULL;
 	
 	RenderState_singleton->ready = true;
 }
@@ -151,8 +151,8 @@ void render_attribute_setup( ENTITY *object, const int mode, int value )
  */
 void render_setup_rt()
 {
-	(RenderState_get_singleton())->sc_map_scene = bmap_createblack(screen_size.x, screen_size.y,32);
-	camera->bmap = (RenderState_get_singleton())->sc_map_scene;
+	(RenderState_get_singleton())->map_scene = bmap_createblack(screen_size.x, screen_size.y,32);
+	camera->bmap = (RenderState_get_singleton())->map_scene;
 	(RenderState_get_singleton())->rt = true;
 }
 
@@ -186,25 +186,25 @@ BOOL render_is_rt()
 void shader_pp_remove( MATERIAL *material, VIEW *view, VIEW *stage_view )
 {
 	// Find the view with the material selected or "stage_view" and the previous view
-	RenderState_singleton->sc_view_last = view;
+	RenderState_singleton->view_last = view;
 	
-	while(RenderState_singleton->sc_view_last->material != material && ((stage_view == NULL)+(RenderState_singleton->sc_view_last->stage != NULL)) != NULL)
+	while(RenderState_singleton->view_last->material != material && ((stage_view == NULL)+(RenderState_singleton->view_last->stage != NULL)) != NULL)
 	{
-		view = RenderState_singleton->sc_view_last;
-		RenderState_singleton->sc_view_last = RenderState_singleton->sc_view_last->stage;
+		view = RenderState_singleton->view_last;
+		RenderState_singleton->view_last = RenderState_singleton->view_last->stage;
 		
 		// Stage doesn't exist?
-		if(RenderState_singleton->sc_view_last == NULL) return;
+		if(RenderState_singleton->view_last == NULL) return;
 	}
 	
 	//pass the views stage to the previous view
-	view->stage = RenderState_singleton->sc_view_last->stage;
+	view->stage = RenderState_singleton->view_last->stage;
 	
 	//reset the views bmap to null
-	RenderState_singleton->sc_view_last->bmap = NULL;
+	RenderState_singleton->view_last->bmap = NULL;
 	
 	// Remove it.
-	ptr_remove(RenderState_singleton->sc_view_last);
+	ptr_remove(RenderState_singleton->view_last);
 }
 
 /*
@@ -216,25 +216,25 @@ void shader_pp_remove( MATERIAL *material, VIEW *view, VIEW *stage_view )
 VIEW *shader_pp_add( MATERIAL *material, VIEW *view, BMAP *bmap )
 {
 	// Find the last view of the effect chain and store its pointer
-	RenderState_singleton->sc_view_last = view;
-	while(RenderState_singleton->sc_view_last->stage != NULL)
+	RenderState_singleton->view_last = view;
+	while(RenderState_singleton->view_last->stage != NULL)
 	{
-		RenderState_singleton->sc_view_last = RenderState_singleton->sc_view_last->stage;
+		RenderState_singleton->view_last = RenderState_singleton->view_last->stage;
 	}
 	
 	// Creates a new view
-	RenderState_singleton->sc_view_last->stage = view_create(0);
-	set(RenderState_singleton->sc_view_last->stage, PROCESS_TARGET);
+	RenderState_singleton->view_last->stage = view_create(0);
+	set(RenderState_singleton->view_last->stage, PROCESS_TARGET);
 	
 	// Puts the effect in the newly created view
-	RenderState_singleton->sc_view_last = RenderState_singleton->sc_view_last->stage;
-	RenderState_singleton->sc_view_last->material = material;
+	RenderState_singleton->view_last = RenderState_singleton->view_last->stage;
+	RenderState_singleton->view_last->material = material;
 	
 	if(bmap)
 	{
-		RenderState_singleton->sc_view_last->bmap = bmap;
+		RenderState_singleton->view_last->bmap = bmap;
 	}
 	
-	return RenderState_singleton->sc_view_last;
+	return RenderState_singleton->view_last;
 }
 

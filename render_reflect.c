@@ -95,11 +95,11 @@ void render_reflect_set_queued( BOOL state )
 }
 
 /*
- * BOOL render_reflect_is_queued()
+ * BOOL render_reflect_get_queued()
  * 
  * Returns true if reflection is queried for rendering.
  */
-BOOL render_reflect_is_queued()
+BOOL render_reflect_get_queued()
 {
 	return ReflectState_singleton->queued;
 }
