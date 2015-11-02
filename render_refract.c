@@ -64,7 +64,9 @@ void render_refract()
 {	
 	float rt = RefractState_singleton->rt_factor;
 	
-	view_refract->bmap = bmap_createblack( screen_size.x / rt, screen_size.y / rt, 32 );
+	RefractState_singleton->map_refract = bmap_createblack( screen_size.x / rt, screen_size.y / rt, 32 );
+	
+	view_refract->bmap = RefractState_singleton->map_refract;
 	view_refract->clip_near = 1.0;
 	view_refract->flags |= (SHOW | UNTOUCHABLE);
 	view_refract->flags &= ~(AUDIBLE);
