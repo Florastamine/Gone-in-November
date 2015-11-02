@@ -131,7 +131,7 @@ __static void __render_water_loop( ENTITY *entity )
 void render_water( ENTITY *entity )
 {
 	#ifdef    __DOF
-	    mtl_water->skin3 = mtl_depth;
+	    mtl_water->skin3 = (RenderState_get_singleton())->map_depth;
 	#endif
 	
 	render_attribute_setup(entity, ATTRIBUTE_DEPTH, 2);

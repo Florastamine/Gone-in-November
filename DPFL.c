@@ -25,7 +25,7 @@
 
 #include "render.h"
 //#include "render_hdr.h"
-//#include "render_dof.h"
+#include "render_dof.h"
 #include "render_refract.h"
 #include "render_reflect.h"
 #include "render_water.h"
@@ -33,7 +33,7 @@
 
 #include "common.h"
 
-//#define __RENDER_DOF__
+#define __RENDER_DOF__
 //#define __RENDER_HDR__
 
 void water()
@@ -52,7 +52,7 @@ int main( int argc, char **argl )
 	level_load("scene/scene.wmb");
 	
 	render_new();
-	//render_setup_rt();
+	render_setup_rt();
 	
 	render_water_new();
 	

@@ -1,6 +1,6 @@
 - Bug-fixes
     [X] Fix a *critical* bug in <render_refract> which causes <render_water> to crash stright to desktop.
-    [ ] Fix a *critical* bug in <render_dof> which causes <render_water> to emit a DirectX-related error.
+    [X] Fix a *critical* bug in <render_dof> which causes <render_water> to emit a DirectX-related error.
 
 
 - Finish the following headers:
