@@ -41,14 +41,14 @@ __static void __render_dof_depth_setup()
 	
 	proc_mode = PROC_LATE;
 	
-	view_depth.clip_far = (render_dof_get_singleton())->scene_max_depth;
-	view_depth.clip_near = 0;
+	view_depth->clip_far = (render_dof_get_singleton())->scene_max_depth;
+	view_depth->clip_near = 0;
 	
 	while((RenderState_get_singleton())->ready)
 	{
-		vec_set(view_depth.x, camera.x);
-		vec_set(view_depth.pan, camera.pan);
-		view_depth.arc = camera.arc;
+		vec_set( &view_depth->x, &camera->x );
+		vec_set( &view_depth->pan, &camera->pan );
+		view_depth->arc = camera->arc;
 		wait(1);
 	}
 }
@@ -75,7 +75,7 @@ void render_dof_depth_set( float focus_speed, float max_depth, float b0n )
 	{
 		vec_set(&cam_trace, vector(screen_size.x / 2, screen_size.y / 2, __focus_temp[1]));
 		vec_for_screen(&cam_trace, camera);
-		hit_dist = c_trace( &camera->x, cam_trace.x, USE_POLYGON | IGNORE_ME | IGNORE_PASSABLE );
+		hit_dist = c_trace( &camera->x, &cam_trace, USE_POLYGON | IGNORE_ME | IGNORE_PASSABLE );
 		
 		if(hit_dist > 0)
 		{
@@ -193,7 +193,7 @@ __static void __render_dof_initialize()
 	__static float RT = (render_dof_get_singleton())->rt_factor;
 	__static float bits = (render_dof_get_singleton())->bit_depth;
 	
-	mtl_dofDownsample.effect = "dofDownsample.fx";
+	mtl_dofDownsample->effect = "dofDownsample.fx";
 	mtl_dof->skill4 = floatv(RT);
 	mtl_dofDownsample->skill1 = floatv(RT);
 	view_dofDownsample->size_x = screen_size.x/RT;

@@ -251,6 +251,7 @@ __namespace(object) {
 	void object_bound_get( __In __Out Object *object, __In __Out Vector3 *min, __In __Out Vector3 *max );
 	void object_scale_set( __In Object *object, __In float scale );
 	void object_place( __In __Out Object *object, __In float modifier );
+	Object *object_sky_create( __In const String *file, __In const int layer );
 }
 
 #include "utilities.c"

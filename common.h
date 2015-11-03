@@ -17,4 +17,12 @@
 #ifndef    _COMMON_H_
 #define    _COMMON_H_
 
+#ifndef    PRAGMA_POINTER
+    #define    PRAGMA_POINTER
+#endif
+
+#ifndef    PRAGMA_ZERO
+    #define    PRAGMA_ZERO
+#endif
+
 #endif /* common.h */

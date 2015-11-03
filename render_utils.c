@@ -18,7 +18,7 @@
 /*
  * void render_queue_start()
  * 
- * Processes items marked as queued for rendering.
+ * Processes items marked as queued for rendering in the *exact* order as described below.
  */
 void render_queue_start()
 {
@@ -36,5 +36,9 @@ void render_queue_start()
 	
 	#ifdef    __REFRACT
 	    if( render_refract_get_queued() ) render_refract();
+	#endif
+	
+	#ifdef    __SHADOW
+	    if( render_shadow_get_queued() ) render_shadow();
 	#endif
 } 

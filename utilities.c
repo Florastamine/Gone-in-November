@@ -43,6 +43,24 @@ void __assert( const char *message )
 }
 
 /*
+ * Object *object_sky_create( const String *file, const int layer )
+ * 
+ * Quick-creates a sky cube without an ugly global struct.
+ * (though you can receive the returned object for later modification).
+ */
+Object *object_sky_create( const String *file, const int layer )
+{
+	Object *sky = NULL;
+	
+	if(file)
+	{
+		sky = ent_createlayer( file, SKY | CUBE | SHOW, layer );
+	}
+	
+	return sky; // Return the sky...
+}
+
+/*
  * void swap( int *a, int *b )
  *
  * Swaps two integers. For general-purpose swapping, please
@@ -152,7 +170,7 @@ void reverse(int *array, unsigned int count)
 	int i = 0, j = 0;
 	while(i < count / 2)
 	{
-		swap( *(array + i), *(array + count - 1 - i) );
+		swap( array + i, array + count - 1 - i );
 		i++;
 		
 		wait(1.0);

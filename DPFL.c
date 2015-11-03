@@ -15,6 +15,7 @@
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
 #include <acknex.h>
+#include <d3d9.h>
 #include <stdio.h>
 #include <default.c>
 
@@ -24,7 +25,8 @@
 #include "file.h"
 
 #include "render.h"
-//#include "render_hdr.h"
+#include "render_shadow.h"
+#include "render_hdr.h"
 #include "render_dof.h"
 #include "render_refract.h"
 #include "render_reflect.h"
@@ -33,8 +35,11 @@
 
 #include "common.h"
 
+#define __RENDER_REFRACT__
+#define __RENDER_REFLECT__
+#define __RENDER_SHADOW_
 #define __RENDER_DOF__
-//#define __RENDER_HDR__
+#define __RENDER_HDR__
 
 void water()
 {
@@ -45,22 +50,28 @@ int main( int argc, char **argl )
 {
 	while( !ready() ) wait(1.0);
 	
-	warn_level = 6.0;
+	warn_level = 6;
 	
 	window_size_set(1280, 720);
 	
 	level_load("scene/scene.wmb");
+	
+	object_sky_create("sample+6.tga", 1);
 	
 	render_new();
 	render_setup_rt();
 	
 	render_water_new();
 	
-	render_refract_new();
-	render_refract_set_queued(true);
+	#ifdef    __RENDER_REFRACT__
+	    render_refract_new();
+	    render_refract_set_queued(true);
+	#endif
 	
-	render_reflect_new();
-	render_reflect_set_queued(true);
+	#ifdef    __RENDER_REFLECT__
+	    render_reflect_new();
+	    render_reflect_set_queued(true);
+	#endif
 	
 	#ifdef    __RENDER_DOF__
 	    render_dof_new();
@@ -73,6 +84,16 @@ int main( int argc, char **argl )
 	    render_hdr_new();
 	    
 	    render_hdr_set_queued(true);
+	#endif
+	
+	#ifdef    __RENDER_SHADOW_
+	    render_shadow_new();
+	    
+	    mat_model->effect = "obj_doShadow.fx";
+	    mat_flat->effect = "level_doShadow.fx";
+	    mat_shaded->effect = "level_doShadow.fx";
+	    
+	    render_shadow_set_queued(true);
 	#endif
 	
 	render_queue_start();
