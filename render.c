@@ -71,7 +71,6 @@ Attribute *attribute_new()
 	
 	attribute->luminance = vector(0.0, 0.0, 0.0);
 	attribute->refraction = vector(1.0, 1.0, 1.0);
-	attribute->team = vector(1.0, 1.0, 1.0);
 	attribute->depth = 0;
 	attribute->volpart = 0;
 	attribute->texmov = 0;
@@ -106,10 +105,6 @@ void render_attribute_setup( ENTITY *object, const int mode, int value )
 	{
 		case ATTRIBUTE_DEPTH:
 		    attribute->depth = value;
-		    break;
-		
-		case ATTRIBUTE_TEAM:
-		    vec_set(attribute->team, vec_fill(nullvector, value / 255));
 		    break;
 		
 		case ATTRIBUTE_LUMINANCE:

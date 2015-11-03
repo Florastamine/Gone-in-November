@@ -44,6 +44,11 @@
 *.txt
 *.log
 *.jpg
+./status/_sync.bat
+./status/exclusion.excl
+./status/log.log
+
+./progress_temp.txt
 
 # WED
 *.pcx
@@ -60,3 +65,6 @@
 # MED
 *.mdl
 *.hmp
+
+#
+!*.html

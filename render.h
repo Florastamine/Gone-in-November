@@ -28,11 +28,10 @@
 #define __namespace(namespace)             {}
 
 #define ATTRIBUTE_DEPTH                    1
-#define ATTRIBUTE_TEAM                     2
-#define ATTRIBUTE_LUMINANCE                3
-#define ATTRIBUTE_VOLPART                  4
-#define ATTRIBUTE_TEXMOV                   5
-#define ATTRIBUTE_REFRACTION_COL           6
+#define ATTRIBUTE_LUMINANCE                2
+#define ATTRIBUTE_VOLPART                  3
+#define ATTRIBUTE_TEXMOV                   4
+#define ATTRIBUTE_REFRACTION_COL           5
 
 __namespace(render) {
 	typedef struct {
@@ -42,7 +41,6 @@ __namespace(render) {
 		
 		VECTOR *luminance;
 		VECTOR *refraction;
-		VECTOR *team;
 	} Attribute;
 	
 	typedef struct {	
