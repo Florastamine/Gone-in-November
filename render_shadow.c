@@ -87,7 +87,7 @@ void render_shadow_set_queued( BOOL state )
  */
 BOOL render_shadow_get_queued()
 {
-	return ShadowState_singleton;
+	return ShadowState_singleton->queued;
 }
 
 /*

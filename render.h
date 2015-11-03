@@ -17,6 +17,10 @@
 #ifndef    _RENDER_H_
 #define    _RENDER_H_
 
+#ifndef    d3d9_h
+#include   <d3d9.h>
+#endif
+
 #define __In 
 #define __Out 
 #define __static 

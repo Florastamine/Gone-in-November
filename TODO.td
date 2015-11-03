@@ -8,7 +8,7 @@
 - Finish the following headers:
     [X] <render_water>
     [X] <render_shadows>
-    [ ] <render_lights>
+    [X] <render_lights> (<render_lrays>)
     [ ] <render_surfaces>
     [ ] <crypto>
     [ ] <serializer>
@@ -17,7 +17,7 @@
 - Finish bug-fixing and testing throughoutly the following headers:
     [ ] <render_water>
     [ ] <render_shadows>
-    [ ] <render_lights>
+    [ ] <render_lights> (<render_lrays>)
     [ ] <render_surfaces>
     [ ] <crypto>
     [ ] <serializer>

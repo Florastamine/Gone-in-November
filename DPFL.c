@@ -25,6 +25,7 @@
 #include "file.h"
 
 #include "render.h"
+#include "render_lrays.h"
 #include "render_shadow.h"
 #include "render_hdr.h"
 #include "render_dof.h"
@@ -35,6 +36,7 @@
 
 #include "common.h"
 
+#define __RENDER_GODRAYS__
 #define __RENDER_REFRACT__
 #define __RENDER_REFLECT__
 #define __RENDER_SHADOW_
@@ -94,6 +96,13 @@ int main( int argc, char **argl )
 	    mat_shaded->effect = "level_doShadow.fx";
 	    
 	    render_shadow_set_queued(true);
+	#endif
+	
+	#ifdef    __RENDER_GODRAYS__
+	    render_light_rays_new();
+	    if( !render_light_rays_get_debug() ) render_light_rays_set_debug();
+	    
+	    render_light_rays_set_queued(true);
 	#endif
 	
 	render_queue_start();
