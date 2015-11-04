@@ -2,26 +2,26 @@
 "All-in-One" Shader by Wolfgang "BoH_Havoc" Reichardt
 
 Entity Textures:
-	Skin1 = Colormap 
-	Skin2 = Effectmask
-	Skin3 = Normalmap (RGB) + Luminancemask (A)
-	Skin4 = Shadowmap (uses 2nd UV-Map)
-	
-	Effectmask.r = Specular Intensity
-	Effectmask.g = Environmentmapping Intensity
-	Effectmask.b = Velvety Intensity
-	Effectmask.a = TeamColor Alpha
-	
+Skin1 = Colormap 
+Skin2 = Effectmask
+Skin3 = Normalmap (RGB) + Luminancemask (A)
+Skin4 = Shadowmap (uses 2nd UV-Map)
+
+Effectmask.r = Specular Intensity
+Effectmask.g = Environmentmapping Intensity
+Effectmask.b = Velvety Intensity
+Effectmask.a = TeamColor Alpha
+
 Material Textures:
-	Skin1 = Environment Map
-	
+Skin1 = Environment Map
+
 Usage:
-	Uncomment/Comment the #defines to add/remove an effect.
-	vecSkill1.x sets the diffuse shadow alpha (mtl.skill1)
-	vecSkill1.y sets the specular power (mtl.skill2)
-	vecSkill1.y sets the velvety power (mtl.skill3)
-	vecSkill5.xyz sets the teamcolor (mtl.skill5, mtl.skill6, mtl.skill7)
-	vecSkill9.xyz sets the luminance color (mtl.skill9, mtl.skill10, mtl.skill11)
+Uncomment/Comment the #defines to add/remove an effect.
+vecSkill1.x sets the diffuse shadow alpha (mtl.skill1)
+vecSkill1.y sets the specular power (mtl.skill2)
+vecSkill1.y sets the velvety power (mtl.skill3)
+vecSkill5.xyz sets the teamcolor (mtl.skill5, mtl.skill6, mtl.skill7)
+vecSkill9.xyz sets the luminance color (mtl.skill9, mtl.skill10, mtl.skill11)
 
 ******************************************************************************************************/
 
@@ -83,8 +83,8 @@ texture mtlSkin1; // Environment Map
 // Color map sampler
 sampler colorSampler = sampler_state 
 { 
-   Texture = <entSkin1>; 
-   MinFilter = Linear;
+	Texture = <entSkin1>; 
+	MinFilter = Linear;
 	MagFilter = Linear;
 	MipFilter = Linear;
 };
@@ -92,8 +92,8 @@ sampler colorSampler = sampler_state
 // Color map sampler
 sampler lvlShadowSampler = sampler_state 
 { 
-   Texture = <entSkin2>; 
-   MinFilter = Linear;
+	Texture = <entSkin2>; 
+	MinFilter = Linear;
 	MagFilter = Linear;
 	MipFilter = Linear;
 };
@@ -129,14 +129,14 @@ sampler ShadowAlphaSampler = sampler_state
 // calculate the light attenuation factor
 float DoLightFactor(float4 Light,float3 Pos)
 {
-   float fac = 0.f;
-   if (Light.w > 0.f) {    
-      float LD = length(Light.xyz-Pos)/Light.w;
-      if (LD < 1.f)
-         fac = saturate(1.f - LD);
+	float fac = 0.f;
+	if (Light.w > 0.f) {    
+		float LD = length(Light.xyz-Pos)/Light.w;
+		if (LD < 1.f)
+		fac = saturate(1.f - LD);
 
-   }
-   return fac; // get the distance factor
+	}
+	return fac; // get the distance factor
 }
 
 // calculate the light attenuation factor on the front side
@@ -146,9 +146,9 @@ float DoLightFactor(float4 Light,float3 P,float3 N)
 	float NdotL = dot(N,normalize(D));   // angle between surface and light ray
 	
 	if (NdotL >= 0.f) 
-	   return saturate(NdotL*8)*DoLightFactor(Light,P);
+	return saturate(NdotL*8)*DoLightFactor(Light,P);
 	else
-	   return 0.f;
+	return 0.f;
 }
 
 float DoLightFactorN(float4 Light,float3 P,float3 N)
@@ -157,9 +157,9 @@ float DoLightFactorN(float4 Light,float3 P,float3 N)
 	float NdotL = dot(N,normalize(D));   // angle between surface and light ray
 	
 	if (NdotL >= 0.f) 
-	   return 2 * NdotL * DoLightFactor(Light,P);
+	return 2 * NdotL * DoLightFactor(Light,P);
 	else
-	   return 0.f;
+	return 0.f;
 }
 
 float4 DoPointLight(float3 P, float3 N, float4 Light, float4 LightColor)
@@ -176,18 +176,18 @@ float4 DoLight(float3 P, float3 N, int i)
 
 float doVSM(float2 depthmap, float lightDepth)
 {
-     	//depthmap.y = (depthmap.x * depthmap.x);
-     	float lit_factor = (lightDepth <= depthmap.x);
-    	
-    	// Variance shadow mapping
-    	float E_x2 = depthmap.y;
-    	float Ex_2 = depthmap.x * depthmap.x;
-    	float variance = min(max(E_x2 - Ex_2, 0.0) + light_vsm_epsilon, 1.0);
-    	float m_d = (depthmap.x - lightDepth);
-    	float p = variance / (variance + m_d * m_d);
-    	
-    	// Adjust the light color based on the shadow attenuation
-    	return 1-max(lit_factor, p);
+	//depthmap.y = (depthmap.x * depthmap.x);
+	float lit_factor = (lightDepth <= depthmap.x);
+	
+	// Variance shadow mapping
+	float E_x2 = depthmap.y;
+	float Ex_2 = depthmap.x * depthmap.x;
+	float variance = min(max(E_x2 - Ex_2, 0.0) + light_vsm_epsilon, 1.0);
+	float m_d = (depthmap.x - lightDepth);
+	float p = variance / (variance + m_d * m_d);
+	
+	// Adjust the light color based on the shadow attenuation
+	return 1-max(lit_factor, p);
 }
 ///////////////////////END OF HELPER FUNCTIONS///////////////////////////////////////
 
@@ -196,39 +196,39 @@ float doVSM(float2 depthmap, float lightDepth)
 struct outVS // Output to the pixelshader fragment
 {
 	float4 Color: COLOR0; 
-   float4 Pos: POSITION; 
-   float2 Tex: TEXCOORD0; 
-   float2 ShadowTex: TEXCOORD5; 
-   float4 Light: TEXCOORD1;
-   float3 ViewDir: TEXCOORD2;
-   float3 WorldNormal	: TEXCOORD3;
+	float4 Pos: POSITION; 
+	float2 Tex: TEXCOORD0; 
+	float2 ShadowTex: TEXCOORD5; 
+	float4 Light: TEXCOORD1;
+	float3 ViewDir: TEXCOORD2;
+	float3 WorldNormal	: TEXCOORD3;
 	float4 Shadow	: TEXCOORD4;
-   float Fog : FOG;
+	float Fog : FOG;
 };
 
 // Vertex Shader
 outVS DiffuseVS( 
-   float4 InPos: POSITION, 
-   float3 InNormal: NORMAL, 
-   float2 InTex: TEXCOORD0,
-   float2 InShadow: TEXCOORD1,
-   float3 InTangent : TEXCOORD0
+float4 InPos: POSITION, 
+float3 InNormal: NORMAL, 
+float2 InTex: TEXCOORD0,
+float2 InShadow: TEXCOORD1,
+float3 InTangent : TEXCOORD0
 ) 
 { 
 	outVS Out;
 	// Transform the vertex from object space to clip space: 
-   Out.Pos = mul(InPos, matWorldViewProj); 
+	Out.Pos = mul(InPos, matWorldViewProj); 
 	// Pass the texture coordinate to the pixel shader: 
-   Out.Tex.xy = InTex;
-   Out.ShadowTex.xy = InShadow;
-   
-   float3 PosWorld = mul(InPos, matWorld);
-  	
-   //Light
-   Out.Light.xyz = vecLightPos[0] - PosWorld;
-   Out.Light.w = 0;
-   if(vecLightPos[0].w < 100000) Out.Light.w = 1-distance(PosWorld,vecLightPos[0])/vecLightPos[0].w;
-  	//
+	Out.Tex.xy = InTex;
+	Out.ShadowTex.xy = InShadow;
+	
+	float3 PosWorld = mul(InPos, matWorld);
+	
+	//Light
+	Out.Light.xyz = vecLightPos[0] - PosWorld;
+	Out.Light.w = 0;
+	if(vecLightPos[0].w < 100000) Out.Light.w = 1-distance(PosWorld,vecLightPos[0])/vecLightPos[0].w;
+	//
 
 	//Specular Lighting
 	Out.ViewDir = matViewInv[3].xyz - PosWorld;
@@ -250,92 +250,54 @@ outVS DiffuseVS(
 	
 	Out.Color = fAmbient; // Add ambient and sun light
 	for (int i=0; i<8; i++)  // Add 8 dynamic lights
-		Out.Color += DoLight(PosWorld,Out.WorldNormal.xyz,i);
-/*
-	Out.Color =
-	(vecAmbient * vecLight) + 
-	(vecDiffuse * (vecSunColor * dot(Out.WorldNormal.xyz,-vecSunDir))); 
-	(vecSpecular * pow((vecSunColor * dot(Out.WorldNormal.xyz,normalize(Out.ViewDir + Out.Light.xyz))),fPower))+ 
-	(vecEmissive);
-	Out.Color = clamp(Out.Color,0,1);
-*/	
+	Out.Color += DoLight(PosWorld,Out.WorldNormal.xyz,i);
 	
-	
-	//Fog
 	Out.Fog = 1 - (distance(PosWorld, vecViewPos) - vecFog.x) * (vecFog.z);
-   //
-   
-   return Out;
+	//
+	
+	return Out;
 }
 
 
 
 float4 DiffusePS(outVS In): COLOR
 {
-	/*
-	float diff = dot(In.WorldNormal.xyz,-vecSunDir);
-	float4 lighting = 
-	(vecAmbient * vecLight) + 
-	clamp(vecDiffuse * (vecSunColor * diff),0,1) +
-	(vecSpecular * pow((vecSunColor * dot(In.WorldNormal.xyz,normalize(In.ViewDir + In.Light.xyz))),fPower))+ 
-	(vecEmissive);
-	*/
-	//lighting
-	
 	float4 color;
 	float2 ProjectedTexCoords;
-   ProjectedTexCoords[0] = In.Shadow.x/In.Shadow.z/2.0f +0.5f;
-   ProjectedTexCoords[1] = -In.Shadow.y/In.Shadow.z/2.0f +0.5f;
+	ProjectedTexCoords[0] = In.Shadow.x/In.Shadow.z/2.0f +0.5f;
+	ProjectedTexCoords[1] = -In.Shadow.y/In.Shadow.z/2.0f +0.5f;
 
 	float blurStr = matEffect2[1].x;
 	float shadowDepth = tex2D(ShadowMapSampler, ProjectedTexCoords).x;
 	
 	float shadow1 = doVSM(float2(shadowDepth,shadowDepth*shadowDepth),In.Shadow.w);
-   shadow1 = (1-shadow1);
-   
-   shadow1 *=(1-tex2D(ShadowAlphaSampler, ProjectedTexCoords));
-   shadow1 += tex2D(ShadowAlphaSampler, ProjectedTexCoords);
-   //shadow1 *= lighting.y;
-   shadow1 = clamp(shadow1,0,1);
-   
-   float diff = dot(In.WorldNormal.xyz,-vecSunDir)*shadow1;
-   //float4 diff = lit(dot(normalize(In.Light.xyz),normalize(In.WorldNormal.xyz)),dot(normalize(In.ViewDir + In.Light.xyz),normalize(In.WorldNormal.xyz)),fPower)*shadow1;
+	shadow1 = (1-shadow1);
+	
+	shadow1 *=(1-tex2D(ShadowAlphaSampler, ProjectedTexCoords));
+	shadow1 += tex2D(ShadowAlphaSampler, ProjectedTexCoords);
+	//shadow1 *= lighting.y;
+	shadow1 = clamp(shadow1,0,1);
+	
+	float diff = dot(In.WorldNormal.xyz,-vecSunDir)*shadow1;
+
 	float4 lighting = 
 	(vecAmbient * vecLight)*2 + 
 	clamp(vecDiffuse * (vecSunColor * diff),0,1)*2 +
 	(vecSpecular * pow((vecSunColor * dot(In.WorldNormal.xyz,normalize(In.ViewDir + In.Light.xyz))),fPower))+ 
-	//(vecSpecular * (vecSunColor * diff.z))+ 
 	(vecEmissive);
-   
-   /*
-	shadow1 *= clamp(lighting.rgb,0,1);
-   shadow1 = clamp(shadow1,0,1)+(1-lighting.rgb);
-
-	//color.rgb = ((envLight.xyz+((clamp(shadow1,0,1) + ((1-clamp(shadow1,0,1))*0.2))*vecLightColor[0].xyz)) * texCol) + lighting.z*mask.r*shadow1;
-   color.a = tex2D(colorSampler,In.Tex).a;
-	color.rgb = shadow1*lighting.rgb*2*tex2D(colorSampler,In.Tex).xyz;
-	*/
 
 	color.a = tex2D(colorSampler,In.Tex).a;
 	color.rgb = (lighting+In.Color.rgb)*tex2D(colorSampler,In.Tex).rgb*tex2D(lvlShadowSampler,In.ShadowTex).rgb;
-	//color.rgb = tex2D(lvlShadowSampler,In.ShadowTex).rgb;
-	//color.rgb = shadow1;
-	//color.rgb = tex2D(colorSampler,In.ShadowTex);
 	return color;
-	//float4 Color = tex2D(colorSampler,In.Tex);
-	//return Color*In.Color*2;
 }
-
 
 technique t01
 { 
-
-   pass P0 
-   {
+	pass P0 
+	{
 		VertexShader = compile vs_2_0 DiffuseVS();
-     	PixelShader  = compile ps_2_a DiffusePS();
-     	zWriteEnable = true;
+		PixelShader  = compile ps_2_a DiffusePS();
+		zWriteEnable = true;
 		alphaTestEnable = true;
-   }
-
+	}
 }

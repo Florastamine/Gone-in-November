@@ -8,32 +8,32 @@ float4 vecViewPort;
 
 sampler blurredSampler = sampler_state
 {
-   texture = (TargetMap);
-   MinFilter = linear;
-   MagFilter = linear;
-   MipFilter = linear;
-   AddressU = Clamp;
-   AddressV = Clamp;
+	texture = (TargetMap);
+	MinFilter = linear;
+	MagFilter = linear;
+	MipFilter = linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler sceneSampler = sampler_state
 {
-   texture = (mtlSkin1);
-   MinFilter = linear;
-   MagFilter = linear;
-   MipFilter = linear;
-   AddressU = Clamp;
-   AddressV = Clamp;
+	texture = (mtlSkin1);
+	MinFilter = linear;
+	MagFilter = linear;
+	MipFilter = linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler depthSampler = sampler_state
 {
-   texture = (mtlSkin2);
-   MinFilter = linear;
-   MagFilter = linear;
-   MipFilter = linear;
-   AddressU = Clamp;
-   AddressV = Clamp;
+	texture = (mtlSkin2);
+	MinFilter = linear;
+	MagFilter = linear;
+	MipFilter = linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 
@@ -52,10 +52,9 @@ float4 main(float2 tc: TEXCOORD0) : COLOR{
 	return dof;
 }
 
-
 technique DoF {
-pass p1 {
-	VertexShader = null;
-	PixelShader = compile ps_2_0 main();
+	pass p1 {
+		VertexShader = null;
+		PixelShader = compile ps_2_0 main();
 	}
 }

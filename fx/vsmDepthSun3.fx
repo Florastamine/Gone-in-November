@@ -55,10 +55,7 @@ sampler ShadowMapSampler = sampler_state { texture = <xShadowMap> ; magfilter = 
 SMapVertexToPixel ShadowMapVertexShader( float4 inPos : POSITION, float2 InTex:TEXCOORD0)
 {
     SMapVertexToPixel Output = (SMapVertexToPixel)0;
-    
-    //Output.Position = mul(inPos, matWorldViewProj);
-    //Output.Position2D = Output.Position;
-    
+
     //Parallel Projection
     Output.Position = mul(inPos, mul(matWorldView,matEffect1));
     Output.Position2D = mul(inPos, matWorldView);
@@ -86,25 +83,11 @@ SMapPixelToFrame ShadowMapPixelShader(SMapVertexToPixel PSIn)
 
 	Output.Color = 0;
     Output.Color.x = PSIn.Position2D.z/matEffect2[0].w;
-    //if(vecSkill1.z != 0) clip(1);//Output.Color.x = 255;
-    //Output.Color.y = Output.Color.x*Output.Color.x;
-  
-    Output.Color.w = tex2D(colorSampler,PSIn.Tex).a;
-    /*
-    float2 depth;
-    depth.x = length(PSIn.Position2D.xyz) / xMaxDepth;
-    depth.y = depth.x * depth.x;
     
-    Output.Color.x = depth.x;
-    Output.Color.y = depth.y;
-    Output.Color.z = 0;
-    */
-
+    Output.Color.w = tex2D(colorSampler,PSIn.Tex).a;
+  
     return Output;
 }
-
-//------- Techniques --------
-
 
 technique ShadowMap
 {

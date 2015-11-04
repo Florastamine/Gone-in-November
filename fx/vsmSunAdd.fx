@@ -7,8 +7,6 @@ sampler2D secondScene = sampler_state { texture = <mtlSkin1>;};
 float4 combinePS (float2 Tex : TEXCOORD0) : COLOR
 {
 	float4 Color = tex2D(firstScene,Tex)*tex2D(secondScene,Tex);
-	//Color.rgb = min(Color.rgb,tex2D(secondScene,Tex).rgb*Color.rgb);
-	//Color = tex2D(secondScene,Tex);
 	return Color;
 }
 

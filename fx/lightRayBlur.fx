@@ -10,64 +10,27 @@ sampler currentScene = sampler_state
 	MagFilter = Linear;
 	MipFilter = Linear;
 	AddressU = Clamp;
-   AddressV = Clamp;
+	AddressV = Clamp;
 };
 
 static const int g_c_PixelOffsetSize = 13;
 
 float2 PixelOffset_fix = {0.003, 0.003};
 
-/*
 float2 PixelOffsets[g_c_PixelOffsetSize] = {
-   0.0, 0.0,
-   0.0, 1.0,
-   1.0, 0.0,
-   1.0, 1.0,
-   0.0,-1.0,
-  -1.0, 0.0,
-  -1.0,-1.0,
-  -1.0, 1.0,
-   1.0,-1.0,
-   0.5, 0.5,
-   0.5,-0.5,
-  -0.5,-0.5,
-  -0.5, 0.5,
-
-};
-
-
-static const float BlurWeights[g_c_PixelOffsetSize] =
-{
-	0.002216,
-	0.008764,
-	0.026995,
-	0.064759,
-	0.120985,
-	0.176033,
-	0.199471,
-	0.176033,
-	0.120985,
-	0.064759,
-	0.026995,
-	0.008764,
-	0.002216,
-};
-*/
-
-float2 PixelOffsets[g_c_PixelOffsetSize] = {
-   0.0, 0.0,
-   0.0, 1.5,
-   1.5, 0.0,
-   1.0, 1.0,
-   0.0,-1.5,
-  -1.5, 0.0,
-  -1.0,-1.0,
-  -1.0, 1.0,
-   1.0,-1.0,
-   0.5, 0.5,
-   0.5,-0.5,
-  -0.5,-0.5,
-  -0.5, 0.5,
+	0.0, 0.0,
+	0.0, 1.5,
+	1.5, 0.0,
+	1.0, 1.0,
+	0.0,-1.5,
+	-1.5, 0.0,
+	-1.0,-1.0,
+	-1.0, 1.0,
+	1.0,-1.0,
+	0.5, 0.5,
+	0.5,-0.5,
+	-0.5,-0.5,
+	-0.5, 0.5,
 
 };
 
@@ -100,7 +63,6 @@ float4 HorBloom_PS(float2 texcoord0 : TEXCOORD0) : COLOR
 	}
 	
 	return pixel;
-	
 }
 
 technique tech_00

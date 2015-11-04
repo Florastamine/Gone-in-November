@@ -28,8 +28,6 @@ struct SMapPixelToFrame
 	float4 Color : COLOR0;
 };
 
-
-
 SMapVertexToPixel depthmapVS( float4 inPos : POSITION, float2 inTex : TEXCOORD0)
 {
 	SMapVertexToPixel Output = (SMapVertexToPixel)0;
@@ -75,13 +73,6 @@ float4 depthmapPS(SMapVertexToPixel PSIn) : COLOR0
 	//
 	
 	Color.a = tex2D(ColorSampler,PSIn.Tex).a;
-	
-	/*
-	//SSAO
-	float depth = Color.r;
-	Color.r = floor(Color.r*127)/127;
-	Color.g = floor((depth-Color.r)*127*127)/127;
-	*/
 	
 	return Color;
 }

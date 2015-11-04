@@ -13,7 +13,7 @@ sampler currentScene = sampler_state
 	MagFilter = Linear;
 	MipFilter = Linear;
 	AddressU = Clamp;
-   AddressV = Clamp;
+	AddressV = Clamp;
 };
 
 static const int g_c_PixelOffsetSize = 13;
@@ -76,7 +76,6 @@ float4 dofVBlur_PS(float2 texcoord0 : TEXCOORD0) : COLOR
 	
 	return pixel;
 }
-
 
 technique VBlur
 {

@@ -31,8 +31,6 @@ float4 DownsamplePS( float2 Tex : TEXCOORD0 ) : COLOR0
 	bloom = bloom.x;
 	float sceneGamma = (Color.r+Color.g+Color.b)/3;
 	
-	//Color.r = lerp((Color.r+Color.g+Color.b)/3,bloom,0.996);
-	//Color.r = lerp((Color.r+Color.g+Color.b)/12,bloom,0.998);
 	Color.r = lerp((Color.r+Color.g+Color.b)/3,bloom,0.9999);
 
 	Color.g = sceneGamma;
@@ -43,8 +41,7 @@ float4 DownsamplePS( float2 Tex : TEXCOORD0 ) : COLOR0
 technique hdrGamma
 {
 	pass one
-	{
-		
+	{	
 		PixelShader = compile ps_2_0 DownsamplePS();
 	}
 }

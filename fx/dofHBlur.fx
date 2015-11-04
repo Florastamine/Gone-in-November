@@ -71,8 +71,6 @@ float4 dofHBlur_PS(float2 texcoord0 : TEXCOORD0) : COLOR
 	pixel.rgb -= pixel2.rgb*pixel.rgb;
 	pixel2.rgb *= tex2D(currentScene,(texcoord0-vecViewPort.zw+PixelOffset_fix)).rgb;	
 	pixel.rgb += pixel2.rgb;
-	
-	
 	return pixel;
 	
 }

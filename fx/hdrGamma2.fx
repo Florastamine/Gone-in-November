@@ -10,8 +10,6 @@ sampler orgScene = sampler_state
    AddressV = Clamp;
 };
 
-
-
 float4 vecViewPort; // contains viewport pixel size in zw components
 float4 DownsamplePS( float2 Tex : TEXCOORD0 ) : COLOR0 
 {
@@ -24,7 +22,6 @@ technique hdrGamma
 {
 	pass one
 	{
-		
 		PixelShader = compile ps_2_0 DownsamplePS();
 	}
 }

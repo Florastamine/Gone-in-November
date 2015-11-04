@@ -8,32 +8,32 @@ float4 vecViewPort;
 
 sampler originalImageSampler = sampler_state
 {
-   texture = (mtlSkin1);
-   MinFilter = linear;
-   MagFilter = linear;
-   MipFilter = linear;
-   AddressU = Clamp;
-   AddressV = Clamp;
+	texture = (mtlSkin1);
+	MinFilter = linear;
+	MagFilter = linear;
+	MipFilter = linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler blurImageSampler = sampler_state
 {
-   texture = (TargetMap);
-   MinFilter = linear;
-   MagFilter = linear;
-   MipFilter = linear;
-   AddressU = Clamp;
-   AddressV = Clamp;
+	texture = (TargetMap);
+	MinFilter = linear;
+	MagFilter = linear;
+	MipFilter = linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler gammaImageSampler = sampler_state
 {
-   texture = (mtlSkin2);
-   MinFilter = linear;
-   MagFilter = linear;
-   MipFilter = linear;
-   AddressU = wrap;
-   AddressV = wrap;
+	texture = (mtlSkin2);
+	MinFilter = linear;
+	MagFilter = linear;
+	MipFilter = linear;
+	AddressU = wrap;
+	AddressV = wrap;
 };
 
 float4 main(float2 tc: TEXCOORD0, float2 tc2: TEXCOORD1) : COLOR{
@@ -54,16 +54,13 @@ float4 main(float2 tc: TEXCOORD0, float2 tc2: TEXCOORD1) : COLOR{
 	color = color * vignette;
 	color += color*(1-gamma.x)*fExposureLevel; // Apply simple exposure level
 	
-	//color = blur;
-	//color*= 1.2;
-
 	return pow(color, 1.0); // Apply gamma and return
 
 }
 
 technique HDR {
-pass p1 {
-	VertexShader = null;
-	PixelShader = compile ps_2_0 main();
+	pass p1 {
+		VertexShader = null;
+		PixelShader = compile ps_2_0 main();
 	}
 }

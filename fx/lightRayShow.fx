@@ -13,11 +13,7 @@ float4 combinePS (float2 Tex : TEXCOORD0) : COLOR
 {
 	float4 Color =
 	(tex2D(firstSampler,Tex)*vecSkill1.x)
-	//+(tex2D(secondSampler,Tex)*vecSkill1.y/1.5)
-	//+(tex2D(thirdSampler,Tex)*vecSkill1.z/1.5)
-	//+(tex2D(fourthSampler,Tex)*vecSkill1.w/1.5)
 	+tex2D(sceneSampler,Tex);
-	//Color = tex2D(secondScene,Tex);
 	return Color;
 }
 
