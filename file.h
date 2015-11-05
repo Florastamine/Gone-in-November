@@ -13,6 +13,15 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ * 
+ * __________________________________________________________________
+ * 
+ * <file>
+ * Merely a wrapper for Gamestudio's file_*() family of functions with 
+ * the intention of making I/O easier to work with.
+ * 
+ * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * __________________________________________________________________
  */
 #ifndef    _FILE_H_
 #define    _FILE_H_

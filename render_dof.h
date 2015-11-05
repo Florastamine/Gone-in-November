@@ -13,6 +13,20 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ * 
+ * __________________________________________________________________
+ * 
+ * <render_dof>
+ * Depth of field. 
+ * Default values can be overriden with a call to render_dof_setup() and/or render_dof_depth_set().
+ * To render depth of field, two calls are required: render_dof_new() and render_dof(). 
+ * One thing to note though, values can only be changed as long as render_dof() hasn't been invoked.
+ * 
+ * Queue is also available with render_hdr_set_queued().
+ * 
+ * Authors: Wolfgang "BoH_Havoc" Reichardt (http://dotmos.org/)
+ *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * __________________________________________________________________
  */
 #ifndef    _DOF_H_
 #define    _DOF_H_

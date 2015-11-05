@@ -13,11 +13,29 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ * 
+ * __________________________________________________________________
+ * 
+ * <utilities>
+ * Contains general-purpose small utilities and helper functions/macros.
+ * Lightweight and has no dependency other than Gamestudio's headers.
+ * 
+ * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Version: v0.1-alpha
+ * __________________________________________________________________
  */
 #ifndef    _UTILITIES_H_ 
 #define    _UTILITIES_H_ 
 
 #include <stdio.h>
+
+#define __VERSION "v0.1-alpha" // Seems familiar?
+
+#ifdef ENFORCE_STRICT
+    #ifndef    PRAGMA_POINTER
+    #define    PRAGMA_POINTER
+    #endif
+#endif
 
 #define extern 
 #define inline 
@@ -91,6 +109,13 @@ const Font *Arial_10 = "Arial#10";
 const Font *Arial_14 = "Arial#14";
 const Font *Arial_18 = "Arial#18";
 const Font *Arial_25 = "Arial#25";
+
+__namespace(utility) {
+	const char *library_get_version()
+	{
+		return _chr(__VERSION);
+	}
+}
 
 __namespace(error) {
 	#define ERROR_CONTAINER_CAPACITY     256

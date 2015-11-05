@@ -13,11 +13,22 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ * 
+ * __________________________________________________________________
+ * 
+ * <path>
+ * Contains common paths for which game assets and code are searched.
+ * In the actual game build (with PERFORM_PATH_LOOKUP disabled), 
+ * they are expected to be in the root folder (or in resource packages)
+ * instead.
+ * 
+ * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * __________________________________________________________________
  */
 #ifndef    _PATH_H_
 #define    _PATH_H_
 
-#ifndef    __0__
+#ifndef    PERFORM_PATH_LOOKUP
     #define PRAGMA_PATH "./2d/"
     #define PRAGMA_PATH "./2d/fx/"
     #define PRAGMA_PATH "./2d/gui/"

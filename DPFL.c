@@ -14,6 +14,17 @@
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
+#define ENFORCE_STRICT
+
+/*
+#define __RENDER_GODRAYS__
+#define __RENDER_REFRACT__
+#define __RENDER_REFLECT__
+#define __RENDER_SHADOW_
+#define __RENDER_DOF__
+#define __RENDER_HDR__
+*/
+
 #include <acknex.h>
 #include <d3d9.h>
 #include <stdio.h>
@@ -23,6 +34,7 @@
 
 #include "utilities.h"
 #include "file.h"
+#include "crypto.h"
 
 #include "render.h"
 #include "render_lrays.h"
@@ -36,34 +48,28 @@
 
 #include "common.h"
 
-#define __RENDER_GODRAYS__
-#define __RENDER_REFRACT__
-#define __RENDER_REFLECT__
-#define __RENDER_SHADOW_
-#define __RENDER_DOF__
-#define __RENDER_HDR__
-
 void water()
 {
-	render_water(my);
+	// render_water(my);
 }
 
 int main( int argc, char **argl )
 {
 	while( !ready() ) wait(1.0);
 	
-	warn_level = 6;
+	// warn_level = 6;
 	
 	window_size_set(1280, 720);
 	
-	level_load("scene/scene.wmb");
+	// level_load("scene/scene.wmb");
+	// object_sky_create("sample+6.tga", 1);
 	
-	object_sky_create("sample+6.tga", 1);
-	
+	/*
 	render_new();
 	render_setup_rt();
 	
 	render_water_new();
+	*/
 	
 	#ifdef    __RENDER_REFRACT__
 	    render_refract_new();
@@ -105,7 +111,34 @@ int main( int argc, char **argl )
 	    render_light_rays_set_queued(true);
 	#endif
 	
-	render_queue_start();
+	/* render_queue_start(); */
+	
+	
+	STRING *sstr = "This is my encrypted string.";
+	STRING *estr = "";
+	STRING *zstr = "";
+	
+	//encrypt_string2(sstr, estr, __SHIFT);
+	encrypt_string(sstr, estr);
+	WAIT_PROCESS(encrypt_string);
+	
+	decrypt_string(estr, zstr);
+	WAIT_PROCESS(encrypt_string);
+	
+	File *f = file_new("test.txt", WRITE);
+	file_write(f, estr);
+	file_write_new_line(f);
+	file_write(f, zstr);
+	file_free();
+	
+	while(true)
+	{
+		draw_text(estr, 5.0, 5.0, COLOR_INDIGO);
+		
+		draw_text(zstr, 5.0, 20.0, COLOR_INDIGO);
+		
+		wait(1.0);
+	}
 	
 	return 0;
 }

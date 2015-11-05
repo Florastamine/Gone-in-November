@@ -13,6 +13,18 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ * 
+ * __________________________________________________________________
+ * 
+ * <render_water>
+ * Water.
+ * Additional reflection and refraction can be used, provided 
+ * <render_reflect> and <render_refract> were included and activated.
+ * Simply call render_water() on whichever entity you want to put water on.
+ * 
+ * Authors: Wolfgang "BoH_Havoc" Reichardt (http://dotmos.org/)
+ *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * __________________________________________________________________
  */
 #ifndef    _RENDER_WATER_H_
 #define    _RENDER_WATER_H_

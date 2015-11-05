@@ -13,6 +13,21 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ * 
+ * __________________________________________________________________
+ * 
+ * <render_lrays>
+ * Light rays.
+ * To use the effect, firstly make a call to render_light_rays_new() to 
+ * allocate some memory for the adjustable parameters. 
+ * Call render_light_rays_setup() to re-define the ray strength and length.
+ * Finally, call render_light_rays_setup() to directly render the light rays, 
+ * or put it to queue with render_light_rays_set_queued() and later call 
+ * render_queue_start() to perform rendering.
+ * 
+ * Authors: Wolfgang "BoH_Havoc" Reichardt (http://dotmos.org/)
+ *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * __________________________________________________________________
  */
 #ifndef    __LRAYS_H_
 #define    __LRAYS_H_

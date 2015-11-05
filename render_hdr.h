@@ -13,6 +13,19 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ * 
+ * __________________________________________________________________
+ * 
+ * <render_hdr>
+ * High dynamic range.
+ * Default values for HDR (blur, bloom strength, exposure time...) can 
+ * be re-defined through render_hdr_setup(). Invoke render_hdr_new() and
+ * render_hdr() to perform HDR rendering.
+ * Queue is also available with render_hdr_set_queued().
+ * 
+ * Authors: Wolfgang "BoH_Havoc" Reichardt (http://dotmos.org/)
+ *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * __________________________________________________________________
  */
 #ifndef    _HDR_H_
 #define    _HDR_H_

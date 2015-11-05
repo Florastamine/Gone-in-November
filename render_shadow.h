@@ -13,6 +13,20 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ * 
+ * __________________________________________________________________
+ * 
+ * <render_shadow>
+ * Shadow mapping. 
+ * To use the effect, firstly make a call to render_shadow_new().
+ * Then call render_shadow_setup() to override the default parameters for 
+ * shadows such as map resolution and blurness. (omitting the parameters leaving the default values unchanged)
+ * Finally, call render_shadow() to render the shadows, or alternatively put it to
+ * queue for a later call to render_queue_start().
+ * 
+ * Authors: Wolfgang "BoH_Havoc" Reichardt (http://dotmos.org/)
+ *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * __________________________________________________________________
  */
 #ifndef    _SHADOW_H_
 #define    _SHADOW_H_

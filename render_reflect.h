@@ -13,6 +13,17 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ * 
+ * __________________________________________________________________
+ * 
+ * <render_reflect>
+ * Reflection.
+ * Simply there to add reflection to <render_water>.
+ * For normal environment mapping, use the shaders provided in <render_surface>.
+ * 
+ * Authors: Wolfgang "BoH_Havoc" Reichardt (http://dotmos.org/)
+ *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * __________________________________________________________________
  */
 #ifndef    _RENDER_REFLECT_H_
 #define    _RENDER_REFLECT_H_

@@ -13,6 +13,18 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ * 
+ * __________________________________________________________________
+ * 
+ * <render>
+ * A collection of extra rendering effects which enhances the stock 
+ * Gamestudio renderer, containing high dynamic rendering, depth of field, 
+ * fast shadow mapping, light rays, water reflection and refraction.
+ * Preceding modules must include the base header <render> in order to use the shaders.
+ * 
+ * Authors: Wolfgang "BoH_Havoc" Reichardt (http://dotmos.org/)
+ *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * __________________________________________________________________
  */
 #ifndef    _RENDER_H_
 #define    _RENDER_H_
