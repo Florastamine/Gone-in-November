@@ -47,6 +47,7 @@
 #include "render_utils.h"
 
 #include "common.h"
+#include "gui.h"
 
 void water()
 {
@@ -118,7 +119,6 @@ int main( int argc, char **argl )
 	STRING *estr = "";
 	STRING *zstr = "";
 	
-	//encrypt_string2(sstr, estr, __SHIFT);
 	encrypt_string(sstr, estr);
 	WAIT_PROCESS(encrypt_string);
 	
@@ -134,7 +134,6 @@ int main( int argc, char **argl )
 	while(true)
 	{
 		draw_text(estr, 5.0, 5.0, COLOR_INDIGO);
-		
 		draw_text(zstr, 5.0, 20.0, COLOR_INDIGO);
 		
 		wait(1.0);

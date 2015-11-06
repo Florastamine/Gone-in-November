@@ -21,8 +21,7 @@
  * for learning purposes, and to hide data (for example serialized save games)
  * from the users who want to peek over them.
  * 
- * This library depend on <file>.
- * Currently does not support Unicode.
+ * Currently does not support Unicode (yet).
  * 
  * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________

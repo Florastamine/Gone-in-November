@@ -1,4 +1,4 @@
-/* gui.h */
+/* odd_even.c */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -13,24 +13,24 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
- * 
- * __________________________________________________________________
- * 
- * <gui>
- * Downpour's GUI code.
- * Dependent of the library <gui_utilities>.
- * 
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
- * __________________________________________________________________
  */
-#ifndef    _GUI_H_
-#define    _GUI_H_
+#include <acknex.h>
 
-#include "gui_utilities.h"
+void quit() { sys_exit( (void *) 0 ); }
 
-#define __static 
-#define __In
-#define __Out
-
-#include "gui.c"
-#endif /* gui.h */
+int main()
+{
+	video_screen = 0;
+	printf("\n");
+	
+	int i = 0;
+	while(i < 17)
+	{
+		printf("%i is %s.\n", i, ifelse(i & 1, _chr("odd"), _chr("even") ) );
+		
+		i++;
+		wait(1.0);
+	}
+	
+	on_esc = quit;
+}

@@ -74,6 +74,30 @@ void swap( int *a, int *b )
 }
 
 /*
+ * Pair *pair_new()
+ * 
+ * Creates a new, empty pair that you can use for later filling.
+ */
+Pair *pair_new()
+{
+	Pair *p = MALLOC(1, Pair);
+	p->first  = 0.0;
+	p->second = 0.0;
+	
+	return p;
+}
+
+/*
+ * void pair_free( Pair *pair )
+ * 
+ * Frees a pair that was allocated before via pair_new().
+ */
+void pair_free( Pair *pair )
+{
+	if(pair) free(pair);
+}
+
+/*
  * void pair_set( Pair *p, float first, float second )
  * 
  * Fills a pair with values.
@@ -110,6 +134,38 @@ void pair_swap( Pair *p1, Pair *p2 )
 double log10( double d )
 {
 	return log(d) / 2.30258509;
+}
+
+/*
+ * bool is_odd( int i )
+ * 
+ * Returns true if the given number is an odd number, false otherwise.
+ */
+bool is_odd( int i )
+{
+	return i & 1;
+}
+
+/*
+ * Pair *shader_get_version()
+ * 
+ * Returns the current shader version supported by your graphics card.
+ * The first value in the returned pair indicates the pixel shader version supported, 
+ * while the second value indicates the vertex shader version.
+ */
+Pair *shader_get_version()
+{
+	Pair *p = pair_new();
+	int i = d3d_shaderversion;
+	int *array = MALLOC(4, int);
+	
+	split( array, i, 0 );
+	
+	p->first   = join( *(array + 3), *(array + 2) );
+	p->second  = join( *(array + 1), *array );
+	
+	free(array);
+	return p;
 }
 
 /*
@@ -155,7 +211,7 @@ void split(int *__result, int value)
 }
 
 /*
- * void reverse(int *array, int count)
+ * void reverse(int **array, unsigned int count)
  * 
  * Reverse count elements in the specified array.
  * Because Lite-C doesn't have built-in support for determining
@@ -163,14 +219,14 @@ void split(int *__result, int value)
  * user more control over how many elements can be reversed,
  * an additional second parameter is provided.
  */
-void reverse(int *array, unsigned int count)
+void reverse(int **array, unsigned int count)
 {
-	ASSERT(array, _chr("utilities.c/reverse(): Uninitialized container provided."));
+	ASSERT( *array, _chr("utilities.c/reverse(): Uninitialized container provided.") );
 	
 	int i = 0, j = 0;
 	while(i < count / 2)
 	{
-		swap( array + i, array + count - 1 - i );
+		swap( *(array + i), *(array + count - 1 - i) );
 		i++;
 		
 		wait(1.0);
@@ -1105,3 +1161,5 @@ void error_free()
 {
 	error_free(Error_active);
 }
+
+

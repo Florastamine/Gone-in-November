@@ -21,7 +21,13 @@
  * Lightweight and has no dependency other than Gamestudio's headers.
  * 
  * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
- * Version: v0.1-alpha
+ * Version: v0.1.1-alpha
+ * 
+ * History
+ * + v0.1-alpha
+ * + v0.1.1-alpha
+ * - Added pair_new(), pair_free(), is_odd() and shader_get_version().
+ * - log10() and related functions were moved to the numeric namespace.
  * __________________________________________________________________
  */
 #ifndef    _UTILITIES_H_ 
@@ -29,7 +35,7 @@
 
 #include <stdio.h>
 
-#define __VERSION "v0.1-alpha" // Seems familiar?
+#define __VERSION "v0.1.1-alpha" // Seems familiar?
 
 #ifdef ENFORCE_STRICT
     #ifndef    PRAGMA_POINTER
@@ -209,6 +215,9 @@ __namespace(pair) {
 		float second;
 	} Pair;
 	
+	Pair *pair_new();
+	void pair_free( __In __Out Pair *pair);
+	
 	void pair_set( __In __Out Pair *p, float first, float second );
 	void pair_swap( __In __Out Pair *p1, __In __Out Pair *p2 );
 }
@@ -217,17 +226,23 @@ __namespace() {
 	void __assert( const char *message );
 	char *function_name_get( __In const void *f );
 	char *strtok( __In const char *str, __In const char *delimiter );
-	void reverse( __In __Out int *array, __In unsigned int count);
+	void reverse( __In __Out int **array, __In unsigned int count);
 	void swap( __In __Out int *a, __In __Out int *b );
-	double log10( __In double d );
+	
 	long join( __In int i, __In int j );
 	void split( __In __Out int *__result, __In int value, __In int slot);
 	void split( __In __Out int *__result, __In int value);
 	int search( __In Text *container, __In const String *str );
 	int search( __In Text *container, __In const char *cstr );
+	bool ready();
+}
+
+__namespace(numeric) {
+	double log10( __In double d );
+	bool is_odd( __In int i );
+	
 	double deg2rad( __In double d );
 	double rad2deg( __In double d );
-	bool ready();
 }
 
 __namespace(window) {
@@ -255,6 +270,10 @@ __namespace(window) {
 	void window_mode_set( __In int mode );
 	int window_mode_get();
 	const char *window_mode_get();
+}
+
+__namespace(video) {
+	Pair *shader_get_version();
 }
 
 __namespace(string) {

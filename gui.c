@@ -1,4 +1,4 @@
-/* gui.h */
+/* gui.c */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -13,24 +13,4 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
- * 
- * __________________________________________________________________
- * 
- * <gui>
- * Downpour's GUI code.
- * Dependent of the library <gui_utilities>.
- * 
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
- * __________________________________________________________________
  */
-#ifndef    _GUI_H_
-#define    _GUI_H_
-
-#include "gui_utilities.h"
-
-#define __static 
-#define __In
-#define __Out
-
-#include "gui.c"
-#endif /* gui.h */
