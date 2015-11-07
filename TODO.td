@@ -10,7 +10,7 @@
     [X] <render_shadows>
     [X] <render_lights> (<render_lrays>)
     [ ] <render_surfaces>
-    [ ] <crypto>
+    [X] <crypto>
     [ ] <serializer>
     [ ] <region>
 
@@ -23,5 +23,5 @@
     [ ] <serializer>
     [ ] <file>
 
-[ ] Mark authors and description at the beginning of each header.
-[ ] Homebrew HTML-based progress report inside ./status/.
+[X] Mark authors and description at the beginning of each header.
+[X] Homebrew HTML-based progress report inside ./status/.

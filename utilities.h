@@ -24,10 +24,15 @@
  * Version: v0.1.1-alpha
  * 
  * History
+ * __________________________________________________________________
  * + v0.1-alpha
+ * __________________________________________________________________
  * + v0.1.1-alpha
  * - Added pair_new(), pair_free(), is_odd() and shader_get_version().
  * - log10() and related functions were moved to the numeric namespace.
+ * __________________________________________________________________
+ * + v0.1.2-alpha
+ * - Added more variants for pair_new().
  * __________________________________________________________________
  */
 #ifndef    _UTILITIES_H_ 
@@ -215,7 +220,16 @@ __namespace(pair) {
 		float second;
 	} Pair;
 	
+	typedef Pair Vector2;
+	
+	Vector3 *pair_new();
+	Vector3 *pair_new( __In float first, __In float second );
+	Vector3 *pair_new( __In const Vector3 *vektor );
+	
 	Pair *pair_new();
+	Pair *pair_new( __In float first, __In float second );
+	Pair *pair_new( __In const Pair *p );
+	
 	void pair_free( __In __Out Pair *pair);
 	
 	void pair_set( __In __Out Pair *p, float first, float second );

@@ -48,8 +48,6 @@ int main()
 	while( !ready() ) wait(1.0);
 	level_load(0);
 	
-	d3d_shaderversion = 2120;
-	
 	window_size_set( 1200.0, 600.0 );
 	
 	p = pan_create(NULL, 1);
@@ -71,13 +69,11 @@ int main()
 	on_9 = panel_set_center_2;
 	on_0 = panel_set_center_3;
 	
-	Pair *p = shader_get_version();
-	PRINT_DOUBLE(p->first /= 10);
-	PRINT_DOUBLE(p->second);
-	
 	while(true)
 	{
 		draw_text( helper, 10.0, 10.0, COLOR_WHITE );
+		
+		gui_panel_set_rotation( p, gui_panel_get_rotation(p) + 0.5 * time_step );
 		
 		wait(1.0);
 	}

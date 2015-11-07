@@ -237,3 +237,88 @@ void gui_panel_set_center( Panel *panel, const int mode )
 		panel->pos_y = (screen_size.y - bmap_height(panel->bmap)) / 2;
 	}
 }
+
+float gui_panel_get_rotation( Panel *panel )
+{
+	if(panel) return panel->angle;
+}
+
+void gui_panel_set_rotation( __Out Panel *panel, float amount )
+{
+	if(panel)
+	{
+		panel->angle = amount;
+	}
+}
+
+GUIButton *gui_button_new( Vector2 *pos, 
+                           Vector2 *scale,
+                           String *title, 
+                           String *image_on,
+                           String *image_off,
+                           String *image_over,
+                           const void *fptr_on,
+                           const void *fptr_off,
+                           const void *fptr_over
+)
+{
+	GUIButton *b = MALLOC(1, GUIButton);
+	
+	b->__container = pan_create(NULL, 1);
+	b->image_on    = bmap_create(image_on);
+	b->image_off   = bmap_create(image_off);
+	b->image_over  = bmap_create(image_over);
+	
+	b->position    = pair_new( pos );
+	b->scale       = pair_new( scale );
+	
+	b->fptr_on     = fptr_on;
+	b->fptr_off    = fptr_off;
+	b->fptr_over   = fptr_over;
+	
+	b->string                    = txt_create(1, 1); // 1 string with 1 layer
+	(b->string->pstring)[0]      = str_create(title);
+	
+	pan_setbutton( b->__container, 0, 0, pos->first, pos->second, b->image_on, b->image_off, b->image_over, NULL, fptr_on, fptr_off, fptr_over );
+	
+	return b;
+}
+
+void gui_button_free( GUIButton *b )
+{
+	if(b)
+	{
+		// Remove sub-components
+		txt_remove_ex(b->string);
+		
+		bmap_remove(b->image_on);
+		bmap_remove(b->image_off);
+		bmap_remove(b->image_over);
+		
+		pan_remove(b->__container);
+		
+		b->fptr_on   = NULL;
+		b->fptr_off  = NULL;
+		b->fptr_over = NULL;
+		
+		free(b->position);
+		free(b->scale);
+		
+		// Remove the button itself
+		free(b);
+	}
+}
+
+/*
+void gui_button_event_set( __Out GUIButton *b, int mode, Bitmap *avatar, const void *event )
+{
+	if( !b ) return;
+	
+	switch( mode )
+	{
+		case    EVENT_BUTTON_PUSH :
+		{
+			if
+		}
+	}
+}*/

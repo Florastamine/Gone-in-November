@@ -87,6 +87,35 @@ Pair *pair_new()
 	return p;
 }
 
+Pair *pair_new( float first, float second )
+{
+	Pair *p = pair_new();
+	p->first = first;
+	p->second = second;
+	
+	return p;
+}
+
+Pair *pair_new( const Pair *p )
+{
+	return pair_new(p->first, p->second);
+}
+
+Vector3 *pair_new()
+{
+	return nullvector;
+}
+
+Vector3 *pair_new( float first, float second )
+{
+	return vector(first, second, 0.0);
+}
+
+Vector3 *pair_new( const Vector3 *vektor )
+{
+	return vector(vektor->x, vektor->y, 0.0);
+}
+
 /*
  * void pair_free( Pair *pair )
  * 
