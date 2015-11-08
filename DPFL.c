@@ -114,28 +114,8 @@ int main( int argc, char **argl )
 	
 	/* render_queue_start(); */
 	
-	
-	STRING *sstr = "This is my encrypted string.";
-	STRING *estr = "";
-	STRING *zstr = "";
-	
-	encrypt_string(sstr, estr);
-	WAIT_PROCESS(encrypt_string);
-	
-	decrypt_string(estr, zstr);
-	WAIT_PROCESS(encrypt_string);
-	
-	File *f = file_new("test.txt", WRITE);
-	file_write(f, estr);
-	file_write_new_line(f);
-	file_write(f, zstr);
-	file_free();
-	
 	while(true)
-	{
-		draw_text(estr, 5.0, 5.0, COLOR_INDIGO);
-		draw_text(zstr, 5.0, 20.0, COLOR_INDIGO);
-		
+	{		
 		wait(1.0);
 	}
 	

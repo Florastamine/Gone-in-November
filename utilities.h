@@ -33,6 +33,7 @@
  * __________________________________________________________________
  * + v0.1.2-alpha
  * - Added more variants for pair_new().
+ * - Added BIND_KEY().
  * __________________________________________________________________
  */
 #ifndef    _UTILITIES_H_ 
@@ -72,6 +73,7 @@
 #define PRINT_DOUBLE(d)                    printf("%f", (double) d)
 #define PRINT_STRING(string)               printf("%s", (char *) string)
 #define PRINT_BOOL(comparison)             printf("%s", (char *) ifelse(comparison, _chr("true"), _chr("false")))
+#define BIND_KEY(key, function)            on_##key = function
 
 #define COLOR_RANDOM                       (vector( rand() % 255, rand() % 255, rand() % 255 ))
 #define COLOR_SOFT_PURPLE                  (vector(219, 112, 147))
@@ -222,9 +224,11 @@ __namespace(pair) {
 	
 	typedef Pair Vector2;
 	
+	/*
 	Vector3 *pair_new();
 	Vector3 *pair_new( __In float first, __In float second );
 	Vector3 *pair_new( __In const Vector3 *vektor );
+	*/
 	
 	Pair *pair_new();
 	Pair *pair_new( __In float first, __In float second );

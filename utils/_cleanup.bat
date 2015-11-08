@@ -12,6 +12,5 @@ del /f /s /q ..\scene\*.bak
 del /f /s /q ..\scene\*.wed
 del /f /s /q ..\scene\*.raw
 del /f /s /q ..\scene\*.$$w
-del /f /s /q ..\*.dll
 
 pause 
