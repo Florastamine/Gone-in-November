@@ -81,7 +81,7 @@ void swap( int *a, int *b )
 Pair *pair_new()
 {
 	Pair *p = MALLOC(1, Pair);
-	p->first  = 150.0;
+	p->first  = 0.0;
 	p->second = 0.0;
 	
 	return p;

@@ -144,11 +144,13 @@ char *file_extension_get()
  */
 File *file_new( const char *name, int process_mode, BOOL unicode )
 {
-	File *f = (File *) malloc(sizeof(File));
-	f->name = (char *) malloc(sizeof(char) * FILE_NAME_MAX_LENGTH);
+	STRING *__name = str_create(name);
 	
-	/* strcpy(f->name, ifelse(name, name, __combine("out")) ); */
-	if(name) strcpy(f->name, name);
+	File *f = (File *) malloc(sizeof(File));
+	f->name = (char *) malloc(sizeof(char) * FILE_NAME_MAX_LENGTH );
+	
+	/* strcpy(f->name, ifelse(__name, __name, __combine("out")) ); */
+	if(__name) strcpy(f->name, __name);
 	else strcpy(f->name, __combine("out"));
 	
 	f->unicode = ifelse(unicode, true, false);
@@ -158,6 +160,9 @@ File *file_new( const char *name, int process_mode, BOOL unicode )
 	    f->__handle = file_open_read(f->name);
 	else
 	    f->__handle = file_open_write(f->name);	
+	
+	if( !f->__handle ) f->ready = false;
+	else               f->ready = true;
 	
 	return f;
 }
@@ -359,12 +364,12 @@ __static STRING *__file_read_string(File *file, BOOL unicode) // Read string fro
 		if( unicode )
 		{
 			buffer = str_createw("#384");
-			file_str_readtow( file->__handle, buffer, delimiter_get(), 384 );
+			file_str_readtow( file->__handle, buffer, _chr(delimiter_get()), 384 );
 		}
 		else
 		{
 			buffer = str_create("#384");
-			file_str_readto( file->__handle, buffer, delimiter_get(), 384 );
+			file_str_readto( file->__handle, buffer, _chr(delimiter_get()), 384 );
 		}
 	}
 	return buffer;

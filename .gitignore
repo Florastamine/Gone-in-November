@@ -44,6 +44,7 @@
 *.txt
 *.log
 *.jpg
+*.pad
 ./status/_sync.bat
 ./status/exclusion.excl
 ./status/log.log
