@@ -34,6 +34,8 @@
 # Gamestudio-specific
 
 # General
+*.wdf
+*.odt
 *.bmp
 *.tga
 *.wav

@@ -74,6 +74,24 @@ void swap( int *a, int *b )
 }
 
 /*
+ * void copy( float **i, float **j, int num )
+ * 
+ * Copies a pointer-based array over another, suppressing boundary checks. Why?
+ * Because we don't know the size of the memory area which the pointer is pointing to, at least not in plain C.
+ */
+void copy( float **i, float **j, int num )
+{
+	num = (int) ifelse(num > 0, num, 1);
+	int k = 0;
+	
+	while(k < num)
+	{
+		*(*i + k) = *(*j + k);
+		k++;
+	}
+}
+
+/*
  * Pair *pair_new()
  * 
  * Creates a new, empty pair that you can use for later filling.

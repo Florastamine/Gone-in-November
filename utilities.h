@@ -33,7 +33,8 @@
  * __________________________________________________________________
  * + v0.1.2-alpha
  * - Added more variants for pair_new().
- * - Added BIND_KEY().
+ * - Added BIND_KEY(), CALLOC() and REALLOC().
+ * - Added copy().
  * __________________________________________________________________
  */
 #ifndef    _UTILITIES_H_ 
@@ -62,6 +63,8 @@
 #define STATIC_ASSERT(condition)           {}
 #define ARRAY_LENGTH(array)                (sizeof(array)/sizeof(array[0]))
 #define MALLOC(number, type)               ((type *) malloc(number * sizeof(type)))
+#define CALLOC(number, type)               ((type *) calloc( number, sizeof(type))
+#define REALLOC(inlet, type, number)       (type *) realloc( inlet, sizeof(type) * number )
 #define ASSERT(condition, message)         do { if( !(condition) ) __assert(message); } while(false)
 #define WAIT_PROCESS(process)              while( proc_status(process) ) wait(1.0)
 #define KILL_PROCESS(process)              proc_kill(4) /* This macro exists because it helps eliminating magic numbers. */
@@ -246,6 +249,7 @@ __namespace() {
 	char *strtok( __In const char *str, __In const char *delimiter );
 	void reverse( __In __Out int **array, __In unsigned int count);
 	void swap( __In __Out int *a, __In __Out int *b );
+	void copy( __In __Out float **i, __In float **j, int num );
 	
 	long join( __In int i, __In int j );
 	void split( __In __Out int *__result, __In int value, __In int slot);
