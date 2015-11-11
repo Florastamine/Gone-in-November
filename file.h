@@ -35,11 +35,13 @@
 #define WRITE                             (1 << 2)
 
 typedef struct {
-	char *name;
-	fixed __handle;
-	BOOL ready;
-	BOOL unicode;
-	int mode;
+	char *name;            /* Name of the file. */
+	fixed __handle;        /* The actual file handle, which is returned through the file_open_*() instructions. */
+	BOOL ready;            /* Ready, if the file was successfully opened for I/O, false otherwise. */
+	BOOL unicode;          /* Unicode-ness. Normally the user is responsible for determining if the file contains Unicode data and
+	                       /* then pass a flag to the struct, but in future (maybe..) I'll give it the ability to detect Unicode automatically. (TODO) */
+	int mode;              /* Current operating mode. Either READ or WRITE. This flag has the sole reason to prevent crashes */
+	                       /* for example, do file_str_write() on file_open_read()-file. */
 } File;
 
 File *File_active = NULL;

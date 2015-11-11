@@ -46,11 +46,12 @@ __namespace(multilingual) {
 	#define    REGION_LANGUAGE_FLAG_FILE  "flag.jpg"
 	
 	typedef struct {
-		String    *__search_path;
+		String    *__search_path;          /* A string which stores the initial search path. */
 		
-		Text      *languages;
-		String    *language_active;
-		int        language_count;
+		Text      *languages;              /* Contains all found languages during region_scan*(). */
+		String    *language_active;        /* Contains the active language (in string form - two characters describing the language: vn/en/jp/... */
+		                                   /* and an additional character '@' to mark the Unicode-ness of the language.                           */
+		int        language_count;         /* Contains the number of found languages during region_scan*(). */
 	} Region;
 	
 	Region *Region_singleton = NULL;

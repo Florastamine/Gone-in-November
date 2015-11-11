@@ -122,22 +122,23 @@ int main( void )
 	video_screen = 0;
 	printf("\n");
 	BIND_KEY(esc, quit);
+	random_seed(0);
 	
 	/*
 	 * Initializes the struct with an initial size of 2 - whenever something else got pushed to the box, 
 	 * realloc() will expand original size of the array.
 	 */
-	b = (box *) malloc(sizeof(box));
+	b = MALLOC(1, box);
 	b->size = 2;
 	b->pos  = 0;
-	b->i = (int *) malloc(b->size * sizeof(int));
+	b->i = MALLOC(b->size, int);
 
 	int i = 0;
 	while(i < b->size )
 	{
 		addval(b, i);
 		i += 1;
-	} // <- At this point, any addval() call should expand the array by 1, like std::vector<>.
+	} // <- At this point, any addval() call should expand the array storage by 1 int, like std::vector<>.
 
 	printval(b);
 	

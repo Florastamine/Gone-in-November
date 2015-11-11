@@ -139,11 +139,12 @@ __namespace(error) {
 	#define ERROR_HISTORY_MESSAGE_LENGTH 96
 	
 	typedef struct {
-		int pos;
-		int count;
-		int stack[ERROR_CONTAINER_CAPACITY];
-		int history[ERROR_HISTORY_CAPACITY];
-		Text *message;
+		int pos;                                   /* Contains the current position of the error history stack. */
+		int count;                                 /* Contains the current position of the error stack. */
+		int stack[ERROR_CONTAINER_CAPACITY];       /* Error stack, containing error codes. Not much use other than acting like an error codebook. */
+		int history[ERROR_HISTORY_CAPACITY];       /* Error history stack, containing occured errors (if pushed through error_push()). */
+		Text *message;                             /* Error history description stack (container), containing explanation for occured errors that */
+		                                           /* were previously pushed through error_push(). */
 	} Error;
 	
 	Error *Error_active = NULL;
@@ -180,11 +181,11 @@ __namespace(console) {
 	void command_table_call( __In const char *command );
 	
 	typedef struct {
-		Bitmap *background;
-		Panel *__background_container;
-		Text *data;
-		Text *history;
-		bool ready;
+		Bitmap *background;                   /* Background image for the console. The idea for this first came from the Half-Life console. */
+		Panel *__background_container;        /* Solely serves as the container for the background image. */
+		Text *data;                           /* Contains the input channel, represented as a single string. Commands are fed here. */
+		Text *history;                        /* Contains the input history for everything typed. (TODO: Implement this) */
+		bool ready;                           /* Flags true if the console was successfully allocated and initialized, false otherwise. */
 	} Channel;
 	
 	Channel *Channel_active = NULL;

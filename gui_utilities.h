@@ -75,20 +75,20 @@ __namespace(button) {
 	#define    EVENT_BUTTON_OVER    (1 << 3)
 	
 	typedef struct {
-		Panel *__container;
+		Panel *__container;      /* Internal container of the button. Used to draw the actual button and perform effects like coloring, and such on it. */
 		
-		Bitmap *image_on;
-		Bitmap *image_off;
-		Bitmap *image_over;
+		Bitmap *image_on;        /* A bitmap image describing which image to be used when the user clicked on it. */
+		Bitmap *image_off;       /* A bitmap image describing which image to be used when the user clicked, and then released the mouse on it. */
+		Bitmap *image_over;      /* A bitmap image describing which image to be used when the user hover the mouse on it. */
 		
-		void *fptr_on;
-		void *fptr_off;
-		void *fptr_over;
+		void *fptr_on;           /* A function pointer contains the address of some executable code, which is invoked whenever the user clicked on the button. */
+		void *fptr_off;          /* A function pointer contains the address of some executable code, which is invoked whenever the user clicked on the button, and then release the mouse. */
+		void *fptr_over;         /* A function pointer contains the address of some executable code, which is invoked whenever the user hovers the mouse over the button. */
 		
-		Vector2 *position;
-		// Vector2 *scale;
+		Vector2 *position;       /* A pair struct (named as Vector2) describing the absolute position of the button, relative to the top-left corner of the game window. */
+		// Vector2 *scale;       /* A pair struct describing the scale of the button. (deprecated - it's not necessary) */
 		
-		Text *string;
+		Text *string;            /* A text object contains the button label. Can be left blank. */
 	} GUIButton;
 	
 	GUIButton *gui_button_new( __In Vector2 *pos, 

@@ -65,7 +65,7 @@ void region_new()
 }
 
 /*
- * void region_scan_from( __In const STRING *directory )
+ * void region_scan_from( const STRING *directory )
  * 
  * Explicitly scans available languages from a specified directory.
  * The directory itself *MUST* contain the following:
@@ -73,7 +73,7 @@ void region_new()
  * - generate_language_list.exe for generating __language.pad which contains a list of available languages.
  * - __language.pad (which is generated from generate_language_list.exe) to be parsed later.
  */
-void region_scan_from( __In const STRING *directory )
+void region_scan_from( const STRING *directory )
 {
 	STRING *__directory   = str_create(directory);
 	char separator        = str_getchr( __directory, str_len(__directory) );
@@ -187,12 +187,12 @@ STRING *region_get_languages()
 }
 
 /*
- * BMAP *region_get_language_flag( __In const STRING *language )
+ * BMAP *region_get_language_flag( const STRING *language )
  * 
  * Returns the flag bitmap object for the specified language, if it exists.
  * The file is named in <region>/REGION_LANGUAGE_FLAG_FILE (by default flag.jpg).
  */
-BMAP *region_get_language_flag( __In const STRING *language )
+BMAP *region_get_language_flag( const STRING *language )
 {
 	BMAP *b      = NULL;
 	STRING *s    = __region_get_path(str_create(language));
@@ -209,14 +209,14 @@ BMAP *region_get_language_flag()
 }
 
 /*
- * STRING *region_get_string( __In const STRING *tag, __In int length )
+ * STRING *region_get_string( const STRING *tag, int length )
  * 
  * Fetchs the content of the given tag (file name). The tag must exists.
  * The Unicode-ness of the return string is per-language, not per-file. This mean for any 
  * Unicode language, the format of the file name (the tag) must all be the same (Unicode encoding),
  * otherwise the strings won't be read correctly.
  */
-STRING *region_get_string( __In const STRING *tag, __In int length )
+STRING *region_get_string( const STRING *tag, int length )
 {
 	STRING *s         = __region_get_tag_file(str_create(tag));
 	STRING *content   = NULL;
@@ -243,7 +243,7 @@ STRING *region_get_string( __In const STRING *tag, __In int length )
 	return content;
 }
 
-STRING *region_get_string( __In const STRING *tag )
+STRING *region_get_string( const STRING *tag )
 {
 	return region_get_string(tag, - 42);
 }
@@ -259,12 +259,12 @@ STRING *region_get_language()
 }
 
 /*
- * BOOL region_set_language( __In const STRING *language )
+ * BOOL region_set_language( const STRING *language )
  * 
  * Sets active a language. The language itself must exists.
  * Returns true if the language was successfully set, false otherwise.
  */
-BOOL region_set_language( __In const STRING *language )
+BOOL region_set_language( const STRING *language )
 {
 	if( !language ) return false;
 	
@@ -285,13 +285,13 @@ BOOL region_set_language( __In const STRING *language )
 }
 
 /*
- * BOOL region_get_unicode( __In const STRING *language )
+ * BOOL region_get_unicode( const STRING *language )
  * 
  * Returns true if the specified language is Unicode, false otherwise.
  * This can done by either checking the last character of the language string,
  * or test if the unicode padding file exists.
  */
-BOOL region_get_unicode( __In const STRING *language )
+BOOL region_get_unicode( const STRING *language )
 {
 	BOOL ret = false;	
 	STRING *unicode_pad_file = "";

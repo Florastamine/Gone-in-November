@@ -17,6 +17,10 @@
 #ifndef    _COMMON_H_
 #define    _COMMON_H_
 
+#define __static 
+#define __In
+#define __Out
+
 #ifndef    PRAGMA_POINTER
     #define    PRAGMA_POINTER
 #endif

@@ -35,6 +35,8 @@
 #include "utilities.h"
 #include "file.h"
 #include "crypto.h"
+#include "region.h"
+#include "serializer.h"
 
 #include "render.h"
 #include "render_lrays.h"
