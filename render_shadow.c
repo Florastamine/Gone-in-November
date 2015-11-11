@@ -113,13 +113,10 @@ void render_shadow_new()
 	
 	mtl_shadowDepthSun->event = mtl_shadowDepthSun_event;
 	
-	int i = 0;
-	for(; i < 16; i++)
-	{
-		(ShadowState_singleton->ortho_light_pos)[i] = 0;
-		(ShadowState_singleton->ortho_matrix)[i]    = 0;
-		(ShadowState_singleton->sun_light_view)[i]  = 0;	
-	}
+	int large = sizeof(int) * 16;
+	memset(ShadowState_singleton->ortho_light_pos, 0, large);
+	memset(ShadowState_singleton->ortho_matrix,    0, large);
+	memset(ShadowState_singleton->sun_light_view,  0, large);
 	
 	ShadowState_singleton->resolution         = 0.0;
 	ShadowState_singleton->resolution_range   = 0.0;

@@ -36,6 +36,9 @@
  * - Added BIND_KEY(), CALLOC() and REALLOC().
  * - Added copy().
  * __________________________________________________________________
+ * + v0.1.3-alpha
+ * - Added calloc().
+ * __________________________________________________________________
  */
 #ifndef    _UTILITIES_H_ 
 #define    _UTILITIES_H_ 
@@ -63,7 +66,7 @@
 #define STATIC_ASSERT(condition)           {}
 #define ARRAY_LENGTH(array)                (sizeof(array)/sizeof(array[0]))
 #define MALLOC(number, type)               ((type *) malloc(number * sizeof(type)))
-#define CALLOC(number, type)               ((type *) calloc( number, sizeof(type))
+#define CALLOC(number, type)               (type *) calloc( number, sizeof(type) )
 #define REALLOC(inlet, type, number)       (type *) realloc( inlet, sizeof(type) * number )
 #define ASSERT(condition, message)         do { if( !(condition) ) __assert(message); } while(false)
 #define WAIT_PROCESS(process)              while( proc_status(process) ) wait(1.0)
@@ -245,6 +248,7 @@ __namespace(pair) {
 }
 
 __namespace() {
+	void *calloc( __In int count, __In size_t size);
 	void __assert( const char *message );
 	char *function_name_get( __In const void *f );
 	char *strtok( __In const char *str, __In const char *delimiter );

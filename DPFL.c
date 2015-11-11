@@ -26,6 +26,7 @@
 */
 
 #include <acknex.h>
+#include <litec.h>
 #include <d3d9.h>
 #include <stdio.h>
 #include <default.c>

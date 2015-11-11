@@ -131,7 +131,7 @@ int main( void )
 	b = MALLOC(1, box);
 	b->size = 2;
 	b->pos  = 0;
-	b->i = MALLOC(b->size, int);
+	b->i = CALLOC(b->size, int);
 
 	int i = 0;
 	while(i < b->size )

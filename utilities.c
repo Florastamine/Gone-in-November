@@ -43,6 +43,22 @@ void __assert( const char *message )
 }
 
 /*
+ * void *calloc(int count, size_t size)
+ * 
+ * C's calloc() reimplementation on Lite-C.
+ * Just realized that calloc() doesn't exist on Lite-C after adding the macro CALLOC(). ;)
+ */
+void *calloc(int count, size_t size)
+{
+	size_t __size = count * sizeof(size);
+	
+	void *ret = malloc(__size);
+	memset( ret, 0, __size );
+	
+	return ret;
+}
+
+/*
  * Object *object_sky_create( const String *file, const int layer )
  * 
  * Quick-creates a sky cube without an ugly global struct.

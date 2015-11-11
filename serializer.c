@@ -78,8 +78,8 @@ Archive *archive_new( int __size )
 	Archive *arch              = MALLOC(1, Archive);
 	
 	arch->pointer_string       = txt_create(__size, 1);
-	arch->pointer_float        = MALLOC(__size, float);
-	arch->pointer_int          = MALLOC(__size, int);
+	arch->pointer_float        = CALLOC(__size, float);
+	arch->pointer_int          = CALLOC(__size, int);
 	arch->pos_string           = 0;
 	arch->pos_float            = 0;
 	arch->pos_int              = 0;
