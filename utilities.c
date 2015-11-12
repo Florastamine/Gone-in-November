@@ -46,7 +46,7 @@ void __assert( const char *message )
  * void *calloc(int count, size_t size)
  * 
  * C's calloc() reimplementation on Lite-C.
- * Just realized that calloc() doesn't exist on Lite-C after adding the macro CALLOC(). ;)
+ * Just realized that calloc() doesn't exist in Lite-C after adding the macro CALLOC(). ;)
  */
 void *calloc(int count, size_t size)
 {
@@ -105,6 +105,67 @@ void copy( float **i, float **j, int num )
 		*(*i + k) = *(*j + k);
 		k++;
 	}
+}
+
+/*
+ * char *strstr(char *str1, const char *str2)
+ * 
+ * Returns a pointer to the first occurrence of str2 in str1, or a null pointer if str2 is not part of str1.
+ */
+char *strstr(char *str1, const char *str2)
+{
+	long index = 0;
+	long length = strlen(str2);
+	char *start = NULL;
+	
+	while(*str1 != '\0')
+	{
+		if(*str1 == str2[index])
+		{
+			if(index == 0)
+				start = str1;
+			
+			index ++;
+			if(index == length)
+				return start;
+		}
+		else
+			index = 0;
+		
+		str1 ++;
+	}
+	return NULL;
+}
+
+/*
+ * char *dump(const char *content)
+ * 
+ * Dumps content from a file, or return a malloc-ed string if the file doesn't exist.
+ */
+char *dump(const char *content)
+{
+	char *buffer = NULL;
+	
+	if(file_exists( _str(content) )) /* Found a file, so we dump its content. */
+	{
+		FILE *f = fopen(content, "rb");
+		long ssize = 0;
+		
+		fseek(f, 0, SEEK_END);
+		ssize = ftell(f);
+		rewind(f);
+		
+		buffer = MALLOC( ssize, char );
+		fread(buffer, 1, ssize, f);
+		fclose(f);
+	}
+	else /* Okay... just allocate a string instead. */
+	{
+		buffer = MALLOC( strlen(content) + 1, char );
+		strcpy(buffer, content);
+	}
+	
+	return buffer;
 }
 
 /*

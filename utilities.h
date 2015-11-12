@@ -38,6 +38,8 @@
  * __________________________________________________________________
  * + v0.1.3-alpha
  * - Added calloc().
+ * - Added dump().
+ * - Added strstr().
  * __________________________________________________________________
  */
 #ifndef    _UTILITIES_H_ 
@@ -45,7 +47,7 @@
 
 #include <stdio.h>
 
-#define __VERSION "v0.1.1-alpha" // Seems familiar?
+#define __VERSION "v0.1.3-alpha" // Seems familiar?
 
 #ifdef ENFORCE_STRICT
     #ifndef    PRAGMA_POINTER
@@ -248,6 +250,8 @@ __namespace(pair) {
 }
 
 __namespace() {
+	char *dump( __In const char *content );
+	char *strstr( __In char *str1, __In const char *str2);
 	void *calloc( __In int count, __In size_t size);
 	void __assert( const char *message );
 	char *function_name_get( __In const void *f );
