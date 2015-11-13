@@ -31,7 +31,7 @@ __static void __render_refract_setRT( float RT )
 void render_refract_new()
 {
 	RefractState_singleton = (RefractState *) malloc(sizeof(RefractState));
-	RefractState_singleton->map_refract = (BMAP *) malloc(sizeof(BMAP));
+	RefractState_singleton->map_refract = (BMAP *) sys_malloc(sizeof(BMAP));
 	
 	RefractState_singleton->rt_factor = 1.0;
 	RefractState_singleton->queued = false;
@@ -50,8 +50,8 @@ void render_refract_free()
 {
 	if(RefractState_singleton)
 	{
-		if(RefractState_singleton->map_refract) free(RefractState_singleton->map_refract);
-		free(RefractState_singleton);
+		if(RefractState_singleton->map_refract) sys_free(RefractState_singleton->map_refract);
+		sys_free(RefractState_singleton);
 	}
 }
 

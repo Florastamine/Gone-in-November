@@ -359,11 +359,11 @@ void gui_button_free( GUIButton *b )
 		b->fptr_off  = NULL;
 		b->fptr_over = NULL;
 		
-		free(b->position);
+		FREE(b->position);
 		// free(b->scale);
 		
 		// Remove the button itself
-		free(b);
+		FREE(b);
 	}
 }
 

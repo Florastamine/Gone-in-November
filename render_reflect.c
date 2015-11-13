@@ -39,8 +39,8 @@ ReflectState *render_reflect_get_singleton()
  */
 void render_reflect_new()
 {
-	ReflectState_singleton = (ReflectState *) malloc(sizeof(ReflectState));
-	ReflectState_singleton->map_reflect = (BMAP *) malloc(sizeof(BMAP));
+	ReflectState_singleton = (ReflectState *) sys_malloc(sizeof(ReflectState));
+	ReflectState_singleton->map_reflect = (BMAP *) sys_malloc(sizeof(BMAP));
 	
 	ReflectState_singleton->rt_factor_x = 1.0;
 	ReflectState_singleton->rt_factor_y = 1.0;
@@ -60,8 +60,8 @@ void render_reflect_free()
 {
 	if(ReflectState_singleton)
 	{
-		if(ReflectState_singleton->map_reflect) free(ReflectState_singleton->map_reflect);
-		free(ReflectState_singleton);
+		if(ReflectState_singleton->map_reflect) sys_free(ReflectState_singleton->map_reflect);
+		sys_free(ReflectState_singleton);
 	}
 }
 

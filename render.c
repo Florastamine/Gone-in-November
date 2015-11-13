@@ -35,7 +35,7 @@ RenderState *RenderState_get_singleton()
  */
 void render_new()
 {
-	RenderState_singleton = (RenderState *) malloc(sizeof(RenderState) + 4 * sizeof(BMAP) + sizeof(VIEW));
+	RenderState_singleton = (RenderState *) sys_malloc(sizeof(RenderState) + 4 * sizeof(BMAP) + sizeof(VIEW));
 	
 	RenderState_singleton->map_scene = NULL;
 	RenderState_singleton->map_depth = NULL;
@@ -56,7 +56,7 @@ void render_new()
  */
 void render_free()
 {
-	if(RenderState_singleton) free(RenderState_singleton);
+	if(RenderState_singleton) sys_free(RenderState_singleton);
 }
 
 /* 
@@ -67,7 +67,7 @@ void render_free()
  */
 Attribute *attribute_new()
 {
-	Attribute *attribute = (Attribute *) malloc(sizeof(Attribute));
+	Attribute *attribute = (Attribute *) sys_malloc(sizeof(Attribute));
 	
 	attribute->luminance = vector(0.0, 0.0, 0.0);
 	attribute->refraction = vector(1.0, 1.0, 1.0);
@@ -81,11 +81,11 @@ Attribute *attribute_new()
 /*
  * void attribute_free( Attribute *attribute )
  * 
- * Frees an object attribute that was allocated before with attribute_new()/malloc().
+ * Frees an object attribute that was allocated before with attribute_new()/MALLOC().
  */
 void attribute_free( Attribute *attribute )
 {
-	if(attribute) free(attribute);
+	if(attribute) sys_free(attribute);
 }
 
 /*

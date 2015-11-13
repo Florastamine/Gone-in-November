@@ -48,8 +48,8 @@ void render_water_set_depth( float depth )
  */
 void render_water_new()
 {
-	WaterState_singleton = (WaterState *) malloc(sizeof(WaterState));
-	WaterState_singleton->fresnel = (BMAP *) malloc(sizeof(BMAP));
+	WaterState_singleton = (WaterState *) sys_malloc(sizeof(WaterState));
+	WaterState_singleton->fresnel = (BMAP *) sys_malloc(sizeof(BMAP));
 	
 	WaterState_singleton->depth = 1.0;
 	__render_water_set(5.0, str_create("fresnel.bmp") );
@@ -65,8 +65,8 @@ void render_water_free()
 {
 	if(WaterState_singleton)
 	{
-		if(WaterState_singleton->fresnel) free(WaterState_singleton->fresnel);
-		free(WaterState_singleton);
+		if(WaterState_singleton->fresnel) sys_free(WaterState_singleton->fresnel);
+		sys_free(WaterState_singleton);
 	}
 }
 

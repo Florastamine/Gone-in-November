@@ -42,7 +42,7 @@
  * 
  * - Fixed str_clip_ex() not behaving correctly.
  * - Fixed: Switched all malloc()/free() calls to sys_malloc()/sys_free() due to
- * immediate crash with the former commands in publish builds. From now on,
+ * immediate crash with the former commands in published builds. From now on,
  * use MALLOC()/FREE() for memory allocation/deallocation instead.
  * 
  * - Deprecated: calloc()/CALLOC() (as it involves malloc() and memset() calls).

@@ -66,7 +66,7 @@ void render_shadow_free()
 		if(ShadowState_singleton->blur_depth_view)       ShadowState_singleton->blur_depth_view = NULL;
 		if(ShadowState_singleton->shadow_depth_view)     ShadowState_singleton->shadow_depth_view = NULL;
 		
-		free(ShadowState_singleton);
+		sys_free(ShadowState_singleton);
 	}
 }
 
@@ -99,24 +99,26 @@ BOOL render_shadow_get_queued()
 void render_shadow_new()
 {
 	
-	ShadowState_singleton = (ShadowState *) malloc(sizeof(ShadowState_singleton));
-	/* ShadowState_singleton->map_shadow_depth_sun = (BMAP *) malloc(sizeof(BMAP)); */ // <- Cause a crash due to (maybe, very ) bmap_create() allocates its own memory.
+	ShadowState_singleton = (ShadowState *) sys_malloc(sizeof(ShadowState_singleton));
+	/* ShadowState_singleton->map_shadow_depth_sun = (BMAP *) sys_malloc(sizeof(BMAP)); */ // <- Cause a crash due to (maybe, very ) bmap_create() allocates its own memory.
 	ShadowState_singleton->map_shadow_alpha = bmap_create("shadow_alpha.bmp");
 	
-	//ShadowState_singleton->blur_depth_view = (VIEW *) malloc(sizeof(VIEW)); // <- The same with View objects.
+	//ShadowState_singleton->blur_depth_view = (VIEW *) sys_malloc(sizeof(VIEW)); // <- The same with View objects.
 	ShadowState_singleton->blur_depth_view = view_create( -2 );
 	
-	//ShadowState_singleton->shadow_depth_view = (VIEW *) malloc(sizeof(VIEW));
+	//ShadowState_singleton->shadow_depth_view = (VIEW *) sys_malloc(sizeof(VIEW));
 	ShadowState_singleton->shadow_depth_view = view_create( -21 );
 	
 	mtl_shadow_sun->skin2 = ShadowState_singleton->map_shadow_alpha;
 	
 	mtl_shadowDepthSun->event = mtl_shadowDepthSun_event;
 	
+	/*
 	int large = sizeof(int) * 16;
 	memset(ShadowState_singleton->ortho_light_pos, 0, large);
 	memset(ShadowState_singleton->ortho_matrix,    0, large);
 	memset(ShadowState_singleton->sun_light_view,  0, large);
+	*/
 	
 	ShadowState_singleton->resolution         = 0.0;
 	ShadowState_singleton->resolution_range   = 0.0;

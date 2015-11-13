@@ -55,7 +55,7 @@ void region_new()
 {
 	if(Region_singleton) region_free();
 	
-	Region_singleton = (Region *) malloc(sizeof(Region));
+	Region_singleton = (Region *) sys_malloc(sizeof(Region));
 	Region_singleton->languages            = txt_create(0, 1);
 	Region_singleton->__search_path        = str_create("");
 	Region_singleton->language_active      = str_create("#3"); // Only 3 characters.
@@ -157,7 +157,7 @@ void region_free()
 		// Remove the current active language and frees the singleton.
 		str_remove( (region_get_singleton())->language_active );
 		str_remove( (region_get_singleton())->__search_path );
-		free( region_get_singleton() );
+		sys_free( region_get_singleton() );
 	}
 }
 

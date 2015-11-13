@@ -107,7 +107,7 @@ DOFState *render_dof_get_singleton()
  */
 void render_dof_new()
 {
-	DOFState_singleton = (DOFState *) malloc(sizeof(DOFState));
+	DOFState_singleton = (DOFState *) sys_malloc(sizeof(DOFState));
 	
 	DOFState_singleton->rt_factor = 2.0;
 	DOFState_singleton->bit_depth = 32.0;
@@ -129,7 +129,7 @@ void render_dof_new()
  */
 void render_dof_free()
 {
-	if(DOFState_singleton) free(DOFState_singleton);
+	if(DOFState_singleton) sys_free(DOFState_singleton);
 }
 
 /*

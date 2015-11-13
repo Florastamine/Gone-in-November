@@ -110,7 +110,7 @@ char *file_extension_get ( File *file )
 		if(c != '.') return NULL;
 		
 		int left = end - right + 1; // An additional +1 is reserved for the dot character.
-		char *cstr = (char *) malloc(right - 1);
+		char *cstr = MALLOC(right - 1, char);
 		int i = 0;
 		
 		while(left <= end)
@@ -146,8 +146,8 @@ File *file_new( const char *name, int process_mode, BOOL unicode )
 {
 	STRING *__name = str_create(name);
 	
-	File *f = (File *) malloc(sizeof(File));
-	f->name = (char *) malloc(sizeof(char) * FILE_NAME_MAX_LENGTH );
+	File *f = (File *) sys_malloc(sizeof(File));
+	f->name = (char *) sys_malloc(FILE_NAME_MAX_LENGTH * sizeof(char));
 	
 	/* strcpy(f->name, ifelse(__name, __name, __combine("out")) ); */
 	if(__name) strcpy(f->name, __name);
@@ -221,8 +221,8 @@ void file_free( File *file )
 	if(file)
 	{
 		file_close(file->__handle);
-		free(file->name);
-		free(file);
+		sys_free(file->name);
+		sys_free(file);
 		
 		file = NULL;
 	}

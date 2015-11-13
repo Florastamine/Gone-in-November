@@ -37,7 +37,7 @@ HDRState *render_hdr_get_singleton()
  */
 void render_hdr_free()
 {
-	if(HDRState_singleton) free(HDRState_singleton);
+	if(HDRState_singleton) sys_free(HDRState_singleton);
 }
 
 /*
@@ -60,7 +60,7 @@ void render_hdr_set_queued( __In BOOL state )
  */
 void render_hdr_new()
 {
-	HDRState_singleton = (HDRState *) malloc(sizeof(HDRState));
+	HDRState_singleton = (HDRState *) sys_malloc(sizeof(HDRState));
 	
 	HDRState_singleton->rt_factor = 4;
 	HDRState_singleton->bit_depth = 32;

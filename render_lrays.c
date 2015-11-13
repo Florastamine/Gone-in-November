@@ -38,7 +38,7 @@ __LRaysState *render_light_rays_get_singleton()
  */
 void render_light_rays_new()
 {
-	__LRays_singleton = (__LRaysState *) malloc(sizeof(__LRaysState));
+	__LRays_singleton = (__LRaysState *) sys_malloc(sizeof(__LRaysState));
 	
 	__LRays_singleton->ray_strength = 0.8;
 	__LRays_singleton->ray_length   = 11.5;
@@ -65,7 +65,7 @@ void render_light_rays_setup( float strength, float length )
  */
 void render_light_rays_free()
 {
-	if(__LRays_singleton) free(__LRays_singleton);
+	if(__LRays_singleton) sys_free(__LRays_singleton);
 }
 
 /*
