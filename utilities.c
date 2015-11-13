@@ -38,7 +38,7 @@ void __assert( const char *message )
 	file_asc_write(f, 13);
 	file_asc_write(f, 10);
 	
-	free(__string);
+	FREE(__string);
 	sys_exit((void *) 0);
 }
 
@@ -203,7 +203,7 @@ Pair *pair_new( const Pair *p )
  */
 void pair_free( Pair *pair )
 {
-	if(pair) free(pair);
+	if(pair) FREE(pair);
 }
 
 /*
@@ -273,7 +273,7 @@ Pair *shader_get_version()
 	p->first   = join( *(array + 3), *(array + 2) );
 	p->second  = join( *(array + 1), *array );
 	
-	free(array);
+	FREE(array);
 	return p;
 }
 
@@ -395,7 +395,7 @@ String *str_parse_ex( String *to, char *from, int pos, char delimiter )
 }
 
 /*
-* void str_parse_delim( Text *text, char *content char delimiter )
+* void str_parse_delim( Text *text, char *content, char delimiter )
 * 
 * Breaks a string into substrings separated by the delimiter character given in 
 * delimiter, and pushes the result substrings into the text object.
@@ -404,7 +404,7 @@ void str_parse_delim( Text *text, char *content, char delimiter )
 {
 	char old_delimiter = _str_separator;
 	_str_separator = delimiter;
-	String *parse = str_parse_ex(NULL, _chr(content), 1, delimiter ); // Fetchs the very first token.
+	String *parse = str_parse_ex(NULL, content, 1, delimiter ); // Fetchs the very first token.
 	txt_addstring(text, parse);                                       // And push it into the text object.
 	
 	while(true) // Fetchs the remaining tokens.
@@ -764,7 +764,7 @@ void object_place( Object *object, float modifier )
 
 __static void __console_setup( Channel **console )
 {	
-	(*console) = (Channel *) malloc( sizeof(Channel) + sizeof(Panel) + sizeof(Bitmap) + (2 * sizeof(Text)) );
+	(*console) = (Channel *) sys_malloc( sizeof(Channel) + sizeof(Panel) + sizeof(Bitmap) + (2 * sizeof(Text)) );
 	(*console)->__background_container = pan_create(NULL, 42);
 	(*console)->data = txt_create(1, 42 + 1);
 	(*console)->data->font = font_create(Arial_14);
@@ -849,7 +849,7 @@ void console_free( Channel *console )
 		console->background = NULL;
 		console->__background_container = NULL;
 		
-		free(console);
+		FREE(console);
 	}
 }
 
@@ -1005,7 +1005,7 @@ void command_table_new()
 		(__CommandTable_command->pstring)[i] = str_create_ex(CONSOLE_COMMAND_MAX_LENGTH);
 	}
 	
-	free(cstr);
+	FREE(cstr);
 }
 
 /*
@@ -1113,7 +1113,7 @@ String *str_create_ex( const int length )
 	*(cstr + length - 1) = '\0';
 	
 	String *gstr = str_create(cstr);
-	free(cstr);
+	FREE(cstr);
 	
 	return gstr; // Otherwise memory leak from not freeing cstr.
 }
@@ -1195,7 +1195,7 @@ void txt_remove_ex( Text *object )
 
 __static void __error_setup( Error **table )
 {
-	(*table) = (Error *) malloc(sizeof(int) * (ERROR_CONTAINER_CAPACITY + ERROR_HISTORY_CAPACITY + 2));
+	(*table) = (Error *) sys_malloc(sizeof(int) * (ERROR_CONTAINER_CAPACITY + ERROR_HISTORY_CAPACITY + 2));
 	(*table)->pos = 0;
 	(*table)->count = 0;
 	(*table)->message = txt_create(ERROR_HISTORY_CAPACITY, 0);
@@ -1275,7 +1275,7 @@ void error_push( const unsigned int code, const char *message )
 	str_cpy((Error_active->message->pstring)[Error_active->pos], cstr);
 	Error_active->pos += 1;
 	
-	free(cstr);
+	FREE(cstr);
 }
 
 /*
@@ -1324,7 +1324,7 @@ void error_free( Error *table )
 		txt_remove_ex(table->message);
 		table->message = NULL;
 		
-		free(table);
+		FREE(table);
 	}
 }
 

@@ -38,7 +38,15 @@
  * __________________________________________________________________
  * + v0.1.3-alpha
  * - Added calloc(), dump().
- * - Added strstr(), str_trunc_ex(), str_parse_ex().
+ * - Added strstr(), str_trunc_ex(), str_parse_ex(), str_parse_delim().
+ * 
+ * - Fixed str_clip_ex() not behaving correctly.
+ * - Fixed: Switched all malloc()/free() calls to sys_malloc()/sys_free() due to
+ * immediate crash with the former commands in publish builds. From now on,
+ * use MALLOC()/FREE() for memory allocation/deallocation instead.
+ * 
+ * - Deprecated: calloc()/CALLOC() (as it involves malloc() and memset() calls).
+ * For zero-allocation, use MALLOC().
  * __________________________________________________________________
  */
 #ifndef    _UTILITIES_H_ 
@@ -67,9 +75,11 @@
 #define __namespace(namespace)             {}
 #define STATIC_ASSERT(condition)           {}
 #define ARRAY_LENGTH(array)                (sizeof(array)/sizeof(array[0]))
-#define MALLOC(number, type)               ((type *) malloc(number * sizeof(type)))
+// #define MALLOC(number, type)               ((type *) malloc(number * sizeof(type)))
+#define MALLOC(number, type)               ((type *) sys_malloc(number * sizeof(type)))
 #define CALLOC(number, type)               (type *) calloc( number, sizeof(type) )
 #define REALLOC(inlet, type, number)       (type *) realloc( inlet, sizeof(type) * number )
+#define FREE(block)                        sys_free(block)
 #define ASSERT(condition, message)         do { if( !(condition) ) __assert(message); } while(false)
 #define WAIT_PROCESS(process)              while( proc_status(process) ) wait(1.0)
 #define KILL_PROCESS(process)              proc_kill(4) /* This macro exists because it helps eliminating magic numbers. */
