@@ -351,11 +351,73 @@ String *str_clip_ex( String *str, unsigned int n )
 {
 	ASSERT(str, _chr("utilities.c/str_clip_ex(): Uninitialized container provided."));
 	
-	String *temp = str_create(str);
-	str_trunc(temp, str_len(str) - n);
-	str_clip(str, n);
+	String *temp   = str_create(str);
+	int len        = str_len(str);
 	
-	return str;
+	str_clip(str, n);
+	str_trunc(temp, len - n);
+	
+	return temp;
+}
+
+/*
+ * String *str_trunc_ex( String *str, unsigned int n )
+ * 
+ * An extension to str_trunc() which returns the cut string.
+ */
+String *str_trunc_ex( String *str, unsigned int n )
+{
+	ASSERT(str, _chr("utilities.c/str_trunc_ex(): Uninitialized container provided."));
+	
+	String *temp   = str_create(str);
+	int len        = str_len(str);
+	
+	str_trunc(str, n); // Cuts the original string.
+	str_clip(temp, len - n);
+	
+	return temp;
+}
+
+/*
+* String *str_parse_ex( String *to, char *from, int pos, char delimiter )
+* 
+* An extension to <strio>/str_parse() which allows for custom delimiters.
+*/
+String *str_parse_ex( String *to, char *from, int pos, char delimiter )
+{
+	fixed old_delimiter = _str_separator;
+	_str_separator = delimiter;
+	
+	String *parsed = str_parse(to, from, pos);
+	_str_separator = old_delimiter;	
+	
+	return parsed;
+}
+
+/*
+* void str_parse_delim( Text *text, char *content char delimiter )
+* 
+* Breaks a string into substrings separated by the delimiter character given in 
+* delimiter, and pushes the result substrings into the text object.
+*/
+void str_parse_delim( Text *text, char *content, char delimiter )
+{
+	char old_delimiter = _str_separator;
+	_str_separator = delimiter;
+	String *parse = str_parse_ex(NULL, _chr(content), 1, delimiter ); // Fetchs the very first token.
+	txt_addstring(text, parse);                                       // And push it into the text object.
+	
+	while(true) // Fetchs the remaining tokens.
+	{
+		parse = str_parse(parse, content, 0);
+		
+		if(parse != NULL)
+		    txt_addstring(text, str_trim(parse));
+		else
+		    break;
+	}
+	
+	_str_separator = old_delimiter;
 }
 
 /*

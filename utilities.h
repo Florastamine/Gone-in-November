@@ -37,15 +37,15 @@
  * - Added copy().
  * __________________________________________________________________
  * + v0.1.3-alpha
- * - Added calloc().
- * - Added dump().
- * - Added strstr().
+ * - Added calloc(), dump().
+ * - Added strstr(), str_trunc_ex(), str_parse_ex().
  * __________________________________________________________________
  */
 #ifndef    _UTILITIES_H_ 
 #define    _UTILITIES_H_ 
 
 #include <stdio.h>
+#include <strio.c>
 
 #define __VERSION "v0.1.3-alpha" // Seems familiar?
 
@@ -309,9 +309,14 @@ __namespace(video) {
 
 __namespace(string) {
 	String *str_clip_ex( __In String *str, __In unsigned int n );
+	String *str_trunc_ex( String *str, unsigned int n );
 	String *str_create_ex( __In const int length );
+	
 	void str_init( __In String *gstr );
 	void str_init( __In char *cstr );
+	
+	String *str_parse_ex( __In String *to, __In char *from, __In int pos, __In char delimiter );
+	void str_parse_delim( __In __Out Text *text, __In char *content, __In char delimiter );
 }
 
 __namespace(text) {
