@@ -28,7 +28,7 @@ int main( int argc, char **argl )
 	const STRING *sstr = str_create(cstr);
 	PRINT_INT(str_len(sstr));
 	
-	free(cstr);
+	FREE(cstr);
 	
 	return 0;
 }

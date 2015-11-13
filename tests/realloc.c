@@ -40,7 +40,7 @@ int *mrealloc( int **in, int n, int copyn )
 {
 	int oldval = 0;
 	
-	int *backup = (int *) malloc(copyn * sizeof(int));
+	int *backup = (int *) sys_malloc(copyn * sizeof(int));
 	*backup = *in;
 	oldval = **in;
 	
@@ -68,7 +68,8 @@ int *mrealloc( int **in, int n, int copyn )
 	}
 	else
 	w = *in;
-
+	
+	sys_free(backup);
 	return w;
 }
 
@@ -131,7 +132,7 @@ int main( void )
 	b = MALLOC(1, box);
 	b->size = 2;
 	b->pos  = 0;
-	b->i = CALLOC(b->size, int);
+	b->i = MALLOC(b->size, int);
 
 	int i = 0;
 	while(i < b->size )
