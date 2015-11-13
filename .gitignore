@@ -32,6 +32,10 @@
 *.dSYM/
 
 # Gamestudio-specific
+dpfl.cd/
+status/_sync.bat
+status/exclusion.excl
+status/log.log
 
 # General
 *.wdf
@@ -47,9 +51,6 @@
 *.log
 *.jpg
 *.pad
-./status/_sync.bat
-./status/exclusion.excl
-./status/log.log
 
 ./progress_temp.txt
 
