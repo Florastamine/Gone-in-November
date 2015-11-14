@@ -38,9 +38,11 @@ void render_queue_start()
 	    if( render_refract_get_queued() ) render_refract();
 	#endif
 	
+	/*
 	#ifdef    __SHADOW
 	    if( render_shadow_get_queued() ) render_shadow();
 	#endif
+	*/
 	
 	#ifdef    __GOD_RAYS
 	    if( render_light_rays_get_queued() ) render_light_rays();
