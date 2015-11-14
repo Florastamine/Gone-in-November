@@ -69,7 +69,6 @@ Attribute *attribute_new()
 {
 	Attribute *attribute = (Attribute *) sys_malloc(sizeof(Attribute));
 	
-	attribute->luminance = vector(0.0, 0.0, 0.0);
 	attribute->refraction = vector(1.0, 1.0, 1.0);
 	attribute->depth = 0;
 	attribute->volpart = 0;
@@ -107,13 +106,6 @@ void render_attribute_setup( ENTITY *object, const int mode, int value )
 		    attribute->depth = value;
 		    break;
 		
-		case ATTRIBUTE_LUMINANCE:
-		    vec_set(attribute->luminance, vec_fill(nullvector, value));
-		    attribute->luminance->x /= 255;
-		    attribute->luminance->y /= 255;
-		    attribute->luminance->z /= 255;
-		    break;
-		
 		case ATTRIBUTE_VOLPART:
 		    attribute->volpart = value;
 		    attribute->depth = 2.0; // Clip from depth map.
@@ -124,7 +116,7 @@ void render_attribute_setup( ENTITY *object, const int mode, int value )
 		    break;
 		
 		case ATTRIBUTE_REFRACTION_COL:
-		    vec_set(attribute->luminance, vec_fill(nullvector, value / 255));
+		    // vec_set(attribute->luminance, vec_fill(nullvector, value / 255));
 		    break;
 		
 		default: return;

@@ -19,7 +19,7 @@
  * <render>
  * A collection of extra rendering effects which enhances the stock 
  * Gamestudio renderer, containing high dynamic rendering, depth of field, 
- * fast shadow mapping, light rays, water reflection and refraction.
+ * light rays, water reflection and refraction.
  * Preceding modules must include the base header <render> in order to use the shaders.
  * 
  * Authors: Wolfgang "BoH_Havoc" Reichardt (http://dotmos.org/)
@@ -40,10 +40,9 @@
 #define __namespace(namespace)             {}
 
 #define ATTRIBUTE_DEPTH                    1
-#define ATTRIBUTE_LUMINANCE                2
-#define ATTRIBUTE_VOLPART                  3
-#define ATTRIBUTE_TEXMOV                   4
-#define ATTRIBUTE_REFRACTION_COL           5
+#define ATTRIBUTE_VOLPART                  2
+#define ATTRIBUTE_TEXMOV                   3
+#define ATTRIBUTE_REFRACTION_COL           4
 
 __namespace(render) {
 	typedef struct {
@@ -51,7 +50,6 @@ __namespace(render) {
 		float volpart;
 		float texmov;
 		
-		VECTOR *luminance;
 		VECTOR *refraction;
 	} Attribute;
 	

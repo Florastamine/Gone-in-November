@@ -20,7 +20,6 @@
 #define __RENDER_GODRAYS__
 #define __RENDER_REFRACT__
 #define __RENDER_REFLECT__
-#define __RENDER_SHADOW_
 #define __RENDER_DOF__
 #define __RENDER_HDR__
 */
@@ -41,7 +40,6 @@
 
 #include "render.h"
 #include "render_lrays.h"
-#include "render_shadow.h"
 #include "render_hdr.h"
 #include "render_dof.h"
 #include "render_refract.h"
@@ -96,16 +94,6 @@ int main( int argc, char **argl )
 	    render_hdr_new();
 	    
 	    render_hdr_set_queued(true);
-	#endif
-	
-	#ifdef    __RENDER_SHADOW_
-	    render_shadow_new();
-	    
-	    mat_model->effect = "obj_doShadow.fx";
-	    mat_flat->effect = "level_doShadow.fx";
-	    mat_shaded->effect = "level_doShadow.fx";
-	    
-	    render_shadow_set_queued(true);
 	#endif
 	
 	#ifdef    __RENDER_GODRAYS__
