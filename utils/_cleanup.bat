@@ -13,4 +13,7 @@ del /f /s /q ..\scene\*.wed
 del /f /s /q ..\scene\*.raw
 del /f /s /q ..\scene\*.$$w
 
+rem Gamestudio builds 
+del /f ..\*.exe
+
 pause 

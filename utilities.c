@@ -1175,6 +1175,23 @@ void str_init( char *cstr )
 }
 
 /*
+ * void txt_clear( Text *object )
+ * 
+ * Clears a text object's strings without also removing the text.
+ */
+void txt_clear( Text *object )
+{
+	if(object)
+	{
+		if(object->strings)
+		{
+			int i = 1;
+			for(; i <= object->strings; i++) str_remove( (object->pstring)[i - 1] );
+		}
+	}
+}
+
+/*
  * void txt_remove_ex( Text *object )
  *
  * An extension to txt_remove() which removes all strings associated with the text object.
@@ -1182,15 +1199,10 @@ void str_init( char *cstr )
  */
 void txt_remove_ex( Text *object )
 {
-	if(object)
-	{	
-		if(object->strings)
-		{
-			int i = 1;
-			for(; i <= object->strings; i++) str_remove( (object->pstring)[i - 1] );
-		}
-		txt_remove(object);
-	}
+	txt_clear(object);
+	while(proc_status(txt_clear)) wait(1.0);
+	
+	txt_remove(object);
 }
 
 __static void __error_setup( Error **table )

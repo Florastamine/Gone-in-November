@@ -18,10 +18,13 @@
  * 
  * <serializer>
  * A simple serializer engine with a std::vector<>-like archive.
+ * For those who just wants to fast-forward this thing and see the dragons, open up <serializer.c>.
  * 
  */
 #ifndef    _SERIALIZATION_H_
 #define    _SERIALIZATION_H_
+
+#include <strio.c>
 
 #define __static 
 #define __In
@@ -29,6 +32,12 @@
 #define __namespace(namespace)             {}
 
 __namespace(serializer) {
+	#define    MAX_PUSH   512
+	
+	#define    INTEGER    0
+	#define    FLOAT      1
+	#define    __STRING   2
+	
 	typedef struct {
 		Text *pointer_string;
 		int pos_string;
@@ -40,13 +49,16 @@ __namespace(serializer) {
 		int pos_int;
 		
 		int __initial_size;
+		
+		char __order[MAX_PUSH];
+		int __order_pointer;
 	} Archive;
 	
 	Archive *archive_new( __In int size );
 	void archive_free( __In __Out Archive *arch );
 	
-	void      serialize( __In Archive *arch, __In fixed channel );
-	Archive   *deserialize( __In fixed channel );
+	void      serialize( __In Archive *arch, __In const char *file );
+	Archive   *deserialize( __In const char *file );
 	
 	int archive_get_initial_size( __In Archive *arch );
 	

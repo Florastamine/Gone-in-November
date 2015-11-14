@@ -37,8 +37,7 @@
  * - Added copy().
  * __________________________________________________________________
  * + v0.1.3-alpha
- * - Added calloc(), dump().
- * - Added strstr(), str_trunc_ex(), str_parse_ex(), str_parse_delim().
+ * - Added calloc(), dump(), strstr(), str_trunc_ex(), str_parse_ex(), str_parse_delim(), txt_clear().
  * 
  * - Fixed str_clip_ex() not behaving correctly.
  * - Fixed: Switched all malloc()/free() calls to sys_malloc()/sys_free() due to
@@ -330,6 +329,7 @@ __namespace(string) {
 }
 
 __namespace(text) {
+	void txt_clear( __In __Out Text *object );
 	void txt_remove_ex( __In __Out Text *object );
 }
 
