@@ -49,7 +49,6 @@ border: 1px solid red;
 <body>
 <div style="text-align: left;"><span
  style="font-weight: bold; font-style: italic;">Progress</span><br>
-Last updated 04/11/2015<br>
 <br>
 Progresses reported here are not necessary reflect the total percentage
 (%) completed of the game, in fact, there would be no exact way to know
@@ -60,6 +59,25 @@ The page is usually updated every week.<br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;">Current
 phase:</span> Building the base blocks, tools and utilities.<br>
+<br>
+<div style="text-align: left;"><span style="font-weight: bold;">Page
+update history</span><br>
+</div>
+<table
+ style="text-align: left; width: 152px; height: 31px; margin-left: 0px; margin-right: auto;"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><span
+ style="font-weight: bold; font-family: Courier New,Courier,monospace;">04/11/2015</span><br
+ style="font-family: Courier New,Courier,monospace; font-weight: bold;">
+      <span
+ style="font-family: Courier New,Courier,monospace; font-weight: bold;">15/11/2015</span><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
 <br>
 </div>
 <div style="text-align: left;">
@@ -99,9 +117,8 @@ progress</span><br>
 <img style="width: 16px; height: 16px;" alt="Critical"
  src="https://dl.dropboxusercontent.com/u/26857618/DP%20data/priority_urgent.bmp">
 <span style="font-weight: bold;">Build the core headers, along with
-testing and bug-fixing</span> <span
- style="font-family: Courier New,Courier,monospace;">(&lt;crypto&gt;,
-&lt;render&gt;, &lt;utilities&gt;, ...)</span><br
+testing and bug-fixing.</span> (<span style="font-weight: bold;">TODO:</span>
+Implement <span style="font-family: Courier New,Courier,monospace;">&lt;gui_utilities&gt;/fade()</span>)<br
  style="font-family: Courier New,Courier,monospace;">
 </div>
 <div style="font-style: italic;" id="progress" class="graph">
@@ -112,22 +129,24 @@ testing and bug-fixing</span> <span
 <br>
 <img style="width: 16px; height: 16px;" alt="Important"
  src="https://dl.dropboxusercontent.com/u/26857618/DP%20data/priority_important.bmp">
-<span style="font-weight: bold;">Write batch utilities </span><span
- style="font-family: Courier New,Courier,monospace;">(_cleanup,
-_publish, _sync)</span><br>
+<span style="font-weight: bold;">Write batch utilities.</span><br>
 <div style="font-style: italic;" id="progress" class="graph">
-<div id="bar" style="width: 49%;">
-<p>49%</p>
+<div id="bar" style="width: 75%;">
+<p>75%</p>
 </div>
 </div>
 <br>
 <img style="width: 16px; height: 16px;" alt="Important"
  src="https://dl.dropboxusercontent.com/u/26857618/DP%20data/priority_important.bmp">
 <span style="font-weight: bold;">Begin writing utility functions for </span><span
- style="font-family: Courier New,Courier,monospace;">&lt;gui&gt;</span>
+ style="font-family: Courier New,Courier,monospace;">&lt;gui&gt;: <span
+ style="font-family: Helvetica,Arial,sans-serif; font-weight: bold;">Progress
+bar interface, RPG Maker-based dialogue wrapper</span><span
+ style="font-style: italic; font-family: Times New Roman,Times,serif;"><br>
+</span></span>
 <div style="font-style: italic;" id="progress" class="graph">
-<div id="bar" style="width: 25%;">
-<p>25%</p>
+<div id="bar" style="width: 60%;">
+<p>60%</p>
 </div>
 </div>
 <br>
@@ -136,8 +155,8 @@ _publish, _sync)</span><br>
 <span style="font-weight: bold;">Write the story, which also includes
 designing the narrative.</span>
 <div style="font-style: italic;" id="progress" class="graph">
-<div id="bar" style="width: 0%;">
-<p>0%</p>
+<div id="bar" style="width: 35%;">
+<p>35%</p>
 </div>
 </div>
 <br>
@@ -173,6 +192,16 @@ within Downpour.</span>
 </div>
 </div>
 <br>
+<img style="width: 16px; height: 16px;" alt="Critical"
+ src="https://dl.dropboxusercontent.com/u/26857618/DP%20data/priority_urgent.bmp">
+<span style="font-weight: bold;">Write actors/static objects'
+behaviours (player, objects pick-up, static objects, doors/windows, ...)</span><br>
+<div style="font-style: italic;" id="progress" class="graph">
+<div id="bar" style="width: 0%;">
+<p>0%</p>
+</div>
+</div>
+<br>
 <span style="font-weight: bold; text-decoration: underline;">Tasks
 completed</span><br>
 <br>
@@ -187,5 +216,30 @@ and computer performance</span>
 <p>100%</p>
 </div>
 </div>
+<br>
+<span style="font-weight: bold; text-decoration: underline;">Minor tasks</span>
+(all of these tasks should be marked as <img
+ style="width: 16px; height: 16px;" alt="Normal"
+ src="https://dl.dropboxusercontent.com/u/26857618/DP%20data/priority_normal.bmp">)<br>
+<ul>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Update
+    <span style="font-family: Courier New,Courier,monospace;">&lt;utilities&gt;</span>'s
+versioning (bump it up - follow the semantic versioning)<br>
+  </li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span><span
+ style="font-family: Courier New,Courier,monospace;">Vector
+*bgr_to_rgb(...) </span>and <span
+ style="font-family: Courier New,Courier,monospace;">Vector *color(...)
+    </span>inside<span
+ style="font-family: Courier New,Courier,monospace;">
+&lt;gui_utilities&gt;</span></li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Write
+    <span style="font-family: Courier New,Courier,monospace;">&lt;render_surface&gt;</span>
+which includes <span
+ style="font-family: Courier New,Courier,monospace;">vs14</span> grass
+shader, object-based blurring, static fur, glass shader, chrome,
+velvety, static light rays, etc ect.<br>
+  </li>
+</ul>
 </body>
 </html>
