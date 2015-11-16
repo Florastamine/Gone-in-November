@@ -16,13 +16,14 @@
  */
 #define ENFORCE_STRICT
 
-/*
+
 #define __RENDER_GODRAYS__
+/*
 #define __RENDER_REFRACT__
 #define __RENDER_REFLECT__
 #define __RENDER_DOF__
-#define __RENDER_HDR__
 */
+#define __RENDER_HDR__
 
 #include <acknex.h>
 #include <litec.h>
@@ -41,10 +42,10 @@
 #include "render.h"
 #include "render_lrays.h"
 #include "render_hdr.h"
-#include "render_dof.h"
-#include "render_refract.h"
-#include "render_reflect.h"
-#include "render_water.h"
+//#include "render_dof.h"
+//#include "render_refract.h"
+//#include "render_reflect.h"
+//#include "render_water.h"
 #include "render_utils.h"
 
 #include "common.h"
@@ -63,31 +64,34 @@ int main( int argc, char **argl )
 	
 	window_size_set(1280, 720);
 	
-	// level_load("scene/scene.wmb");
-	// object_sky_create("sample+6.tga", 1);
+	level_load("scene.wmb");
+	object_sky_create("sample+6.tga", 1);
 	
-	/*
 	render_new();
 	render_setup_rt();
 	
-	render_water_new();
-	*/
+	
+	vec_set(&camera->x,	vector(309, 38, 481));
+	vec_set(&camera->pan, vector(355, 30, 0));
+	
+	def_moveset();
+	//render_water_new();
 	
 	#ifdef    __RENDER_REFRACT__
 	    render_refract_new();
-	    render_refract_set_queued(true);
+	    render_refract_set_queued(false);
 	#endif
 	
 	#ifdef    __RENDER_REFLECT__
 	    render_reflect_new();
-	    render_reflect_set_queued(true);
+	    render_reflect_set_queued(false);
 	#endif
 	
 	#ifdef    __RENDER_DOF__
 	    render_dof_new();
 	    render_dof_depth_set(200, 5000, 0.1);
 	    
-	    render_dof_set_queued(true);
+	    render_dof_set_queued(false);
 	#endif
 	
 	#ifdef    __RENDER_HDR__
@@ -103,7 +107,7 @@ int main( int argc, char **argl )
 	    render_light_rays_set_queued(true);
 	#endif
 	
-	/* render_queue_start(); */
+render_queue_start();
 	
 	while(true)
 	{		
