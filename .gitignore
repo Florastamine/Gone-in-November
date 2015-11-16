@@ -38,6 +38,7 @@ status/exclusion.excl
 status/log.log
 
 # General
+DPFL.c
 *.wdf
 *.odt
 *.bmp
