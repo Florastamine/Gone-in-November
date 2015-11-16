@@ -29,7 +29,7 @@
  */
 
 #define __HEADER(type)                                  type temp = 0; type *backup = MALLOC(copyn, type)
-#define __REALLOC_MEMORY_AND_PUSH(type, value)          int new_size = arch->pos_##type + 1; arch->pointer_##type = __memory_realloc_##type( &(arch->pointer_##type), new_size, new_size ); if(arch->pointer_##type) *(arch->pointer_##type + new_size - 1) = value
+#define __REALLOC_MEMORY_AND_PUSH(type, value)          int new_size = arch->pos_##type + 1; arch->pointer_##type = __memory_realloc_##type##( &(arch->pointer_##type##), new_size, new_size ); if(arch->pointer_##type##) *(arch->pointer_##type + new_size - 1) = value
 #define __GET_SIZE_RETURN(type)                         int ret = 0; if(arch) ret = arch->pos_##type; return ret
 #define __SET_VALUE(type, value)                        if( pos <= archive_get_##type##_size(arch) ) *(arch->pointer_##type + pos - 1) = value
 #define __GET_VALUE(type, pos)                          if( pos <= archive_get_##type##_size(arch) ) return *(arch->pointer_##type + pos - 1)
@@ -358,7 +358,7 @@ __static void __write_header( fixed channel, int mode )
 }
 */
 
-#define    __WRITE_DATA(type) for(counter = 0; counter <= archive_get_##type##_size(archf); counter++) { file_str_write(channel, str_for_int(NULL, (archf->__order)[counter])); if(counter < archive_get_##type##_size(archf) - 1) file_str_write(channel, ","); }
+#define    __WRITE_DATA(type) for(counter = 0; counter <= archive_get_##type##_size(archf); counter++) { file_str_write(channel, str_for_int(NULL, (archf->pointer_##type##)[counter])); if(counter < archive_get_##type##_size(archf) - 1) file_str_write(channel, ","); }
 
 #define    __WRITE_HEADER    0
 #define    __WRITE_FLOAT     1
@@ -383,7 +383,8 @@ __static void __write_footer( fixed channel )
 
 void serialize( Archive *archf, const char *file )
 {
-	if( archf == NULL || (file_exists(file) && file_length(file_open_read(file)) ) ) return;
+	// if( archf == NULL || (file_exists(str_create(file)) && !file_length(file_open_read(str_create(file))) ) ) return; /* <-- This is plain ugly. */
+	if( !archf ) return;
 	
 	fixed channel = file_open_write(str_create(file));
 	int counter = 0;
@@ -406,6 +407,7 @@ void serialize( Archive *archf, const char *file )
 	__write_footer(channel);
 	
 	/* Checks for the existence of each data type in the archfive and, if yes, serialize it. */
+	
 	if( (int) archive_get_float_size(archf) > 0 )
 	{
 		__write_header(channel, __WRITE_FLOAT);
@@ -437,4 +439,15 @@ void serialize( Archive *archf, const char *file )
 	file_close(channel);
 }
 
-
+Archive *deserialize( const char *file )
+{
+	Archive *arch = NULL;
+	fixed channel = file_open_read(file);
+	
+	if(channel) // This efficiently wraps ( !file || (file_exists(file_open_read(file)) && !file_length(file_open_read(file))) ).
+	{
+		char *tag_header = "";
+	}
+	
+	return arch;
+}
