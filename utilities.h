@@ -47,6 +47,8 @@
  * - Deprecated: calloc()/CALLOC() (as it involves malloc() and memset() calls).
  * For zero-allocation, use MALLOC().
  * __________________________________________________________________
+ * + v0.2.1-alpha
+ * - Added txt_width(), txt_height(), clampf() and bgr_to_rgb().
  */
 #ifndef    _UTILITIES_H_ 
 #define    _UTILITIES_H_ 
@@ -283,6 +285,8 @@ __namespace(numeric) {
 	
 	double deg2rad( __In double d );
 	double rad2deg( __In double d );
+	
+	float clampf( __In float x, __In float a, __In float b);
 }
 
 __namespace(window) {
@@ -331,6 +335,9 @@ __namespace(string) {
 __namespace(text) {
 	void txt_clear( __In __Out Text *object );
 	void txt_remove_ex( __In __Out Text *object );
+	
+	float txt_width( __In Text *object );
+	float txt_height( __In Text *object );
 }
 
 __namespace(object) {
@@ -342,6 +349,11 @@ __namespace(object) {
 	void object_scale_set( __In Object *object, __In float scale );
 	void object_place( __In __Out Object *object, __In float modifier );
 	Object *object_sky_create( __In const String *file, __In const int layer );
+}
+
+__namespace(color) {
+	Vector3 *bgr_to_rgb( __In Vector3 *rgb );
+	void     bgr_to_rgb( __In Vector3 *rgb );
 }
 
 #include "utilities.c"

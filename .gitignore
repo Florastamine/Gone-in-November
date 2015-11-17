@@ -33,12 +33,14 @@
 
 # Gamestudio-specific
 dpfl.cd/
+builds/
 status/_sync.bat
 status/exclusion.excl
 status/log.log
 
 # General
 DPFL.c
+bindings.h
 *.wdf
 *.odt
 *.bmp

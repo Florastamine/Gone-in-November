@@ -1205,6 +1205,51 @@ void txt_remove_ex( Text *object )
 	txt_remove(object);
 }
 
+/*
+ * float txt_height( Text *object )
+ * 
+ * Returns the total height of the text.
+ */
+float txt_height( Text *object )
+{
+	float f = 0.0;
+	
+	if(object)
+	{
+		int i = 0;
+		
+		for(; i < object->strings; i++)
+		    f += *(object->pstring)[i]->pad;
+	}
+	
+	return object->font->dy * f;
+}
+
+/*
+ * float txt_width( Text *object )
+ * 
+ * Returns the width of the text object.
+ * This is done by returning the longest string in the text.
+ */
+float txt_width( Text *object )
+{
+	if(object && object->strings)
+	{
+		float length = str_len((object->pstring)[0]);
+		int   i      = 1;		
+		
+		while(i < object->strings)
+		{
+			if(str_len((object->pstring)[i]) > length)
+			    length = str_len((object->pstring)[i]);
+			
+			i++;
+		}
+		
+		return length;
+	}
+}
+
 __static void __error_setup( Error **table )
 {
 	(*table) = (Error *) sys_malloc(sizeof(int) * (ERROR_CONTAINER_CAPACITY + ERROR_HISTORY_CAPACITY + 2));
@@ -1345,4 +1390,38 @@ void error_free()
 	error_free(Error_active);
 }
 
+/*
+ * Vector *bgr_to_rgb(Vector *rgb)
+ * void    bgr_to_rgb(Vector *rgb)
+ * 
+ * Returns a RGB color vector from a BGR one.
+ */
+Vector3 *bgr_to_rgb(Vector3 *rgb)
+{
+	Vector3 *bgr = NULL;
+	
+	if(rgb) {
+		rgb = MALLOC(1, Vector3);
+		vec_set( bgr, vector(rgb->z, rgb->y, rgb->x) );
+	}
+	
+	return bgr;
+}
 
+void bgr_to_rgb(Vector3 *rgb)
+{
+	if(rgb) swap( &rgb->x, &rgb->z );
+}
+
+/*
+ * float clampf(float x, float a, float b)
+ * 
+ * A "fall" variant of clamp() - that is, if x is greater than b, 
+ * returns a instead of "locking" x to b.
+ */
+float clampf(float x, float a, float b)
+{
+	if(x >= b || x <= a)
+	    x = a;
+	return x;
+}

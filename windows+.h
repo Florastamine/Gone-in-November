@@ -32,5 +32,6 @@
 long WINAPI WriteConsole(int Handle, char* Buffer, int CharsToWrite, int* CharsWritten, int reserved);
 long WINAPI CreateConsoleScreenBuffer(long dwDesiredAccess, long dwShareMode, long *lpSecurityAttributes, long dwFlags, long lpScreenBufferData);
 long WINAPI SetConsoleActiveScreenBuffer(long hConsoleOutput);
+BOOL WINAPI SetConsoleTextAttribute(HANDLE hConsoleOutput, WORD wAttributes );
 
 #endif /* windows+.h */
