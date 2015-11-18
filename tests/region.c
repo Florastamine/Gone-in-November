@@ -33,7 +33,7 @@ int main( int argc, char **argl )
 	draw_textmode( "Arial#25b", 1, 42.0, 50.0 );
 	
 	region_new();
-	region_scan_from("../region/");
+	region_scan_from("../translation/");
 	
 	STRING *f = region_get_languages();
 	// PRINT_STRING(_chr(f));

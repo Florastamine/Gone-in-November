@@ -42,7 +42,7 @@ __namespace(multilingual) {
 	
 	#define    REGION_UNICODE_PADDING     "unicode.pad"
 	#define    REGION_LANGUAGE_LIST       "__language.pad"
-	#define    REGION_DEFAULT_DIRECTORY   "./region/"
+	#define    REGION_DEFAULT_DIRECTORY   "./translation/"
 	#define    REGION_LANGUAGE_FLAG_FILE  "flag.jpg"
 	
 	typedef struct {
