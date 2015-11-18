@@ -111,7 +111,10 @@ void copy( float **i, float **j, int num )
  * char *strstr(char *str1, const char *str2)
  * 
  * Returns a pointer to the first occurrence of str2 in str1, or a null pointer if str2 is not part of str1.
+ * 
+ * -- Removed since 0.2.1-alpha --
  */
+/*
 char *strstr(char *str1, const char *str2)
 {
 	long index = 0;
@@ -136,6 +139,7 @@ char *strstr(char *str1, const char *str2)
 	}
 	return NULL;
 }
+*/
 
 /*
  * char *dump(const char *content)
@@ -1424,4 +1428,27 @@ float clampf(float x, float a, float b)
 	if(x >= b || x <= a)
 	    x = a;
 	return x;
+}
+
+/*
+ * void libcstring_init()
+ * 
+ * "Links" the vanilla C string functions.
+ * Because of this, and because I've grown tired of reinventing the wheel,
+ * strstr() and all others previously functions that was put into <utilities>
+ * are now removed from the library.
+ */
+void libcstring_init()
+{
+	strstr    = DefineApi("msvcrt!strstr");
+	strchr    = DefineApi("msvcrt!strchr");
+	strcspn   = DefineApi("msvcrt!strcspn");
+	strncat   = DefineApi("msvcrt!strncat");
+	strncmp   = DefineApi("msvcrt!strncmp");
+	strncpy   = DefineApi("msvcrt!strncpy");
+	strpbrk   = DefineApi("msvcrt!strpbrk");
+	strrchr   = DefineApi("msvcrt!strrchr");
+	strspn    = DefineApi("msvcrt!strspn");
+	strtok    = DefineApi("msvcrt!strtok");
+	strxfrm   = DefineApi("msvcrt!strxfrm");
 }

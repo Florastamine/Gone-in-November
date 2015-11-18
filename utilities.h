@@ -49,6 +49,7 @@
  * __________________________________________________________________
  * + v0.2.1-alpha
  * - Added txt_width(), txt_height(), clampf() and bgr_to_rgb().
+ * - Removed home-brewed str*() functions and replace them with "real" versions.
  */
 #ifndef    _UTILITIES_H_ 
 #define    _UTILITIES_H_ 
@@ -261,12 +262,28 @@ __namespace(pair) {
 }
 
 __namespace() {
+	// Removed since 0.2.1-alpha: Use msvcrt instead. (call libcstring_init() to initialize these functions.)
+	// char *strtok( __In const char *str, __In const char *delimiter );
+	// char *strstr( __In char *str1, __In const char *str2);
+	
+	char * __cdecl strstr(const char *, const char *);
+	char * __cdecl strchr(const char *, int c);
+	size_t __cdecl strcspn(const char *, const char *);
+	char * __cdecl strncat(char *, char *, size_t);
+	int    __cdecl strncmp(char *, char *, size_t);
+	char * __cdecl strncpy(char *, char *, size_t);
+	char * __cdecl strpbrk(char *, char *);
+	char * __cdecl strrchr(char *, int);
+	size_t __cdecl strspn(char *, char *);
+	char * __cdecl strtok(char *, char *);
+	size_t __cdecl strxfrm(char *, char *, size_t);
+	
+	void libcstring_init(); // Initializes (links) these headers
+	
 	char *dump( __In const char *content );
-	char *strstr( __In char *str1, __In const char *str2);
 	void *calloc( __In int count, __In size_t size);
 	void __assert( const char *message );
 	char *function_name_get( __In const void *f );
-	char *strtok( __In const char *str, __In const char *delimiter );
 	void reverse( __In __Out int **array, __In unsigned int count);
 	void swap( __In __Out int *a, __In __Out int *b );
 	void copy( __In __Out float **i, __In float **j, int num );
