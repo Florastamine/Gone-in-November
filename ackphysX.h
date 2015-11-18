@@ -575,9 +575,9 @@
 		pXent_settype(level_ent,PH_STATIC,PH_POLY);
 		for (you = ent_next(NULL); you; you = ent_next(you))
 		{ 
-			if (you.flags & PASSABLE) continue;	
+			if (you->flags & PASSABLE) continue;	
 			var type = ent_type(you);
-			if(type == 5 && (you.emask & DYNAMIC)) continue;	// only register static models
+			if(type == 5 && (you->emask & DYNAMIC)) continue;	// only register static models
 			if(type < 2 && type > 5)  continue; // blocks, models, or terrain only
 			if(type == 4)
 			pXent_settype(you,PH_STATIC,PH_TERRAIN);
@@ -592,7 +592,7 @@
 		//if(!NxPhysicsSDK) {printf("!NxPhysicsSDK return!"); return;}
 		//if(ent.body) {printf("ent.body"); pXent_settype(ent,0,0);}		
 		if(!NxPhysicsSDK) return;
-		if(ent.body) pXent_settype(ent,0,0);		
+		if(ent->body) pXent_settype(ent,0,0);		
 		on_ent_remove_px(ent);
 	}
 	

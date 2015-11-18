@@ -41,7 +41,7 @@ __static int __archive_get_order( Archive *arch )
 
 __static int __archive_increase_order( Archive *arch )
 {
-	arch->__order_pointer += 1;
+	(arch->__order_pointer) += 1;
 }
 
 __static void __archive_push_order( Archive *arch, int what )
@@ -54,7 +54,9 @@ __static void __archive_push_order( Archive *arch, int what )
 		case  INTEGER : (arch->__order)[current_pos] = INTEGER;   break;
 		case __STRING : (arch->__order)[current_pos] = __STRING;  break;
 	}
+	
 	__archive_increase_order(arch);
+	// printf("arch->__order_pointer = %i", arch->__order_pointer);
 }
 
 __static float *__memory_realloc_float( float **in, int n, int copyn )
@@ -122,7 +124,6 @@ Archive *archive_new( int __size )
 	
 	arch->__initial_size       = __size;
 	arch->__order_pointer     = 0;
-	/* memset( arch->__order, 0, MAX_PUSH * sizeof(float) ); */
 	
 	return arch;
 }
@@ -340,17 +341,17 @@ __static void __write_header( fixed channel, int mode )
 {
 	char *header = "<F#=";
 	const char *criterion = "#";
-	char *HEAD;
+	char *deserialize_parse_header;
 	
-	HEAD = strstr(header, criterion);
-	ASSERT( HEAD != NULL, _chr("<serializer>/__write_header() (__static void) failed at strstr().") );
+	deserialize_parse_header = strstr(header, criterion);
+	ASSERT( deserialize_parse_header != NULL, _chr("<serializer>/__write_header() (__static void) failed at strstr().") );
 	
 	switch(mode)
 	{
-		case __WRITE_HEADER   : *HEAD = 'H'; break;
-		case __WRITE_FLOAT    : *HEAD = 'F'; break;
-		case __WRITE_INTEGER  : *HEAD = 'I'; break;
-		case __WRITE_STRING   : *HEAD = 'S'; break;
+		case __WRITE_HEADER   : deserialize_parse_headerD = 'H'; break;
+		case __WRITE_FLOAT    : *deserialize_parse_header = 'F'; break;
+		case __WRITE_INTEGER  : *deserialize_parse_header = 'I'; break;
+		case __WRITE_STRING   : *deserialize_parse_header = 'S'; break;
 	}
 	
 	file_str_write(channel, _str(header));	
@@ -439,15 +440,172 @@ void serialize( Archive *archf, const char *file )
 	file_close(channel);
 }
 
-Archive *deserialize( const char *file )
+#define    __PUSH_ORDER_TO_ARCHIVE(val)                 switch(val) { case __STRING: __archive_push_order(arch, __STRING); break; case INTEGER: __archive_push_order(arch, INTEGER);  break; case  FLOAT:  __archive_push_order(arch, FLOAT); break; }
+#define    __PUSH_CONTENT_TO_ARCHIVE(type, val)     	  if(arch->pos_##type <= arch->__initial_size - 1) *(arch->pointer_##type + arch->pos_##type##) = val; else { __REALLOC_MEMORY_AND_PUSH( ##type##, val ); } (arch->pos_##type##)++
+#define    __PUSH_STRING_TO_ARCHIVE(val)                if( arch->pos_string < arch->__initial_size ) (arch->pointer_string->pstring)[arch->pos_string] = str_create(val); else txt_addstring( arch->pointer_string, str_create(val) ); (arch->pos_string)++
+
+void deserialize_int(Archive *arch, const char *file)
+{
+	int pos;
+	char *tag_int = "<FI=";
+	fixed channel = file_open_read(file);
+	String *content = "";
+	
+	pos = file_find(channel, tag_int);
+	if(pos) // If the "integer" section is available, then, parse it.
+	{
+		int i = 0;
+		
+		str_cpy(delimit_str, "[");
+		file_str_read(channel, NULL); // Read past the delimiter, as usual.
+		
+		file_str_read(channel, content);
+		
+		char *ptr = strtok(_chr(content), ",");
+		__PUSH_CONTENT_TO_ARCHIVE(int, atoi(ptr));
+		
+		while(ptr)
+		{
+			ptr = strtok(NULL, ",");
+			if(ptr) __PUSH_CONTENT_TO_ARCHIVE(int, atoi(ptr));
+		}
+	}
+	
+	arch->pos_int -= 1;
+	file_close(channel);
+}
+
+void deserialize_float(Archive *arch, const char *file)
+{
+	int pos;
+	char *tag_float  = "<FF=";
+	fixed channel = file_open_read(file);
+	String *content = "";
+	
+	pos = file_find(channel, tag_float);
+	if(pos) // If the "float" section is available, then, parse it.
+	{
+		float f = 0.0;
+		
+		str_cpy(delimit_str, "[");
+		file_str_read(channel, NULL); // Read past the delimiter, as usual.
+		
+		file_str_read(channel, content);
+		
+		char *ptr = strtok(_chr(content), ",");
+		__PUSH_CONTENT_TO_ARCHIVE(float, atof(ptr));
+		
+		while(ptr)
+		{
+			ptr = strtok(NULL, ",");
+			if(ptr) __PUSH_CONTENT_TO_ARCHIVE(float, atof(ptr));
+		}
+		
+	}
+	
+	arch->pos_float -= 1;
+	file_close(channel);
+}
+
+void deserialize_string(Archive *arch, const char *file)
+{
+	int pos;
+	char *tag_string = "<FS=";
+	fixed channel = file_open_read(file);
+	String *content = "";
+	
+	pos = file_find(channel, tag_string);
+	if(pos) // If the "float" section is available, then, parse it.
+	{
+		float f = 0.0;
+		
+		str_cpy(delimit_str, "[");
+		file_str_read(channel, NULL); // Read past the delimiter, as usual.
+		
+		str_cpy(delimit_str, "]");
+		file_str_read(channel, content);
+		
+		char *ptr = strtok(_chr(content), "|");
+		__PUSH_STRING_TO_ARCHIVE(ptr);
+		
+		while(ptr)
+		{
+			ptr = strtok(NULL, "|");
+			if(ptr) __PUSH_STRING_TO_ARCHIVE(ptr);
+		}
+	}
+	
+	arch->pos_string -= 1;
+	file_close(channel);
+}
+
+Archive *deserialize_parse_header(const char *file)
 {
 	Archive *arch = NULL;
 	fixed channel = file_open_read(file);
 	
 	if(channel) // This efficiently wraps ( !file || (file_exists(file_open_read(file)) && !file_length(file_open_read(file))) ).
 	{
-		char *tag_header = "";
-	}
-	
+		char *tag_header = "<FH=";
+		
+		String *content = "";
+		String *old_delimiter = str_create(delimit_str); // delimit_str, you're going to be screwed.
+		int pos = 0;
+		
+		pos = file_find(channel, tag_header);
+		if( !pos )
+		{
+			// Abort! Bad file.
+			return arch; // NULL actually.
+		}
+		else
+		{
+			str_cpy(delimit_str, "[");
+			file_str_read(channel, NULL); // Read past the delimiter.
+			
+			str_cpy(delimit_str, ","); // Now read past the first number (contains the initial size of the box)
+			file_str_read(channel, content);
+			arch = archive_new(str_to_int(content));
+			
+			str_cpy(delimit_str, "]");
+			file_str_read(channel, content); // Reads the content of the order stack into the string.
+			
+			char *ptr = strtok(_chr(content), ",");
+			__PUSH_ORDER_TO_ARCHIVE(*ptr - '0') // Parse the first token (strtok() first call)
+			
+			int i = 1;
+			
+			while(ptr) // Continually parses the remaining tokens and push it to the archive.
+			{
+				ptr = strtok(NULL, ",");
+				
+				if(ptr)
+				{
+					__PUSH_ORDER_TO_ARCHIVE(*ptr - '0')
+					i++;
+					
+				}
+			}
+			
+			str_remove(content);
+			file_close(channel);
+		}
+	}	
 	return arch;
+}
+
+/*
+ * Archive *deserialize( const char *file )
+ * 
+ * Performs deserialization.
+ */
+Archive *deserialize( const char *file )
+{
+	Archive *archive = deserialize_parse_header(file);
+	
+	deserialize_string  (archive, file);
+	deserialize_int     (archive, file);
+	deserialize_float   (archive, file);	
+	
+	return archive;
 }
