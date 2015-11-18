@@ -57,7 +57,7 @@
 #include <stdio.h>
 #include <strio.c>
 
-#define __VERSION "v0.2.0-alpha" // Seems familiar?
+#define __VERSION "v0.2.1-alpha" // Seems familiar?
 
 #ifdef ENFORCE_STRICT
     #ifndef    PRAGMA_POINTER
@@ -282,6 +282,7 @@ __namespace() {
    long   __cdecl atol(const char *str);
 	
 	void libcstring_init(); // Initializes (links) these headers
+	int  ___libcstring_init__done__ = 0;
 	
 	char *dump( __In const char *content );
 	void *calloc( __In int count, __In size_t size);

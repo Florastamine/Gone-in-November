@@ -1440,6 +1440,8 @@ float clampf(float x, float a, float b)
  */
 void libcstring_init()
 {
+	if( ___libcstring_init__done__ ) return;
+	
 	strstr    = DefineApi("msvcrt!strstr");
 	strchr    = DefineApi("msvcrt!strchr");
 	strcspn   = DefineApi("msvcrt!strcspn");
@@ -1455,4 +1457,6 @@ void libcstring_init()
 	atof      = DefineApi("msvcrt!atof");
 	atoi      = DefineApi("msvcrt!atoi");
 	atol      = DefineApi("msvcrt!atol");
+	
+	___libcstring_init__done__ = 1;
 }
