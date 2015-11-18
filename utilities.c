@@ -405,11 +405,11 @@ String *str_parse_ex( String *to, char *from, int pos, char delimiter )
 * delimiter, and pushes the result substrings into the text object.
 */
 void str_parse_delim( Text *text, char *content, char delimiter )
-{
+{	
 	char old_delimiter = _str_separator;
 	_str_separator = delimiter;
 	String *parse = str_parse_ex(NULL, content, 1, delimiter ); // Fetchs the very first token.
-	txt_addstring(text, parse);                                       // And push it into the text object.
+	txt_addstring(text, parse);                                      // And push it into the text object.
 	
 	while(true) // Fetchs the remaining tokens.
 	{
@@ -1451,4 +1451,8 @@ void libcstring_init()
 	strspn    = DefineApi("msvcrt!strspn");
 	strtok    = DefineApi("msvcrt!strtok");
 	strxfrm   = DefineApi("msvcrt!strxfrm");
+	
+	atof      = DefineApi("msvcrt!atof");
+	atoi      = DefineApi("msvcrt!atoi");
+	atol      = DefineApi("msvcrt!atol");
 }

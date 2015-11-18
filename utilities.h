@@ -277,6 +277,9 @@ __namespace() {
 	size_t __cdecl strspn(char *, char *);
 	char * __cdecl strtok(char *, char *);
 	size_t __cdecl strxfrm(char *, char *, size_t);
+	double __cdecl atof(const char *str);
+	int    __cdecl atoi(const char *str);
+   long   __cdecl atol(const char *str);
 	
 	void libcstring_init(); // Initializes (links) these headers
 	
