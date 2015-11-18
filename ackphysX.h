@@ -5,13 +5,13 @@
 #ifndef ACKPHYSX_H
 	#define ACKPHYSX_H
 
-	#define PRAGMA_BIND "ackphysX.dll";
-	#define PRAGMA_BIND "PhysXCore.dll";
-	#define PRAGMA_BIND "PhysXDevice.dll";
-	#define PRAGMA_BIND "PhysXLoader.dll";
-	#define PRAGMA_BIND "PhysXCooking.dll";
-	#define PRAGMA_BIND "NxCharacter.dll";
-	#define PRAGMA_BIND "cudart32_30_9.dll";
+	#define PRAGMA_BIND "ackphysX.dll"
+	#define PRAGMA_BIND "PhysXCore.dll"
+	#define PRAGMA_BIND "PhysXDevice.dll"
+	#define PRAGMA_BIND "PhysXLoader.dll"
+	#define PRAGMA_BIND "PhysXCooking.dll"
+	#define PRAGMA_BIND "NxCharacter.dll"
+	// #define PRAGMA_BIND "cudart32_30_9.dll" // <-- This file doesn't exist, fixed it in the build script.
 
 	#define PH_RIGID		1		// Constant for setting up physics body
 	#define PH_STATIC		3		// Constant for setting up static body

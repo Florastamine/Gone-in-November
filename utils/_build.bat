@@ -27,10 +27,14 @@ robocopy /move /e ..\DPFL.CD\ ..\builds
 
 rem Copy remaining dependencies/files/etc.
 copy %ACKPATH%\D3DCompiler_42.dll ..\builds\
+copy %ACKPATH%\cudart32_41_22.dll ..\builds\
 
-rem Copying streams
+rem Copying streams & translations
 mkdir ..\builds\sound\stream
 copy ..\sound\stream\*.* ..\builds\sound\stream\
+
+mkdir ..\builds\translation\
+xcopy ..\translation\*.* ..\builds\translation\ /s /e /y
 
 cls 
 echo Waiting for user input to compile the WDF..
