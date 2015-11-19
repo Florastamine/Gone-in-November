@@ -39,7 +39,7 @@ status/exclusion.excl
 status/log.log
 
 # General
-DPFL.c
+November.c
 bindings.h
 *.wdf
 *.odt

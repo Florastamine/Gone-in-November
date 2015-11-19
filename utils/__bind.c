@@ -26,7 +26,13 @@ int main(void)
 	TEXT *extensions  = txt_create(0, 1);
 
 	txt_addstring(directories, "..\\scene");
+	txt_addstring(directories, "..\\fx");
+	txt_addstring(directories, "..\\object");
+	
 	txt_addstring(directories, "..\\2d");
+	txt_addstring(directories, "..\\2d\\fx");
+	txt_addstring(directories, "..\\2d\\gui");
+	txt_addstring(directories, "..\\2d\\sprites");
 
 	txt_addstring(extensions, "ogg");
 	txt_addstring(extensions, "wav");
@@ -35,7 +41,8 @@ int main(void)
 	txt_addstring(extensions, "tga");
 	txt_addstring(extensions, "mdl");
 	txt_addstring(extensions, "jpg");
-
+	
+	txt_addstring(extensions, "fx");
 	txt_addstring(extensions, "fxo");
 	txt_addstring(extensions, "wmb");
 	txt_addstring(extensions, "hmp");

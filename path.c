@@ -72,11 +72,6 @@ STRING *game_get_asset_sound(const STRING *asset)
 	#endif
 }
 
-STRING *game_get_asset_translation_text(const STRING *asset) // I have a derp feeling that this function is going to be deprecated very soon.
-{
-	return region_get_string(asset);
-}
-
 STRING *game_get_asset_gui(const STRING *asset)
 {
 	STRING *ret = "";
@@ -90,7 +85,7 @@ STRING *game_get_asset_gui(const STRING *asset)
 	#endif
 }
 
-STRING *game_get_asset_sprite(const STRING *asset)
+STRING *game_get_asset_2d_sprite(const STRING *asset)
 {
 	STRING *ret = "";
 	

@@ -28,7 +28,7 @@
 #ifndef    _PATH_H_
 #define    _PATH_H_
 
-#define    PERFORM_PATH_LOOKUP
+//#define    PERFORM_PATH_LOOKUP
 
 #ifdef     PERFORM_PATH_LOOKUP
     #define PRAGMA_PATH "./2d/"
@@ -60,12 +60,12 @@
     #define __PATH_LOOKUP_GENERIC_2D   "./2d/"
     #define __PATH_LOOKUP_FX_2D        "./2d/fx/"
 #else
+    #include "bindings.h"
+    
     #define PRAGMA_PATH "./"
     #define PRAGMA_PATH "./sound/"
     #define PRAGMA_PATH "./sound/stream/"
 #endif
-
-STRING *game_get_asset_translation_text(const STRING *asset);
 
 STRING *game_get_asset_object(const STRING *asset);
 STRING *game_get_asset_scene(const STRING *asset);
@@ -74,7 +74,7 @@ STRING *game_get_asset_stream(const STRING *asset);
 STRING *game_get_asset_sound(const STRING *asset);
 
 STRING *game_get_asset_gui(const STRING *asset);
-STRING *game_get_asset_sprite(const STRING *asset);
+STRING *game_get_asset_2d_sprite(const STRING *asset);
 STRING *game_get_asset_2d_generic(const STRING *asset);
 STRING *game_get_asset_2d_fx(const STRING *asset);
 

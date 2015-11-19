@@ -61,7 +61,7 @@ BOOL render_light_rays_get_debug();
 void render_light_rays();
 
 MATERIAL *lray = { effect = "lightRayShow.fx"; }
-PANEL *__sun_dummy = { bmap = "sun.tga"; scale_x = 0.5; scale_y = 0.5; }
+PANEL *__sun_dummy = { scale_x = 0.5; scale_y = 0.5; }
 
 #include "render_lrays.c"
 #endif /* render_lrays.h */

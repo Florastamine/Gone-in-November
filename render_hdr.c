@@ -128,7 +128,7 @@ void render_hdr()
 	
 	#ifdef __DOF
 	{
-		if((render_dof_is_queued())	
+		if(render_hdr_get_queued())	
 		    view_dof->stage = view_hdrDownsample;
 		else
 		    camera->stage = view_hdrDownsample;
@@ -197,7 +197,7 @@ __static void __render_hdr_initialize()
 	#ifdef __DOF
 		if( (render_dof_get_singleton())->queued)
 		{
-			mtl_hdr->skin1 = bmap_dof;
+			mtl_hdr->skin1 = RenderState_singleton->bmap_dof;
 		}
 	#endif
 	

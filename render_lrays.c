@@ -98,6 +98,8 @@ BOOL render_light_rays_get_queued()
  */
 void render_light_rays()
 {
+	__sun_dummy->bmap = bmap_create(game_get_asset_2d_fx("sun.tga"));
+	
 	MATERIAL *mtl_lightRayCut = mtl_create();
 	mtl_lightRayCut->effect = "lightRayCut.fx";
 	
