@@ -122,8 +122,8 @@ Implement <span style="font-family: Courier New,Courier,monospace;">&lt;gui_util
  style="font-family: Courier New,Courier,monospace;">
 </div>
 <div style="font-style: italic;" id="progress" class="graph">
-<div id="bar" style="width: 41%;">
-<p>41%</p>
+<div id="bar" style="width: 75%;">
+<p>75%</p>
 </div>
 </div>
 <br>
@@ -161,16 +161,6 @@ within Downpour.</span>
 </div>
 </div>
 <br>
-<img style="width: 16px; height: 16px;" alt="Critical"
- src="https://dl.dropboxusercontent.com/u/26857618/DP%20data/priority_urgent.bmp">
-<span style="font-weight: bold;">Write the implementation for the </span><span
- style="font-family: Courier New,Courier,monospace;">PERFORM_PATH_LOOKUP</span><span
- style="font-weight: bold;"> switch.</span>
-<div style="font-style: italic;" id="progress" class="graph">
-<div id="bar" style="width: 0%;">
-<p>0%</p>
-</div>
-</div>
 <br>
 <img style="width: 16px; height: 16px;" alt="Critical"
  src="https://dl.dropboxusercontent.com/u/26857618/DP%20data/priority_urgent.bmp">
@@ -217,6 +207,17 @@ and computer performance</span>
 </div>
 </div>
 <br>
+<img style="width: 16px; height: 16px;" alt="Critical"
+ src="https://dl.dropboxusercontent.com/u/26857618/DP%20data/priority_urgent.bmp">
+<span style="font-weight: bold;">Write the implementation for the </span><span
+ style="font-family: Courier New,Courier,monospace;">PERFORM_PATH_LOOKUP</span><span
+ style="font-weight: bold;"> switch.</span>
+<div style="font-style: italic;" id="progress" class="graph">
+<div id="bar" style="width: 100%;">
+<p>100%</p>
+</div>
+</div>
+<br>
 <span style="font-weight: bold; text-decoration: underline;">Minor tasks</span>
 (all of these tasks should be marked as <img
  style="width: 16px; height: 16px;" alt="Normal"
@@ -246,6 +247,51 @@ velvety, static light rays, etc ect.</li>
 which contains additional Windows API headers that Lite-C's<span
  style="font-family: Courier New,Courier,monospace;">
 &lt;windows&gt;</span> is currently missing.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9745;</span></span><span
+ style="font-size: 125%;"><span class="Unicode"> </span></span>Deprecate
+    <span style="font-family: Courier New,Courier,monospace;">strstr(),
+strtok()</span> and replace it with msvc version for the following
+functions: <span style="font-family: Courier New,Courier,monospace;">strchr(),
+strcspn(), strstr(), strncat(), strncmp(), strncpy(), strbprk(),
+strspn(), strrchr()</span> and<span
+ style="font-family: Courier New,Courier,monospace;"> strxfrm()</span>.</li>
+</ul>
+<span style="font-weight: bold; text-decoration: underline;">Bug fixes</span><br>
+<ul>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9745; </span></span>Fix
+a *critical* bug in<span
+ style="font-family: Courier New,Courier,monospace;">
+&lt;render_refract&gt;</span> which causes &lt;render_water&gt; to
+crash stright to desktop.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9745; </span></span>Fix
+a *critical* bug in <span
+ style="font-family: Courier New,Courier,monospace;">&lt;render_dof&gt;</span>
+which causes &lt;render_water&gt; to emit a DirectX-related error.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Fix
+a bug in <span style="font-family: Courier New,Courier,monospace;">&lt;render_dof&gt;/render_dof_depth_set()
+    </span>which causes the game to crash.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Fix
+a bug which prevents both HDR and depth of field from living together
+happily.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Fix
+a bug in <span style="font-family: Courier New,Courier,monospace;">&lt;render_refract&gt;</span>
+which produces weird behaviour on the water shader.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Fix
+a bug in <span style="font-family: Courier New,Courier,monospace;">&lt;serializer&gt;</span>
+(specifically <span style="font-family: Courier New,Courier,monospace;">archive_store_float()</span>
+and <span style="font-family: Courier New,Courier,monospace;">archive_store_int()</span>)
+which causes <span style="font-family: Courier New,Courier,monospace;">archive_store_int()</span>
+to write n
+garbage values (5, if I remember correctly).</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Fix
+a bug in <span style="font-family: Courier New,Courier,monospace;">&lt;render_shadows&gt;</span>
+which causes light rays's sun position (<span
+ style="font-family: Courier New,Courier,monospace;">sun_pos</span>)
+receives zero due to <span
+ style="font-family: Courier New,Courier,monospace;">sun_angle</span>
+being incorrectly calculated. Temporary workaround is to use only one
+shader type at a time.<br>
+  </li>
 </ul>
 </body>
 </html>
