@@ -58,6 +58,7 @@
     #define __PATH_LOOKUP_GUI_2D       "./2d/gui/"
     #define __PATH_LOOKUP_SPRITE_2D    "./2d/sprites/"
     #define __PATH_LOOKUP_GENERIC_2D   "./2d/"
+    #define __PATH_LOOKUP_FX_2D        "./2d/fx/"
 #else
     #define PRAGMA_PATH "./"
     #define PRAGMA_PATH "./sound/"
@@ -75,6 +76,7 @@ STRING *game_get_asset_sound(const STRING *asset);
 STRING *game_get_asset_gui(const STRING *asset);
 STRING *game_get_asset_sprite(const STRING *asset);
 STRING *game_get_asset_2d_generic(const STRING *asset);
+STRING *game_get_asset_2d_fx(const STRING *asset);
 
 #include "path.c"
 #endif /* path.h */

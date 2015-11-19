@@ -115,3 +115,16 @@ STRING *game_get_asset_2d_generic(const STRING *asset)
 	    return ret;
 	#endif
 }
+
+STRING *game_get_asset_2d_fx(const STRING *asset)
+{
+	STRING *ret = "";
+	
+	#ifndef    PERFORM_PATH_LOOKIP
+	    return str_cpy(ret, asset);
+	#else
+	    str_cpy(ret, __PATH_LOOKUP_FX_2D);
+	    str_cat(ret, asset);
+	    return ret;
+	#endif
+}
