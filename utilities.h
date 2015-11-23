@@ -269,6 +269,15 @@ __namespace() {
 	typedef int   errno_t;
 	typedef int * intptr_i;
 	
+	#define    FILE_EXISTS                0
+	#define    FILE_WRITABLE              2
+	#define    FILE_READABLE              4
+	#define    FILE_READABLE_WRITEABLE    6
+	
+	// Source: http://www.math.uiuc.edu/~gfrancis/illimath/windows/aszgard_mini/bin/MinGW/include/sys/stat.h
+	#define    _S_IWRITE    0x0080
+	#define    _S_IREAD     0x0100
+	
 	void abort();
 	char * __cdecl strstr(const char *, const char *);
 	char * __cdecl strchr(const char *, int c);
