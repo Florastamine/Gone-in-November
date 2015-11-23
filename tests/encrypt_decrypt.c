@@ -19,7 +19,7 @@
 #include <acknex.h>
 #include <d3d9.h>
 #include <stdio.h>
-#include <default.c>
+#include "default_ex.h"
 
 #include "..\utilities.h"
 #include "..\file.h"

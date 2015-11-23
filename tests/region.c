@@ -18,7 +18,7 @@
 
 #include <acknex.h>
 #include <stdio.h>
-#include <default.c>
+#include "default_ex.h"
 
 #include "..\path.h"
 

@@ -17,7 +17,7 @@
 #define ENFORCE_STRICT
 
 #include <acknex.h>
-#include <default.c>
+#include "default_ex.h"
 
 #include <..\utilities.h>
 
