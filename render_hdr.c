@@ -128,7 +128,7 @@ void render_hdr()
 	
 	#ifdef __DOF
 	{
-		if(render_hdr_get_queued())	
+		if(render_dof_get_queued())	
 		    view_dof->stage = view_hdrDownsample;
 		else
 		    camera->stage = view_hdrDownsample;

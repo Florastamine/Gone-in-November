@@ -28,7 +28,7 @@
 #ifndef    _PATH_H_
 #define    _PATH_H_
 
-//#define    PERFORM_PATH_LOOKUP
+#define    PERFORM_PATH_LOOKUP
 
 #ifdef     PERFORM_PATH_LOOKUP
     #define PRAGMA_PATH "./2d/"
@@ -60,7 +60,8 @@
     #define __PATH_LOOKUP_GENERIC_2D   "./2d/"
     #define __PATH_LOOKUP_FX_2D        "./2d/fx/"
 #else
-    #include "bindings.h"
+    #include "bindings.h" // If PERFORM_PATH_LOOKUP isn't enabled, we have to directly looking in the root folder, 
+                          // and in this case, a convenient bindings.h can be provided (generated from ./utils/__bind.c)
     
     #define PRAGMA_PATH "./"
     #define PRAGMA_PATH "./sound/"

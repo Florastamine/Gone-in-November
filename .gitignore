@@ -41,6 +41,7 @@ status/log.log
 # General
 November.c
 bindings.h
+*.sav
 *.wdf
 *.odt
 *.bmp
