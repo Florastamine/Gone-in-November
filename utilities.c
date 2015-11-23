@@ -1431,16 +1431,16 @@ float clampf(float x, float a, float b)
 }
 
 /*
- * void libcstring_init()
+ * void libc_init()
  * 
  * "Links" the vanilla C string functions.
  * Because of this, and because I've grown tired of reinventing the wheel,
  * strstr() and all others previously functions that was put into <utilities>
  * are now removed from the library.
  */
-void libcstring_init()
+void libc_init()
 {
-	if( ___libcstring_init__done__ ) return;
+	if( ___libc_init__done__ ) return;
 	
 	strstr    = DefineApi("msvcrt!strstr");
 	strchr    = DefineApi("msvcrt!strchr");
@@ -1448,6 +1448,7 @@ void libcstring_init()
 	strncat   = DefineApi("msvcrt!strncat");
 	strncmp   = DefineApi("msvcrt!strncmp");
 	strncpy   = DefineApi("msvcrt!strncpy");
+	strcpy_s  = DefineApi("msvcrt!strcpy_s");
 	strpbrk   = DefineApi("msvcrt!strpbrk");
 	strrchr   = DefineApi("msvcrt!strrchr");
 	strspn    = DefineApi("msvcrt!strspn");
@@ -1458,5 +1459,16 @@ void libcstring_init()
 	atoi      = DefineApi("msvcrt!atoi");
 	atol      = DefineApi("msvcrt!atol");
 	
-	___libcstring_init__done__ = 1;
+	_tempnam = DefineApi("msvcrt!_tempnam");
+	_access_s = DefineApi("msvcrt!_access_s");
+	abort    = DefineApi("msvcrt!abort");
+	_chmod   = DefineApi("msvcrt!_chmod");
+	_creat   = DefineApi("msvcrt!_creat");
+	_execl   = DefineApi("msvcrt!_execl");
+	_getcwd  = DefineApi("msvcrt!_getcwd");
+	getenv   = DefineApi("msvcrt!getenv");
+	_strset  = DefineApi("msvcrt!_strset");
+	_strrev  = DefineApi("msvcrt!_strrev");
+	
+	___libc_init__done__ = 1;
 }

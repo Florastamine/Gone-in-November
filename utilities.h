@@ -49,7 +49,7 @@
  * __________________________________________________________________
  * + v0.2.1-alpha
  * - Added txt_width(), txt_height(), clampf() and bgr_to_rgb().
- * - Removed home-brewed str*() functions and replace them with "real" versions.
+ * - Removed home-brewed str*() functions and replace them with those from the C standard library.
  */
 #ifndef    _UTILITIES_H_ 
 #define    _UTILITIES_H_ 
@@ -262,10 +262,14 @@ __namespace(pair) {
 }
 
 __namespace() {
-	// Removed since 0.2.1-alpha: Use msvcrt instead. (call libcstring_init() to initialize these functions.)
+	// Removed since 0.2.1-alpha: Use msvcrt instead. (call libc_init() to initialize these functions.)
 	// char *strtok( __In const char *str, __In const char *delimiter );
 	// char *strstr( __In char *str1, __In const char *str2);
 	
+	typedef int   errno_t;
+	typedef int * intptr_i;
+	
+	void abort();
 	char * __cdecl strstr(const char *, const char *);
 	char * __cdecl strchr(const char *, int c);
 	size_t __cdecl strcspn(const char *, const char *);
@@ -280,9 +284,19 @@ __namespace() {
 	double __cdecl atof(const char *str);
 	int    __cdecl atoi(const char *str);
    long   __cdecl atol(const char *str);
+   char * __cdecl _tempnam( const char *dir, const char *prefix );
+   int    __cdecl _chmod( const char *filename, int pmode);
+   int    __cdecl _creat( const char *filename, int pmode );
+   char * __cdecl _getcwd( char *buffer, int maxlen );
+   char * __cdecl getenv( const char *varname );
+   char * __cdecl _strset(char *str, int c );
+   char * __cdecl _strrev( char *str );
+   intptr_t __cdecl _execl( const char *cmdname, const char *arg0, ... );
+   errno_t __cdecl strcpy_s( char *strDestination,  size_t numberOfElements,  const char *strSource );
+   errno_t __cdecl _access_s( const char *path, int mode );
 	
-	void libcstring_init(); // Initializes (links) these headers
-	int  ___libcstring_init__done__ = 0;
+	void libc_init(); // Initializes (links) these headers
+	int  ___libc_init__done__ = 0;
 	
 	char *dump( __In const char *content );
 	void *calloc( __In int count, __In size_t size);
