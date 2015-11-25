@@ -31,7 +31,8 @@
 
 BOOL __game_physx_loaded__ = false;
 
-void game_physx_load();
+void game_physx_new();
+void game_physx_free();
 
 #include "common.c"
 #endif /* common.h */

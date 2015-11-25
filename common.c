@@ -14,11 +14,20 @@
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
-void game_physx_load()
+void game_physx_new()
 {
 	if( !__game_physx_loaded__ )
 	{
 		physX_open();
 		__game_physx_loaded__ = true;
+	}
+}
+
+void game_physx_free()
+{
+	if( __game_physx_loaded__ )
+	{
+		physX_destroy();
+		__game_physx_loaded__ = false;
 	}
 }
