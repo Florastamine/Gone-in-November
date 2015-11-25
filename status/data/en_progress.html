@@ -259,12 +259,65 @@ functions: <span style="font-family: Courier New,Courier,monospace;">strchr(),
 strcspn(), strstr(), strncat(), strncmp(), strncpy(), strbprk(),
 strspn(), strrchr()</span> and<span
  style="font-family: Courier New,Courier,monospace;"> strxfrm()</span>.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Build
+    <span style="font-family: Courier New,Courier,monospace;">&lt;common&gt;</span>
+functions: <span style="font-family: Courier New,Courier,monospace;">game_physx_load()</span>,
+    <span style="font-family: Courier New,Courier,monospace;">game_log_load()</span>
+and <span style="font-family: Courier New,Courier,monospace;">game_scene_load()</span>;
+    <span style="font-family: Courier New,Courier,monospace;">write
+game_event_setup() </span>(mostly calls to <span
+ style="font-family: Courier New,Courier,monospace;">on_*</span>
+functions - they are internal functions begin with<span
+ style="font-family: Courier New,Courier,monospace;">
+__game_event_on_...</span>)</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Change
+the function naming convention in<span
+ style="font-family: Courier New,Courier,monospace;"> &lt;path&gt;</span>
+from <span style="font-family: Courier New,Courier,monospace;">game_get*()
+    </span>to <span style="font-family: Courier New,Courier,monospace;">game_asset_get*().</span></li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span><span
+ style="font-family: Courier New,Courier,monospace;">README.md</span>
+and <span style="font-family: Courier New,Courier,monospace;">README.md
+    </span>in each single folder (also remove <span
+ style="font-family: Courier New,Courier,monospace;">.gitignore</span>
+in subfolders).</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Create
+    <span style="font-family: Courier New,Courier,monospace;">./utils/_backup.bat</span>
+and also remove the leading underscore of each batch utility files.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span><span
+ class="text_exposed_show">Move <span
+ style="font-family: Courier New,Courier,monospace;" class="_58cn"><span
+ aria-label="hashtag" class="_58cl">&#8234;#&#8206;</span><span class="_58cm">define</span></span><a
+ class="_58cn"
+ href="https://www.facebook.com/hashtag/define?source=feed_text&amp;story_id=1660878567524307"
+ data-ft="{&quot;tn&quot;:&quot;*N&quot;,&quot;type&quot;:104}"><span class="_58cm">&#8236;</span></a>
+switches to <span style="font-family: Courier New,Courier,monospace;">&lt;common&gt;</span>
+instead of the game header (<span
+ style="font-family: Courier New,Courier,monospace;">&lt;November&gt;</span>).</span></li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span><span
+ class="text_exposed_show">With the internal log functionality resides
+in <span style="font-family: Courier New,Courier,monospace;">&lt;common&gt;</span>,
+begin searching for and logging for events in the preceding code.</span>
+  </li>
   <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Conduct
 serialization/deserialization tests:<span
  style="font-family: Courier New,Courier,monospace;">
 ./tests/serializer_serialize.c </span>and <span
- style="font-family: Courier New,Courier,monospace;">./tests/file.c</span><br>
-  </li>
+ style="font-family: Courier New,Courier,monospace;">./tests/file.c</span></li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span><span
+ style="font-family: Courier New,Courier,monospace;"><span
+ style="font-family: Helvetica,Arial,sans-serif;">Update</span>
+&lt;utilities&gt; <span
+ style="font-family: Helvetica,Arial,sans-serif;">for more</span>
+ASSERT().</span></li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span><span
+ style="font-family: Courier New,Courier,monospace;"><span
+ style="font-family: Helvetica,Arial,sans-serif;"></span></span><span
+ style="font-family: Courier New,Courier,monospace;"><span
+ style="font-family: Helvetica,Arial,sans-serif;">Update <span
+ style="font-family: Courier New,Courier,monospace;">&lt;utilities&gt;</span>
+for a lot more RGB color vectors.</span><br>
+    </span></li>
 </ul>
 <span style="font-weight: bold; text-decoration: underline;">Bug fixes</span><br>
 <ul>
