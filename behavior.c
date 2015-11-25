@@ -1,4 +1,4 @@
-/* common.h */
+/* behavior.c */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -14,24 +14,5 @@
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
-#ifndef    _COMMON_H_
-#define    _COMMON_H_
 
-#define __static 
-#define __In
-#define __Out
-
-#ifndef    PRAGMA_POINTER
-    #define    PRAGMA_POINTER
-#endif
-
-#ifndef    PRAGMA_ZERO
-    #define    PRAGMA_ZERO
-#endif
-
-BOOL __game_physx_loaded__ = false;
-
-void game_physx_load();
-
-#include "common.c"
-#endif /* common.h */
+/* Holla holla get dollas */
