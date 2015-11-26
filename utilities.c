@@ -486,6 +486,7 @@ int search( Text *container, const char *cstr )
 char *function_name_get( const void *f )
 {
 	char *cstr = NULL;
+	
 	if(f)
 	{
 		if(engine_getscriptinfo(f, &cstr)) strcat(cstr, _chr("()"));
@@ -571,7 +572,8 @@ void window_size_set( float width, float height )
 
 void window_size_set( const Pair *__size )
 {
-	if(__size) window_size_set(__size->first, __size->second);
+	if(__size)
+	    window_size_set(__size->first, __size->second);
 }
 
 /*
@@ -902,8 +904,11 @@ __static void __console_show( Channel *console )
 {
 	if( !console ) return;
 	
-	if( !(console->__background_container->flags & SHOW) ) console->__background_container->flags |= (SHOW);
-	if( !(console->data->flags & SHOW) ) console->data->flags |= (SHOW);
+	if( !(console->__background_container->flags & SHOW) )
+	    console->__background_container->flags |= (SHOW);
+	    
+	if( !(console->data->flags & SHOW) )
+	    console->data->flags |= (SHOW);
 }
 
 /*
@@ -1239,18 +1244,18 @@ float txt_width( Text *object )
 {
 	if(object && object->strings)
 	{
-		float length = str_len((object->pstring)[0]);
+		int   p      = 0;
 		int   i      = 1;		
 		
 		while(i < object->strings)
 		{
-			if(str_len((object->pstring)[i]) > length)
-			    length = str_len((object->pstring)[i]);
+			if(str_len((object->pstring)[i]) > str_len((object->pstring)[p]))
+			    p = i;
 			
 			i++;
 		}
 		
-		return length;
+		return str_width((object->pstring)[p], object->font);
 	}
 }
 

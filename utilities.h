@@ -50,6 +50,10 @@
  * + v0.2.1-alpha
  * - Added txt_width(), txt_height(), clampf() and bgr_to_rgb().
  * - Removed home-brewed str*() functions and replace them with those from the C standard library.
+ * __________________________________________________________________
+ * + v0.2.2-alpha
+ * - Fixed txt_width() returning wrong height (not taking font->dx into account)
+ * - Add the gravity acceleration constant (GRAVITY_ACCELERATION)
  */
 #ifndef    _UTILITIES_H_ 
 #define    _UTILITIES_H_ 
