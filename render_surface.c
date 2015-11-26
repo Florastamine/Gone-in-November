@@ -48,12 +48,12 @@ void smtl_fur_add(ENTITY *object)
 {
 	if( !__smtl_fur__noise )
 	{
-		__smtl_fur__noise = bmap_create(game_get_asset_2d_fx("noise.tga"));
+		__smtl_fur__noise = bmap_create(game_asset_get_2d_fx("noise.tga"));
 		smtl_fur->skin1 = __smtl_fur__noise;
 	}
 	if( !__smtl_fur__color)
 	{
-		__smtl_fur__color = bmap_create(game_get_asset_2d_fx("noise.tga"));
+		__smtl_fur__color = bmap_create(game_asset_get_2d_fx("noise.tga"));
 		smtl_fur->skin2 = __smtl_fur__color;
 	}
 	
@@ -85,7 +85,7 @@ void smtl_water_add(ENTITY *object, BMAP *reflection)
 	
 	if( !__smtl_water__bump )
 	{
-		__smtl_water__bump = bmap_create(game_get_asset_2d_fx("bumpwaves.tga"));
+		__smtl_water__bump = bmap_create(game_asset_get_2d_fx("bumpwaves.tga"));
 		smtl_water->skin1 = __smtl_water__bump;
 	}
 	
@@ -111,7 +111,7 @@ void smtl_chrome_add(ENTITY *object, VECTOR *normalized_color)
 	
 	if( !__smtl_chrome__lookup )
 	{
-		__smtl_chrome__lookup = bmap_create(game_get_asset_2d_fx("chrome_lookup.tga"));
+		__smtl_chrome__lookup = bmap_create(game_asset_get_2d_fx("chrome_lookup.tga"));
 		smtl_chrome->skin1 = __smtl_chrome__lookup;
 	}
 	
@@ -183,7 +183,7 @@ void smtl_ocean_add(ENTITY *object, BMAP *reflection)
 	
 	if( !__smtl_ocean__wave )
 	{
-		__smtl_ocean__wave = bmap_create(game_get_asset_2d_fx("waves2.tga"));
+		__smtl_ocean__wave = bmap_create(game_asset_get_2d_fx("waves2.tga"));
 		smtl_ocean->skin1 = __smtl_ocean__wave;
 	}
 	

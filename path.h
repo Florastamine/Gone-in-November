@@ -28,8 +28,6 @@
 #ifndef    _PATH_H_
 #define    _PATH_H_
 
-#define    PERFORM_PATH_LOOKUP
-
 #ifdef     PERFORM_PATH_LOOKUP
     #define PRAGMA_PATH "./2d/"
     #define PRAGMA_PATH "./2d/fx/"
@@ -50,7 +48,7 @@
     #define PRAGMA_PATH "./utils/"
     
     // Because we can't name the PRAGMA_PATH definitions - 
-    // separate definitions are provided in game_get_asset_*() functions instead.
+    // separate definitions are provided in game_asset_get_*() functions instead.
     // What a waste.
     #define __PATH_LOOKUP_SCENE        "./scene/"
     #define __PATH_LOOKUP_OBJECT       "./object/"
@@ -68,16 +66,16 @@
     #define PRAGMA_PATH "./sound/stream/"
 #endif
 
-STRING *game_get_asset_object(const STRING *asset);
-STRING *game_get_asset_scene(const STRING *asset);
+STRING *game_asset_get_object(const STRING *asset);
+STRING *game_asset_get_scene(const STRING *asset);
 
-STRING *game_get_asset_stream(const STRING *asset);
-STRING *game_get_asset_sound(const STRING *asset);
+STRING *game_asset_get_stream(const STRING *asset);
+STRING *game_asset_get_sound(const STRING *asset);
 
-STRING *game_get_asset_gui(const STRING *asset);
-STRING *game_get_asset_2d_sprite(const STRING *asset);
-STRING *game_get_asset_2d_generic(const STRING *asset);
-STRING *game_get_asset_2d_fx(const STRING *asset);
+STRING *game_asset_get_gui(const STRING *asset);
+STRING *game_asset_get_2d_sprite(const STRING *asset);
+STRING *game_asset_get_2d_generic(const STRING *asset);
+STRING *game_asset_get_2d_fx(const STRING *asset);
 
 #include "path.c"
 #endif /* path.h */

@@ -27,7 +27,7 @@
  * 
  * I'm not going to bash macros all over the place like I did with <serializer>.
  */
-STRING *game_get_asset_object(const STRING *asset)
+STRING *game_asset_get_object(const STRING *asset)
 {
  	STRING *ret = "";
  	
@@ -40,7 +40,7 @@ STRING *game_get_asset_object(const STRING *asset)
  	#endif
 }
 
-STRING *game_get_asset_scene(const STRING *asset)
+STRING *game_asset_get_scene(const STRING *asset)
 {
 	STRING *ret = "";
 	
@@ -53,13 +53,13 @@ STRING *game_get_asset_scene(const STRING *asset)
 	#endif
 }
 
-STRING *game_get_asset_stream(const STRING *asset) // Streams can't be packed into resources,
+STRING *game_asset_get_stream(const STRING *asset) // Streams can't be packed into resources,
                                                    // so an absolute path must always be specified.
 {
 	return str_create(asset);
 }
 
-STRING *game_get_asset_sound(const STRING *asset)
+STRING *game_asset_get_sound(const STRING *asset)
 {
 	STRING *ret = "";
 	
@@ -72,7 +72,7 @@ STRING *game_get_asset_sound(const STRING *asset)
 	#endif
 }
 
-STRING *game_get_asset_gui(const STRING *asset)
+STRING *game_asset_get_gui(const STRING *asset)
 {
 	STRING *ret = "";
 	
@@ -85,7 +85,7 @@ STRING *game_get_asset_gui(const STRING *asset)
 	#endif
 }
 
-STRING *game_get_asset_2d_sprite(const STRING *asset)
+STRING *game_asset_get_2d_sprite(const STRING *asset)
 {
 	STRING *ret = "";
 	
@@ -98,7 +98,7 @@ STRING *game_get_asset_2d_sprite(const STRING *asset)
 	#endif
 }
 
-STRING *game_get_asset_2d_generic(const STRING *asset)
+STRING *game_asset_get_2d_generic(const STRING *asset)
 {
 	STRING *ret = "";
 	
@@ -111,7 +111,7 @@ STRING *game_get_asset_2d_generic(const STRING *asset)
 	#endif
 }
 
-STRING *game_get_asset_2d_fx(const STRING *asset)
+STRING *game_asset_get_2d_fx(const STRING *asset)
 {
 	STRING *ret = "";
 	
