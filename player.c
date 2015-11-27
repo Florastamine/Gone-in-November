@@ -33,19 +33,32 @@ __act_player_state *act_player_get_singleton()
 
 void act_player_free()
 {
+	game_log_write("Request to free the soul from all the burdens.");
+	
 	if( __act_player_state_singleton )
 	{
+		dtimer();
+		game_log_write("Now freeing the soul.");
+		
 		safe_remove(__act_player_state_singleton->__object);
 		safe_remove(__act_player_state_singleton->__object_stand);
 		
 		FREE(__act_player_state_singleton);
+		
+		double d = dtimer();
+		game_log_write( str_printf(NULL, "The soul was freed within a total of %f seconds.", d*(10^6)) );
 	}
 }
 
 void act_player_new()
 {
+	game_log_write("Request to allocate a home for the soul...");
+	
 	if( !__act_player_state_singleton )
 	{
+		game_log_write("Home not found. Allocating a new one...");
+		dtimer();
+		
 		__act_player_state_singleton = MALLOC(1, __act_player_state);
 		
 		// Don't need to do MALLOC() for entity pointers because ent_create() will take
@@ -78,6 +91,9 @@ void act_player_new()
 		__act_player_state_singleton->can_climb                   = false;
 		__act_player_state_singleton->is_moving                   = false;
 		__act_player_state_singleton->can_move                    = true;
+		
+		double d = dtimer();
+		game_log_write( str_printf(NULL, "Finished building a home for the soul. (%f seconds)", d/1000) );
 	}
 }
 
@@ -137,17 +153,28 @@ __static void __act_player_scan_foot()
  */
 __static void __act_player_register_physics()
 {
-	pXent_settype(my, PH_RIGID, PH_CAPSULE);
-	pXent_setmass(my, 5);
-	pXent_setskinwidth(my, 0.01);
-	pXent_setbodyflag(my, NX_BF_FROZEN_ROT, 1);
-	pXent_setdamping(my, 50, 100);
-	pXent_setmaterial(my, vector(1, 0, 0), vector(0, 0, NX_MF_DISABLE_FRICTION | NX_MF_DISABLE_STRONG_FRICTION), NULL);
+	game_log_write("Now registering the soul to the physics engine.");
+	
+	if(__GameState_singleton->__game_physx_loaded__)
+	{
+		pXent_settype(my, PH_RIGID, PH_CAPSULE);
+		pXent_setmass(my, 5);
+		pXent_setskinwidth(my, 0.01);
+		pXent_setbodyflag(my, NX_BF_FROZEN_ROT, 1);
+		pXent_setdamping(my, 50, 100);
+		pXent_setmaterial(my, vector(1, 0, 0), vector(0, 0, NX_MF_DISABLE_FRICTION | NX_MF_DISABLE_STRONG_FRICTION), NULL);
+		
+		game_log_write("Done registering.");
+	}
+	else
+	{
+		game_log_write("Failed to register the soul. (PhysX failed to initialize)");
+	}
 }
 
 __static void __act_player_create_bbox()
 {
-	__act_player_state_singleton->__object_stand = ent_create("bbox_stand.mdl", &my->x, NULL); // create stand shape
+	__act_player_state_singleton->__object_stand = ent_create( game_asset_get_object("bbox_stand.mdl") , &my->x, NULL); // create stand shape
 	__act_player_state_singleton->__object_stand->flags |= (INVISIBLE | PASSABLE);
 	
 	while(proc_status(ent_create)) wait(1.0);
@@ -161,7 +188,12 @@ __static void __act_player_create_bbox()
  */
 __action void act_player()
 {
-	if(proc_status(act_player) > 1) return; // This is not a two-person game...
+	game_log_write("Request to infiltrate the soul...");
+	
+	if(proc_status(act_player) > 1) {  // This is not a two-person game...
+		game_log_write("More than one requests detected. Abort.");
+		return;
+	}
 	
 	BOOL    IS_GROUNDED = 0, SLEEP_ONCE = 0;
 	VECTOR  force, absForce, dist, absDist, velocity, friction, tracePos, traceInput;

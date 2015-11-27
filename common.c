@@ -75,12 +75,24 @@ void game_state_free()
  */
 void game_physx_new()
 {
+	game_log_write("Request initializing PhysX...");
+	
 	if( !__GameState_singleton->__game_physx_loaded__ )
-	{	
+	{
+		game_log_write("PhysX hasn't been initialized. Initializing PhysX...");
+		
 		// Initializes the PhysX subsystem. Straight outta <ackPhysX>
 		if( !NxPhysicsSDK )
 		{
+			dtimer();
+			
 			NxPhysicsSDK = physX_load();
+			if( !NxPhysicsSDK ) {
+				game_log_write("Failed initializing PhysX! Abort.");
+				
+				return;
+			}
+			
 			pX_setsteprate(60.0, 8.0, NX_TIMESTEP_FIXED);
 			NxScene = physX_run(0);
 			pX_setunit(0.05);
@@ -97,6 +109,8 @@ void game_physx_new()
 		   
 		   // Register additional events (can't be put into game_event_setup() - maybe we don't need unnecessary functions
 		   // and (possible) crashs). ;)
+		   game_log_write("Now registering PhysX events...");
+		   
 		   if( !on_exit )         on_exit = on_exit_px0;
 		   if( !on_level_load )   on_level_load = on_level_load_px0;
 		   if( !on_ent_remove )   on_ent_remove = on_ent_remove_px0;
@@ -109,6 +123,9 @@ void game_physx_new()
 		   on_ent_remove = physX_ent_remove;
 		   
 		   __GameState_singleton->__game_physx_loaded__ = true;
+		   
+		   double d = dtimer();
+		   game_log_write( str_printf(NULL, "Successfully initialized PhysX (%f seconds)", d*(10^6) ) );
 		}
 	}
 }
@@ -146,10 +163,17 @@ void game_physx_loop()
  */
 void game_physx_free()
 {
+	game_log_write("Request to free the physics engine.");
+	
 	if( __GameState_singleton->__game_physx_loaded__ )
 	{
+		game_log_write("Freeing the physics engine...");
+		
 		physX_destroy();
+		// physX_close();
 		__GameState_singleton->__game_physx_loaded__ = false;
+		
+		game_log_write("Physics engine freed.");
 	}
 }
 
@@ -166,7 +190,10 @@ void game_log_new()
 		__GameState_singleton->__game_log_loaded__ = (BOOL) ifelse(__GameState_singleton->__game_log_handle__, true, false);
 		
 		if( __GameState_singleton->__game_log_loaded__ )
-		    game_log_write(__LOVELY_21_HYPHENS); // It's legit
+		{
+			game_log_write(__LOVELY_21_HYPHENS); // It's legit
+			game_log_write("Logging channel opened.");
+		}
 	}
 }
 
@@ -183,6 +210,7 @@ void game_log_free()
 {
 	if( __GameState_singleton->__game_log_loaded__ )
 	{
+		game_log_write("Logging channel closed.");
 		game_log_write(__LOVELY_21_HYPHENS); // It's legit
 		
 		file_close(__GameState_singleton->__game_log_handle__);
@@ -195,6 +223,8 @@ void game_log_free()
  * 
  * Writes a string to the log file.
  * Information about time and date are automatically appended.
+ * 
+ * For writing with printf(), refer to str_printf().
  */
 void game_log_write(const STRING *content)
 {
@@ -225,6 +255,9 @@ __static void __game_event_on_close()
 
 __static void __game_event_on_exit()
 {
+	// game_log_write( str_printf(NULL, "Triggering the pre-terminate event (%s))", function_name_get(__game_event_on_exit)) );
+	game_log_write( "Triggering the pre-terminate event (__game_event_on_exit()))" );
+	
 	game_state_free();
 }
 
@@ -236,5 +269,5 @@ __static void __game_event_on_exit()
 void game_event_setup()
 {
 	on_close         = __game_event_on_close;
-	on_exit          =  __game_event_on_exit;
+	on_exit          = __game_event_on_exit;
 }
