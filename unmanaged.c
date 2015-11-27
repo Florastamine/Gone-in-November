@@ -1,4 +1,4 @@
-/* behavior.h */
+/* unmanaged.c */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -15,20 +15,14 @@
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  * __________________________________________________________________
  * 
- * <behaviour>
- * 
- * Contains behaviour code aka "actions", which is (mostly) independent of the 
- * game logic, with the goal of making this header as portable as possible.
+ * <unmanaged>
+ * Place for kind of "unmanaged code". No, there's no C# scent here - 
+ * what I am referring to for "unmanaged code" is the code that were 
+ * generated from 3rd-party tools, like particle code, that is expected 
+ * to be usable right away without additional tinkering. That is - they
+ * are generated and used right away without being modified in any way - 
+ * whatever that would be (coding styles, algorithms, ...)
  * 
  * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
-#ifndef    __BEHAVIOUR_H__
-#define    __BEHAVIOUR_H__
-
-#include "behavior_player.h"
-#include "behavior_AI.h"
-#include "behavior_static.h"
-
-#include "behavior.c"
-#endif /* behavior.h */

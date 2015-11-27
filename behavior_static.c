@@ -1,4 +1,4 @@
-/* behavior.h */
+/* behavior_static.c */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -15,20 +15,10 @@
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  * __________________________________________________________________
  * 
- * <behaviour>
+ * <behavior_static>
  * 
- * Contains behaviour code aka "actions", which is (mostly) independent of the 
- * game logic, with the goal of making this header as portable as possible.
+ * Contains code for general, static entities.
  * 
  * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
-#ifndef    __BEHAVIOUR_H__
-#define    __BEHAVIOUR_H__
-
-#include "behavior_player.h"
-#include "behavior_AI.h"
-#include "behavior_static.h"
-
-#include "behavior.c"
-#endif /* behavior.h */

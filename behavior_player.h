@@ -1,4 +1,4 @@
-/* player.h */
+/* behavior_player.h */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -15,7 +15,7 @@
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  * __________________________________________________________________
  * 
- * <player>
+ * <behavior_player>
  * 
  * Player code, first person, with credits goes to 3Run.
  * I modified, optimized and simplified his original code for PRAGMA_POINTER
@@ -146,5 +146,5 @@ void  act_player_set_friction( __In float f );
 float act_player_get_camera_height();
 void  act_player_set_camera_height( __In float f );
 
-#include "player.c"
-#endif /* player.h */
+#include "behavior_player.c"
+#endif /* behavior_player.h */
