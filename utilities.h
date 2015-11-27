@@ -52,8 +52,15 @@
  * - Removed home-brewed str*() functions and replace them with those from the C standard library.
  * __________________________________________________________________
  * + v0.2.2-alpha
- * - Fixed txt_width() returning wrong height (not taking font->dx into account)
+ * - Fixed: txt_width() returning wrong height (not taking font->dx into account)
+ * - Fixed: __assert() won't close the file after writing data.
+ * 
  * - Add the gravity acceleration constant (GRAVITY_ACCELERATION)
+ * - Add a lot more color vectors (sand, peach, pearl, aquamarine, orchid, green, arctic lime, blue, scarlet.)
+ * - Add snprintf() to libc_init().
+ * - Add more ASSERT() macros to library functions.
+ * 
+ * - Versioning bumped.
  */
 #ifndef    _UTILITIES_H_ 
 #define    _UTILITIES_H_ 
@@ -61,7 +68,7 @@
 #include <stdio.h>
 #include <strio.c>
 
-#define __VERSION "v0.2.1-alpha" // Seems familiar?
+#define __VERSION "v0.2.2-alpha" // Seems familiar?
 
 #ifdef ENFORCE_STRICT
     #ifndef    PRAGMA_POINTER
@@ -109,10 +116,20 @@
 #define COLOR_CRIMSON                      (vector(60, 20, 220))
 #define COLOR_YELLOW                       (vector(0, 255, 255))
 #define COLOR_LAVENDER_ROSE                (vector(227, 160, 251))
-#define COLOR_LEMON_BITTER                 (vector(202, 224, 13))
+#define COLOR_BITTER_LEMON                 (vector(202, 224, 13))
 #define COLOR_PEACH_ORANGE                 (vector(153, 204, 255))
 #define COLOR_PALE_LILAC                   (vector(187, 187, 255))
 #define COLOR_TEAL                         (vector(136, 117, 54))
+#define COLOR_ORCHID                       (vector(214, 112, 218))
+#define COLOR_APPLE_GREEN                  (vector(0, 182, 141))
+#define COLOR_ARCTIC_LIME                  (vector(20, 255, 208))
+#define COLOR_AQUAMARINE                   (vector(212, 255, 127))
+#define COLOR_BLEU_DE_FRANCE               (vector(231, 140, 49))
+#define COLOR_SCARLET                      (vector(0, 36, 255))
+#define COLOR_SAND                         (vector(128, 178, 194))
+#define COLOR_PEACH                        (vector(164, 203, 255))
+#define COLOR_PEAR                         (vector(49, 226, 209))
+#define COLOR_PEARL                        (vector(198, 224, 234))
 
 /*
  * Defined constants for inkey() and inchar().
@@ -302,6 +319,7 @@ __namespace() {
    char * __cdecl _tempnam( const char *dir, const char *prefix );
    int    __cdecl _chmod( const char *filename, int pmode);
    int    __cdecl _creat( const char *filename, int pmode );
+   int    __cdecl snprintf ( char * s, size_t n, const char * format, ... );
    char * __cdecl _getcwd( char *buffer, int maxlen );
    char * __cdecl getenv( const char *varname );
    char * __cdecl _strset(char *str, int c );

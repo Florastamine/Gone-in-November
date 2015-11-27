@@ -39,6 +39,7 @@ void __assert( const char *message )
 	file_asc_write(f, 10);
 	
 	FREE(__string);
+	file_close(f);
 	sys_exit((void *) 0);
 }
 
@@ -53,6 +54,8 @@ void *calloc(int count, size_t size)
 	size_t __size = count * sizeof(size);
 	
 	void *ret = malloc(__size);
+	ASSERT( ret, _chr("<utilities>/calloc(): Failed to allocate memory blocks.") );
+	
 	memset( ret, 0, __size );
 	
 	return ret;
@@ -207,7 +210,8 @@ Pair *pair_new( const Pair *p )
  */
 void pair_free( Pair *pair )
 {
-	if(pair) FREE(pair);
+	if(pair)
+	    FREE(pair);
 }
 
 /*
@@ -256,7 +260,7 @@ double log10( double d )
  */
 bool is_odd( int i )
 {
-	return i & 1;
+	return i & 1; // Check the very last digit.
 }
 
 /*
@@ -389,6 +393,8 @@ String *str_trunc_ex( String *str, unsigned int n )
 */
 String *str_parse_ex( String *to, char *from, int pos, char delimiter )
 {
+	ASSERT( to, _chr("<utilities>/str_parse_ex(): Uninitialized container provided."));
+	
 	fixed old_delimiter = _str_separator;
 	_str_separator = delimiter;
 	
@@ -405,7 +411,9 @@ String *str_parse_ex( String *to, char *from, int pos, char delimiter )
 * delimiter, and pushes the result substrings into the text object.
 */
 void str_parse_delim( Text *text, char *content, char delimiter )
-{	
+{
+	ASSERT( text, _chr("<utilities>/str_parse_delim(): Uninitialized container provided."));
+	
 	char old_delimiter = _str_separator;
 	_str_separator = delimiter;
 	String *parse = str_parse_ex(NULL, content, 1, delimiter ); // Fetchs the very first token.
@@ -485,13 +493,10 @@ int search( Text *container, const char *cstr )
  */
 char *function_name_get( const void *f )
 {
+	ASSERT( f, _chr("<utilities>/function_name_get(): Invalid function provided."));
+	
 	char *cstr = NULL;
-	
-	if(f)
-	{
-		if(engine_getscriptinfo(f, &cstr)) strcat(cstr, _chr("()"));
-	}
-	
+	if(engine_getscriptinfo(f, &cstr)) strcat(cstr, _chr("()"));
 	return cstr;
 }
 
@@ -884,6 +889,12 @@ void console_new()
 	console_new( &Channel_active );
 }
 
+__static Bitmap *__ifelse_bitmap( Bitmap *a, Bitmap *b, Bitmap *c )
+{
+	if(a)  return b;
+	       return c;
+}
+
 /*
  * Bitmap *console_background_get( Channel *console )
  *
@@ -892,7 +903,7 @@ void console_new()
  */
 Bitmap *console_background_get( Channel *console )
 {
-	return ifelse(console && console->background, console->background, NULL);
+	return __ifelse_bitmap(console && console->background, console->background, NULL);
 }
 
 Bitmap *console_background_get()
@@ -1110,6 +1121,8 @@ void command_table_free()
  */
 String *str_create_ex( const int length )
 {
+	ASSERT( length, _chr("<utilities>/str_create_ex(): An attempt to create an empty length string."));
+	
 	char *cstr = MALLOC(length, char);
 	
 	*cstr = ' ';
@@ -1459,6 +1472,7 @@ void libc_init()
 	strspn    = DefineApi("msvcrt!strspn");
 	strtok    = DefineApi("msvcrt!strtok");
 	strxfrm   = DefineApi("msvcrt!strxfrm");
+	snprintf  = DefineApi("msvcrt!snprintf");
 	
 	atof      = DefineApi("msvcrt!atof");
 	atoi      = DefineApi("msvcrt!atoi");
