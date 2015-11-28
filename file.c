@@ -96,32 +96,35 @@ const char *file_name_get()
 char *file_extension_get ( File *file )
 {
 	if(file)
+	    return file_extension_get(file->name);
+}
+
+char *file_extension_get ( const char *fn )
+{
+	int end = strlen(fn);
+	int right = 0;
+	char c = 0;
+	
+	while(c != '.')
 	{
-		int end = strlen(file->name);
-		int right = 0;
-		char c = 0;
-		
-		while(c != '.')
-		{
-			c = *( (file->name + end - 1) - right );
-			right += 1;
-		}
-		
-		if(c != '.') return NULL;
-		
-		int left = end - right + 1; // An additional +1 is reserved for the dot character.
-		char *cstr = MALLOC(right - 1, char);
-		int i = 0;
-		
-		while(left <= end)
-		{
-			*(cstr + i) = *(file->name + left);
-			i++;
-			left++;
-		}
-		
-		return cstr;
+		c = *( (fn + end - 1) - right );
+		right += 1;
 	}
+	
+	if(c != '.') return NULL;
+	
+	int left = end - right + 1; // An additional +1 is reserved for the dot character.
+	char *cstr = MALLOC(right - 1, char);
+	int i = 0;
+	
+	while(left <= end)
+	{
+		*(cstr + i) = *(fn + left);
+		i++;
+		left++;
+	}
+	
+	return cstr;
 }
 
 char *file_extension_get()

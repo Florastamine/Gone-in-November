@@ -78,6 +78,7 @@ int file_size_get( __In File *file );
 int file_size_get();
 
 char *file_extension_get( __In File *file );
+char *file_extension_get ( __In const char *fn );
 char *file_extension_get();
 
 const char *file_name_get( __In File *file );
