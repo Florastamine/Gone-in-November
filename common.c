@@ -248,17 +248,19 @@ void game_log_write(const STRING *content)
 	}
 }
 
-__static void __game_event_on_close()
-{
-	game_state_free();
-}
-
 __static void __game_event_on_exit()
 {
 	// game_log_write( str_printf(NULL, "Triggering the pre-terminate event (%s))", function_name_get(__game_event_on_exit)) );
 	game_log_write( "Triggering the pre-terminate event (__game_event_on_exit()))" );
 	
 	game_state_free();
+}
+
+__static void __game_event_on_close()
+{
+	__game_event_on_exit();
+	
+	sys_exit(NULL);
 }
 
 /*
