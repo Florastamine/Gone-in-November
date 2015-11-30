@@ -1449,6 +1449,67 @@ float clampf(float x, float a, float b)
 }
 
 /*
+ * char *os_get_name()
+ * 
+ * Retrieves the current OS in use.
+ */
+char *os_get_name()
+{
+	char *cstr = (char *) sys_malloc(32); // 32 is more than enough.
+	
+	switch( sys_winversion )
+	{
+		case    1:    strcpy(cstr, "Windows 98 SE");                break;
+		case    2:    strcpy(cstr, "Windows ME");                   break;
+		case    3:    strcpy(cstr, "Windows 2000");                 break;
+		case    4:    strcpy(cstr, "Windows 2003");                 break;
+		case    5:    strcpy(cstr, "Windows XP");                   break;
+		case    6:    strcpy(cstr, "Windows Vista/7/8/8.1/10");     break;
+		default  :    strcpy(cstr, "Unidentified OS");
+	}
+	
+	return cstr;
+}
+
+float lerp(float v0, float v1, float t)
+{
+	return (1 - t) * v0 + t * v1;
+}
+
+/*
+ * char *file_get_ext ( const char *fn )
+ * 
+ * Fetchs the extension of a given file name.
+ */
+char *file_get_ext ( const char *fn )
+{
+	int end = strlen(fn);
+	int right = 0;
+	char c = 0;
+	
+	while(c != '.')
+	{
+		c = *( (fn + end - 1) - right );
+		right += 1;
+	}
+	
+	if(c != '.') return NULL;
+	
+	int left     = end - right + 1; // An additional +1 is reserved for the dot character.
+	char *cstr   = MALLOC(right - 1, char);
+	int i        = 0;
+	
+	while(left <= end)
+	{
+		*(cstr + i) = *(fn + left);
+		i++;
+		left++;
+	}
+	
+	return cstr;
+}
+
+/*
  * void libc_init()
  * 
  * "Links" the vanilla C string functions.

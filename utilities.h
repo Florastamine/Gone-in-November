@@ -55,12 +55,16 @@
  * - Fixed: txt_width() returning wrong height (not taking font->dx into account)
  * - Fixed: __assert() won't close the file after writing data.
  * 
- * - Add the gravity acceleration constant (GRAVITY_ACCELERATION)
- * - Add a lot more color vectors (sand, peach, pearl, aquamarine, orchid, green, arctic lime, blue, scarlet.)
- * - Add snprintf() to libc_init().
- * - Add more ASSERT() macros to library functions.
+ * - Added the gravity acceleration constant (GRAVITY_ACCELERATION)
+ * - Added a lot more color vectors (sand, peach, pearl, aquamarine, orchid, green, arctic lime, blue, scarlet.)
+ * - Added snprintf() to libc_init().
+ * - Added more ASSERT() macros to library functions.
  * 
  * - Versioning bumped.
+ * __________________________________________________________________
+ * + v0.2.3-alpha
+ * - Added os_get_name(), file_get_ext().
+ * - Add two macros FLT_MAX (maximum float value) and DBL_MAX (maximum double value).
  */
 #ifndef    _UTILITIES_H_ 
 #define    _UTILITIES_H_ 
@@ -68,7 +72,7 @@
 #include <stdio.h>
 #include <strio.c>
 
-#define __VERSION "v0.2.2-alpha" // Seems familiar?
+#define __VERSION "v0.2.3-alpha" // Seems familiar?
 
 #ifdef ENFORCE_STRICT
     #ifndef    PRAGMA_POINTER
@@ -84,6 +88,8 @@
 
 #define Pi                                 (3.141592) /* After more than 1.5hrs of surfing around the Internet, watching Pink Panther. */
 #define GRAVITY_ACCELERATION               (9.80665)  /* Standard acceleration of freefall, 9.81 m/s^2, insurance included. */
+#define FLT_MAX                            (3.4 * pow(10, 38))
+#define DBL_MAX                            (1.8 * pow(10, 308))
 
 #define ASSERT_MESSAGE_LENGTH              384
 
@@ -386,6 +392,14 @@ __namespace(window) {
 
 __namespace(video) {
 	Pair *shader_get_version();
+}
+
+__namespace(os) {
+	char *os_get_name();
+}
+
+__namespace(IO) {
+	char *file_get_ext ( __In const char *fn );
 }
 
 __namespace(string) {
