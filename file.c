@@ -93,10 +93,14 @@ const char *file_name_get()
  * 
  * TODO: Add support for strings.
  */
-char *file_extension_get ( File *file )
+char *file_extension_get ( File *f )
 {
-	if(file)
-	    return file_extension_get(file->name);
+	if(f)
+	    #ifdef    _UTILITIES_H_ // If <utilities> was included
+	        return file_get_ext(f->name); // Use the facility provided in <utilities> instead
+	    #else
+	        return file_extension_get (f->name); // Roll our own version
+	    #endif
 }
 
 char *file_extension_get ( const char *fn )
@@ -113,9 +117,9 @@ char *file_extension_get ( const char *fn )
 	
 	if(c != '.') return NULL;
 	
-	int left = end - right + 1; // An additional +1 is reserved for the dot character.
-	char *cstr = MALLOC(right - 1, char);
-	int i = 0;
+	int left     = end - right + 1; // An additional +1 is reserved for the dot character.
+	char *cstr   = MALLOC(right - 1, char);
+	int i        = 0;
 	
 	while(left <= end)
 	{
