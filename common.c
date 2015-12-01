@@ -81,6 +81,7 @@ void game_physx_new()
 	{
 		game_log_write("PhysX hasn't been initialized. Initializing PhysX...");
 		
+		#ifdef ACKPHYSX_H 
 		// Initializes the PhysX subsystem. Straight outta <ackPhysX>
 		if( !NxPhysicsSDK )
 		{
@@ -127,6 +128,9 @@ void game_physx_new()
 		   double d = dtimer();
 		   game_log_write( str_printf(NULL, "Successfully initialized PhysX (%f seconds)", d*(10^6) ) );
 		}
+		#else
+		    game_log_write("Header <ackphysX> wasn't included in the current build; initialization cancelled.");
+		#endif
 	}
 }
 
@@ -140,6 +144,7 @@ void game_physx_new()
  */
 void game_physx_loop()
 {
+	#ifdef ACKPHYSX_H
 	if(NxPhysicsSDK)
 	{
 		#ifdef FIXED_TIME //This for-loop fixes the physX framerate to 60 when the frame rate is below 60 fps
@@ -154,6 +159,9 @@ void game_physx_loop()
 		#endif
 		proc_mode = PROC_EARLY;	// call physX_run() before entity actions.
 	}
+	#else
+	wait(1.0);
+	#endif
 }
 
 /*
@@ -165,6 +173,7 @@ void game_physx_free()
 {
 	game_log_write("Request to free the physics engine.");
 	
+	#ifdef ACKPHYSX_H
 	if( __GameState_singleton->__game_physx_loaded__ )
 	{
 		game_log_write("Freeing the physics engine...");
@@ -175,6 +184,9 @@ void game_physx_free()
 		
 		game_log_write("Physics engine freed.");
 	}
+	#else
+	    game_log_write("Header <ackphysX> wasn't included in the current build; free operation cancelled.");
+	#endif
 }
 
 /*

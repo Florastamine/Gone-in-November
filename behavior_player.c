@@ -155,6 +155,7 @@ __static void __act_player_register_physics()
 {
 	game_log_write("Now registering the soul to the physics engine.");
 	
+	#ifdef ACKPHYSX_H		
 	if(__GameState_singleton->__game_physx_loaded__)
 	{
 		pXent_settype(my, PH_RIGID, PH_CAPSULE);
@@ -170,6 +171,9 @@ __static void __act_player_register_physics()
 	{
 		game_log_write("Failed to register the soul. (PhysX failed to initialize)");
 	}
+	#else
+	    game_log_write("Header <ackphysX> wasn't included in the current build; cannot register.");
+	#endif
 }
 
 __static void __act_player_create_bbox()
@@ -188,6 +192,7 @@ __static void __act_player_create_bbox()
  */
 __action void act_player()
 {
+	#ifdef ACKPHYSX_H
 	game_log_write("Request to infiltrate the soul...");
 	
 	if(proc_status(act_player) > 1) {  // This is not a two-person game...
@@ -426,6 +431,10 @@ __action void act_player()
 	}
 	
 	act_player_free();
+	
+	#else
+	    game_log_write("Header <ackphysX> wasn't included in the current build; request to control the soul ignored.");
+	#endif
 }
 
 BOOL  act_player_can_stand()
