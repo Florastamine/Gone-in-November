@@ -8,7 +8,7 @@ As the game code is updated directly on this GitHub page, you can easily tell if
 
 If you wish to collaborate, let me know. I'll be very happy! (as the game is progressing fairly slow). Leave me a message at:
 * My personal Gmail account (florastamine@gmail.com)
-* My Vn-Sharing.net account (http://vn-sharing.net/forum/member.php?u=15466)
+* My vn-sharing.net account (http://vn-sharing.net/forum/member.php?u=15466)
 
 Currently I am accepting only 2D artists.
 
