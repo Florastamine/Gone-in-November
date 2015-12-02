@@ -27,7 +27,7 @@
 #define   PRAGMA_PATH "../object/"
 #define   PRAGMA_PATH "../fx/"
 
-#define   PERFORM_PATH_LOOKUP
+//#define   PERFORM_PATH_LOOKUP
 
 #include <acknex.h>
 

@@ -1076,7 +1076,9 @@ void command_table_remove( int id )
 void command_table_remove( const char *command )
 {
 	int i = search(__CommandTable_command, command);
-	if(i) command_table_remove(i - 1);
+	
+	if(i)
+	    command_table_remove(i - 1);
 }
 
 /*
