@@ -903,7 +903,10 @@ __static Bitmap *__ifelse_bitmap( Bitmap *a, Bitmap *b, Bitmap *c )
  */
 Bitmap *console_background_get( Channel *console )
 {
-	return __ifelse_bitmap(console && console->background, console->background, NULL);
+	if(console)
+	    return __ifelse_bitmap(console->background, console->background, NULL);
+
+	return NULL;
 }
 
 Bitmap *console_background_get()
@@ -973,12 +976,18 @@ bool console_state_get_invisibility()
  */
 bool console_state_get_ready( Channel *console )
 {
-	return ifelse(console && console->ready, true, false);
+	if(console)
+	    return ifelse(console->ready, true, false);
+	
+	return NULL;
 }
 
 bool console_state_get_ready()
 {
-	return Channel_active->ready;
+	if(Channel_active)
+	    return Channel_active->ready;
+	
+	return NULL;
 }
 
 /*
@@ -1255,21 +1264,26 @@ float txt_height( Text *object )
  */
 float txt_width( Text *object )
 {
-	if(object && object->strings)
+	if(object)
 	{
-		int   p      = 0;
-		int   i      = 1;		
-		
-		while(i < object->strings)
+		if(object->strings)
 		{
-			if(str_len((object->pstring)[i]) > str_len((object->pstring)[p]))
-			    p = i;
+			int   p      = 0;
+			int   i      = 1;		
 			
-			i++;
+			while(i < object->strings)
+			{
+				if(str_len((object->pstring)[i]) > str_len((object->pstring)[p]))
+				p = i;
+				
+				i++;
+			}
+			
+			return str_width((object->pstring)[p], object->font);
 		}
-		
-		return str_width((object->pstring)[p], object->font);
 	}
+	
+	return -1.0;
 }
 
 __static void __error_setup( Error **table )
@@ -1325,10 +1339,13 @@ void error_new()
  */
 void error_code_push( Error *table, const unsigned int code )
 {
-	if(table && table->count < ERROR_CONTAINER_CAPACITY)
+	if(table)
 	{
-		(table->stack)[table->count] = code;
-		table->count += 1;
+		if(table->count < ERROR_CONTAINER_CAPACITY)
+		{
+			(table->stack)[table->count] = code;
+			table->count += 1;
+		}
 	}
 }
 

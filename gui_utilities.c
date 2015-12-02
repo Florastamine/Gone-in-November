@@ -560,9 +560,7 @@ bool gui_button_get_invisibility( GUIButton *b )
 	bool ret = false;
 	
 	if(b)
-	{
-		ret = ifelse( (b->__container->flags & SHOW) && (b->string->flags & SHOW), true, false );
-	}
+	    ret = ifelse( (b->__container->flags & SHOW) && (b->string->flags & SHOW), true, false );
 	
 	return ret;
 }

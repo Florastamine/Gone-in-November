@@ -32,7 +32,8 @@ __static const char *__combine(const char *cstr)
  */
 void file_bind( File *file )
 {
-	if(file) File_active = file;
+	if(file)
+	    File_active = file;
 }
 
 /*
@@ -76,8 +77,8 @@ int file_size_get()
  */
 const char *file_name_get( File *file )
 {
-	if( file_is_ready(file) ) return file->name;
-	return NULL;
+	if( file_is_ready(file) )    return file->name;
+	                             return NULL;
 }
 
 const char *file_name_get()
@@ -90,8 +91,6 @@ const char *file_name_get()
  * 
  * Returns the file extension of a specified file object.
  * Returns NULL if the file doesn't have extensions.
- * 
- * TODO: Add support for strings.
  */
 char *file_extension_get ( File *f )
 {
@@ -188,10 +187,19 @@ File *file_new( const char *name )
  * BOOL file_is_ready( File *file )
  * 
  * Returns true if the file is ready for further operations. (read/write), false otherwise.
+ * 
+ * (2.12.2015): Fixed a bug where the compiler would evaluate both statements, thus if
+ * "file" isn't valid, you'll get a crash (because the second statement in the clause would get evaluated too).
  */
 BOOL file_is_ready( File *file )
 {
-	return ifelse(file && file->ready, true, false);
+	BOOL ret = false;
+	
+	if(file)
+	    if(file->ready)
+	        ret = true;
+	        
+	return ret;
 }
 
 BOOL file_is_ready()
@@ -210,7 +218,13 @@ BOOL file_is_ready()
  */
 BOOL file_is_unicode( File *file )
 {
-	return ifelse(file && file->unicode, true, false);
+	BOOL ret = false;
+	
+	if(file)
+	    if(file->unicode)
+	        ret = true;
+	
+	return ret;
 }
 
 BOOL file_is_unicode()
@@ -325,26 +339,24 @@ __static void __file_write(File *f, STRING *sstr) // This exists to avoid the do
 void file_write( File *file, STRING *cstr )
 {
 	if( file_is_ready(file) )
-	{
-		__file_write(file, str_create(cstr));
-	}
+	    __file_write(file, str_create(cstr));
 }
 
 void file_write_unicode( File *file, STRING *ustr )
 {
 	if( file_is_ready(file) )
 	{
-		if( file_is_unicode(file) ) __file_write(file, str_createw(ustr));
-		else __file_write(file, str_create(ustr));
+		if( file_is_unicode(file) )
+		    __file_write(file, str_createw(ustr));
+		else
+		    __file_write(file, str_create(ustr));
 	}
 }
 
 void file_write( File *file, float f )
 {
 	if( file_is_ready(file) && (file_mode_get(file) == WRITE) )
-	{
-		file_var_write(file->__handle, f);
-	}
+	    file_var_write(file->__handle, f);
 }
 
 void file_write_unicode( STRING *ustr )
@@ -362,7 +374,7 @@ void file_write( float f )
 	file_write(File_active, f);
 }
 
-__static STRING *__file_read_string(File *file, BOOL unicode) // Read string from a file, taking Unicode into account.
+__static STRING *__file_read_string(File *file, BOOL unicode) // Read a string from a file, taking Unicode into account.
 {
 	STRING *buffer = NULL;
 	
@@ -494,7 +506,8 @@ void delimiter_write()
  */
 int file_mode_get( File *file )
 {
-	if(file) return file->mode;
+	if(file)
+	    return file->mode;
 }
 
 int file_mode_get()
