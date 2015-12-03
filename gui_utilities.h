@@ -93,6 +93,7 @@ __namespace(button) {
 	
 	GUIButton *gui_button_new( __In Vector2 *pos, 
 	                           __In String *title, 
+	                           __In int layern, 
 	                           __In String *image_on,
 	                           __In String *image_off,
 	                           __In String *image_over,

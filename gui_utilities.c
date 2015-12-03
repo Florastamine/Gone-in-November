@@ -297,6 +297,7 @@ __static void __gui_button_text_align( GUIButton *b )
  */
 GUIButton *gui_button_new( Vector2 *pos, 
                            String *title, 
+                           int layern, 
                            String *image_on,
                            String *image_off,
                            String *image_over,
@@ -307,7 +308,7 @@ GUIButton *gui_button_new( Vector2 *pos,
 {
 	GUIButton *b = MALLOC(1, GUIButton);
 	
-	b->__container         = pan_create(NULL, 1);
+	b->__container         = pan_create(NULL, layern);
 	b->image_on            = bmap_create(image_on);
 	b->image_off           = bmap_create(image_off);
 	b->image_over          = bmap_create(image_over);
@@ -326,7 +327,7 @@ GUIButton *gui_button_new( Vector2 *pos,
 	b->fptr_off    = fptr_off;
 	b->fptr_over   = fptr_over;
 	
-	b->string                    = txt_create(1, 2); // 1 string with 2 layer
+	b->string                    = txt_create(1, layern + 1); // 1 string with 2 layer
 	b->string->font              = Arial_18;
 	(b->string->pstring)[0]      = str_create(title);
 	
