@@ -227,6 +227,19 @@ void pair_set( Pair *p, float first, float second )
 }
 
 /*
+ * void pair_set( Pair *p1, Pair *p2 )
+ * 
+ * Fills a pair with another pair.
+ */
+void pair_set( Pair *p1, Pair *p2 )
+{
+	if( !p1 || !p2 ) return;
+	
+	p1->first = p2->first;
+	p1->second = p2->second;
+}
+
+/*
  * void pair_swap( Pair *p1, Pair *p2 )
  * 
  * Swaps two pairs.

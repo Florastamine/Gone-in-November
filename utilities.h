@@ -63,7 +63,7 @@
  * - Versioning bumped.
  * __________________________________________________________________
  * + v0.2.3-alpha
- * - Added os_get_name(), file_get_ext().
+ * - Added os_get_name(), file_get_ext(), another variant of pair_set().
  * - Add two macros FLT_MAX (maximum float value) and DBL_MAX (maximum double value).
  */
 #ifndef    _UTILITIES_H_ 
@@ -287,6 +287,7 @@ __namespace(pair) {
 	void pair_free( __In __Out Pair *pair);
 	
 	void pair_set( __In __Out Pair *p, float first, float second );
+	void pair_set( __In __Out Pair *p1, __In Pair *p2 );
 	void pair_swap( __In __Out Pair *p1, __In __Out Pair *p2 );
 }
 
