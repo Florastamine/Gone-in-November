@@ -22,6 +22,7 @@
  * 
  * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
+ * kay
  */
 #ifndef    _COMMON_H_
 #define    _COMMON_H_
