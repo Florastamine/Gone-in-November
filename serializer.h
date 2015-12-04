@@ -26,6 +26,8 @@
 
 #include <strio.c>
 
+#define PRAGMA_PRINT "\nSerialization module initialization..."
+
 #define __static 
 #define __In
 #define __Out

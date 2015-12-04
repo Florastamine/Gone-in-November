@@ -28,6 +28,8 @@
 #ifndef    _RENDER_REFLECT_H_
 #define    _RENDER_REFLECT_H_
 
+#define PRAGMA_PRINT "[Reflection] "
+
 #define    __REFLECT
 
 #define __In 

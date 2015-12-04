@@ -393,7 +393,7 @@ void game_scene_set_load_img_pos(float x, float y)
 	pair_set( &__SceneLoadState_singleton->load_img_pos, x, y );
 }
 
-void game_scene_set_load_screen( __In STRING *load_img )
+void game_scene_set_load_screen( STRING *load_img )
 {
 	__game_scene_state_new();
 	
@@ -412,7 +412,7 @@ BMAP *game_scene_get_load_screen()
 	return 0;
 }
 
-void game_scene_set_load_text( __In STRING *load_text )
+void game_scene_set_load_text( STRING *load_text )
 {
 	__game_scene_state_new();
 	
@@ -431,7 +431,7 @@ STRING *game_scene_get_load_text()
 	return str_create("NULL"); // ;). A string containing "NULL" is far more surprise than just a NULL-ed string.
 }
 
-void game_scene_set_desc_text( __In STRING *desc_text )
+void game_scene_set_desc_text( STRING *desc_text )
 {
 	__game_scene_state_new();
 
@@ -450,14 +450,14 @@ STRING *game_scene_get_desc_text()
 	return str_create("NULL");
 }
 
-void game_scene_set_load_text_font( __In FONT *font_struct )
+void game_scene_set_load_text_font( FONT *font_struct )
 {
 	__game_scene_state_new();
 	
 	__SceneLoadState_singleton->load_text_font = font_struct;
 }
 
-void game_scene_set_load_text_font( __In STRING *font_str )
+void game_scene_set_load_text_font( STRING *font_str )
 {
 	game_scene_set_load_text_font(font_create(font_str));
 }
@@ -473,14 +473,14 @@ FONT *game_scene_get_load_text_font()
 	return NULL;
 }
 
-void game_scene_set_desc_text_font( __In FONT *font_struct )
+void game_scene_set_desc_text_font( FONT *font_struct )
 {
 	__game_scene_state_new();
 	
 	__SceneLoadState_singleton->load_text_font = font_struct;
 }
 
-void game_scene_set_desc_text_font( __In STRING *font_str )
+void game_scene_set_desc_text_font( STRING *font_str )
 {
 	game_scene_set_desc_text_font(font_create(font_str));
 }
@@ -496,7 +496,7 @@ FONT *game_scene_get_desc_text_font()
 	return NULL;
 }
 
-void game_scene_set_delay( __In float d )
+void game_scene_set_delay( float d )
 {
 	if(__SceneLoadState_singleton)
 	    __SceneLoadState_singleton->delay = (float) abs(d);
@@ -508,13 +508,13 @@ float game_scene_get_delay()
 	    return __SceneLoadState_singleton->delay;
 }
 
-void game_scene_set_fade( __In BOOL b )
+void game_scene_set_fade( BOOL b )
 {
 	if(__SceneLoadState_singleton)
 	    __SceneLoadState_singleton->fade = b;
 }
 
-void game_scene_set_fade_speed( __In float s )
+void game_scene_set_fade_speed( float s )
 {
 	if(__SceneLoadState_singleton)
 	    __SceneLoadState_singleton->fade_speed = s;

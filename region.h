@@ -29,6 +29,8 @@
 
 #include <strio.c>
 
+#define PRAGMA_PRINT "\nMultilingual module initialization..."
+
 #define __In 
 #define __Out 
 #define __static 

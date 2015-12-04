@@ -28,7 +28,11 @@
 #ifndef    _PATH_H_
 #define    _PATH_H_
 
+#define PRAGMA_PRINT "\nResources lookup module initialization..."
+
 #ifdef     PERFORM_PATH_LOOKUP
+    #define PRAGMA_PRINT "PERFORM_PATH_LOOKUP was defined. Will be looking for resources in subdirectories..."
+    
     #define PRAGMA_PATH "./2d/"
     #define PRAGMA_PATH "./2d/fx/"
     #define PRAGMA_PATH "./2d/gui/"

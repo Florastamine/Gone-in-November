@@ -26,6 +26,8 @@
 #ifndef    __BEHAVIOUR_H__
 #define    __BEHAVIOUR_H__
 
+#define PRAGMA_PRINT "\nBehavior initialization..."
+
 #include "behavior_player.h"
 #include "behavior_AI.h"
 #include "behavior_static.h"

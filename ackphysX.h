@@ -4,6 +4,8 @@
 /////////////////////////////////////////////////////////////
 #ifndef ACKPHYSX_H
 	#define ACKPHYSX_H
+	
+	#define PRAGMA_PRINT "\nPhysics module initialization..."
 
 	#define PRAGMA_BIND "ackphysX.dll"
 	#define PRAGMA_BIND "PhysXCore.dll"

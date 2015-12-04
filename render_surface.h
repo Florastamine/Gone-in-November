@@ -40,6 +40,8 @@
 #ifndef    __RENDER_SURFACE_H__
 #define    __RENDER_SURFACE_H__
 
+#define PRAGMA_PRINT "[Surface shaders] "
+
 /* -- Fur -- */
 BMAP *__smtl_fur__noise;
 BMAP *__smtl_fur__color;

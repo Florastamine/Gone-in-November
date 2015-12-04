@@ -29,5 +29,7 @@
 #ifndef    _UNMANAGED_H_
 #define    _UNMANAGED_H_
 
+#define PRAGMA_PRINT "\nUnmanaged code initialization..."
+
 #include "unmanaged.c"
 #endif /* unmanaged.h */

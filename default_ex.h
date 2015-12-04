@@ -14,7 +14,9 @@
 #ifndef    __DEFAULT_EX_H__
 #define    __DEFAULT_EX_H__
 
-#include <acknex.h>
+#ifdef     DEBUG
+
+#define PRAGMA_PRINT "\n(Warning!) Debug enabled. Debugging module initialization..."
 
 var def_dfps = 0, def_dtlv = 0, def_dtcs = 0, def_dtac = 0, def_dtrf = 0, def_oldmouse = 0, def_camera = 0;
 ANGLE def_cang;
@@ -86,4 +88,6 @@ void def_moveset();
 void def_console();
 
 #include "default_ex.c"
+#endif
+
 #endif /* default_ex.h */ 

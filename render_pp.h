@@ -28,6 +28,8 @@
 #ifndef    __RENDER_PP_H__
 #define    __RENDER_PP_H__
 
+#define PRAGMA_PRINT "[Postprocessing] "
+
 #define    __RENDER_PP_CRT
 #define    __RENDER_PP_GRAIN
 #define    __RENDER_PP_GRAYSCALE

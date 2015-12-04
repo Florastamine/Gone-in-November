@@ -29,7 +29,7 @@
 #ifndef    _CRYPTO_H_
 #define    _CRYPTO_H_
 
-#include "file.h"
+#define PRAGMA_PRINT "\nCryptography module initialization..."
 
 #define __In 
 #define __Out 

@@ -30,6 +30,8 @@
 #ifndef    _HDR_H_
 #define    _HDR_H_
 
+#define PRAGMA_PRINT "[High dynamic range] "
+
 #define __In 
 #define __Out 
 #define __static 

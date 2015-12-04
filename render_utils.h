@@ -33,6 +33,8 @@
 #ifndef    _RENDER_UTILS_H_
 #define    _RENDER_UTILS_H_
 
+#define PRAGMA_PRINT "\nRendering utilities module initialization..."
+
 void render_queue_start();
 
 #include "render_utils.c"

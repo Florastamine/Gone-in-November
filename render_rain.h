@@ -27,6 +27,8 @@
 #ifndef    _RENDER_RAIN_H_
 #define    _RENDER_RAIN_H_
 
+#define PRAGMA_PRINT "[Rain] "
+
 typedef struct {
 	int       depth;
 	int       state;

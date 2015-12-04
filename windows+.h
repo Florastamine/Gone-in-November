@@ -24,6 +24,8 @@
 #ifndef    __LC_WINDOWSP_H__
 #define    __LC_WINDOWSP_H__
 
+#define PRAGMA_PRINT "\nWindows+ module initialization..."
+
 #include <windows.h>
 
 /*

@@ -31,6 +31,8 @@
 #ifndef    _DOF_H_
 #define    _DOF_H_
 
+#define PRAGMA_PRINT "[Depth of field] "
+
 #define __DOF
 
 #define __In 

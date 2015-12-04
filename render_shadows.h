@@ -6,7 +6,11 @@
 #ifndef    __RENDER_SHADOWS_H__
 #define    __RENDER_SHADOWS_H__
 
-#include <d3d9.h>
+#ifndef    d3d9_h
+#include   <d3d9.h>
+#endif
+
+#define PRAGMA_PRINT "[Shadow mapping] "
 
 #define fx_shadow   "vp_pssm.fx"	// single-pass shadow shader
 #define fx_depth    "vp_depth.fx"	// depth rendering shader

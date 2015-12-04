@@ -26,6 +26,8 @@
 #ifndef    _FILE_H_
 #define    _FILE_H_
 
+#define PRAGMA_PRINT "\nFile I/O module initialization..."
+
 #define __static 
 #define __In 
 #define __Out 

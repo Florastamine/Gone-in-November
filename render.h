@@ -33,6 +33,8 @@
 #include   <d3d9.h>
 #endif
 
+#define PRAGMA_PRINT "\nRendering module initialization..."
+
 #define __In 
 #define __Out 
 #define __static 

@@ -32,6 +32,8 @@
 #ifndef    __LRAYS_H_
 #define    __LRAYS_H_
 
+#define PRAGMA_PRINT "[Light rays] "
+
 #define __GOD_RAYS
 
 #define __In 

@@ -27,6 +27,8 @@
 #ifndef    _RENDER_REFRACT_H
 #define    _RENDER_REFRACT_H
 
+#define PRAGMA_PRINT "[Refraction] "
+
 #define    __REFRACT
 
 #define __In 

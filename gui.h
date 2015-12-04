@@ -26,6 +26,8 @@
 #ifndef    _GUI_H_
 #define    _GUI_H_
 
+#define PRAGMA_PRINT "\nGUI initialization..."
+
 #include "gui_utilities.h"
 
 #define __static 

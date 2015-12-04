@@ -26,6 +26,8 @@
 #ifndef    _COMMON_H_
 #define    _COMMON_H_
 
+#define PRAGMA_PRINT "\nGame logic and common tools initialization..."
+
 #define __static 
 #define __In
 #define __Out
