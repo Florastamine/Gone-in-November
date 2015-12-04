@@ -63,7 +63,7 @@
  * - Versioning bumped.
  * __________________________________________________________________
  * + v0.2.3-alpha
- * - Added os_get_name(), file_get_ext(), another variant of pair_set().
+ * - Added os_get_name(), file_get_ext(), fade(), pair_set().
  * - Add two macros FLT_MAX (maximum float value) and DBL_MAX (maximum double value).
  */
 #ifndef    _UTILITIES_H_ 
@@ -401,6 +401,10 @@ __namespace(os) {
 
 __namespace(IO) {
 	char *file_get_ext ( __In const char *fn );
+}
+
+__namespace(GUI) {
+	void fade( __In __Out PANEL *p, __In float a, __In float b, __In float s );
 }
 
 __namespace(string) {

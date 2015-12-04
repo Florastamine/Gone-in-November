@@ -1541,6 +1541,51 @@ char *file_get_ext ( const char *fn )
 	return cstr;
 }
 
+__static void __entrluc(PANEL *p)
+{
+	if( p->flags & ~TRANSLUCENT )
+	    p->flags |= (TRANSLUCENT);
+}
+
+__static void __fade_in( PANEL *p, float f, float t, float s )
+{
+	__entrluc(p);
+	
+	p->alpha = f;
+	while(p->alpha < t) {
+		p->alpha += s * time_step;
+		
+		wait(1.0);
+	}
+}
+
+__static void __fade_out( PANEL *p, float f, float t, float s )
+{
+	__entrluc(p);
+	
+	p->alpha = f;
+	while(p->alpha > t) {
+		p->alpha -= s * time_step;
+		
+		wait(1.0);
+	}
+}
+
+/*
+ * void fade( PANEL *p, float a, float b, float s )
+ * 
+ * Performs fading in/out.
+ */
+void fade( PANEL *p, float a, float b, float s )
+{
+	if( a == b || !p ) return;
+	
+	if(a < b)
+	    __fade_in(p, a, b, s);
+	if(a > b)
+	    __fade_out(p, a, b, s);
+}
+
 /*
  * void libc_init()
  * 
