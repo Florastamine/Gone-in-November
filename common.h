@@ -64,23 +64,25 @@ GameState *__GameState_singleton = NULL;
  * (so you can set custom loading bitmap or text pos., more to come).
  */
 typedef struct {
-	Vector2 load_text_pos;
-	Vector2 desc_text_pos;
-	Vector2 load_img_pos;
+	Vector2 load_text_pos;           /* 2D position of the loading text. */
+	Vector2 desc_text_pos;           /* 2D position of the additional text (normally to describe the to be played scene) */
+	Vector2 load_img_pos;            /* 2D position of the loading image (usually this is (0; 0) and the image is scaled up to fit the screen) */
 	
-	Bitmap *load_img;
+	Bitmap *load_img;                /* Pointer to the loading image. */
 	
-	String *load_text;
-	String *desc_text;
+	String *load_text;               /* Loading text; mutable by game_scene_set_load_text*() or str_(cpy/cat/cut/...)(__SceneLoadState_singleton->load_text, content); */
+	String *desc_text;               /* Description text; mutable by game_scene_set_desc_text*() or str_(cpy/cat/cut/...)(__SceneLoadState_singleton->desc_text, content); */
 	
-	Font   *load_text_font;
-	Font   *desc_text_font;
+	Font   *load_text_font;          /* Font type of the loading text. Neither the font nor the string itself can be rendered on the screen. During */
+	                                 /* the execution of game_scene_load(), a temporary Text object is created which combines both the text and the */
+	                                 /* font so the string can be rendered onto the screen along with other attributes (fonts, size, width, height) */
+	Font   *desc_text_font;          /* The same, but with the description text. */
 	
-	float delay;
-	float fade_speed;
+	float delay;                     /* Delay after the scene loading operation completed, in seconds. */
+	float fade_speed;                /* Fade speed (if fading was specified). */
 	
-	int error;
-	BOOL fade;
+	int error;                       /* The value of last_error that was passed during the latest call to level_load(). */
+	BOOL fade;                       /* Enable/disable screen fading. */
 } SceneLoadState;
 
 SceneLoadState *__SceneLoadState_singleton = NULL;
