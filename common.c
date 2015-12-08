@@ -606,3 +606,234 @@ void game_scene_load( STRING *scene )
 	txt_remove_ex(t1);
 	pan_remove(p);
 }
+
+__static void __cfade_out()
+{
+	float old = MPlayer_singleton->volume;
+	while( MPlayer_singleton->volume > 0.0 )
+	{
+		media_tune( game_mplayer_get_handle(), MPlayer_singleton->volume, 0, 0 );
+		
+		MPlayer_singleton->volume -= MPLAYER_CROSSFADE_SPEED * time_step;
+		wait(1.0);
+	}
+	
+	MPlayer_singleton->volume = old;
+}
+
+__static void __cfade_in()
+{
+	float old = MPlayer_singleton->volume;
+	MPlayer_singleton->volume = 0.0;
+	while( MPlayer_singleton->volume < old )
+	{
+		media_tune( game_mplayer_get_handle(), MPlayer_singleton->volume, 0, 0 );
+		
+		MPlayer_singleton->volume += MPLAYER_CROSSFADE_SPEED * time_step;
+		wait(1.0);
+	}
+}
+
+/* 
+ * void game_mplayer_new( const STRING *path, const STRING *extension )
+ * 
+ * Allocates and initializes a new music player.
+ * The reason for not including the check for the NULL/!NULL singleton is, sometimes you have to re-scan the music folder 
+ * for changes, or you may have to switch to another scan path, then you can just call game_mplayer_new() with an argument 
+ * specifying the (new) scan path.
+ */
+void game_mplayer_new( const STRING *path, const STRING *extension )
+{
+	game_mplayer_free();
+	
+	if( !path )
+	    path = MPLAYER_DEFAULT_DIRECTORY;
+	else // Check for a faulty path
+	{
+		path = str_create(path); // Workaround for the "invalid arguments" issue.
+		
+		char separator = str_getchr(path, str_len(path));
+		if( separator != '/' && separator != '\\' )
+		    str_cat(path, "/");
+	}
+	
+	if( !extension )
+	    extension = str_create(MPLAYER_DEFAULT_EXTENSION);
+	else
+	    extension = str_create(extension); // Same as above.
+	
+	MPlayer_singleton               = MALLOC(1, MPlayer);
+	MPlayer_singleton->handle       = 0;
+	MPlayer_singleton->pos          = 1;
+	MPlayer_singleton->randomize    = false;
+	MPlayer_singleton->volume       = midi_vol * 0.8;
+	MPlayer_singleton->__search_path = str_create(path);
+	
+	MPlayer_singleton->track_list   = txt_create(MPLAYER_BUFFER_SIZE, 1);
+	MPlayer_singleton->total_tracks = txt_for_dir( MPlayer_singleton->track_list, str_cat(path, extension) );
+	
+	if( MPlayer_singleton->total_tracks ) // Save us some time, because later we don't need to concatenate the directory
+	                                      // for each call to game_mplayer_(prev/next/...)(), it's there already.
+	{
+		int j = 0;
+		STRING *s = "";
+		for(; j < MPlayer_singleton->total_tracks; j++)
+		{
+			str_cpy(s, MPlayer_singleton->__search_path);
+			str_cat(s, (MPlayer_singleton->track_list->pstring)[j]);
+			str_cpy((MPlayer_singleton->track_list->pstring)[j], s);
+		}
+	}
+	else
+	   wait(1);
+}
+
+void game_mplayer_new( const STRING *extension )
+{
+	game_mplayer_new(MPLAYER_DEFAULT_DIRECTORY, extension);
+}
+
+void game_mplayer_new()
+{
+	game_mplayer_new(MPLAYER_DEFAULT_DIRECTORY, MPLAYER_DEFAULT_EXTENSION);
+}
+
+/*
+ * void game_mplayer_free()
+ * 
+ * Frees the player singleton.
+ * This is not needed if you just want to re-initialize the player.
+ */
+void game_mplayer_free()
+{
+	if(MPlayer_singleton)
+	{
+		txt_remove_ex(MPlayer_singleton->track_list);
+		str_remove(MPlayer_singleton->__search_path);
+		
+		FREE(MPlayer_singleton);
+	}
+}
+
+/*
+ * void game_mplayer_set_pos( int pos )
+ * 
+ * Sets the player's position to a specific position, in the range of [1; game_mplayer_get_total_tracks()].
+ */
+void game_mplayer_set_pos( int pos )
+{
+	if(MPlayer_singleton->pos <= MPlayer_singleton->total_tracks && (int) clamp(pos, 1, MPlayer_singleton->total_tracks) == pos )
+	    MPlayer_singleton->pos = pos;
+}
+
+BOOL game_mplayer_get_randomize()
+{
+	if(MPlayer_singleton)
+	    return MPlayer_singleton->randomize;
+}
+
+void game_mplayer_set_randomize( BOOL b )
+{
+	if(MPlayer_singleton)
+	    MPlayer_singleton->randomize = b;
+}
+
+int   game_mplayer_get_pos()
+{
+	if(MPlayer_singleton)
+	    return MPlayer_singleton->pos;
+}
+
+fixed game_mplayer_get_handle()
+{
+	if(MPlayer_singleton)
+	    return MPlayer_singleton->handle;
+}
+
+int   game_mplayer_get_total_tracks()
+{
+	if(MPlayer_singleton)
+	    return MPlayer_singleton->total_tracks;
+}
+
+float game_mplayer_get_volume()
+{
+	if(MPlayer_singleton)
+	    return MPlayer_singleton->volume;
+}
+
+void  game_mplayer_set_volume( float vol )
+{
+	if(MPlayer_singleton)
+	    MPlayer_singleton->volume = abs(vol);
+}
+
+BOOL  game_mplayer_get_cfade()
+{
+	if(MPlayer_singleton)
+	    return MPlayer_singleton->fade;
+}
+
+void  game_mplayer_set_cfade( BOOL b )
+{
+	if(MPlayer_singleton)
+	    MPlayer_singleton->fade = b;
+}
+
+void game_mplayer_next()
+{
+	if(MPlayer_singleton)
+	{
+		if( game_mplayer_get_pos() < game_mplayer_get_total_tracks() )
+		    MPlayer_singleton->pos =  game_mplayer_get_pos() + 1;
+		
+		game_mplayer_play();
+	}
+}
+
+void game_mplayer_prev()
+{
+	if(MPlayer_singleton)
+	{
+		if(game_mplayer_get_pos() > 1)
+		    MPlayer_singleton->pos =  game_mplayer_get_pos() - 1;
+		
+		game_mplayer_play();
+	}
+}
+
+void game_mplayer_pause()
+{
+	if( media_playing(game_mplayer_get_handle()) )
+	{
+		if( game_mplayer_get_cfade() )
+		{
+			__cfade_out();
+			while(proc_status(__cfade_out)) wait(1.0);
+		}
+		media_pause(game_mplayer_get_handle());
+	}
+}
+
+void game_mplayer_play()
+{
+	game_mplayer_stop();
+	while(proc_status(game_mplayer_stop)) wait(1.0); // In case of crossfading
+	
+	MPlayer_singleton->handle = media_play((MPlayer_singleton->track_list->pstring)[MPlayer_singleton->pos - 1], NULL, game_mplayer_get_volume());
+	if( game_mplayer_get_cfade() ) // Crossfading enabled?
+	    __cfade_in();
+}
+
+void game_mplayer_stop()
+{
+	if( media_playing(game_mplayer_get_handle()) )
+	{
+		if( game_mplayer_get_cfade() )
+		{
+			__cfade_out();
+			while(proc_status(__cfade_out)) wait(1.0);
+		}
+		media_stop(game_mplayer_get_handle());
+	}
+}

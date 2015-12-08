@@ -32,6 +32,7 @@
 #define __static 
 #define __In
 #define __Out
+#define __namespace(nspc) {}
 
 #ifndef    PRAGMA_POINTER
     #define    PRAGMA_POINTER
@@ -87,55 +88,112 @@ typedef struct {
 
 SceneLoadState *__SceneLoadState_singleton = NULL;
 
-void game_state_new();
-void game_state_free();
+/*
+ * MPlayer (struct)
+ * This struct contains everything required for the simplified, built-in music player.
+ */
+#define MPLAYER_DEFAULT_DIRECTORY "./sound/stream/"
+#define MPLAYER_DEFAULT_EXTENSION "*.ogg" // By default scans for ogg
+#define MPLAYER_BUFFER_SIZE       128
+#define MPLAYER_CROSSFADE_SPEED   0.75
 
-void game_physx_new();
-void game_physx_loop();
-void game_physx_free();
+typedef struct {
+	String  *__search_path;           /* A string which stores the initial search path. */
+	Text    *track_list;              /* A text object which stores txt_for_dir()'s result, which, contains the list of tracks scanned. */
+	
+	int      pos;                     /* Current position of the music player, in the range [1; txt_for_dir()]. */
+	int      total_tracks;            /* Contains the total tracks scanned. */
+	fixed    handle;                  /* Handle ID to the current track being played. */
+	BOOL     randomize;               /* Toggles tracks shuffling. */
+	BOOL     fade;                    /* Toggles crossfading. */
+	float    volume;	
+} MPlayer;
 
-void game_log_new();
-void game_log_free();
-void game_log_write( __In const STRING *content );
+MPlayer *MPlayer_singleton = NULL;
 
-void game_event_setup();
+__namespace(November) {
+	void game_state_new();
+	void game_state_free();
 
-// It'd be better to split this big ass function into a few smaller ones but doing that would 
-// lengthen the functions' name so... bear with it. ;(
-// Edited: Nailed it.
-void game_scene_set_defaults();
+	void game_physx_new();
+	void game_physx_loop();
+	void game_physx_free();
 
-void game_scene_set_load_screen( __In STRING *load_img );
-BMAP *game_scene_get_load_screen();
+	void game_log_new();
+	void game_log_free();
+	void game_log_write( __In const STRING *content );
 
-void game_scene_set_load_text( __In STRING *load_text );
-STRING *game_scene_get_load_text();
+	void game_event_setup();	
+}
 
-void game_scene_set_desc_text( __In STRING *desc_text );
-STRING *game_scene_get_desc_text();
+__namespace(SceneLoadState) {
+	// It'd be better to split this big ass function into a few smaller ones but doing that would 
+	// lengthen the functions' name so... bear with it. ;(
+	// Edited: Nailed it.
+	void game_scene_set_defaults();
 
-void game_scene_set_load_text_font( __In STRING *font_str );
-void game_scene_set_load_text_font( __In FONT *font_struct );
-FONT *game_scene_get_load_text_font();
+	void game_scene_set_load_screen( __In STRING *load_img );
+	BMAP *game_scene_get_load_screen();
 
-void game_scene_set_desc_text_font( __In STRING *font_str );
-void game_scene_set_desc_text_font( __In FONT *font_struct );
-FONT *game_scene_get_desc_text_font();
+	void game_scene_set_load_text( __In STRING *load_text );
+	STRING *game_scene_get_load_text();
 
-void game_scene_set_load_text_pos(__In float x, __In float y);
-void game_scene_set_desc_text_pos(__In float x, __In float y);
-void game_scene_set_load_img_pos(__In float x, __In float y);
+	void game_scene_set_desc_text( __In STRING *desc_text );
+	STRING *game_scene_get_desc_text();
 
-void game_scene_set_delay( __In float d );
-float game_scene_get_delay();
+	void game_scene_set_load_text_font( __In STRING *font_str );
+	void game_scene_set_load_text_font( __In FONT *font_struct );
+	FONT *game_scene_get_load_text_font();
 
-void game_scene_set_fade( __In BOOL b );
-void game_scene_set_fade_speed( __In float s );
+	void game_scene_set_desc_text_font( __In STRING *font_str );
+	void game_scene_set_desc_text_font( __In FONT *font_struct );
+	FONT *game_scene_get_desc_text_font();
 
-float game_scene_get_fade_speed();
-BOOL  game_scene_is_fade();
+	void game_scene_set_load_text_pos(__In float x, __In float y);
+	void game_scene_set_desc_text_pos(__In float x, __In float y);
+	void game_scene_set_load_img_pos(__In float x, __In float y);
 
-void game_scene_load( __In STRING *scene );
+	void game_scene_set_delay( __In float d );
+	float game_scene_get_delay();
+
+	void game_scene_set_fade( __In BOOL b );
+	void game_scene_set_fade_speed( __In float s );
+
+	float game_scene_get_fade_speed();
+	BOOL  game_scene_is_fade();
+
+	void game_scene_load( __In STRING *scene );
+}
+
+__namespace(Player) {
+	void game_mplayer_new( __In const STRING *path, __In const STRING *extension );
+	void game_mplayer_new( __In const STRING *extension );
+	void game_mplayer_new();
+	void game_mplayer_free();
+	
+	void game_mplayer_next();
+	void game_mplayer_prev();
+	void game_mplayer_pause();
+	void game_mplayer_play();
+	void game_mplayer_stop();
+	void game_mplayer_tune();
+	
+	// Accessors
+	fixed game_mplayer_get_handle();
+	int   game_mplayer_get_total_tracks();
+	
+	void  game_mplayer_set_pos( int pos );
+	int   game_mplayer_get_pos();
+	
+	BOOL  game_mplayer_get_randomize();
+	void  game_mplayer_set_randomize( __In BOOL b );
+	
+	void  game_mplayer_set_volume( __In float vol );
+	float game_mplayer_get_volume();
+	
+	BOOL  game_mplayer_get_cfade();
+	void  game_mplayer_set_cfade( __In BOOL b );
+}
 
 #include "common.c"
 #endif /* common.h */
