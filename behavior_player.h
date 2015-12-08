@@ -114,7 +114,6 @@ __act_player_state *__act_player_state_singleton = NULL;
 
 __act_player_state *act_player_get_singleton();
 
-__action void  act_player();
 __static void __act_player_update_camera();
 __static void __act_player_scan_foot();
 __static void __act_player_register_physics();
