@@ -1629,3 +1629,19 @@ void libc_init()
 	
 	___libc_init__done__ = 1;
 }
+
+/*
+ * bkpt(), bkptend().
+ * Small functions to avoid lots of printf() when debugging/tracing for errors in the code.
+ * bkptend() resets the counter.
+ */
+void bkpt()
+{
+	__bkptcnt__ += 1;
+	printf("Pass %i", __bkptcnt__);
+}
+
+void bkptend()
+{
+	__bkptcnt__ = 0;
+}

@@ -63,8 +63,10 @@
  * - Versioning bumped.
  * __________________________________________________________________
  * + v0.2.3-alpha
- * - Added os_get_name(), file_get_ext(), fade(), pair_set().
- * - Add two macros FLT_MAX (maximum float value) and DBL_MAX (maximum double value).
+ * - Added os_get_name(), file_get_ext(), fade(), pair_set(), bkpt()/bkptend().
+ * - Added two macros FLT_MAX (maximum float value) and DBL_MAX (maximum double value).
+ * 
+ * - Removed DEFER() macro.
  */
 #ifndef    _UTILITIES_H_ 
 #define    _UTILITIES_H_ 
@@ -104,7 +106,6 @@
 #define ASSERT(condition, message)         do { if( !(condition) ) __assert(message); } while(false)
 #define WAIT_PROCESS(process)              while( proc_status(process) ) wait(1.0)
 #define KILL_PROCESS(process)              proc_kill(4) /* This macro exists because it helps eliminating magic numbers. */
-#define DEFER(argument)                    wait(1.0)
 #define WALK_THROUGH(object, function)     object = ptr_first(object); while(object) { function(object); o = o.link.next; wait(1.0); }
 #define SWAP(a, b, type)                   { type X = a; a = b; b = X; } while(false)
 #define UNLESS(condition)                  if( !(condition) )
@@ -352,6 +353,10 @@ __namespace() {
 	int search( __In Text *container, __In const String *str );
 	int search( __In Text *container, __In const char *cstr );
 	bool ready();
+	
+	void bkpt();
+	void bkptend();
+	int  __bkptcnt__ = 0;
 }
 
 __namespace(numeric) {
