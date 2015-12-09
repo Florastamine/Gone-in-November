@@ -46,7 +46,7 @@ void act_player_free()
 		FREE(__act_player_state_singleton);
 		
 		double d = dtimer();
-		game_log_write( str_printf(NULL, "The soul was freed within a total of %f seconds.", d*(10^6)) );
+		game_log_write( str_printf(NULL, "The soul was freed within a total of %f seconds.", d * POW_10_6) );
 	}
 }
 
@@ -93,7 +93,7 @@ void act_player_new()
 		__act_player_state_singleton->can_move                    = true;
 		
 		double d = dtimer();
-		game_log_write( str_printf(NULL, "Finished building a home for the soul. (%f seconds)", d/1000) );
+		game_log_write( str_printf(NULL, "Finished building a home for the soul. (%f seconds)", d * POW_10_6) );
 	}
 }
 
@@ -208,7 +208,10 @@ action act_player()
 	__act_player_state_singleton->__object = my;
 	player = my;
 	
-	my->flags |= (TRANSLUCENT);
+	#ifndef    DEBUG
+		my->flags |= (INVISIBLE);
+	#endif
+	
 	my->OBJECT_TYPE = OBJECT_HERO;
 	my->group = PLAYER_GROUP;
 	my->push = PLAYER_GROUP;

@@ -126,7 +126,7 @@ void game_physx_new()
 		   __GameState_singleton->__game_physx_loaded__ = true;
 		   
 		   double d = dtimer();
-		   game_log_write( str_printf(NULL, "Successfully initialized PhysX (%f seconds)", d*(10^6) ) );
+		   game_log_write( str_printf(NULL, "Successfully initialized PhysX (%f seconds)", d * POW_10_6 ) );
 		}
 		#else
 		    game_log_write("Header <ackphysX> wasn't included in the current build; initialization cancelled.");
@@ -347,6 +347,8 @@ __static void __game_scene_state_new()
 {
 	if( !__SceneLoadState_singleton )
 	{
+		game_log_write("First time loading a scene, initializing scene state singleton...");
+		
 		__SceneLoadState_singleton             = MALLOC(1, SceneLoadState);
 		
 		__game_scene_set_defaults();
@@ -355,6 +357,8 @@ __static void __game_scene_state_new()
 
 __static void __game_scene_state_free()
 {
+	game_log_write("Request to free the scene state singleton...");
+	
 	if( __SceneLoadState_singleton )
 	{
 		bmap_remove(__SceneLoadState_singleton->load_img);
@@ -364,6 +368,8 @@ __static void __game_scene_state_free()
 		font_remove(__SceneLoadState_singleton->desc_text_font);
 		
 		FREE(__SceneLoadState_singleton);
+		
+		game_log_write("Scene state singleton freed.");
 	}
 }
 
@@ -545,6 +551,15 @@ BOOL  game_scene_is_fade()
  */
 void game_scene_load( STRING *scene )
 {
+	game_log_write(str_printf(NULL, "Request to loading a scene... <%s>", _chr(scene)));
+	if( !file_exists(scene) )
+	{
+		game_log_write("Scene doesn't exist! Abort.");
+		return;
+	}
+	
+	double load_time = .0; // Measure level_load() time.
+	
 	__game_scene_state_new();
 	
 	PANEL *p  = pan_create(NULL, 1);
@@ -580,8 +595,10 @@ void game_scene_load( STRING *scene )
 		                                           // level_load() to be executed at the same time due to concurrency).
 	}
 	
+	dtimer();
 	level_load(scene);
 	while(proc_status(level_load)) wait(1.0); // Temporary blocking the main thread
+	load_time = dtimer();
 	
 	wait(1); // So last_error can become valid
 	__SceneLoadState_singleton->error = last_error;
@@ -605,6 +622,8 @@ void game_scene_load( STRING *scene )
 	txt_remove_ex(t0);
 	txt_remove_ex(t1);
 	pan_remove(p);
+	
+	game_log_write( str_printf(NULL, "Scene <%s> loaded. Operation took %f seconds.", _chr(scene), load_time * POW_10_6) );
 }
 
 __static void __cfade_out()
@@ -646,6 +665,8 @@ void game_mplayer_new( const STRING *path, const STRING *extension )
 {
 	game_mplayer_free();
 	
+	game_log_write("Request to allocate a new stream player object...");
+	
 	if( !path )
 	    path = MPLAYER_DEFAULT_DIRECTORY;
 	else // Check for a faulty path
@@ -675,6 +696,8 @@ void game_mplayer_new( const STRING *path, const STRING *extension )
 	if( MPlayer_singleton->total_tracks ) // Save us some time, because later we don't need to concatenate the directory
 	                                      // for each call to game_mplayer_(prev/next/...)(), it's there already.
 	{
+		game_log_write( str_printf(NULL, "Found %i tracks during scanning.", MPlayer_singleton->total_tracks) );
+		
 		int j = 0;
 		STRING *s = "";
 		for(; j < MPlayer_singleton->total_tracks; j++)
@@ -685,7 +708,11 @@ void game_mplayer_new( const STRING *path, const STRING *extension )
 		}
 	}
 	else
-	   wait(1);
+	{
+		game_log_write("The specified directory is either not existed or it is empty. Abort. (Further calls to game_mplayer*() functions could cause a crash!)");
+		
+		game_mplayer_free();
+	}
 }
 
 void game_mplayer_new( const STRING *extension )
@@ -705,9 +732,11 @@ void game_mplayer_new()
  * This is not needed if you just want to re-initialize the player.
  */
 void game_mplayer_free()
-{
+{	
 	if(MPlayer_singleton)
 	{
+		game_log_write("Freeing the previously allocated stream player...");
+		
 		txt_remove_ex(MPlayer_singleton->track_list);
 		str_remove(MPlayer_singleton->__search_path);
 		
