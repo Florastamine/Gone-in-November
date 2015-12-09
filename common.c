@@ -23,6 +23,24 @@
  * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
+__static void __write_newline( fixed fHandle, int times )
+{
+	if( fHandle )
+	{
+		int i = 0;
+		for(; i < times; i++)
+		{
+			file_asc_write(fHandle, 13);
+			file_asc_write(fHandle, 10);
+		}
+	}
+}
+
+__static void __write_newline( fixed fHandle )
+{
+	__write_newline(fHandle, 1);
+}
+
 #define __LOVELY_21_HYPHENS "---------------------" // It's legit
 
 /*
@@ -198,13 +216,13 @@ void game_log_new()
 {
 	if( !__GameState_singleton->__game_log_loaded__ && !__GameState_singleton->__game_log_handle__ )
 	{
-		__GameState_singleton->__game_log_handle__ = file_open_write(__LOG_FILE);
+		__GameState_singleton->__game_log_handle__ = file_open_append(__LOG_FILE);
 		__GameState_singleton->__game_log_loaded__ = (BOOL) ifelse(__GameState_singleton->__game_log_handle__, true, false);
 		
 		if( __GameState_singleton->__game_log_loaded__ )
 		{
 			game_log_write(__LOVELY_21_HYPHENS); // It's legit
-			game_log_write("Logging channel opened.");
+			game_log_write( str_printf(NULL, "Logging channel opened on %s", os_get_name()) );
 		}
 	}
 }
@@ -224,6 +242,7 @@ void game_log_free()
 	{
 		game_log_write("Logging channel closed.");
 		game_log_write(__LOVELY_21_HYPHENS); // It's legit
+		__write_newline(__GameState_singleton->__game_log_handle__, 2);
 		
 		file_close(__GameState_singleton->__game_log_handle__);
 		__GameState_singleton->__game_log_loaded__ = false;
@@ -253,8 +272,7 @@ void game_log_write(const STRING *content)
 		ifelse(content, _chr(content), _chr("Undescribed log message.")) );
 		
 		file_str_write(__GameState_singleton->__game_log_handle__, cstr);
-		file_asc_write(__GameState_singleton->__game_log_handle__, 13);
-		file_asc_write(__GameState_singleton->__game_log_handle__, 10);
+		__write_newline(__GameState_singleton->__game_log_handle__);
 		
 		FREE(cstr);
 	}
