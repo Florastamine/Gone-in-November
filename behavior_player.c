@@ -115,6 +115,11 @@ __static void __act_player_update_camera()
 	
 	camera->z -= (camera->z - __act_player_state_singleton->__cam_pos.z) * __act_player_state_singleton->cam_lerp;
 	camera->z = clamp(camera->z, __act_player_state_singleton->__cam_pos.z - __act_player_state_singleton->cam_smooth_offset, __act_player_state_singleton->__cam_pos.z + __act_player_state_singleton->cam_smooth_offset);
+	
+	if(camera->tilt > 75.0)
+	    camera->tilt = 75.0;
+	if(camera->tilt < -70.0)
+	    camera->tilt = -70.0;
 }
 
 __static void __act_player_scan_foot()
