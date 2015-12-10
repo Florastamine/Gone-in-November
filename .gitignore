@@ -41,9 +41,11 @@ status/log.log
 # General
 November.c
 bindings.h
+*.cfg
 *.sav
 *.wdf
 *.odt
+*.odt#
 *.bmp
 *.tga
 *.wav

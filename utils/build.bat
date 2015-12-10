@@ -36,12 +36,15 @@ rem Copy remaining dependencies/files/etc.
 copy %ACKPATH%\D3DCompiler_42.dll ..\builds\
 copy %ACKPATH%\cudart32_41_22.dll ..\builds\
 
-rem Copying streams & translations
+rem Copying streams, translations and configuration files
 mkdir ..\builds\sound\stream
 copy ..\sound\stream\*.* ..\builds\sound\stream\
 
 mkdir ..\builds\translation\
 xcopy ..\translation\*.* ..\builds\translation\ /s /e /y
+
+mkdir ..\builds\cfg\
+copy ..\cfg\*.cfg ..\builds\cfg\
 
 cls 
 echo Waiting for user input to compile the WDF..
@@ -60,6 +63,7 @@ cleanup
 set end_time=%time%
 set /a duration=%end_time%-%start_time%
 
+cls
 echo Building started: %start_time%, completed: %end_time%.
 
 pause
