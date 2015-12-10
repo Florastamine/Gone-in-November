@@ -45,6 +45,28 @@
 #define __LOG_FILE "stdout.log"
 
 /*
+ * Launch parameters.
+ */
+#define __ARGS_LIST "./cfg/args.cfg"           /* Use an external file for parsing arguments instead, because apparently  */
+                                               /* command_str is broken.                                                  */
+
+#define __ARGS_CONSOLE          "--console"    /* Opens the console for command line processing.  No, this is   */
+                                               /* not the console that was presented in <default>, it's our own */
+                                               /* console with our own commands, which means it will always be  */
+                                               /* in our control.                                               */
+#define __ARGS_CONSOLE_SHORT    "-c"
+
+#define __ARGS_NO_LOGGING       "--no-log"     /* Suppresses redirecting log messages to __LOG_FILE.            */
+#define __ARGS_NO_LOGGING_SHORT "-nl"
+
+#define __ARGS_FORCE_LOW        "--force-low"  /* Suppresses rendering of fragment shaders and vertex shaders,  */
+                                               /* regardless of the 3D card capabilities.                       */
+#define __ARGS_FORCE_LOW_SHORT  "-fl"
+
+#define __ARGS_DECRYPTOR        "--decryptor"  /* Opens the save game editor instead.                           */
+#define __ARGS_DECRYPTOR_SHORT  "-d"
+
+/*
  * GameState (struct)
  * This struct contains everything related to the current game state.
  */
@@ -110,6 +132,13 @@ typedef struct {
 } MPlayer;
 
 MPlayer *MPlayer_singleton = NULL;
+
+/*
+ * Prototypes
+ */
+__namespace(ArgsParse) {
+	void game_args_parse();
+}
 
 __namespace(November) {
 	void game_state_new();

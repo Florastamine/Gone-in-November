@@ -64,6 +64,9 @@ void game_state_new()
 	
 	// And call the event setup (so that the state and some other stuff gets automatically destroyed prior to exiting the game.)
 	game_event_setup();
+	
+	// Parsing launch options
+	game_args_parse();
 }
 
 /*
@@ -882,5 +885,45 @@ void game_mplayer_stop()
 			while(proc_status(__cfade_out)) wait(1.0);
 		}
 		media_stop(game_mplayer_get_handle());
+	}
+}
+
+/*
+ * void game_args_parse()
+ * 
+ * Opens the argument list file and parses it. 
+ * This is because command_str is broken, otherwise we can use it and it would
+ * simplifies parsing a lot.
+ */
+void game_args_parse()
+{	
+	if( !file_exists(__ARGS_LIST) )
+	    return;
+	
+	STRING *args = dump(__ARGS_LIST);
+	#ifdef    DEBUG
+	    printf("Arguments passed: %s", _chr(args));
+	#endif
+	
+	if( !str_stri(args, __ARGS_NO_LOGGING) && !str_stri(args, __ARGS_NO_LOGGING_SHORT) ) // If __ARGS_NO_LOGGING wasn't specified?
+	    game_log_new();
+	
+	game_log_write(str_printf(NULL, "Trying to parse the argument list located in <%s>...", __ARGS_LIST));
+	
+	if( str_stri(args, __ARGS_CONSOLE) || str_stri(args, __ARGS_CONSOLE_SHORT) )
+	{
+		game_log_write(str_printf(NULL, "\"%s\" found. Opening the console...", __ARGS_CONSOLE));
+		
+		command_table_new();
+	}
+	
+	if( str_stri(args, __ARGS_FORCE_LOW) || str_stri(args, __ARGS_FORCE_LOW_SHORT) )
+	{
+		game_log_write(str_printf(NULL, "\"%s\" found. Will bypass video card checking and does not render shaders.", __ARGS_FORCE_LOW));
+	}
+	
+	if( str_stri(args, __ARGS_DECRYPTOR) || str_stri(args, __ARGS_DECRYPTOR_SHORT) )
+	{
+		game_log_write(str_printf(NULL, "\"%s\" found. Open the save game editor instead.", __ARGS_DECRYPTOR));
 	}
 }

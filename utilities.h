@@ -92,6 +92,7 @@
 #define GRAVITY_ACCELERATION               (9.80665)  /* Standard acceleration of freefall, 9.81 m/s^2, insurance included. */
 #define FLT_MAX                            (3.4 * pow(10, 38))
 #define DBL_MAX                            (1.8 * pow(10, 308))
+#define POW_10_6                           (double) 1000000.0
 
 #define ASSERT_MESSAGE_LENGTH              384
 
