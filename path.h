@@ -63,7 +63,6 @@
     #define __PATH_LOOKUP_SPRITE_2D    "./2d/sprites/"
     #define __PATH_LOOKUP_GENERIC_2D   "./2d/"
     #define __PATH_LOOKUP_FX_2D        "./2d/fx/"
-    #define __PATH_LOOKUP_CFG          "./cfg/"
 #else
     #include "bindings.h" // If PERFORM_PATH_LOOKUP isn't enabled, we have to directly looking in the root folder, 
                           // and in this case, a convenient bindings.h can be provided (generated from ./utils/__bind.c)
