@@ -33,8 +33,12 @@ del /f /s /q ..\November.cd\*.*
 rd ..\November.cd
 
 rem Copy remaining dependencies/files/etc.
-copy %ACKPATH%\D3DCompiler_42.dll ..\builds\
-copy %ACKPATH%\cudart32_41_22.dll ..\builds\
+copy "%ACKPATH%\D3DCompiler_42.dll" ..\builds\
+copy "%ACKPATH%\cudart32_41_22.dll" ..\builds\
+copy "%ACKPATH%\d3dx9_30.dll" ..\builds\
+
+mkdir ..\builds\redist
+xcopy .\redist\*.* ..\builds\redist\ /s /e /y
 
 rem Copying streams, translations and configuration files
 mkdir ..\builds\sound\stream
@@ -46,6 +50,9 @@ xcopy ..\translation\*.* ..\builds\translation\ /s /e /y
 mkdir ..\builds\cfg\
 copy ..\cfg\*.cfg ..\builds\cfg\
 
+rem Icon
+copy 32.ico ..\builds\
+
 cls 
 echo Waiting for user input to compile the WDF..
 echo If the "Starter" box is unchecked, check it and press "OK".
@@ -55,6 +62,8 @@ copy ..\wdf\main.cd\acknex.wdf ..\builds\
 rd /s /q ..\wdf\main.cd\
 
 rem Final cleanup & polishing
+rename "..\builds\acknex.dll" "Kernel.dll"
+del /f /s /q ..\builds\*.md
 
 rem ----- End of building -----
 
