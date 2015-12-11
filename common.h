@@ -204,6 +204,8 @@ __namespace(Player) {
 	void game_mplayer_prev();
 	void game_mplayer_pause();
 	void game_mplayer_play();
+	void game_mplayer_play( __In int id );
+	void game_mplayer_play( __In STRING *substr );
 	void game_mplayer_stop();
 	void game_mplayer_tune();
 	

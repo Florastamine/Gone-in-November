@@ -476,6 +476,8 @@ int search( Text *container, const String *str )
 {
 	if( !container || !str ) return 0;
 	
+	str = str_create(str);
+	
 	int i = 0;
 	int position = 0;
 	while(i < container->strings)
@@ -490,8 +492,10 @@ int search( Text *container, const String *str )
 			else position = 0;
 		}
 		i++;
+		wait(1);
 	}
-	return 0;
+	
+	return -1;
 }
 
 int search( Text *container, const char *cstr )

@@ -711,8 +711,12 @@ void game_mplayer_new( const STRING *path, const STRING *extension )
 	MPlayer_singleton->volume       = midi_vol * 0.8;
 	MPlayer_singleton->__search_path = str_create(path);
 	
-	MPlayer_singleton->track_list   = txt_create(MPLAYER_BUFFER_SIZE, 1);
+	MPlayer_singleton->track_list   = txt_create(MPLAYER_BUFFER_SIZE, 1);	
 	MPlayer_singleton->total_tracks = txt_for_dir( MPlayer_singleton->track_list, str_cat(path, extension) );
+	
+	#ifdef    DEBUG
+	    MPlayer_singleton->track_list->font = font_create("Times#17");
+	#endif
 	
 	if( MPlayer_singleton->total_tracks ) // Save us some time, because later we don't need to concatenate the directory
 	                                      // for each call to game_mplayer_(prev/next/...)(), it's there already.
@@ -873,6 +877,27 @@ void game_mplayer_play()
 	MPlayer_singleton->handle = media_play((MPlayer_singleton->track_list->pstring)[MPlayer_singleton->pos - 1], NULL, game_mplayer_get_volume());
 	if( game_mplayer_get_cfade() ) // Crossfading enabled?
 	    __cfade_in();
+}
+
+void game_mplayer_play( int id )
+{
+	game_mplayer_set_pos(id);
+	game_mplayer_play();
+}
+
+void game_mplayer_play( STRING *substr )
+{
+	if( !substr )
+	    return;
+	
+	substr = str_create(substr);
+	
+	int i = 0;
+	for(; i < MPlayer_singleton->track_list->strings; i++)
+	    if( str_stri((MPlayer_singleton->track_list->pstring)[i], substr) )
+	        break;
+	
+	game_mplayer_play(i + 1);
 }
 
 void game_mplayer_stop()
