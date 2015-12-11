@@ -23,7 +23,7 @@
  */
 void __assert( const char *message )
 {
-	char *__string = MALLOC(ASSERT_MESSAGE_LENGTH, char);
+	char *__string = MALLOC(strlen(message) + ASSERT_MESSAGE_LENGTH, char);
 	fixed f = file_open_append("lassert.log");
 	
 	sprintf( __string, "[%i:%i, %i.%i.%i] Assertion failed: %s",
@@ -1379,7 +1379,7 @@ void error_push( const unsigned int code, const char *message )
 {
 	if(error_history_cursor_get() > error_history_capacity_get()) return;
 	
-	char *cstr = MALLOC(ERROR_HISTORY_MESSAGE_LENGTH, char);
+	char *cstr = MALLOC(strlen(message) + ERROR_HISTORY_MESSAGE_LENGTH, char);
 	sprintf(cstr, "(%i) %s", code, ifelse(message, _chr(message), _chr("NULL")));
 	
 	(Error_active->history)[Error_active->pos] = code;

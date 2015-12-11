@@ -265,7 +265,7 @@ void game_log_write(const STRING *content)
 	if( __GameState_singleton->__game_log_loaded__ )
 	{
 		// Straight outta <utilities>
-		char *cstr = MALLOC(256, char);
+		char *cstr = MALLOC(str_len(content) + 93, char);
 		sprintf( cstr, "[%i:%i, %i.%i.%i] %s",
 		(int) sys_hours,
 		(int) sys_minutes,

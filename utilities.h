@@ -94,7 +94,7 @@
 #define DBL_MAX                            (1.8 * pow(10, 308))
 #define POW_10_6                           (double) 1000000.0
 
-#define ASSERT_MESSAGE_LENGTH              384
+#define ASSERT_MESSAGE_LENGTH              128
 
 #define __namespace(namespace)             {}
 #define STATIC_ASSERT(condition)           {}
@@ -184,7 +184,7 @@ __namespace(utility) {
 __namespace(error) {
 	#define ERROR_CONTAINER_CAPACITY     256
 	#define ERROR_HISTORY_CAPACITY       128
-	#define ERROR_HISTORY_MESSAGE_LENGTH 96
+	#define ERROR_HISTORY_MESSAGE_LENGTH 64
 	
 	typedef struct {
 		int pos;                                   /* Contains the current position of the error history stack. */
