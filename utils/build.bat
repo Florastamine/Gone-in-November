@@ -2,12 +2,12 @@
 cls
 
 rem Starts localization of environment variables in a batch file. Localization continues until a matching endlocal command is encountered or the end of the batch file is reached. (https://technet.microsoft.com/en-us/library/bb491001.aspx)
-setlocal 
+setlocal
 
 title Building in progress...
 
-set "ACKPATH=H:\Development\Gamestudio\GStudio8\" 
-set "path=%path%;%ACKPATH%" 
+set "ACKPATH=H:\Development\Gamestudio\GStudio8\"
+set "path=%path%;%ACKPATH%"
 set start_time=%time%
 
 rem ----- Begin the building phase -----
@@ -53,21 +53,27 @@ copy ..\cfg\*.cfg ..\builds\cfg\
 rem Icon
 copy 32.ico ..\builds\
 
-cls 
+cls
 echo Waiting for user input to compile the WDF..
 echo If the "Starter" box is unchecked, check it and press "OK".
 rem Building and compiling the wdf. (manually)
+IF EXIST "..\wdf\acknex.wdf" (
+copy ..\wdf\acknex.wdf ..\builds\
+) ELSE (
 wed -c ..\wdf\main.wdl
-copy ..\wdf\main.cd\acknex.wdf ..\builds\
+copy ..\wdf\acknex.wdf ..\builds\
 rd /s /q ..\wdf\main.cd\
+)
 
+cls
 rem Final cleanup & polishing
+echo Cleaning up...
 rename "..\builds\acknex.dll" "Kernel.dll"
 del /f /s /q ..\builds\*.md
 
-rem ----- End of building -----
-
 cleanup
+
+rem ----- End of building -----
 
 set end_time=%time%
 set /a duration=%end_time%-%start_time%
