@@ -4,9 +4,10 @@ cls
 rem Starts localization of environment variables in a batch file. Localization continues until a matching endlocal command is encountered or the end of the batch file is reached. (https://technet.microsoft.com/en-us/library/bb491001.aspx)
 setlocal
 
+call ackvars.bat
+
 title Building in progress...
 
-set "ACKPATH=H:\Development\Gamestudio\GStudio8\"
 set "path=%path%;%ACKPATH%"
 set start_time=%time%
 

@@ -1,9 +1,13 @@
 @echo off
+setlocal
 title 
 cls
 
+call ackvars.bat
+
 echo Be patient...
 
-cloc ..\         >> cloc.log
-cloc --show-os   >> cloc.log
+%CLOC% ..\         >> cloc.log
+%CLOC% --show-os   >> cloc.log
 echo %time%      >> cloc.log
+endlocal
