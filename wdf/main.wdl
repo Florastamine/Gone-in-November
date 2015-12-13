@@ -62,7 +62,7 @@ WINDOW WINSTART
 	PICTURE <1.pcx>, OPAQUE, 0, 0;
 	
 	// entry: Parsing additional cmds
-	COMMAND "-diag";
+	COMMAND "-diag -nx 350";
 	
 	// section: 
 } /* main.wdl */

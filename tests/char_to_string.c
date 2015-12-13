@@ -22,8 +22,6 @@ int main( int argc, char **argl )
 {
 	while( !ready() ) wait(1.0);
 	
-	printf("%s", _chr(command_str));
-	
 	const char *cstr = MALLOC(12, char);
 	PRINT_INT(strlen(cstr));
 	
