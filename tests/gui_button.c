@@ -17,15 +17,11 @@
 #define ENFORCE_STRICT
 
 #include <acknex.h>
-#include <stdio.h>
-#include "default_ex.h"
 
-#include "..\path.h"
+#include "__path_source_test.h"
+#include "../source/utils/utilities.h"
 
-#include "..\utilities.h"
-
-#include "..\common.h"
-#include "..\gui.h"
+#include "../source/game/gui/gui.h"
 
 const STRING *helper = "
 1 - Randomize the button's position.
@@ -88,7 +84,7 @@ void button_setup()
 {
 	if(b) gui_button_free(b);
 	
-	b = gui_button_new( pair_new(15.0, 75.0), "Title", "../image.jpg", "../imageoff.jpg", "../imageover.jpg", event_1, event_2, NULL);
+	b = gui_button_new( pair_new(15.0, 75.0), "Title", 1, "../image.jpg", "../imageoff.jpg", "../imageover.jpg", event_1, event_2, NULL);
 	gui_button_set_color( b, 125.0, 147.0, 225.0 );
 	gui_button_set_text_color( b, COLOR_RED );
 	gui_button_show(b);

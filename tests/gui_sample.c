@@ -17,12 +17,11 @@
 #define ENFORCE_STRICT
 
 #include <acknex.h>
-#include "default_ex.h"
 
-#include <..\utilities.h>
+#include "__path_source_test.h"
+#include "../source/utils/utilities.h"
 
-#include <..\common.h>
-#include <..\gui.h>
+#include "../source/game/gui/gui.h"
 
 Panel *p = NULL;
 
@@ -69,7 +68,7 @@ int main()
 	on_9 = panel_set_center_2;
 	on_0 = panel_set_center_3;
 	
-	while(true)
+	while( !key_esc )
 	{
 		draw_text( helper, 10.0, 10.0, COLOR_WHITE );
 		
@@ -78,7 +77,7 @@ int main()
 		wait(1.0);
 	}
 	
- 	return 0;
+ 	RETURN(0);
 }
 
 void panel_set_align_1()

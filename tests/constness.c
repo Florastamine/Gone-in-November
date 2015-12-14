@@ -16,7 +16,8 @@
  */
 #include <acknex.h>
 #include <stdio.h>
-#include "..\utilities.h"
+#include "__path_source_test.h"
+#include "../source/utils/utilities.h"
 
 int main( int argc, char **argl )
 {
@@ -27,5 +28,5 @@ int main( int argc, char **argl )
 	
 	PRINT_INT(i);
 	
-	return 0;
+	RETURN(0);
 }

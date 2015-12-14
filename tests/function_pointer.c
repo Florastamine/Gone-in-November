@@ -16,7 +16,9 @@
  */
 #include <acknex.h>
 #include <stdio.h>
-#include "..\utilities.h"
+
+#include "__path_source_test.h"
+#include "../source/utils/utilities.h"
 
 void f()
 {
@@ -35,5 +37,5 @@ int main( int argc, char **argl )
 	while( !ready() ) wait(1.0);
 	g(f);
 	
-	return 0;
+	RETURN(0);
 }

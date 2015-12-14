@@ -15,7 +15,9 @@
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
 #include <acknex.h>
-#include "..\utilities.h"
+
+#include "__path_source_test.h"
+#include "../source/utils/utilities.h"
 
 void print(const char *content, int i) { printf("%s%i\n", (char *) content, i ); }
 void quit() { sys_exit( (void *) 0 ); }

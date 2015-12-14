@@ -17,13 +17,12 @@
 #define ENFORCE_STRICT
 
 #include <acknex.h>
-#include <d3d9.h>
-#include <stdio.h>
-#include "default_ex.h"
 
-#include "..\utilities.h"
-#include "..\file.h"
-#include "..\crypto.h"
+#include "__path_source_test.h"
+
+#include "../source/utils/utilities.h"
+#include "../source/game/io/file.h"
+#include "../source/game/io/crypto.h"
 
 int main( int argc, char **argl )
 {
@@ -45,7 +44,7 @@ int main( int argc, char **argl )
 	file_write(f, zstr);
 	file_free();
 	
-	while(true)
+	while( !key_esc )
 	{
 		draw_text(estr, 5.0, 5.0, COLOR_TEAL);
 		draw_text(zstr, 5.0, 20.0, COLOR_WHITE);
@@ -53,5 +52,5 @@ int main( int argc, char **argl )
 		wait(1.0);
 	}
 	
-	return 0;
+	RETURN(0);
 }

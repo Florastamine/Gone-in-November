@@ -27,17 +27,17 @@
 #define   PRAGMA_PATH "../object/"
 #define   PRAGMA_PATH "../fx/"
 
-//#define   PERFORM_PATH_LOOKUP
+// #define   PERFORM_PATH_LOOKUP
 
 #include <acknex.h>
 
-#include "..\path.h"
-#include "..\utilities.h"
+#include "__path_source_test.h"
 
-#include "..\render_rain.h"
-#include "..\render_pp.h"
+#include "../source/game/common/path.h"
+#include "../source/utils/utilities.h"
 
-#include "..\common.h"
+#include "../source/render/render_rain.h"
+#include "../source/render/render_pp.h"
 
 #define    CRT         0
 #define    SEPIA       1
@@ -87,14 +87,8 @@ fixed rhandle = 0;
 int main(int argc, char **argl)
 {
 	while( !ready() ) wait(1.0);
-	
 	draw_pos.x = 25.0;
 	draw_pos.y = 150.0;
-	
-	time_smooth = 0.9;
-	game_state_new();
-	game_log_new();
-	game_physx_new();
 	
 	window_size_set(1280, 720);
 	
@@ -114,9 +108,7 @@ int main(int argc, char **argl)
 	on_7 = rain_off;
 	
 	while(!key_esc)
-	{
-		game_physx_loop();
-		
+	{	
 		draw_text(sstr, 10, 10, COLOR_PEACH);
 		draw_text(sstr_mode, draw_pos.x, draw_pos.y, COLOR_BLEU_DE_FRANCE);
 		
@@ -126,7 +118,6 @@ int main(int argc, char **argl)
 	}
 	
 	sys_exit(0);
-	return 0;
 }
 
 __static void __create_stage()

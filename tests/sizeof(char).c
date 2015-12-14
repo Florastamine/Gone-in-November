@@ -15,15 +15,14 @@
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
 #include <acknex.h>
-#include <stdio.h>
-#include "..\utilities.h"
+
+#include "__path_source_test.h"
+#include "../source/utils/utilities.h"
 
 int main( int argc, char **argl )
 {
-	while( !ready() ) wait(1.0);
+	PRINT_INT(sizeof(char)); // 1
+	PRINT_INT(sizeof('A'));  // 4
 	
-	PRINT_INT(sizeof(char));
-	PRINT_INT(sizeof('A'));
-	
-	return 0;
+	RETURN(0);
 }

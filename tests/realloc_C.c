@@ -19,6 +19,11 @@
  * This is used as the building blocks for <serializer>, because apparently providing just
  * a big ass, fixed chunk of memory to be filled in later is not smart, not smart at all.
  */
+
+#ifdef    LC // If you're using the Acknex compiler, enable LC
+#include <litec.h>
+#endif
+
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>

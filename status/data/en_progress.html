@@ -59,7 +59,7 @@ You can track the (regularly updated) code base here: <a
  style="font-family: Courier New,Courier,monospace;"
  href="https://github.com/Florastamine/Gone-in-November">https://github.com/Florastamine/Gone-in-November</a><br>
 <br>
-The page is usually updated every week.<br>
+The page is usually updated once a week.<br>
 <br>
 <span style="font-weight: bold; text-decoration: underline;">Current
 phase:</span> Building the base blocks, tools and utilities.<br>
@@ -82,7 +82,10 @@ update history</span><br>
  style="font-family: Courier New,Courier,monospace; font-weight: bold;">21/11/2015</span><br
  style="font-family: Courier New,Courier,monospace; font-weight: bold;">
       <span
- style="font-family: Courier New,Courier,monospace; font-weight: bold;">05/12/2015</span><br>
+ style="font-family: Courier New,Courier,monospace; font-weight: bold;">05/12/2015</span><br
+ style="font-family: Courier New,Courier,monospace; font-weight: bold;">
+      <span
+ style="font-family: Courier New,Courier,monospace; font-weight: bold;">12/12/2015</span><br>
       </td>
     </tr>
   </tbody>
@@ -180,19 +183,6 @@ behaviours (player, objects pick-up, static objects, doors/windows, ...)</span><
 </div>
 </div>
 <br>
-<img style="width: 16px; height: 16px;" alt="Important"
- src="https://dl.dropboxusercontent.com/u/26857618/DP%20data/priority_important.bmp">
-<span style="font-weight: bold;">Write a simplified</span><span
- style="font-family: Courier New,Courier,monospace;"> media_play()</span><span
- style="font-weight: bold;"> (streaming) wrapper inside (</span><span
- style="font-family: Courier New,Courier,monospace;">&lt;utilities&gt;</span><span
- style="font-weight: bold;">)</span><br>
-<div style="font-style: italic;" id="progress" class="graph">
-<div id="bar" style="width: 0%;">
-<p>0%</p>
-</div>
-</div>
-<br>
 <span style="font-weight: bold; text-decoration: underline;">Tasks
 completed</span><br>
 <br>
@@ -233,6 +223,19 @@ and computer performance</span>
 <span style="font-weight: bold;">Write the implementation for the </span><span
  style="font-family: Courier New,Courier,monospace;">PERFORM_PATH_LOOKUP</span><span
  style="font-weight: bold;"> switch.</span>
+<div style="font-style: italic;" id="progress" class="graph">
+<div id="bar" style="width: 100%;">
+<p>100%</p>
+</div>
+</div>
+<br>
+<img style="width: 16px; height: 16px;" alt="Important"
+ src="https://dl.dropboxusercontent.com/u/26857618/DP%20data/priority_important.bmp">
+<span style="font-weight: bold;">Write a simplified</span><span
+ style="font-family: Courier New,Courier,monospace;"> media_play()</span><span
+ style="font-weight: bold;"> (streaming) wrapper inside (</span><span
+ style="font-family: Courier New,Courier,monospace;">&lt;utilities&gt;</span><span
+ style="font-weight: bold;">)</span><br>
 <div style="font-style: italic;" id="progress" class="graph">
 <div id="bar" style="width: 100%;">
 <p>100%</p>
@@ -346,6 +349,44 @@ and <span style="font-family: Courier New,Courier,monospace;">README.md
     </span>in each single folder (also remove <span
  style="font-family: Courier New,Courier,monospace;">.gitignore</span>
 in subfolders).</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9745;</span></span><span
+ style="font-size: 125%;"><span class="Unicode"></span></span><span
+ style="font-size: 125%;"><span class="Unicode"> </span></span><span
+ style="font-family: Courier New,Courier,monospace;"></span>Larger <span
+ style="font-family: Courier New,Courier,monospace;">assert()</span>
+message length and so does <span
+ style="font-family: Courier New,Courier,monospace;">game_log_write()</span>.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Create
+a GUI state (<span style="font-family: Courier New,Courier,monospace;">GUIState</span>)
+in <span style="font-family: Courier New,Courier,monospace;">&lt;gui&gt;</span>.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Add
+    <span style="font-family: Courier New,Courier,monospace;">game_console_load()</span>
+which initializes and fills the console with custom commands.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9745;</span></span><span
+ style="font-size: 125%;"><span class="Unicode"></span></span><span
+ style="font-size: 125%;"><span class="Unicode"> </span></span><span
+ style="font-family: Courier New,Courier,monospace;"></span>Rewrite
+the DirectShow Ogg Vorbis filter collection to a batch script.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Write
+utility: <span style="font-family: Courier New,Courier,monospace;">./utils/__fix_defines.c</span>
+which automagically comments out appropriate<span
+ style="font-family: Courier New,Courier,monospace;"> #defines</span>
+before compiling.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Write
+instructions on<span style="font-family: Courier New,Courier,monospace;">
+./README.md</span> on how to build the code.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Add
+the<span style="font-family: Courier New,Courier,monospace;">
+PERFORM_CRYPTOGRAPHY </span>switch.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Add
+the<span style="font-family: Courier New,Courier,monospace;"> A8_FREE</span>
+switch and issue a warning if users try to run the code from post-A8
+versions.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Add
+a few sample physics objects.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Add
+ordered layers.<br>
+  </li>
 </ul>
 <span style="font-weight: bold; text-decoration: underline;">Bug fixes</span><br>
 <ul>
@@ -381,7 +422,14 @@ which causes light rays's sun position (<span
 receives zero due to <span
  style="font-family: Courier New,Courier,monospace;">sun_angle</span>
 being incorrectly calculated. Temporary workaround is to use only one
-shader type at a time.<br>
+shader type at a time.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Fix
+an issue where simultaneously calls to <span
+ style="font-family: Courier New,Courier,monospace;">game_mplayer_(next/prev)()
+    </span>could accidentally alter the volume.</li>
+  <li><span style="font-size: 125%;"><span class="Unicode">&#9744; </span></span>Fix
+an issue in <span style="font-family: Courier New,Courier,monospace;">&lt;utilities&gt;/search()
+    </span>which causes random crashes.<br>
   </li>
 </ul>
 </body>

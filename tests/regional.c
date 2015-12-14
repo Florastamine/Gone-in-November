@@ -17,19 +17,18 @@
 #define ENFORCE_STRICT
 
 #include <acknex.h>
-#include <stdio.h>
-#include "default_ex.h"
 
-#include "..\path.h"
+#include "__path_source_test.h"
+#include "../source/utils/utilities.h"
 
-#include "..\utilities.h"
-#include "..\gui.h"
-#include "..\region.h"
+#include "../source/game/gui/gui.h"
+#include "../source/game/io/region.h"
 
 int main( int argc, char **argl )
 {
 	while( !ready() ) wait(1.0);
 	
+	window_size_set( 1280, 720 );
 	draw_textmode( "Arial#25b", 1, 42.0, 50.0 );
 	
 	region_new();
@@ -51,12 +50,12 @@ int main( int argc, char **argl )
 	
 	gui_panel_set_pos(p, pair_new(15.0, 100.0));
 	
-	while(true)
+	while( !key_esc )
 	{
 		draw_text(s, 10.0, 10.0, COLOR_WHITE);
 		
 		wait(1.0);
 	}
 	
-	return 0;
+	RETURN(0);
 }

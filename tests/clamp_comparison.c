@@ -16,7 +16,9 @@
  */
 #include <acknex.h>
 #include <stdio.h>
-#include "..\utilities.h"
+
+#include "__path_source_test.h"
+#include "../source/utils/utilities.h"
 
 const int inbound = 0;
 const int outbound = 256;
@@ -36,5 +38,5 @@ int main( int argc, char **argl )
 	print(outbound, outbound); // true
 	print(outbound - 1, outbound); // true
 	
-	return 0;
+	RETURN(0);
 }

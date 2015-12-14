@@ -15,8 +15,8 @@
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
 #include <acknex.h>
-#include <stdio.h>
-#include "..\utilities.h"
+
+#define __namespace(nspc) {}
 
 __namespace(void_table) {
 	#define MAX_COMMANDS          10
@@ -39,7 +39,7 @@ __namespace(void_table) {
 	
 	void command_table_call(int id)
 	{
-		PRINT_STRING(__CommandTable_command[id]);
+		printf("%s", __CommandTable_command[id]);
 		
 		void ___action();
 		___action = __CommandTable__action[id];
@@ -49,23 +49,22 @@ __namespace(void_table) {
 
 void f() 
 {
-	PRINT_STRING("f()");
+	printf("%s", "f()");
 }
 
 void g()
 {
-	PRINT_STRING("g()");
+	printf("%s", "g()");
 }
 
 int main( int argc, char **argl )
 {
-	while( !ready() ) wait(1.0);
-	
 	command_table_add("g() invoked", g );
 	command_table_add("f() invoked", f );
 	
 	command_table_call(0);
 	command_table_call(1);
+	// command_table_call(2); // Crash
 	
-	return 0;
+	sys_exit(0);
 }

@@ -22,10 +22,9 @@
  * A similar vanilla C recreation can be found in realloc_C.c.
  */
 #include <acknex.h>
-#include <stdio.h>
-#include "..\utilities.h"
 
-#define ENFORCE_STRICT
+#include "__path_source_test.h"
+#include "../source/utils/utilities.h"
 
 typedef struct {
 	int *i;
@@ -69,7 +68,7 @@ int *mrealloc( int **in, int n, int copyn )
 	else
 	w = *in;
 	
-	sys_free(backup);
+	FREE(backup);
 	return w;
 }
 

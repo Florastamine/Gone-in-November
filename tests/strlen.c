@@ -15,18 +15,17 @@
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
 #include <acknex.h>
-#include <stdio.h>
-#include "..\utilities.h"
+
+#include "__path_source_test.h"
+#include "../source/utils/utilities.h"
 
 int main( int argc, char **argl )
 {
-	while( !ready() ) wait(1.0);
-	
 	String *sstr = str_create("This is a string!");
 	PRINT_INT(str_len(sstr));
 	
 	str_cpy(sstr, " ");
 	PRINT_INT(str_len(sstr));
 	
-	return 0;
+	RETURN(0);
 }

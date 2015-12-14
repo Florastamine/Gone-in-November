@@ -15,8 +15,11 @@
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
 #include <acknex.h>
-#include "..\utilities.h"
-#include "..\gui_utilities.h"
+#include <strio.c>
+
+#include "__path_source_test.h"
+#include "../source/utils/utilities.h"
+#include "../source/utils/gui_utilities.h"
 
 void quit() { sys_exit(0); }
 
@@ -24,8 +27,6 @@ int main()
 {
 	while( !ready() ) wait(1.0);
 	BIND_KEY(esc, quit);
-	
-	level_load(0);
 	
 	String *str             = "This ; is ; a ; simple ; test ; which ; demonstrates ; str_parse_delim() ; more ; to ; come ; later.";
 	char delimiter          = ';';
