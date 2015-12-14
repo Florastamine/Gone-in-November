@@ -1,9 +1,9 @@
 #include <acknex.h>
-#include "..\utilities.h"
+#include "..\\source\\utils\\utilities.h"
 
 #define    INCLUDE_GUARD_HEADER "#ifndef    __BINDINGS_H__\r\n#define    __BINDINGS_H__\r\n"
 #define    INCLUDE_GUARD_FOOTER "\r\n#endif"
-#define    FILE "..\\bindings.h"
+#define    FILE "..\\source\\game\\bind\\bindings.h"
 
 TEXT     *files_list = { strings = 10000; }
 STRING   *current_directory = "";
