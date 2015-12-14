@@ -410,7 +410,8 @@ String *str_trunc_ex( String *str, unsigned int n )
 */
 String *str_parse_ex( String *to, char *from, int pos, char delimiter )
 {
-	ASSERT( to, _chr("<utilities>/str_parse_ex(): Uninitialized container provided."));
+	if( !__from_delimstr ) // If str_parse_ex() wasn't called from str_parse_delim(), then check for the first parameter.
+	    ASSERT( to, _chr("<utilities>/str_parse_ex(): Uninitialized container provided."));
 
 	fixed old_delimiter = _str_separator;
 	_str_separator = delimiter;
@@ -430,12 +431,14 @@ String *str_parse_ex( String *to, char *from, int pos, char delimiter )
 void str_parse_delim( Text *text, char *content, char delimiter )
 {
 	ASSERT( text, _chr("<utilities>/str_parse_delim(): Uninitialized container provided."));
+	__from_delimstr = true;
 
 	char old_delimiter = _str_separator;
 	_str_separator = delimiter;
 	String *parse = str_parse_ex(NULL, content, 1, delimiter ); // Fetchs the very first token.
 	txt_addstring(text, parse);                                      // And push it into the text object.
-
+	
+	__from_delimstr = false;
 	while(true) // Fetchs the remaining tokens.
 	{
 		parse = str_parse(parse, content, 0);

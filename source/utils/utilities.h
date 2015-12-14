@@ -424,6 +424,8 @@ __namespace(GUI) {
 }
 
 __namespace(string) {
+	__static bool __from_delimstr = false;
+	
 	String *str_clip_ex( __In String *str, __In unsigned int n );
 	String *str_trunc_ex( String *str, unsigned int n );
 	String *str_create_ex( __In const int length );
