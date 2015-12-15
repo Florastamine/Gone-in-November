@@ -1,8 +1,10 @@
 @echo off
-cls
 setlocal
+title Be patient...
+cls
 call ackvars.bat
 
-%ACKPATH%\acknex __execsample.c
+echo Be patient...
+%ACKPATH%\acknex -exe __execsample.c -nwnd
 
 endlocal

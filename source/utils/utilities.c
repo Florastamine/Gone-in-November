@@ -437,7 +437,7 @@ void str_parse_delim( Text *text, char *content, char delimiter )
 	_str_separator = delimiter;
 	String *parse = str_parse_ex(NULL, content, 1, delimiter ); // Fetchs the very first token.
 	txt_addstring(text, parse);                                      // And push it into the text object.
-	
+
 	__from_delimstr = false;
 	while(true) // Fetchs the remaining tokens.
 	{
@@ -532,6 +532,60 @@ char *function_name_get( const void *f )
 void window_title_set( const char *title )
 {
 	if(title) video_window( NULL, NULL, 0, title );
+}
+
+/*
+ * char *window_title_get()
+ *
+ * Retrieves the current title of the engine window.
+ */
+char *window_title_get()
+{
+	char *tbuffer = MALLOC(128, char); // 128 is hard limit. Increase to your favor.
+
+	#ifdef    WINDOWS_API
+	    GetWindowText(hWnd, tbuffer, 128);
+	#endif
+
+	return tbuffer;
+}
+
+/*
+ * Pair *window_pos_get()
+ *
+ * Returns the desktop position of the engine window.
+ */
+Pair *window_pos_get()
+{
+	Pair *p = pair_new();
+	p->first = window_pos.x;
+	p->second = window_pos.y;
+
+	return p;
+}
+
+/*
+ * Vector3 *window_color_get()
+ *
+ * Returns the current background color of the window in the RGB form.
+ */
+Vector3 *window_color_get()
+{
+	return vector(screen_color.blue, screen_color.green, screen_color.red);
+}
+
+/*
+ * Pair *window_size_get()
+ *
+ * Return the size of the window.
+ */
+Pair *window_size_get()
+{
+	Pair *p = pair_new();
+	p->first = screen_size.x;
+	p->second = screen_size.y;
+
+	return p;
 }
 
 /*
@@ -761,7 +815,7 @@ void object_bound_get( Object *object, Vector3 *min, Vector3 *max )
  *   wait(1.0); // Temporarily defer to allow concurrency.
  * }
  *
- * Another variant which omits the second parameter drawing the object with COLOR_WHITE.
+ * Another variant which omits the second parameter drawing is provided below, which uses COLOR_WHITE.
  */
 void object_bound_draw( Object *object, const Vector3 *color )
 {
@@ -968,10 +1022,17 @@ __static void __console_hide( Channel *console )
 {
 	if(inkey_active) inkey_active = 0;
 
-	if( console->__background_container->flags & SHOW ) console->__background_container->flags &= (~SHOW);
-	if( console->data->flags & SHOW ) console->data->flags &= (~SHOW);
+	if( console->__background_container->flags & SHOW )
+	    console->__background_container->flags &= (~SHOW);
+	if( console->data->flags & SHOW )
+	    console->data->flags &= (~SHOW);
 }
 
+/*
+ * void console_hide()
+ *
+ * Hides the currently bound console object.
+ */
 void console_hide()
 {
 	__console_hide(Channel_active);
@@ -1514,11 +1575,6 @@ char *os_get_name()
 	return cstr;
 }
 
-float lerp(float v0, float v1, float t)
-{
-	return (1 - t) * v0 + t * v1;
-}
-
 /*
  * char *file_get_ext ( const char *fn )
  *
@@ -1664,18 +1720,16 @@ void bkptend()
  */
 char *os_get_user_name()
 {
+	// http://stackoverflow.com/questions/704891/windows-username-maximum-length
+	// No one cares because I've never seen a 192-character user name.
+	DWORD buf_len = 192;
+	char *usrlen = (char *) sys_malloc((long) buf_len);
+
 	#ifdef    WINDOWS_API
-	    // http://stackoverflow.com/questions/704891/windows-username-maximum-length
-		// No one cares because I've never seen a 192-character user name.
-		DWORD buf_len = 192;
-
-		char *usrlen = (char *) sys_malloc((long) buf_len);
 		GetUserName(usrlen, &buf_len);
-
-		return usrlen;
 	#endif
 
-	return NULL;
+	return usrlen;
 }
 
 /*
@@ -1685,16 +1739,14 @@ char *os_get_user_name()
  */
 char *os_get_computer_name()
 {
+	DWORD buf_len = 192;
+	char *complen = (char *) sys_malloc((long) buf_len);
+
 	#ifdef    WINDOWS_API
-	    DWORD buf_len = 192;
-
-		char *complen = (char *) sys_malloc((long) buf_len);
 		GetComputerName(complen, &buf_len);
-
-		return complen;
 	#endif
 
-	return NULL;
+	return complen;
 }
 
 __static char *__ifelse_chr(char *a, char *b, char *c)
@@ -1710,19 +1762,18 @@ __static char *__ifelse_chr(char *a, char *b, char *c)
  */
 char *os_get_system_directory()
 {
+	DWORD buf_len = 256;
+	char *dir = (char *) sys_malloc((long) buf_len);
+
 	#ifdef    WINDOWS_API
 		if( !___libc_init__done__ )
 		    libc_init(); // We need getenv().
 
-		DWORD buf_len = 256;
-		char *dir = (char *) sys_malloc((long) buf_len);
 		GetWindowsDirectory(dir, &buf_len);
 		strcat(dir, __ifelse_chr(getenv("PROGRAMFILES(X86)"), _chr("\\SysWOW64\\"), _chr("\\System32\\")));
-
-		return dir;
 	#endif
 
-	return NULL;
+	return dir;
 }
 
 /*
@@ -1747,4 +1798,40 @@ BOOL os_is_privileged()
 	#endif
 
 	return false;
+}
+
+/*
+ * Text *os_get_drives()
+ *
+ * Returns the available drives on the system, in the form
+ * of a Text * object.
+ *
+ * A note on GetLogicalDriveStrings(): The retrieved buffer is in the form:
+ * A:\<n>B:\<n>C:\<n>
+ * Therefore when printing the raw buffer you only get the very first drive
+ * (because printf() ends if it encounters the null terminated character).
+ *
+ * MAX_PATH = Maximum filename length in NTFS
+ */
+Text *os_get_drives()
+{
+	Text   *object = txt_create(0, 1);
+	
+	#ifdef    WINDOWS_API
+		DWORD   size = MAX_PATH;
+		char    drives[MAX_PATH];
+		DWORD   wresult = GetLogicalDriveStrings(size, drives);
+
+		if((int) clamp(wresult, 1, MAX_PATH) == wresult)
+		{
+			char *szSingleDrive = drives;
+			while( *szSingleDrive )
+			{
+				txt_addstring(object, szSingleDrive);
+				szSingleDrive += strlen(szSingleDrive) + 1;
+			}
+		}
+	#endif
+
+	return object;
 }
