@@ -56,7 +56,7 @@ void region_new()
 	if(Region_singleton) region_free();
 	
 	Region_singleton                       = (Region *) sys_malloc(sizeof(Region));
-	Region_singleton->languages            = txt_create(0, 1);
+	Region_singleton->languages            = txt_create(0, 42);
 	Region_singleton->__search_path        = str_create("");
 	Region_singleton->language_active      = str_create("#3"); // Only 3 characters.
 	                                                           // The currently active language is stored as 2 characters ("vi", "en", "jp",... and such).

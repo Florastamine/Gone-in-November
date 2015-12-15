@@ -42,9 +42,8 @@
     #define    PRAGMA_ZERO
 #endif
 
-#define __LOG_FILE "stdout.log"
-
-#define __PSVS_VERSION 3030
+#define __LOG_FILE       "stdout.log"
+#define __PSVS_VERSION   3030
 
 /*
  * Launch parameters.
@@ -67,6 +66,22 @@
 
 #define __ARGS_DECRYPTOR        "--decryptor"  /* Opens the save game editor instead.                           */
 #define __ARGS_DECRYPTOR_SHORT  "-d"
+
+/*
+ * Ordered layers.
+ */
+#define LAYER_ENTITY    1
+#define LAYER_HUD_1     2
+#define LAYER_HUD_2     3
+#define LAYER_HUD_3     4
+#define LAYER_HUD_4     5
+#define LAYER_GUI_1     6
+#define LAYER_GUI_2     7
+#define LAYER_GUI_3     8
+#define LAYER_GUI_4     9
+#define LAYER_MESSAGE   10
+#define LAYER_DEBUG_1   11
+#define LAYER_DEBUG_2   12
 
 /*
  * GameState (struct)

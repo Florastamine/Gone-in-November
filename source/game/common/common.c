@@ -319,11 +319,11 @@ __static void __p_fade_in( PANEL *p, float f, float t, float s )
 	if(p) {
 		if( f > t ) swap( &f, &t );
 		__p_set_translucent(p);
-
+		
 		p->alpha = f;
 		while(p->alpha < t) {
 			p->alpha += s * time_step;
-
+			
 			wait(1.0);
 		}
 	}
@@ -583,9 +583,9 @@ void game_scene_load( STRING *scene )
 
 	__game_scene_state_new();
 
-	PANEL *p  = pan_create(NULL, 1);
-	TEXT  *t0 = txt_create(1, 2);
-	TEXT  *t1 = txt_create(1, 2);
+	PANEL *p  = pan_create(NULL, LAYER_GUI_1);
+	TEXT  *t0 = txt_create(1, LAYER_GUI_2);
+	TEXT  *t1 = txt_create(1, LAYER_GUI_2);
 
 	// Feed the structs' data with the ones fed from the singleton.
 	p->bmap = game_scene_get_load_screen();
@@ -711,7 +711,7 @@ void game_mplayer_new( const STRING *path, const STRING *extension )
 	MPlayer_singleton->volume       = midi_vol * 0.8;
 	MPlayer_singleton->__search_path = str_create(path);
 
-	MPlayer_singleton->track_list   = txt_create(MPLAYER_BUFFER_SIZE, 1);
+	MPlayer_singleton->track_list   = txt_create(MPLAYER_BUFFER_SIZE, LAYER_DEBUG_1);
 	MPlayer_singleton->total_tracks = txt_for_dir( MPlayer_singleton->track_list, str_cat(path, extension) );
 
 	#ifdef    DEBUG
