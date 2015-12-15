@@ -178,10 +178,8 @@ void pssm_run(fixed numsplits)
 			// create a texture matrix from the split view proj matrix			
 			D3DXMatrixMultiply(&matSplit[i], &matSplit[i], pssm_texscale(pssm_res));
 			
-			#ifdef DEBUG_PSSM
+			#ifdef    DEBUG		
 				DEBUG_BMAP(viewSplit[i]->bmap, 300 + i*220, 0.2);
-				fixed pssm_fps = 16/time_frame;
-				DEBUG_VAR(pssm_fps, 200);
 				DEBUG_VAR(pssm_splitdist[i+1], 220 + i*20);
 			#endif
 		}
@@ -190,9 +188,10 @@ void pssm_run(fixed numsplits)
 		LPD3DXEFFECT fx = viewShadow->material->d3deffect; 
 		if(fx) fx->SetMatrixArray("matTex", matSplit, pssm_numsplits);
 		
-		#ifdef DEBUG_PSSM		
+		#ifdef    DEBUG		
 			DEBUG_BMAP(viewShadow->bmap, 20, 0.2);
 		#endif
+		
 		wait(1);
 	}
 	
