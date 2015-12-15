@@ -25,6 +25,8 @@
  *          Modified and packaged by Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
+#ifndef    A8_FREE
+
 #ifndef    __RENDER_PP_H__
 #define    __RENDER_PP_H__
 
@@ -80,3 +82,4 @@
 
 #include "render_pp.c"
 #endif /* render_pp.h */
+#endif

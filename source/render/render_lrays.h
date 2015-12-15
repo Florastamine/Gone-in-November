@@ -29,6 +29,8 @@
  *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
+#ifndef    A8_FREE
+
 #ifndef    __LRAYS_H_
 #define    __LRAYS_H_
 
@@ -67,3 +69,4 @@ PANEL *__sun_dummy = { scale_x = 0.5; scale_y = 0.5; }
 
 #include "render_lrays.c"
 #endif /* render_lrays.h */
+#endif

@@ -25,6 +25,8 @@
  *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
+#ifndef    A8_FREE
+
 #ifndef    _RENDER_REFLECT_H_
 #define    _RENDER_REFLECT_H_
 
@@ -60,3 +62,4 @@ VIEW *view_reflect = { size_x = 0; size_y = 0; layer = -11; }
 
 #include "render_reflect.c"
 #endif /* render_reflect.h */
+#endif

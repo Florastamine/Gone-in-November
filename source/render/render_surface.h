@@ -37,6 +37,8 @@
  * avoid conflicts with Gamestudio default materials.
  * __________________________________________________________________
  */
+#ifndef    A8_FREE
+
 #ifndef    __RENDER_SURFACE_H__
 #define    __RENDER_SURFACE_H__
 
@@ -91,3 +93,4 @@ void smtl_velvety_add(ENTITY *object);
 
 #include "render_surface.c"
 #endif /* render_surface.h */
+#endif

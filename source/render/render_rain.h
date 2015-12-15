@@ -24,6 +24,8 @@
             Modified and optimized by Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
+#ifndef    A8_FREE
+
 #ifndef    _RENDER_RAIN_H_
 #define    _RENDER_RAIN_H_
 
@@ -53,3 +55,4 @@ void render_rain_set_speed(float x, float y, float z);
 
 #include "render_rain.c"
 #endif /* render_rain.h */
+#endif

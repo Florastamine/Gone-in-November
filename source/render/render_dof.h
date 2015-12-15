@@ -28,6 +28,8 @@
  *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
+#ifndef    A8_FREE
+
 #ifndef    _DOF_H_
 #define    _DOF_H_
 
@@ -81,3 +83,4 @@ VIEW *view_dof           = { material = mtl_dof; flags = PROCESS_TARGET; }
 
 #include "render_dof.c"
 #endif /* render_dof.h */
+#endif

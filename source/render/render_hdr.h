@@ -27,6 +27,8 @@
  *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
+#ifndef    A8_FREE
+
 #ifndef    _HDR_H_
 #define    _HDR_H_
 
@@ -99,3 +101,4 @@ VIEW *view_hdrGamma4      = { material = mtl_hdrGamma3; flags = PROCESS_TARGET;s
 
 #include "render_hdr.c"
 #endif /* render_hdr.h */
+#endif

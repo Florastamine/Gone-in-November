@@ -30,6 +30,8 @@
  *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
+#ifndef    A8_FREE
+
 #ifndef    _RENDER_UTILS_H_
 #define    _RENDER_UTILS_H_
 
@@ -39,3 +41,4 @@ void render_queue_start();
 
 #include "render_utils.c"
 #endif /* render_utils.h */
+#endif

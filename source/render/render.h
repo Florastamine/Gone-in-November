@@ -26,6 +26,8 @@
  *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
+#ifndef    A8_FREE
+
 #ifndef    _RENDER_H_
 #define    _RENDER_H_
 
@@ -86,3 +88,7 @@ __namespace(render) {
 
 #include "render.c" 
 #endif /* render.h */
+
+#else
+#define PRAGMA_PRINT "\n(Warning!) Running with A8_FREE enabled. Suppress rendering of shaders."
+#endif

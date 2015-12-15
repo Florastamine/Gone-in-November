@@ -24,6 +24,8 @@
  *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
+#ifndef    A8_FREE
+
 #ifndef    _RENDER_REFRACT_H
 #define    _RENDER_REFRACT_H
 
@@ -58,3 +60,4 @@ void render_refract();
 
 #include "render_refract.c"
 #endif /* render_refract.h */
+#endif

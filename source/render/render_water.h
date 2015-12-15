@@ -26,6 +26,8 @@
  *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
+#ifndef    A8_FREE
+
 #ifndef    _RENDER_WATER_H_
 #define    _RENDER_WATER_H_
 
@@ -54,3 +56,4 @@ MATERIAL *mtl_water = { flags = ENABLE_RENDER | TANGENT; effect = "water.fx"; }
 
 #include "render_water.c"
 #endif /* render_water.h */
+#endif

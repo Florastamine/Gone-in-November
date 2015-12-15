@@ -24,6 +24,8 @@
  * OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
+#ifndef    A8_FREE
+
 #ifndef    render_pp_sepia_h
 #define    render_pp_sepia_h
 
@@ -118,3 +120,4 @@
 
 #include "render_pp_sepia.c"
 #endif /* render_pp_sepia.h */
+#endif

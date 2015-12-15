@@ -3,6 +3,8 @@
 // shadows.c - parallel-split shadow mapping
 // (c) oP group 2010
 ////////////////////////////////////////////////////////////////
+#ifndef    A8_FREE
+
 #ifndef    __RENDER_SHADOWS_H__
 #define    __RENDER_SHADOWS_H__
 
@@ -51,3 +53,4 @@ void   pssm_run(fixed numsplits);
 
 #include "render_shadows.c"
 #endif /* render_shadows.h */
+#endif
