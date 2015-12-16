@@ -15,12 +15,6 @@
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
 
-__static void __game_gui_set_reticule_pos( float x, float y )
-{
-    __GUIState_singleton->reticule->pos_x = abs(x);
-    __GUIState_singleton->reticule->pos_y = abs(y);
-}
-
 /*
  * void game_gui_state_new()
  *
@@ -40,7 +34,7 @@ void game_gui_state_new()
     // Creates and sets up the reticule.
     __GUIState_singleton->reticule           = pan_create(NULL, LAYER_GUI_1);
     __GUIState_singleton->reticule->flags    = __GUIState_singleton->reticule->flags | (OVERLAY);
-    __game_gui_set_reticule_pos(0.0, 0.0);
+    gui_panel_set_pos( __GUIState_singleton->reticule, 0.0, 0.0 );
 }
 
 /*
@@ -65,7 +59,7 @@ void game_gui_set_reticule( Bitmap *reticule )
         __GUIState_singleton->reticule->bmap = reticule;
         float px = (screen_size.x - bmap_width(__GUIState_singleton->reticule->bmap)) * 0.5;
         float py = (screen_size.y - bmap_height(__GUIState_singleton->reticule->bmap)) * 0.5;
-        __game_gui_set_reticule_pos(px, py);
+        gui_panel_set_pos( __GUIState_singleton->reticule, px, py );
     }
 }
 
