@@ -21,7 +21,7 @@
  * Lightweight and has no dependency other than Gamestudio's headers.
  *
  * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
- * Version: v0.1.1-alpha
+ * Version: Call library_get_version() to get the current version.
  *
  * History
  * __________________________________________________________________
@@ -63,8 +63,9 @@
  * - Versioning bumped.
  * __________________________________________________________________
  * + v0.2.3-alpha
- * - Added os_get_name(), file_get_ext(), fade(), pair_set(), bkpt()/bkptend(), window_pos_get(), window_color_get(), window_size_get().
+ * - Added os_get_name(), file_get_ext(), fade(), pair_set(), bkpt()/bkptend(), window_pos_get(), window_color_get(), window_size_get(), window_title_get().
  * - Added two macros FLT_MAX (maximum float value) and DBL_MAX (maximum double value); RETURN(0).
+ * - Added ASSERT_ON() and ASSERT_OFF() for switching assertions state.
  * - Added short comments to the .h interface. (full comments with side notes can still be viewed in the implementation code).
  * - (Partially) added the Windows API set wrappers, which can be used if WINDOWS_API is defined.
  * -- Functions available:  os_get_user_name(), os_get_computer_name(), os_get_system_directory(), os_is_privileged(),
@@ -135,7 +136,9 @@
 #define CALLOC(number, type)               (type *) calloc( number, sizeof(type) )
 #define REALLOC(inlet, type, number)       (type *) realloc( inlet, sizeof(type) * number )
 #define FREE(block)                        sys_free(block)
-#define ASSERT(condition, message)         do { if( !(condition) ) __assert(message); } while(false)
+#define ASSERT(condition, message)         do { if( !(condition) && __assertion_allowed ) __assert(message); } while(false)
+#define ASSERT_ON(p)                       __assertion_allowed = 1
+#define ASSERT_OFF(p)                      __assertion_allowed = 0
 #define WAIT_PROCESS(process)              while( proc_status(process) ) wait(1.0)
 #define KILL_PROCESS(process)              proc_kill(4) /* This macro exists because it helps eliminating magic numbers. */
 #define WALK_THROUGH(object, function)     object = ptr_first(object); while(object) { function(object); o = o.link.next; wait(1.0); }
@@ -564,6 +567,7 @@ __namespace() {
    errno_t __cdecl _access_s( const char *path, int mode );
 
 	int  ___libc_init__done__ = 0;
+	int  __assertion_allowed  = 1;
 
     /*
      * void libc_init()
