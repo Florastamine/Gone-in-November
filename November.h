@@ -7,7 +7,7 @@
  * PERFORM_PATH_LOOKUP and DEBUG must be disabled.
  */
 // #define    A8_FREE
-// #define    DEBUG
+#define    DEBUG
 #define    WIN32_LEAN_AND_MEAN
 #define    WIN32_EXTRA_LEAN
 #define    WINDOWS_API
@@ -15,10 +15,9 @@
 
 #include <acknex.h>
 #include <d3d9.h>
-
-#include "path_source.h"
 #include "./source/utils/physX/ackPhysX.h"
 
+#include "path_source.h"
 #include "./source/utils/default_ex.h"
 
 #include "./source/game/common/path.h"
@@ -40,6 +39,7 @@
 #include "./source/render/render_refract.h"
 #include "./source/render/render_utils.h"
 
+#include "./source/game/shared.h"
 #include "./source/game/fx/unmanaged.h"
 #include "./source/game/common/common.h"
 #include "./source/game/gui/gui.h"
