@@ -14,7 +14,6 @@
 #define    PERFORM_PATH_LOOKUP
 
 #include <acknex.h>
-#include <stdio.h>
 #include <d3d9.h>
 
 #include "path_source.h"
