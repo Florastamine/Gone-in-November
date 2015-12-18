@@ -42,15 +42,11 @@
     #define    PRAGMA_ZERO
 #endif
 
-#define __LOG_FILE       "stdout.log"
 #define __PSVS_VERSION   3030
 
 /*
  * Launch parameters.
  */
-#define __ARGS_LIST "./cfg/args.cfg"           /* Use an external file for parsing arguments instead, because apparently  */
-                                               /* command_str is broken.                                                  */
-
 #define __ARGS_CONSOLE          "--console"    /* Opens the console for command line processing.  No, this is   */
                                                /* not the console that was presented in <default>, it's our own */
                                                /* console with our own commands, which means it will always be  */
@@ -66,6 +62,16 @@
 
 #define __ARGS_DECRYPTOR        "--decryptor"  /* Opens the save game editor instead.                           */
 #define __ARGS_DECRYPTOR_SHORT  "-d"
+
+/*
+ * Configuration files.
+ */
+#define __ARGS_LIST "./cfg/args.cfg"           /* Use an external file for parsing arguments instead, because apparently  */
+                                               /* command_str is broken.                                                  */
+
+#define __VIDEO_CFG "./cfg/video.cfg"          /* For reading out video parameters.                                       */
+
+#define __LOG_FILE  "stdout.log"               /* For logging events (as long as __ARGS_NO_LOGGING isn't specified).      */
 
 /*
  * Ordered layers.
@@ -155,6 +161,7 @@ MPlayer *MPlayer_singleton = NULL;
  */
 __namespace(ArgsParse) {
 	void game_args_parse();
+    void game_video_cfg_parse();
 }
 
 __namespace(November) {

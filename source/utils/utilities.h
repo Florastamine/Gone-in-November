@@ -63,7 +63,8 @@
  * - Versioning bumped.
  * __________________________________________________________________
  * + v0.2.3-alpha
- * - Added os_get_name(), file_get_ext(), fade(), pair_set(), bkpt()/bkptend(), window_pos_get(), window_color_get(), window_size_get(), window_title_get().
+ * - Added os_get_name(), file_get_ext(), fade(), pair_set(), bkpt()/bkptend(), window_pos_get(), window_color_get(),
+ *         window_size_get(), window_title_get(), ArrayContainer, num_parse_delim().
  * - Added two macros FLT_MAX (maximum float value) and DBL_MAX (maximum double value); RETURN(0).
  * - Added ASSERT_ON() and ASSERT_OFF() for switching assertions state.
  * - Added short comments to the .h interface. (full comments with side notes can still be viewed in the implementation code).

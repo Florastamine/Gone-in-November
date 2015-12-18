@@ -319,11 +319,11 @@ __static void __p_fade_in( PANEL *p, float f, float t, float s )
 	if(p) {
 		if( f > t ) swap( &f, &t );
 		__p_set_translucent(p);
-		
+
 		p->alpha = f;
 		while(p->alpha < t) {
 			p->alpha += s * time_step;
-			
+
 			wait(1.0);
 		}
 	}
@@ -968,4 +968,53 @@ BOOL game_psvs_test()
 	if( d3d_shaderversion >= __PSVS_VERSION )
 	    return true;
 	return false;
+}
+
+__static void __game_video_set(
+	float width,
+	float height,
+	int   bit_depth,
+	bool  fullscreen,
+	int   fsaa,
+	int   fsaf /* ... */
+) {
+	video_set(width, height, bit_depth, ifelse(fullscreen, FULLSCREEN, WINDOWED));
+	d3d_antialias     = fsaa;
+	d3d_anisotropy    = fsaf;
+}
+
+/*
+ * void game_video_cfg_parse()
+ *
+ * Reads and applies video settings from the video configuration file
+ * defined in <common.h>/__VIDEO_CFG.
+ */
+void game_video_cfg_parse()
+{
+	fixed f = file_open_read(__VIDEO_CFG);
+
+	if(!f) // Set default values if the configuration file couldn't be found.
+		__game_video_set( sys_metrics(0), sys_metrics(1), 32, true, 4, 8 );
+	else
+	{
+		String *content              = "";
+		ArrayContainer *settings     = array_container_new();
+		float width, height, bit_depth, fullscreen, aa, af;
+
+		file_str_readto( f, content, "\\", 128 );
+		num_parse_delim( settings, content );
+
+		// Pay a little performance for extra readability, I won't risk anything.
+		width      = array_container_get_next(settings);
+		height     = array_container_get_next(settings);
+		bit_depth  = array_container_get_next(settings);
+		fullscreen = array_container_get_next(settings);
+		aa         = array_container_get_next(settings);
+		af         = array_container_get_next(settings);
+
+		__game_video_set(width, height, bit_depth, fullscreen, aa, af);
+
+		file_close(f);
+		array_container_free(settings);
+	}
 }
