@@ -453,6 +453,110 @@ void str_parse_delim( Text *text, char *content, char delimiter )
 }
 
 /*
+ * ArrayContainer *array_container_new( int elem )
+ * ArrayContainer *array_container_new()
+ *
+ * Allocates and initializes a new array container.
+ */
+ArrayContainer *array_container_new( int elem )
+{
+	ArrayContainer *container = MALLOC(1, ArrayContainer);
+	container->count          = ifelse(elem > 0, elem, 1);
+	container->data           = MALLOC(container->count, int);
+	container->pointer        = 0;
+
+	return container;
+}
+
+ArrayContainer *array_container_new()
+{
+	return array_container_new(1);
+}
+
+/*
+ * void array_container_free( ArrayContainer *container )
+ *
+ * Frees the specified array container.
+ */
+void array_container_free( ArrayContainer *container )
+{
+	if(container)
+	{
+		FREE(container->data);
+		FREE(container);
+	}
+}
+
+/*
+ * int array_container_get_max_count( ArrayContainer *container )
+ *
+ * Returns the current maximum size of the array container.
+ */
+int array_container_get_max_count( ArrayContainer *container )
+{
+	if(container)
+		return container->count;
+}
+
+/*
+ * int array_container_get( ArrayContainer *container, int pos )
+ * int array_container_get_next( ArrayContainer *container )
+ * int array_container_get_prev( ArrayContainer *container )
+ *
+ * Fetchs the array container's data at an arbitrary position, or in a sequential order.
+ */
+int array_container_get( ArrayContainer *container, int pos )
+{
+	ASSERT( container, _chr("<utilities>/array_container_get(): Uninitialized array container provided.") );
+
+	if( (int) clamp(pos, 1, container->count) == pos )
+		return *(container->data + pos - 1);
+}
+
+int array_container_get_next( ArrayContainer *container )
+{
+	container->pointer += 1;
+	return array_container_get( container, container->pointer );
+}
+
+int array_container_get_prev( ArrayContainer *container )
+{
+	container->pointer -= 1;
+	return array_container_get( container, container->pointer );
+}
+
+/*
+ * void num_parse_delim( ArrayContainer *container, char *content, char delimiter )
+ *
+ * Parses out an array of numbers seperated with delimiters into an array container.
+ */
+void num_parse_delim( ArrayContainer *container, char *content, char delimiter )
+{
+	ASSERT( container, _chr("<utilities>/num_parse_delim(): Uninitialized container provided.") );
+
+	if( !delimiter )
+		delimiter = ' ';
+
+	Text *local = txt_create(0, 1);
+	str_parse_delim(local, content, delimiter);
+
+	container->count = local->strings;
+	if(container->data)
+		FREE(container->data);
+
+	container->data  = MALLOC(container->count, int);
+
+	int i = 0;
+	for(; i < container->count; i++)
+		*(container->data + i) = str_to_int((local->pstring)[i]);
+}
+
+void num_parse_delim( ArrayContainer *container, char *content )
+{
+	num_parse_delim(container, content, ' ');
+}
+
+/*
  * double deg2rad( double d )
  *
  * Converts degrees to radians.
@@ -1816,7 +1920,7 @@ BOOL os_is_privileged()
 Text *os_get_drives()
 {
 	Text   *object = txt_create(0, 1);
-	
+
 	#ifdef    WINDOWS_API
 		DWORD   size = MAX_PATH;
 		char    drives[MAX_PATH];

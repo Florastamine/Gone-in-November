@@ -953,6 +953,61 @@ __namespace(string) {
     * delimiter, and pushes the result substrings into the given text object.
     */
 	void str_parse_delim( __In __Out Text *text, __In char *content, __In char delimiter );
+
+    /*
+     * ArrayContainer (struct)
+     *
+     * A very, very simple data structure that was made for use within
+     * num_parse_delim(), which is another simple function used for parsing
+     * out the numbers from a given string.
+     */
+    typedef struct {
+        int count;
+        int pointer;
+        int *data;
+    } ArrayContainer;
+
+    /*
+     * ArrayContainer *array_container_new( int elem )
+     * ArrayContainer *array_container_new()
+     *
+     * Allocates and initializes a new array container.
+     */
+    ArrayContainer *array_container_new( __In int elem );
+    ArrayContainer *array_container_new();
+
+    /*
+     * void array_container_free( ArrayContainer *container )
+     *
+     * Frees the specified array container.
+     */
+    void array_container_free( __In ArrayContainer *container );
+
+    /*
+     * int array_container_get_max_count( ArrayContainer *container )
+     *
+     * Returns the current maximum size of the array container.
+     */
+    int array_container_get_max_count( __In ArrayContainer *container );
+
+    /*
+     * int array_container_get( ArrayContainer *container, int pos )
+     * int array_container_get_next( ArrayContainer *container )
+     * int array_container_get_prev( ArrayContainer *container )
+     *
+     * Fetchs the array container's data at an arbitrary position, or in a sequential order.
+     */
+    int array_container_get_next( __In ArrayContainer *container );
+    int array_container_get_prev( __In ArrayContainer *container );
+    int array_container_get( __In ArrayContainer *container, __In int pos );
+
+    /*
+     * void num_parse_delim( ArrayContainer *container, char *content, char delimiter )
+     *
+     * Parses out an array of numbers seperated with delimiters into an array container.
+     */
+    void num_parse_delim( __In __Out ArrayContainer *container, __In char *content, __In char delimiter );
+    void num_parse_delim( __In __Out ArrayContainer *container, __In char *content );
 }
 
 __namespace(text) {
