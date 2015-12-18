@@ -63,4 +63,5 @@ action act_rigid_body()
     }
 
  	pXent_setgroup(my, OBSTACLE_GROUP);
+ 	pXent_setfriction(my, 0);
 }

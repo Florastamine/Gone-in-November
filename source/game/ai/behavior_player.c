@@ -81,7 +81,7 @@ void act_player_new()
 		__act_player_state_singleton->movement_friction_ground    = 0.8;
 		__act_player_state_singleton->move_speed                  = 42 + 42 + 21; /* ;) */
 		__act_player_state_singleton->climb_speed                 = 2.5;
-		__act_player_state_singleton->run_multiplier              = 1.5;
+		__act_player_state_singleton->run_multiplier              = 2.5;
 		__act_player_state_singleton->walk_multiplier             = 1.0;
 
 		__act_player_state_singleton->__distance_to_ground        = 0.0;
@@ -231,6 +231,10 @@ action act_player()
 
 	#ifndef    DEBUG
 		my->flags |= (INVISIBLE);
+	#endif
+	
+	#ifdef    DEBUG
+	   my->flags |= (SHADOW);
 	#endif
 
 	my->OBJECT_TYPE = OBJECT_HERO;

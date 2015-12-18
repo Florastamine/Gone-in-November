@@ -28,8 +28,10 @@
 *.x86_64
 *.hex
 
-# Debug files
-*.dSYM/
+# Models
+*.fbx
+*.skb
+*.skp
 
 # Gamestudio-specific
 dpfl.cd/

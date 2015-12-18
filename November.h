@@ -27,6 +27,7 @@
 #include "./source/game/io/region.h"
 #include "./source/game/io/serializer.h"
 
+#ifndef    A8_FREE
 #include "./source/render/render.h"
 #include "./source/render/render_pp.h"
 #include "./source/render/render_shadows.h"
@@ -38,6 +39,7 @@
 #include "./source/render/render_reflect.h"
 #include "./source/render/render_refract.h"
 #include "./source/render/render_utils.h"
+#endif
 
 #include "./source/game/shared.h"
 #include "./source/game/fx/unmanaged.h"
