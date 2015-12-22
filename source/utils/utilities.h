@@ -62,9 +62,9 @@
  *
  * - Versioning bumped.
  * __________________________________________________________________
- * + v0.2.3-alpha
+ * + v0.3.0-alpha
  * - Added os_get_name(), file_get_ext(), fade(), pair_set(), bkpt()/bkptend(), window_pos_get(), window_color_get(),
- *         window_size_get(), window_title_get(), ArrayContainer, num_parse_delim().
+ *         window_size_get(), window_title_get(), ArrayContainer, num_parse_delim(), sgn().
  * - Added two macros FLT_MAX (maximum float value) and DBL_MAX (maximum double value); RETURN(0).
  * - Added ASSERT_ON() and ASSERT_OFF() for switching assertions state.
  * - Added short comments to the .h interface. (full comments with side notes can still be viewed in the implementation code).
@@ -76,6 +76,7 @@
  * - Removed the <windows+> header and from now on all APIs will reside together with the WINDOWS_API switch.
  *
  * - Fixed a bug in str_parse_ex() which crashes str_parse_delim().
+ * - Rewrote search().
  * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
@@ -90,7 +91,7 @@
 #define __In
 #define __Out
 
-#define __VERSION "v0.2.3-alpha" // Seems familiar?
+#define __VERSION "v0.3.0-alpha" // Seems familiar?
 
 #ifdef    ENFORCE_STRICT
     #ifndef    PRAGMA_POINTER
@@ -653,7 +654,7 @@ __namespace() {
      * Suitable for console command dictionary.
      */
 	int search( __In Text *container, __In const String *str );
-	int search( __In Text *container, __In const char *cstr );
+    int search ( __In Text *container, __In const String *str, __In int case_sensivity );
 
     /*
      * bool ready()
@@ -714,6 +715,13 @@ __namespace(numeric) {
      * returns a instead of "locking" x to b.
      */
 	float clampf( __In float x, __In float a, __In float b);
+
+    /*
+     * int sgn( int i )
+     *
+     * Extracts the sign of a number.
+     */
+    int sgn( __In int i );
 }
 
 __namespace(window) {

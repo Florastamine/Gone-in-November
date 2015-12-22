@@ -271,6 +271,18 @@ double log10( double d )
 }
 
 /*
+ * int sgn( int i )
+ *
+ * Extracts the sign of a number.
+ */
+int sgn( int i )
+{
+	ASSERT( i != 0, _chr("<utilities>/sgn(): Cannot divide by 0.") );
+
+	return i/abs(i);
+}
+
+/*
  * bool is_odd( int i )
  *
  * Returns true if the given number is an odd number, false otherwise.
@@ -577,18 +589,20 @@ double rad2deg( double d )
 }
 
 /*
- * int search( Text *container, const String *str )
+ * int search( Text *container, const String *str, int case_sensivity )
  *
  * A __very__ slow, __unoptimized__ and basic search function
  * which looks for a specified string in a Text container.
  * Suitable for console command dictionary.
  */
-int search( Text *container, const String *str )
+int search( Text *container, const String *str, int case_sensivity )
 {
 	if( !container || !str ) return 0;
 
 	str = str_create(str);
 
+	// Buggy and broken, removed since v0.3.0-alpha.
+	/*
 	int i = 0;
 	int position = 0;
 	while(i < container->strings)
@@ -603,15 +617,30 @@ int search( Text *container, const String *str )
 			else position = 0;
 		}
 		i++;
-		wait(1);
+	}
+	*/
+
+	int cmp_func(STRING *, STRING *);
+
+	if(case_sensivity > 0)
+	    cmp_func = str_cmp;
+	else
+		cmp_func = str_cmpi;
+
+	int i = 0;
+	while(i < container->strings)
+	{
+		if(cmp_func(str, (container->pstring)[i]))
+		    break;
+		i++;
 	}
 
-	return -1;
+	return (int) ifelse(i < container->strings, i + 1, -1);
 }
 
-int search( Text *container, const char *cstr )
+int search( Text *container, const String *str )
 {
-	return search(container, _str(cstr));
+	return search(container, str, false);
 }
 
 /*
