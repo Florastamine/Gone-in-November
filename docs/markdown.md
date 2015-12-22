@@ -18,9 +18,11 @@ Quotes!
 # GitHub-specific
 `one line of code`
 
-```blocks
+```
+blocks
 of
-code```
+code
+```
 
 ```c
 blocks of code with syntax highlighting
@@ -29,7 +31,8 @@ int main( int argc, char **argl )
 	static const char *cstr = "Hello world!";
 	printf("sample format specifier, string = %s", cstr);
 	return 0;
-} ```
+}
+```
 
 Commit references
 bbecdc3, f0b2126, 1080c9a, 83d3f5 and 83b0943
