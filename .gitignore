@@ -51,6 +51,7 @@ bindings.h
 *.odt#
 *.bmp
 *.tga
+*.png
 *.wav
 *.mp3
 *.ogg

@@ -43,6 +43,7 @@
 #endif
 
 #define __PSVS_VERSION   3030
+#define __GAME_VERSION   "v0.1.0-alpha-DEBUG"
 
 /*
  * Launch parameters.
@@ -70,6 +71,8 @@
                                                /* command_str is broken.                                                  */
 
 #define __VIDEO_CFG "./cfg/video.cfg"          /* For reading out video parameters.                                       */
+
+#define __VER_FILE  "buildver.txt"             /* For writing the game version, as well as reading to perform updates.    */
 
 #define __LOG_FILE  "stdout.log"               /* For logging events (as long as __ARGS_NO_LOGGING isn't specified).      */
 
@@ -159,8 +162,36 @@ MPlayer *MPlayer_singleton = NULL;
 /*
  * Prototypes
  */
+__namespace(IO) {
+    /*
+     * void save(  char *file,  void *pre,  void *post )
+     *
+     * Performs game saving.
+     */
+    void save( __In char *file, __In void *pre, __In void *post );
+
+    /*
+     * void load(  char *file,  void *pre,  void *post )
+     *
+     * Performs game loading.
+     */
+    void load( __In char *file, __In void *pre, __In void *post );
+}
+
 __namespace(ArgsParse) {
+    /*
+     * void game_args_parse()
+     *
+     * Opens the argument list file and parses it.
+     */
 	void game_args_parse();
+
+    /*
+     * void game_video_cfg_parse()
+     *
+     * Reads and applies video settings from the video configuration file
+     * defined in __VIDEO_CFG.
+     */
     void game_video_cfg_parse();
 }
 
@@ -179,6 +210,9 @@ __namespace(November) {
 	void game_event_setup();
 
     BOOL game_psvs_test();
+
+    void game_title_set();
+    __static void __game_version_export();
 }
 
 __namespace(SceneLoadState) {

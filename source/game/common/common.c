@@ -1018,3 +1018,89 @@ void game_video_cfg_parse()
 		array_container_free(settings);
 	}
 }
+
+/*
+ * void game_title_set()
+ *
+ * Sets the game window's title, in case if the .wdf doesn't exist.
+ */
+void game_title_set()
+{
+	video_window( NULL, NULL, 0, str_printf(NULL, "Gone In November %s", __GAME_VERSION) );
+}
+
+__static void __game_version_export()
+{
+	fixed f = file_open_write(__VER_FILE);
+	file_str_write(f, __GAME_VERSION);
+	file_close(f);
+}
+
+/*
+ * Fail naming convention, fail coding structures, fail #ifdef-s,
+ * fail design, fail everything. Sorry.
+ */
+#define EXECUTE_FUNCTION_POINTER(ptr) ptr(); WAIT_PROCESS(ptr)
+
+__static void __save_load( char *file, void *pre, void *post, int op )
+{
+	void func();
+
+	if( pre )
+	{
+		func = pre;
+		EXECUTE_FUNCTION_POINTER(func);
+	}
+
+	if(op)
+	{
+		#ifndef    PERFORM_SERIALIZATION    // Use the built-in saving/loading functions instead.
+		                                    // (dangerous and couldn't work properly most of the time).
+			game_save( game_asset_get_save(file), 1, SV_ALL);
+		#else
+			#ifdef    DEBUG
+				printf("Built-in serializer used.");
+			#endif
+		#endif
+	}
+	else
+	{
+		#ifndef    PERFORM_SERIALIZATION
+			game_load( game_asset_get_save(file), 1);
+		#else
+			#ifdef    DEBUG
+				printf("Built-in serializer used.");
+			#endif
+		#endif
+	}
+
+	if( post )
+	{
+		func = post;
+		EXECUTE_FUNCTION_POINTER(func);
+	}
+}
+
+/*
+ * void save(  char *file,  void *pre,  void *post )
+ *
+ * Performs game saving.
+ * To be honest, I wouldn't rely on game_save() and game_load() calls but
+ * use my home brew serializer/deserializer instead. (but it isn't stable either...)...
+ * These will soon be replaced by my serializer code, with an additional option to switch
+ * to the legacy functions through disabling PERFORM_SERIALIZATION.
+ */
+void save(  char *file,  void *pre,  void *post )
+{
+	__save_load(file, pre, post, 1);
+}
+
+/*
+ * void load(  char *file,  void *pre,  void *post )
+ *
+ * Performs game loading.
+ */
+void load(  char *file,  void *pre,  void *post )
+{
+	__save_load(file, pre, post, 0);
+}

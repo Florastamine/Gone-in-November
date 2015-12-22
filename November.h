@@ -13,6 +13,7 @@
 #define    WINDOWS_API
 #define    PERFORM_PATH_LOOKUP
 #define    PERFORM_CRYPTOGRAPHY
+//#define    PERFORM_SERIALIZATION
 
 #include <acknex.h>
 #include <d3d9.h>

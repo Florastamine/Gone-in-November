@@ -40,7 +40,7 @@ WINDOW WINSTART
 	PROGRESS RGB(0,0,255), 42, 5, 560, 495, 12.5;
 	
 	// enable: Launch button
-	BUTTON BUTTON_START, SYS_DEFAULT, "Launch", 212, 600, 75, 30;
+	// BUTTON BUTTON_START, SYS_DEFAULT, "Launch", 212, 600, 75, 30;
 	
 	/* 
 	 * Style can be either STANDARD, IMAGE, FULLSCREEN, or USE_OLDSTYLE.
@@ -56,7 +56,7 @@ WINDOW WINSTART
 	 * x, y, width, height.
 	 */
 	// enable: Output engine messages
-	TEXT_STDOUT "Consolas", RGB(0, 0, 0), 10, 30, 500, 240;
+	TEXT_STDOUT "Consolas", RGB(0, 0, 0), 10, 30, 500, 840;
 	
 	/* Background image. PCX, 255. */
 	PICTURE <1.pcx>, OPAQUE, 0, 0;
