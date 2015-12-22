@@ -12,6 +12,7 @@
 #define    WIN32_EXTRA_LEAN
 #define    WINDOWS_API
 #define    PERFORM_PATH_LOOKUP
+#define    PERFORM_CRYPTOGRAPHY
 
 #include <acknex.h>
 #include <d3d9.h>

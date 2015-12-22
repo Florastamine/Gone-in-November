@@ -34,7 +34,7 @@
 #define __REALLOC_MEMORY_AND_PUSH(type, value)          int new_size = arch->pos_##type + 1; arch->pointer_##type = __memory_realloc_##type##( &(arch->pointer_##type##), new_size, new_size ); if(arch->pointer_##type##) *(arch->pointer_##type + new_size - 1) = value
 #define __GET_SIZE_RETURN(type)                         int ret = 0; if(arch) ret = arch->pos_##type; return ret
 #define __SET_VALUE(type, value)                        if( pos <= archive_get_##type##_size(arch) ) *(arch->pointer_##type + pos - 1) = value
-#define __GET_VALUE(type, pos)                          if( pos <= archive_get_##type##_size(arch) ) return *(arch->pointer_##type + pos - 1)
+#define __GET_VALUE(type, pos)                          if( pos <= archive_get_##type##_size(arch) ) return *(arch->pointer_##type## + pos - 1)
 
 __static int __archive_get_order( Archive *arch )
 {

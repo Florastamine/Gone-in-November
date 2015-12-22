@@ -62,7 +62,7 @@ __static void __render_dof_depth_setup()
 __static float __focus_temp[3];
 void render_dof_depth_set( float focus_speed, float max_depth, float b0n )
 {
-	if(__focus_temp[2] == b0n) return;
+	if(__focus_temp[2] == b0n || !camera ) return;
 	
 	float hit_dist;
 	VECTOR cam_trace;

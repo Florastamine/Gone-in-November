@@ -40,5 +40,23 @@
  */
 action act_rigid_body();
 
+/*
+ * action act_barrier()
+ *
+ * "Invisible" geometry handlers.
+ */
+action act_barrier();
+
+/*
+ * action act_ssndsrc()
+ *
+ * Static light source - works great for ambiance sounds.
+ *
+ * string1 specifies the sound file. (must be *.wav)
+ * skill1 controls the volume.
+ * skill2 controls the range (radius)
+ */
+action act_ssndsrc();
+
 #include "behavior_static.c"
 #endif /* behavior_static.h */
