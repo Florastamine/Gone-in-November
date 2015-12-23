@@ -89,6 +89,9 @@ xcopy ..\translation\*.* ..\builds\translation\ /s /e /y
 mkdir ..\builds\cfg\
 copy ..\cfg\*.cfg ..\builds\cfg\
 
+mkdir ..\builds\save\
+copy ..\save\*.sav ..\builds\save\
+
 rem Icon
 copy 32.ico ..\builds\
 
