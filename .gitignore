@@ -34,13 +34,13 @@
 *.skp
 
 # Gamestudio-specific
-dpfl.cd/
 builds/
 status/_sync.bat
 status/exclusion.excl
 status/log.log
 
 # General
+wdf/main.cd/*
 November.c
 bindings.h
 *.ico

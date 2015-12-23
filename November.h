@@ -13,7 +13,7 @@
 #define    WINDOWS_API
 #define    PERFORM_PATH_LOOKUP
 #define    PERFORM_CRYPTOGRAPHY
-//#define    PERFORM_SERIALIZATION
+#define    PERFORM_SERIALIZATION
 
 #include <acknex.h>
 #include <d3d9.h>
@@ -21,6 +21,8 @@
 
 #include "path_source.h"
 #include "./source/utils/default_ex.h"
+
+#include "./source/dlls/download.h"
 
 #include "./source/game/common/path.h"
 #include "./source/utils/utilities.h"

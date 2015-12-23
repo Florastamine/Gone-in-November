@@ -21,4 +21,6 @@
 
 #define    PRAGMA_PATH "./source/render/"
 
+#define    PRAGMA_PATH "./source/dlls/"
+
 #endif /* path_source.h */

@@ -22,6 +22,7 @@ More information (early releases, progress, news) can be found on the game's mai
 * [Atom](http://atom.io/), or your favorite text editor.
 * Acknex toolset (which can be downloaded [here](http://server.conitec.net/down/gstudio8_setup.exe))
 * The original game.
+* Custom game DLLs, which you can obtain [here](https://dl.dropboxusercontent.com/u/26857618/acknex_plugins.zip). Unzip everything to your `acknex_plugins` folder. 
 
 ### Downloading & Installing the toolset
 Since the game is written in **Lite-C** (which is actually C but with some elements borrowed from C++), you will need a special Lite-C toolset to be able to compile GiN, which can be downloaded [here](http://server.conitec.net/down/gstudio8_setup.exe). Upon installing the tools, select the option to install the free version. **(GiN can still be compiled with the free version, but shaders will not be enabled)**.
@@ -30,7 +31,7 @@ Note that, when viewing the code repository using [GitHub.com](https://github.co
 
 ### Getting the source code & Preparing
 I recommend building from the "tagged" releases as it is guaranteed to be stable. Thus, when you've done cloning the repository, make sure to "revert" the codebase to the nearest tag before compiling.
-```
+```bash
 $ git clone https://github.com/Florastamine/Gone-in-November
 $ cd ./Gone-in-November
 $ git tag -l
