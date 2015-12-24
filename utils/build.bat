@@ -92,6 +92,8 @@ copy ..\cfg\*.cfg ..\builds\cfg\
 mkdir ..\builds\save\
 copy ..\save\*.sav ..\builds\save\
 
+copy %ACKPATH%\acknex_plugins\*.dll ..\builds\
+
 rem Icon
 copy 32.ico ..\builds\
 
