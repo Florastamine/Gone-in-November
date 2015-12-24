@@ -213,6 +213,8 @@ __namespace(November) {
 
     void game_title_set();
     __static void __game_version_export();
+
+    void game_fog_set(VECTOR *color, VECTOR *range);
 }
 
 __namespace(SceneLoadState) {

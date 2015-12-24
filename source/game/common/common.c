@@ -1022,7 +1022,7 @@ void game_video_cfg_parse()
 /*
  * void game_title_set()
  *
- * Sets the game window's title, in case if the .wdf doesn't exist.
+ * Sets the game window's title, in case the .wdf doesn't exist.
  */
 void game_title_set()
 {
@@ -1034,6 +1034,33 @@ __static void __game_version_export()
 	fixed f = file_open_write(__VER_FILE);
 	file_str_write(f, __GAME_VERSION);
 	file_close(f);
+}
+
+/*
+ * void game_fog_set(int ID, VECTOR *color, VECTOR *range)
+ *
+ * Sets the fog color, and range.
+ */
+#define    __FOG_ID(x) d3d_fogcolor##x
+void game_fog_set(int ID, VECTOR *color, VECTOR *range)
+{
+	ID = ifelse(ID > 0 && ID < 4, ID, 1); // We have d3d_fogcolor1..d3d_fogcolor4.
+
+	switch(ID)
+	{
+		case 1: vec_set(&d3d_fogcolor1, color); break;
+		case 2: vec_set(&d3d_fogcolor2, color); break;
+		case 3: vec_set(&d3d_fogcolor3, color); break;
+		case 4: vec_set(&d3d_fogcolor4, color); break;
+	}
+
+	camera->fog_start = ifelse(range->x > 0, range->x, 10.0);
+	camera->fog_end   = ifelse(range->y > 0, range->y, 1250.0);
+}
+
+void game_fog_render(int ID)
+{
+	fog_color = ifelse(ID > 0 && ID < 4, ID, 1);
 }
 
 /*
