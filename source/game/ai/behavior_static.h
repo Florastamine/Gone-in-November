@@ -58,5 +58,14 @@ action act_barrier();
  */
 action act_ssndsrc();
 
+/*
+ * action act_particle()
+ *
+ * General-purpose particle emitter.
+ * skill1 controls the ID of the particle effect you want to render.
+ * Refer to ./source/game/fx/unmanaged.h for a list of particle IDs available. Make sure to #define them before you can use them.
+ */
+action act_particle();
+
 #include "behavior_static.c"
 #endif /* behavior_static.h */

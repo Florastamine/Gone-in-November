@@ -111,3 +111,24 @@ action act_ssndsrc()
     else
         game_log_write( str_printf(NULL, "Error executing entity %s - a static sound entity was specified but the stream <%s> couldn't be found.", _chr(str_for_entname(NULL, my)) , _chr(file) ) );
 }
+
+/*
+ * action act_particle()
+ *
+ * General-purpose particle emitter.
+ * skill1 controls the ID of the particle effect you want to render.
+ * Refer to ./source/game/fx/unmanaged.h for a list of available particle IDs. Make sure to #define them before you can use them.
+ */
+action act_particle()
+{
+    my->flags |= (PASSABLE);
+
+    #ifdef    DEBUG
+        my->flags |= (TRANSLUCENT);
+        my->alpha  = 75.0;
+    #else
+        my->flags |= (INVISIBLE); // who wants an ugly cube anyway.
+    #endif
+
+    particle_process(my, &my->x, my->skill1);
+}

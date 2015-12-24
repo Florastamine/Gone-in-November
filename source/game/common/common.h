@@ -35,7 +35,7 @@
 #define __namespace(nspc) {}
 
 #ifndef    PRAGMA_POINTER
-    #define    PRAGMA_POINTER
+    /* #define    PRAGMA_POINTER */
 #endif
 
 #ifndef    PRAGMA_ZERO
