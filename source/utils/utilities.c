@@ -416,6 +416,20 @@ String *str_trunc_ex( String *str, unsigned int n )
 }
 
 /*
+ * float str_width_ex(STRING *str, FONT *font)
+ *
+ * Returns the width of a string with ending spaces.
+ * This function was created by Lemming (http://www.opserver.de/ubb7/ubbthreads.php?ubb=showprofile&User=16501)
+ */
+float str_width_ex(STRING *gstr, FONT *font)
+{
+	STRING *temp = str_create(gstr);
+	str_cat(temp,".");
+
+	return str_width(temp, font) - str_width(".", font);
+}
+
+/*
 * String *str_parse_ex( String *to, char *from, int pos, char delimiter )
 *
 * An extension to <strio>/str_parse() which allows for custom delimiters.

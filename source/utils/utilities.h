@@ -78,6 +78,9 @@
  * - Fixed a bug in str_parse_ex() which crashes str_parse_delim().
  * - Rewrote search().
  * __________________________________________________________________
+ * + v0.3.1-alpha
+ * - Added Lemming's str_width_ex().
+ * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
  */
@@ -937,6 +940,13 @@ __namespace(string) {
      * with different lengths without tinkering with the dirty # symbol.
      */
 	String *str_create_ex( __In const int length );
+
+    /*
+     * float str_width_ex(STRING *gstr, FONT *font)
+     *
+     * Returns the width of a string with ending spaces.
+     */
+    float str_width_ex(STRING *gstr, FONT *font);
 
     /*
      * void str_init( String *gstr )
