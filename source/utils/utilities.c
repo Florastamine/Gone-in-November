@@ -1982,3 +1982,19 @@ Text *os_get_drives()
 
 	return object;
 }
+
+/*
+ * VECTOR *hex_to_rgb( int color )
+ *
+ * Converts a hexadecimal color to the equivalent RGB representation.
+ */
+VECTOR *hex_to_rgb( int color )
+{
+	VECTOR *col = (Vector3 *) sys_malloc(sizeof(VECTOR));
+
+	col->z = ((color >> 16) & 0xFF); // Extract the R part (first two digits)
+	col->y = ((color >> 8) & 0xFF);  // Extract the G part (next two digits)
+	col->x = ((color) & 0xFF);
+
+	return col;
+}

@@ -829,6 +829,9 @@ StaticText *gui_static_text_new(STRING *text, FONT *font, float indent, float si
 			if (cutend < cutstart)
 				cutend = str_len(text);
 
+			// It'd be a lot faster if we could just replace the dog slow function
+			// hex_parse() with hex_to_rgb() instead.
+			// TODO
 			str_cut(worktext, text, found+4, found+5);
 			current->element->red = hex_parse(worktext);
 			str_cut(worktext, text, found+6, found+7);

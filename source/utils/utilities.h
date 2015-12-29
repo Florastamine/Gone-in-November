@@ -80,6 +80,7 @@
  * __________________________________________________________________
  * + v0.3.1-alpha
  * - Added Lemming's str_width_ex().
+ * - Added hex_to_rgb().
  * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
@@ -1139,6 +1140,13 @@ __namespace(color) {
      */
 	Vector3 *bgr_to_rgb( __In Vector3 *rgb );
 	void     bgr_to_rgb( __In Vector3 *rgb );
+
+    /*
+     * VECTOR *hex_to_rgb( int color )
+     *
+     * Converts a hexadecimal color to the equivalent RGB representation.
+     */
+    VECTOR *hex_to_rgb( __In int color );
 }
 
 #include "utilities.c"

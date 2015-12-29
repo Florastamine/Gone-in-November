@@ -126,6 +126,13 @@ __namespace(button) {
 }
 
 __namespace(StaticText) {
+	/*
+	 * This StaticText thing is borrowed from Lemming's colored text, whose original code
+	 * was posted here: http://www.opserver.de/ubb7/ubbthreads.php?ubb=showflat&Number=423300
+	 * but I modified his code slightly for better coding structure, naming convention, also removed lots
+	 * of unnecessary code and make it safer to use.
+	 */
+
 	typedef struct CLList {
 		TEXT          *element;
 		float          linex;
