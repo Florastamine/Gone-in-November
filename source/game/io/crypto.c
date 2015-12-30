@@ -34,7 +34,8 @@ void encrypt_string( STRING *sstr, STRING *estr, int shift )
 	int length = str_len(sstr);
 	str_cpy(estr, "");
 	
-	while( counter < length ) {
+	while( counter < length )
+	{
 		str_cpy(buffer, sstr);
 		str_clip(buffer, counter);
 		str_trunc(buffer, length - counter - 1);
@@ -43,7 +44,6 @@ void encrypt_string( STRING *sstr, STRING *estr, int shift )
 		str_cat(estr, buffer);
 		
 		counter++;
-		wait(1.0);
 	}
 }
 
@@ -62,8 +62,6 @@ void encrypt_string( STRING *sstr, STRING *estr )
 void decrypt_string( STRING *sstr, STRING *estr, int shift )
 {
 	encrypt_string(sstr, estr, - shift);
-	
-	while(proc_status(encrypt_string)) wait(1.0);
 }
 
 void decrypt_string( STRING *sstr, STRING *estr )
