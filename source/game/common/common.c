@@ -1131,3 +1131,32 @@ void load(  char *file,  void *pre,  void *post )
 {
 	__save_load(file, pre, post, 0);
 }
+
+/*
+ * void game_globals_set()
+ *
+ * Overrides some of Gamestudio's default variables, like raising the minimum particles
+ * and effects count (default values are way too low).
+ * This function must be called at the __VERY__ beginning of main(), even before the ready() check.
+ */
+void game_globals_set()
+{
+	max_paths = 4096;
+	max_particles = 16777216;
+	max_entities = nexus * 128; // By default, max_entities equals to nexus * 10.
+								// We raise that limit 12.8 times, i.e. nexus * 128.
+	clip_particles = 0.7;
+	preload_mode = 2 + 3 + 4 + 8;
+	mip_levels = 6;
+	sky_blend = 1;
+	tex_share = 1;
+	terrain_chunk = 16;
+	terrain_lod = 4;
+	detail_size = 80;
+	random_seed(0);
+
+	// Enable standard stencil shadows if the header <render_shadows> isn't included.
+	#ifndef    __RENDER_SHADOWS_H__
+		shadow_stencil = 2;
+	#endif
+}

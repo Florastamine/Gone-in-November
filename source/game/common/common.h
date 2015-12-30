@@ -211,11 +211,31 @@ __namespace(November) {
 
     BOOL game_psvs_test();
 
+    /*
+     * void game_title_set()
+     *
+     * Sets the game window's title, in case the .wdf doesn't exist.
+     */
     void game_title_set();
+
     __static void __game_version_export();
 
+    /*
+     * void game_fog_set(int ID, VECTOR *color, VECTOR *range)
+     *
+     * Sets the fog color, and range.
+     */
     void game_fog_set(int ID, VECTOR *color, VECTOR *range);
     void game_fog_render(int ID);
+
+    /*
+     * void game_globals_set()
+     *
+     * Overrides some of Gamestudio's default variables, like raising the minimum particles
+     * and effects count (default values are way too low).
+     * This function must be called at the __VERY__ beginning of main(), even before the ready() check.
+     */
+    void game_globals_set();
 }
 
 __namespace(SceneLoadState) {
