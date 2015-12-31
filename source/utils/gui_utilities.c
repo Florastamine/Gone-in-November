@@ -933,21 +933,42 @@ StaticText *gui_static_text_new(STRING *text, FONT *font, float indent, float si
  */
 float gui_static_text_get_height(StaticText* text)
 {
+	if(!text)
+		return 0.0;
+
 	CLList *current = text->texts;
 	float height = 0;
 
-	if(text)
+	while (current != NULL)
 	{
-		while (current != NULL)
-		{
-			height = maxv(height, current->liney);
-			current = current->next;
-		}
-
-		height = (float) ifelse(text->font, height + text->font->dy, 0);
+		height = maxv(height, current->liney);
+		current = current->next;
 	}
 
+	height = (float) ifelse(text->font, height + text->font->dy, 0);
+
 	return height;
+}
+
+float gui_static_text_get_width(StaticText *text)
+{
+	if( !text )
+		return 0.0;
+
+	CLList *current = text->texts;
+	float width = 0.0;
+	float old_width = txt_width(current->element);
+
+	while(current != NULL)
+	{
+		width = txt_width(current->element);
+		if(width > old_width)
+			old_width = width;
+
+		current = current->next;
+	}
+
+	return old_width;
 }
 
 /*
@@ -1013,10 +1034,81 @@ void gui_static_text_render(StaticText* text, float posx, float posy, float alph
 	} while (current->next != NULL);
 }
 
+/*
+ * void gui_static_text_hide(StaticText *text)
+ *
+ * Quickly hides a StaticText object.
+ */
+void gui_static_text_hide(StaticText *text)
+{
+	if(text)
+	{
+		CLList *current = text->texts;
+
+		do
+		{
+			if(current->element->flags & SHOW)
+				current->element->flags &= (~SHOW);
+
+			if (current->next != NULL)
+				current = current->next;
+
+		} while (current->next != NULL);
+	}
+}
+
 void gui_static_text_render(StaticText *text, Pair *pos, float alpha, int layer)
 {
 	if(!pos)
 		pos = pair_new(0.0, 0.0);
 
 	gui_static_text_render(text, pos->first, pos->second, alpha, layer);
+}
+
+/*
+ * void gui_notifier_new( StaticText *stext, float pos_x, float pos_y,  float duration, int layer )
+ *
+ * Creates a new notification object at the specified layer.
+ * The static text object must be initialized and set up with data before it can be used within gui_notifier_new().
+ *
+ * Data about the old position and the layer of the StaicText object is ignored. Thus, when invoking
+ * gui_notifier_new(), you'll have to pass the new position and the layer on which the object will be rendered.
+ */
+void gui_notifier_new( StaticText *stext, float pos_x, float pos_y,  float duration, int layer )
+{
+	if(!stext)
+		return;
+
+	duration = (float) ifelse(duration > 0.0, duration, 3.0);
+
+	float height = gui_static_text_get_height(stext) + NOTIFICATION_BOX_VERTICAL_BORDER_SIZE;      // For both the upper border and the lower border.
+	float width  = stext->sizey + NOTIFICATION_BOX_HORIZONTAL_BORDER_SIZE;                         // For both the left border and the right border.
+
+	Panel *container   = pan_create(NULL, layer - 1);
+	container->bmap    = bmap_createblack(width, height, 8);
+	container->pos_x   = pos_x - NOTIFICATION_BOX_HORIZONTAL_BORDER_SIZE * 0.5;
+	container->pos_y   = pos_y - NOTIFICATION_BOX_VERTICAL_BORDER_SIZE * 0.5;
+	container->flags  |= (TRANSLUCENT | SHOW);
+	container->alpha   = 0.0;
+
+	while(container->alpha <= NOTIFICATION_BOX_MAXIMUM_TRANSLUCENCY)
+	{
+		container->alpha += NOTIFICATION_BOX_FADE_IN_SPEED * time_step;
+		wait(1.0);
+	}
+
+	gui_static_text_render(stext, pos_x, pos_y, 100.0, layer);
+	wait(-abs(duration));
+
+	int hid = 0;
+	while(container->alpha > 0.0)
+	{
+		container->alpha -= NOTIFICATION_BOX_FADE_OUT_SPEED * time_step;
+		if((container->alpha >= NOTIFICATION_BOX_TEXT_HIDE_POINT) && !hid)
+		{
+			gui_static_text_hide(stext);
+			hid = 1;
+		}
+		wait(1.0);
+	}
 }

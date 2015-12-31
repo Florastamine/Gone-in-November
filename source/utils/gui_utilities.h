@@ -45,28 +45,28 @@ __namespace(global) {
 	#define    SCALE_X            ( 1 << 7 )
 	#define    SCALE_Y            ( 1 << 8 )
 
-	Pair *gui_image_get_dimensions( __In const Bitmap *image );
-	Pair *gui_image_get_dimensions( __In const String *image_file );
+	Pair *gui_image_get_dimensions( const Bitmap *image );
+	Pair *gui_image_get_dimensions( const String *image_file );
 
-	Pair *gui_panel_get_pos( __In Panel *panel );
-	Pair *gui_text_get_pos( __In Text *text );
+	Pair *gui_panel_get_pos( Panel *panel );
+	Pair *gui_text_get_pos( Text *text );
 
-	void gui_panel_set_pos( __In Panel *panel, __In Pair *pair );
-	void gui_panel_set_pos( __In Panel *panel, __In float px, __In float py );
+	void gui_panel_set_pos( Panel *panel, Pair *pair );
+	void gui_panel_set_pos( Panel *panel, float px, float py );
 
-	void gui_text_set_pos( __In Text *text, __In Pair *pair );
-	void gui_text_set_pos( __In Text *text, __In float px, __In float py );
+	void gui_text_set_pos( Text *text, Pair *pair );
+	void gui_text_set_pos( Text *text, float px, float py );
 
-	Pair *gui_panel_get_size( __In Panel *panel );
+	Pair *gui_panel_get_size( Panel *panel );
 
-	void gui_panel_set_size( __In Panel *panel, __In float sx, __In float sy );
+	void gui_panel_set_size( Panel *panel, float sx, float sy );
 
-	void gui_panel_set_align( __In Panel *panel, __In const int mode );
-	void gui_panel_set_scale( __In Panel *panel, __In const int __flags );
-	void gui_panel_set_center( __In Panel *panel, __In const int mode );
+	void gui_panel_set_align( Panel *panel, const int mode );
+	void gui_panel_set_scale( Panel *panel, const int __flags );
+	void gui_panel_set_center( Panel *panel, const int mode );
 
-	float gui_panel_get_rotation( __In Panel *panel );
-	void  gui_panel_set_rotation( __In __Out Panel *panel, __In float amount );
+	float gui_panel_get_rotation( Panel *panel );
+	void  gui_panel_set_rotation( __Out Panel *panel, float amount );
 }
 
 __namespace(button) {
@@ -91,38 +91,38 @@ __namespace(button) {
 		Text *string;            /* A text object contains the button label. Can be left blank. */
 	} GUIButton;
 
-	GUIButton *gui_button_new( __In Vector2 *pos,
-	                           __In String *title,
-	                           __In int layern,
-	                           __In String *image_on,
-	                           __In String *image_off,
-	                           __In String *image_over,
-	                           __In const void *fptr_on,
-	                           __In const void *fptr_off,
-	                           __In const void *fptr_over
+	GUIButton *gui_button_new( Vector2 *pos,
+	                           String *title,
+	                           int layern,
+	                           String *image_on,
+	                           String *image_off,
+	                           String *image_over,
+	                           const void *fptr_on,
+	                           const void *fptr_off,
+	                           const void *fptr_over
 	);
 
-	void gui_button_free( __In GUIButton *b );
+	void gui_button_free( GUIButton *b );
 
-	void gui_button_set_event( __In __Out GUIButton *b, __In int mode, __In Bitmap *avatar, __In const void *event );
-	const void *gui_button_get_event( __In GUIButton *b, __In const int mode  );
+	void gui_button_set_event( __Out GUIButton *b, int mode, Bitmap *avatar, const void *event );
+	const void *gui_button_get_event( GUIButton *b, const int mode  );
 
-	void gui_button_set_font( __In __Out GUIButton *b, __In const Font *f );
-	Font *gui_button_get_font( __In GUIButton *b );
+	void gui_button_set_font( __Out GUIButton *b, const Font *f );
+	Font *gui_button_get_font( GUIButton *b );
 
-	void gui_button_set_pos( __In __Out GUIButton *b, __In float x, __In float y );
-	Vector2 *gui_button_get_pos( __In GUIButton *b );
+	void gui_button_set_pos( __Out GUIButton *b, float x, float y );
+	Vector2 *gui_button_get_pos( GUIButton *b );
 
-	void gui_button_set_color( __In __Out GUIButton *b, __In Vector3 *color );
-	void gui_button_set_color( __In __Out GUIButton *b, __In float __red, __In float __green, __In float __blue );
-	void gui_button_set_text_color( __In __Out GUIButton *b, __In Vector3 *color );
-	void gui_button_set_text_color( __In __Out GUIButton *b, __In float __red, __In float __green, __In float __blue );
-	void gui_button_reset_color( __In __Out GUIButton *b );
-	void gui_button_reset_text_color( __In __Out GUIButton *b );
+	void gui_button_set_color( __Out GUIButton *b, Vector3 *color );
+	void gui_button_set_color( __Out GUIButton *b, float __red, float __green, float __blue );
+	void gui_button_set_text_color( __Out GUIButton *b, Vector3 *color );
+	void gui_button_set_text_color( __Out GUIButton *b, float __red, float __green, float __blue );
+	void gui_button_reset_color( __Out GUIButton *b );
+	void gui_button_reset_text_color( __Out GUIButton *b );
 
-	void gui_button_show( __In __Out GUIButton *b );
-	void gui_button_hide( __In __Out GUIButton *b );
-	bool gui_button_get_invisibility( __In GUIButton *b );
+	void gui_button_show( __Out GUIButton *b );
+	void gui_button_hide( __Out GUIButton *b );
+	bool gui_button_get_invisibility( GUIButton *b );
 }
 
 __namespace(StaticText) {
@@ -180,6 +180,13 @@ __namespace(StaticText) {
 	void gui_static_text_render(StaticText *text, Vector2 *pos, float alpha, int layer);
 
 	/*
+	 * void gui_static_text_hide(StaticText *text)
+	 *
+	 * Quickly hides a StaticText object.
+	 */
+	void gui_static_text_hide(StaticText *text);
+
+	/*
 	 * float gui_static_text_get_height(StaticText* text)
 	 *
 	 * Retrieves the height of a specified StaticText object.
@@ -195,6 +202,23 @@ __namespace(StaticText) {
 	 */
 	void hex_parse(STRING *gstr, fixed *vector);
 	fixed hex_parse(STRING *gstr);
+}
+
+__namespace(NotifierBox) {
+	#define    NOTIFICATION_BOX_MAXIMUM_TRANSLUCENCY    75
+	#define    NOTIFICATION_BOX_FADE_IN_SPEED           4.5
+	#define    NOTIFICATION_BOX_FADE_OUT_SPEED          8.5
+	#define    NOTIFICATION_BOX_TEXT_HIDE_POINT         40
+	#define    NOTIFICATION_BOX_VERTICAL_BORDER_SIZE    35.0
+	#define    NOTIFICATION_BOX_HORIZONTAL_BORDER_SIZE  35.0
+
+	/*
+	 * void gui_notifier_new( StaticText *stext, float pos_x, float pos_y,  float duration, int layer )
+	 *
+	 * Creates a new notification object at the specified layer.
+	 * The static text object must be initialized and set up with data before it can be used within gui_notifier_new().
+	 */
+	void gui_notifier_new( __In StaticText *stext, __In float pos_x, __In float pos_y,  __In float duration, __In int layer );
 }
 
 #include "gui_utilities.c"
