@@ -24,6 +24,8 @@ fixed  pssm_splitdist[5];				// split distances
 fixed  pssm_transparency = 0.6;	// shadow transparency
 float  pssm_fbias = 2.5;		// shadow depth bias -> must be adjusted
 
+float pssm_time = 60.0;
+
 //The MIT License (MIT)
 //
 //Copyright (c) 2015 Nils Daumann
