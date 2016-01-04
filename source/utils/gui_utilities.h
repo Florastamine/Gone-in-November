@@ -213,12 +213,16 @@ __namespace(NotifierBox) {
 	#define    NOTIFICATION_BOX_HORIZONTAL_BORDER_SIZE  35.0
 
 	/*
-	 * void gui_notifier_new( StaticText *stext, float pos_x, float pos_y,  float duration, int layer )
+	 * void gui_notifier_new( StaticText *stext, float pos_x, float pos_y,  float duration, int layer, int destruct )
 	 *
 	 * Creates a new notification object at the specified layer.
 	 * The static text object must be initialized and set up with data before it can be used within gui_notifier_new().
 	 */
-	void gui_notifier_new( __In StaticText *stext, __In float pos_x, __In float pos_y,  __In float duration, __In int layer );
+	void gui_notifier_new( __In StaticText *stext, __In float pos_x, __In float pos_y,  __In float duration, __In int layer, __In int destruct );
+}
+
+__namespace(ProgressBar) {
+
 }
 
 #include "gui_utilities.c"
