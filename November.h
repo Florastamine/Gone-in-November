@@ -3,17 +3,43 @@
 #define    __NOVEMBER_RAIN_H__
 
 /*
- * In final builds (or perhaps even alpha builds),
- * PERFORM_PATH_LOOKUP and DEBUG must be disabled.
+ * Turn on this switch if you're using the free version of Gamestudio/A8
+ * for building/running Gone In November.
  */
 // #define    A8_FREE
+
+/*
+ * These switches toggle debugging panels, functionalities and texts, while DEBUG_PSSM
+ * allows you to see the split passes and  manually adjust the sun position.
+ */
 #define    DEBUG
 #define    DEBUG_PSSM
+
+/*
+ * Uses the Windows API, but with some extra stuff (WIN32_LEAN_AND_MEAN and WIN32_EXTRA_LEAN)
+ * disabled. Maybe, just maybe, these "extra" stuff wasn't included in Lite-C's <windows>, but I just
+ * want to make sure.
+ */
+#define    WINDOWS_API
 #define    WIN32_LEAN_AND_MEAN
 #define    WIN32_EXTRA_LEAN
-#define    WINDOWS_API
+
+/*
+ * Performs file lookup in subdirectories. In published builds, data are packed into
+ * resource files (.wrs or .pak), so this switch must be toggled off.
+ */
 #define    PERFORM_PATH_LOOKUP
+
+/*
+ * Performs cryptography on everything written out.
+ */
 #define    PERFORM_CRYPTOGRAPHY
+
+/*
+ * Uses the built-in serializer for saving and loading games instead of the stock
+ * game_save()/game_load() functions. If PERFORM_CRYPTOGRAPHY was enabled,
+ * cryptography will be applied on save games.
+ */
 #define    PERFORM_SERIALIZATION
 
 #include <acknex.h>
