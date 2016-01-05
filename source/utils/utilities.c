@@ -1998,3 +1998,32 @@ VECTOR *hex_to_rgb( int color )
 
 	return col;
 }
+
+/*
+ * void object_draw(void *ptr, float dtime)
+ *
+ * Draws an object for a fixed amount of seconds.
+ * Because it uses draw_obj(), it can draw any kind of
+ * engine objects (text, panel, view entity).
+ */
+void object_draw(void *ptr, float dtime)
+{
+	if(!ptr)
+		return;
+
+	dtime = (float) ifelse(dtime >= 0.0, dtime, 3.0);
+
+	float counter = 0;
+	while(counter < dtime)
+	{
+		draw_obj(ptr);
+		counter += time_step / 16;
+
+		wait(1.0);
+	}
+}
+
+void object_draw(void *ptr)
+{
+	object_draw(ptr, 3.0);
+}

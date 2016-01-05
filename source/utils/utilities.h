@@ -80,7 +80,7 @@
  * __________________________________________________________________
  * + v0.3.1-alpha
  * - Added Lemming's str_width_ex().
- * - Added hex_to_rgb().
+ * - Added hex_to_rgb(), object_draw().
  * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
@@ -1129,6 +1129,16 @@ __namespace(object) {
      * Quick-creates a sky cube.
      */
 	Object *object_sky_create( __In const String *file, __In const int layer );
+
+    /*
+     * void object_draw(void *ptr, float dtime)
+     *
+     * Draws an object for a fixed amount of seconds.
+     * Because it uses draw_obj(), it can draw any kind of
+     * engine objects (text, panel, view entity).
+     */
+     void object_draw( __In void *ptr, __In float dtime);
+     void object_draw( __In void *ptr );
 }
 
 __namespace(color) {
