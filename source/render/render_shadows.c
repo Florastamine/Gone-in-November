@@ -112,15 +112,44 @@ void pssm_viewcpy(VIEW *from, VIEW *to)
 
 // pssm_run(1..4) -> enable PSSM for the current level with 1..4 split views
 // pssm_run(0) -> disable PSSM - required before changing the level or video resolution
+#ifdef    DEBUG_PSSM
+
+#define    TOTAL_PASSES    10
+fixed __pssm_resl[TOTAL_PASSES] = { 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048 };
+int   i = 0;
+
+void __change_res()
+{
+	pssm_res = __pssm_resl[i];
+	i += 1;
+	i = cycle(i, 0, TOTAL_PASSES);
+}
+
+void __pssm_bias_a() { pssm_fbias += 0.125; }
+void __pssm_bias_s() { pssm_fbias -= 0.125; }
+
+#endif
+
 void pssm_run(fixed numsplits)
 {
-	if(d3d_shaderversion < 5030) // Shader model 3.0 is required for PSSM shadows.
+	if(d3d_shaderversion < 3030) // Shader model 3.0 is required for PSSM shadows.
 		return;
+	
+	if(!on_bksl)
+		on_bksl = __change_res;
+	if(!on_minusc)
+		on_minusc = __pssm_bias_a;
+	if(!on_equals)
+		on_equals = __pssm_bias_s;
 
 	pssm_numsplits = clamp(numsplits, 0, 4);
 	shadow_stencil = 8; 			// disable other shadows
-	while(!level_ent) wait(1); 	// wait until the level is loaded
-	level_ent->flags |= SHADOW;	// enable shadow on level geometry
+	
+	while(!level_ent) 
+		wait(1); 	// wait until the level is loaded
+	if(!(level_ent->flags & SHADOW))
+		level_ent->flags |= SHADOW;	// enable shadow on level geometry
+		
 	// calculate a minimum sun distance for placing the sun slightly outside the level
 	sun_angle.roll = 1.1*maxv(vec_length(&level_ent->max_x), vec_length(&level_ent->min_x));
 
@@ -195,6 +224,9 @@ void pssm_run(fixed numsplits)
 
 			pssm_time += (key_comma - key_period) * 16 * time_step;
 			vec_set(&sun_angle, vector(pssm_time, cos(3.14159265 * pssm_time / 180.0) * 45 + 45, 0));
+			
+			pssm_transparency += (key_brackl - key_brackr) * .0125 * time_step;
+			pssm_transparency = clamp(pssm_transparency, 0.0, 1.0);
 		#endif
 
 		wait(1);
