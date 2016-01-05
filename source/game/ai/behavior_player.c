@@ -101,8 +101,8 @@ __static void __act_player_update_camera()
 {
 	if(__act_player_state_singleton->can_move && __act_player_state_singleton->__move_type != MOVE_ON_LADDER)
 	{
-		__act_player_state_singleton->__cam_ang.pan = cycle(__act_player_state_singleton->__cam_ang.pan - mickey.x / 6.5 * 1.0, 0, 360);
-		__act_player_state_singleton->__cam_ang.tilt = clamp(__act_player_state_singleton->__cam_ang.tilt - mickey.y / 6.5 * 1.0, -90, 90);
+		__act_player_state_singleton->__cam_ang.pan = cycle(__act_player_state_singleton->__cam_ang.pan - (joy_raw.z / 192) - mickey.x / 6.5 * 1.0, 0, 360);
+		__act_player_state_singleton->__cam_ang.tilt = clamp(__act_player_state_singleton->__cam_ang.tilt - (joy_rot.x / 192) - mickey.y / 6.5 * 1.0, -90, 90);
 		__act_player_state_singleton->__cam_ang.roll = 0;
 	}
 
@@ -206,6 +206,20 @@ __static void __act_player_create_bbox()
 	c_setminmax(__act_player_state_singleton->__object_stand);
 }
 
+__static int __joy_force_x_to_int()
+{
+	if(joy_force.x)
+		return 1;
+	return 0;
+}
+
+__static int __joy_force_y_to_int()
+{
+	if(joy_force.y)
+		return 1;
+	return 0;
+}
+
 /*
  * void act_player()
  *
@@ -232,11 +246,12 @@ action act_player()
 	#ifndef    DEBUG
 		my->flags |= (INVISIBLE);
 	#endif
-	
+
 	#ifdef    DEBUG
 	   my->flags |= (SHADOW);
 	#endif
 
+	camera->arc = 75.0;
 	my->OBJECT_TYPE = OBJECT_HERO;
 	my->group = PLAYER_GROUP;
 	my->push = PLAYER_GROUP;
@@ -274,7 +289,9 @@ action act_player()
 				    __act_player_state_singleton->is_moving = true; // then we are moving:
 
 				// apply direction to the movement:
-				vec_set( &force, vector(__act_player_state_singleton->move_speed * (key_w - key_s), __act_player_state_singleton->move_speed * (key_a - key_d), 0) );
+				vec_set( &force, vector(__act_player_state_singleton->move_speed * ((key_w || joy_force.y > 0) - (key_s || joy_force.y < 0)), __act_player_state_singleton->move_speed * ((key_a || joy_force.x < 0) - (key_d || joy_force.x > 0)), 0) );
+
+
 
 				// if movement speed is more than allowed:
 				if(vec_length(vector(force.x, force.y, 0)) > __act_player_state_singleton->move_speed)
@@ -290,8 +307,8 @@ action act_player()
 				force.x *= (float) ifelse( !IS_GROUNDED, 0.4, 1.0 );
 				force.y *= (float) ifelse( !IS_GROUNDED, 0.4, 1.0 );
 
-				force.x *= (float) ifelse(key_shift, __act_player_state_singleton->run_multiplier, __act_player_state_singleton->walk_multiplier);
-				force.y *= (float) ifelse(key_shift, __act_player_state_singleton->run_multiplier, __act_player_state_singleton->walk_multiplier);
+				force.x *= (float) ifelse(key_shift || joy_6, __act_player_state_singleton->run_multiplier, __act_player_state_singleton->walk_multiplier);
+				force.y *= (float) ifelse(key_shift || joy_6 , __act_player_state_singleton->run_multiplier, __act_player_state_singleton->walk_multiplier);
 
 				__act_player_scan_foot();
 				// we are in the air:
