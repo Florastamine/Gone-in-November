@@ -222,7 +222,89 @@ __namespace(NotifierBox) {
 }
 
 __namespace(ProgressBar) {
+	// TODO: Add support for custom bar size and transparency.
 
+	#define    PROGRESS_BAR_DEFAULT_BAR_SIZE_X 256.0
+	#define    PROGRESS_BAR_DEFAULT_BAR_SIZE_Y 10.0
+
+	#define    PROGRESS_BAR_RELATIVE_OFFSET_X  10.0
+	#define    PROGRESS_BAR_RELATIVE_OFFSET_Y  10.0
+
+	/*
+	 * ProgressBar (struct)
+	 * A *very* simple and lightweight progress bar widget implementation.
+	 */
+	typedef struct {
+		Panel *outline;           /* Internal container that contains the outliner of the progress bar. */
+		Panel *bar;               /* Internal container that contains the progress bar itself.          */
+
+		float progress;           /* Current progress of the bar, in percent.                           */
+		int   layer;              /* Uniform layer for both the outliner and the bar.                   */
+	} ProgressBar;
+
+	/*
+	 * ProgressBar *gui_pbar_new(  const STRING *outliner_file,  const STRING *bar_file,  float progress,  int layer )
+	 *
+	 * Allocates and initializes a new progress bar object.
+	 */
+	ProgressBar *gui_pbar_new( __In const STRING *outliner_file, __In const STRING *bar_file, __In float progress, __In int layer );
+	ProgressBar *gui_pbar_new();
+
+	/*
+	 * void gui_pbar_free(  ProgressBar *pbar )
+	 *
+	 * Frees a previously allocated progress bar through gui_pbar_new().
+	 */
+	void gui_pbar_free( __In ProgressBar *pbar );
+
+	/*
+	 * void gui_pbar_update_progress(  ProgressBar *pbar,  float progress )
+	 *
+	 * Updates the progress bar with a new progress value (in percent).
+	 */
+	void gui_pbar_update_progress( __In ProgressBar *pbar, __In float progress );
+
+	/*
+	 * void gui_pbar_update_pos(  ProgressBar *pbar,  float x,  float y )
+	 *
+	 * Updates the progress bar with a new position.
+	 */
+	void gui_pbar_update_pos( __In ProgressBar *pbar, __In float x, __In float y );
+
+	/*
+	 * void gui_pbar_update_layer( ProgressBar *pbar, int layer )
+	 *
+	 * Updates the progress bar with a new layer order.
+	 */
+	void gui_pbar_update_layer( __In ProgressBar *pbar, __In int layer );
+
+	/*
+	 * void gui_pbar_update_color_back( ProgressBar *pbar, VECTOR *color )
+	 * void gui_pbar_update_color_front( ProgressBar *pbar, VECTOR *color )
+	 *
+	 * Updates the front (the actual progress bar) and the back (outliner) color
+	 * of a given progress bar.
+	 */
+	void gui_pbar_update_color_back( __In ProgressBar *pbar, __In VECTOR *color );
+	void gui_pbar_update_color_front( __In ProgressBar *pbar, __In VECTOR *color );
+
+	/*
+	 * void gui_pbar_render( ProgressBar *pbar )
+	 *
+	 * Renders a progress bar.
+	 */
+	void gui_pbar_render( __In ProgressBar *pbar );
+
+	/*
+	 * void gui_pbar_hide(  ProgressBar *pbar )
+	 *
+	 * Hides a progress bar.
+	 */
+	void gui_pbar_hide( __In ProgressBar *pbar );
+
+	float gui_pbar_get_progress( __In ProgressBar *pbar );
+	float gui_pbar_get_translucency( __In ProgressBar *pbar );
+	int gui_pbar_get_layer( __In ProgressBar *pbar );
 }
 
 #include "gui_utilities.c"

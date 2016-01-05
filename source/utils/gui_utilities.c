@@ -1095,3 +1095,200 @@ void gui_notifier_new( StaticText *stext, float pos_x, float pos_y,  float durat
 		wait(1.0);
 	}
 }
+
+__static void __gui_pbar_update_bar_color( ProgressBar *pbar, VECTOR *c, int face )
+{
+	if(pbar)
+	{
+		if(face) // Update the front bar (the actual progress bar), taking transparency into account.
+			bmap_fill(pbar->bar->bmap, c, gui_pbar_get_translucency(pbar));
+		else     // Update the outliner.
+			bmap_fill(pbar->outline->bmap, c, gui_pbar_get_translucency(pbar));
+	}
+}
+
+/*
+ * void gui_pbar_update_pos(  ProgressBar *pbar,  float x,  float y )
+ *
+ * Updates the progress bar with a new position.
+ */
+void gui_pbar_update_pos(  ProgressBar *pbar,  float x,  float y )
+{
+	if(pbar)
+	{
+		if(x != pbar->outline->pos_x)
+		{
+			pbar->outline->pos_x = x;
+			pbar->bar->pos_x = pbar->outline->pos_x + PROGRESS_BAR_RELATIVE_OFFSET_X * 0.5;
+		}
+
+		if(y != pbar->outline->pos_y)
+		{
+			pbar->outline->pos_y = y;
+			pbar->bar->pos_y = pbar->outline->pos_y + PROGRESS_BAR_RELATIVE_OFFSET_Y * 0.5;
+		}
+	}
+}
+
+/*
+ * void gui_pbar_free(  ProgressBar *pbar )
+ *
+ * Frees a previously allocated progress bar through gui_pbar_new().
+ */
+void gui_pbar_free(  ProgressBar *pbar )
+{
+	if(pbar)
+	{
+		safe_remove(pbar->outline);
+		safe_remove(pbar->bar);
+
+		FREE(pbar);
+	}
+}
+
+/*
+ * void gui_pbar_update_progress(  ProgressBar *pbar,  float progress )
+ *
+ * Updates the progress bar with a new progress value (in percent).
+ */
+void gui_pbar_update_progress(  ProgressBar *pbar,  float progress )
+{
+	if(pbar)
+		pbar->bar->scale_x = clamp(progress, 0.0, 100.0) / 100.0;
+}
+
+/*
+ * void gui_pbar_update_layer( ProgressBar *pbar, int layer )
+ *
+ * Updates the progress bar with a new layer order.
+ */
+void gui_pbar_update_layer( ProgressBar *pbar, int layer )
+{
+	if(pbar)
+	{
+		layer_sort(pbar->outline, layer);
+		layer_sort(pbar->bar, layer + 1);
+	}
+}
+
+/*
+ * ProgressBar *gui_pbar_new(  const STRING *outliner_file,  const STRING *bar_file,  float progress,  int layer )
+ *
+ * Allocates and initializes a new progress bar object.
+ * If NULL was passed to either outliner_file or bar_file, a 16-bit colored bitmap is created instead.
+ */
+ProgressBar *gui_pbar_new(  const STRING *outliner_file,  const STRING *bar_file,  float progress,  int layer )
+{
+	layer        = (int) ifelse(layer > 0, layer, 1);
+	progress     = (float) ifelse(progress > 0.0, progress, 100.0);
+
+	ProgressBar *pbar = MALLOC(1, ProgressBar);
+	pbar->layer   = layer;
+	pbar->outline = pan_create(NULL, layer);
+	pbar->bar     = pan_create(NULL, layer + 1);
+
+	if(bar_file)
+		pbar->bar->bmap = bmap_create(bar_file);
+	else
+	{
+		pbar->bar->bmap = bmap_createblack(PROGRESS_BAR_DEFAULT_BAR_SIZE_X, PROGRESS_BAR_DEFAULT_BAR_SIZE_Y, 16); // 16 bit so that it can be filled with bmap_fill().
+
+		// bmap_fill(pbar->bar->bmap, vec_fill(nullvector, 255.0), 100.0); /* "Can we get much higher, can we get much lighter?       */
+		                                                                   /* Navigator to heaven..."                                 */
+																		   /* Seriously, comment out this line to enjoy a beautiful   */
+																		   /* lift off.                                               */
+
+		bmap_fill(pbar->bar->bmap, vector(212, 255, 127), 100.0); // Aquamarine color.
+	}
+
+	if(outliner_file)
+		pbar->outline->bmap = bmap_create(outliner_file);
+	else
+		pbar->outline->bmap = bmap_createblack(PROGRESS_BAR_DEFAULT_BAR_SIZE_X + PROGRESS_BAR_RELATIVE_OFFSET_X, PROGRESS_BAR_DEFAULT_BAR_SIZE_Y + PROGRESS_BAR_RELATIVE_OFFSET_Y, 16);
+
+	if(progress > 0.0)
+		gui_pbar_update_progress(pbar, progress);
+
+	return pbar;
+}
+
+ProgressBar *gui_pbar_new()
+{
+	return gui_pbar_new(0, 0, 0.0, 1);
+}
+
+/*
+ * void gui_pbar_render( ProgressBar *pbar )
+ *
+ * Renders an initialized progress bar.
+ */
+void gui_pbar_render( ProgressBar *pbar )
+{
+	if(pbar)
+	{
+		if( !(pbar->bar->flags & SHOW) )
+		{
+			pbar->bar->flags |= (SHOW);
+			pbar->outline->flags |= (SHOW);
+		}
+	}
+}
+
+/*
+ * void gui_pbar_hide(  ProgressBar *pbar )
+ *
+ * Hides an initialized progress bar.
+ */
+void gui_pbar_hide(  ProgressBar *pbar )
+{
+	if(pbar)
+	{
+		if(pbar->bar->flags & SHOW)
+		{
+			pbar->bar->flags &= ~(SHOW);
+			pbar->outline->flags &= ~(SHOW);
+		}
+	}
+}
+
+/*
+ * void gui_pbar_update_color_back( ProgressBar *pbar, VECTOR *color )
+ * void gui_pbar_update_color_front( ProgressBar *pbar, VECTOR *color )
+ *
+ * Updates the front (the actual progress bar) and the back (outliner) color
+ * of a given progress bar.
+ */
+void gui_pbar_update_color_back( ProgressBar *pbar, VECTOR *color )
+{
+	__gui_pbar_update_bar_color(pbar, color, 0);
+}
+
+void gui_pbar_update_color_front( ProgressBar *pbar, VECTOR *color )
+{
+	__gui_pbar_update_bar_color(pbar, color, 1);
+}
+
+float gui_pbar_get_progress(  ProgressBar *pbar )
+{
+	return (float) ifelse(pbar != NULL, pbar->progress, -1);
+}
+
+int gui_pbar_get_layer(  ProgressBar *pbar )
+{
+	return (int) ifelse(pbar != NULL, pbar->layer, -1);
+}
+
+float gui_pbar_get_translucency( ProgressBar *pbar )
+{
+	float r = -1.0;
+
+	if(pbar)
+	{
+		if( !(pbar->bar->flags & TRANSLUCENT) )
+			r = pbar->bar->alpha;
+		else
+			r = 100.0; // No transparency defaults to 100% opaque.
+	}
+
+	return r;
+}
