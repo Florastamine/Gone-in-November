@@ -13,6 +13,15 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  *
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ * __________________________________________________________________
+ *
+ * <dlc>
+ * A small experiment which tests the add_buffer() API. Unfortunately this doesn't work
+ * (the buffer doesn't get freed somehow).
+ * Issue posted here: http://www.opserver.de/ubb7/ubbthreads.php?ubb=showflat&Number=457189#Post457189
+ *
+ * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * __________________________________________________________________
  */
 #include <acknex.h>
 #include <default.c>
