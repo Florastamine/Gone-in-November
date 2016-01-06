@@ -236,8 +236,6 @@ void game_log_new()
  * Frees the logging file. Note that, because the file is opened in write mode
  * (not append!), any other calls to game_log_new() after game_log_free()
  * will cause the old log file to be erased.
- *
- * TODO: Append instead of a complete erase.
  */
 void game_log_free()
 {
@@ -940,7 +938,7 @@ void game_args_parse()
 	{
 		game_log_write(str_printf(NULL, "\"%s\" found. Opening the console...", __ARGS_CONSOLE));
 
-		command_table_new();
+		game_console_load();
 	}
 
 	if( str_stri(args, __ARGS_FORCE_LOW) || str_stri(args, __ARGS_FORCE_LOW_SHORT) )
@@ -1160,4 +1158,18 @@ void game_globals_set()
 	#ifndef    __RENDER_SHADOWS_H__
 		shadow_stencil = 2;
 	#endif
+}
+
+/*
+ * void game_console_load()
+ *
+ * Initializes and fills the custom console with commands, if __ARGS_CONSOLE was specified in the argument file.
+ * The user/player can then press [F11] to switch on the console (type "exit" to switch off the console).
+ * Command implementations can be found in <./source/game/common/cfuncs>.
+ */
+void game_console_load()
+{
+	command_table_new();
+
+	command_table_add("skyrim", __cfunc__skyrim);
 }

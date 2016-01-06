@@ -73,6 +73,7 @@
 #endif
 
 #include "./source/game/shared.h"
+#include "./source/game/common/cfuncs.h"
 #include "./source/game/common/common.h"
 #include "./source/game/fx/unmanaged.h"
 #include "./source/game/gui/gui.h"

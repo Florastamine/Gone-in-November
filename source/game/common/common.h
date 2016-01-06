@@ -196,19 +196,83 @@ __namespace(ArgsParse) {
 }
 
 __namespace(November) {
+    /*
+     * void game_state_new()
+     *
+     * Allocates a new game state, and sets up the events for freeing the
+     * state on game exit. This function must be called before
+     * any other subsystems can be initialized.
+     */
 	void game_state_new();
+
+    /*
+     * void game_state_free()
+     *
+     * Frees a previously allocated game state.
+     */
 	void game_state_free();
 
+    /*
+     * void game_physx_new()
+     *
+     * Initializes PhysX.
+     */
 	void game_physx_new();
+
+    /*
+     * void game_physx_loop()
+     *
+     * Runs the PhysX simulation. For continuous physics simulation, you
+     * must place this function in a main loop whenever you have initialized PhysX or not.
+     * Code taken from <ackPhysX> with a small modification; the algorithm provided in the
+     * manual is wrong and outdated.
+     */
 	void game_physx_loop();
+
+    /*
+     * void game_physx_free()
+     *
+     * Frees PhysX.
+     */
 	void game_physx_free();
 
+    /*
+     * void game_log_new()
+     *
+     * Opens the logging file.
+     */
 	void game_log_new();
+
+    /*
+     * void game_log_free()
+     *
+     * Frees the logging file. Note that, because the file is opened in write mode
+     * (not append!), any other calls to game_log_new() after game_log_free()
+     * will cause the old log file to be erased.
+     */
 	void game_log_free();
+
+    /*
+     * void game_log_write(const STRING *content)
+     *
+     * Writes a string to the log file.
+     * Information about time and date are automatically appended.
+     *
+     * For writing with printf(), refer to str_printf().
+     */
 	void game_log_write( __In const STRING *content );
 
+    /*
+     * void game_event_setup()
+     *
+     * Sets up certain events that are automatically invoked later.
+     */
 	void game_event_setup();
 
+    /*
+     * BOOL game_psvs_test()
+     *
+     */
     BOOL game_psvs_test();
 
     /*
@@ -236,6 +300,14 @@ __namespace(November) {
      * This function must be called at the __VERY__ beginning of main(), even before the ready() check.
      */
     void game_globals_set();
+
+    /*
+     * void game_console_load()
+     *
+     * Initializes and fills the custom console with commands, if __ARGS_CONSOLE was specified in the argument file.
+     * The user/player can then press [F11] to switch on the console (type "exit" to switch off the console).
+     */
+    void game_console_load();
 }
 
 __namespace(SceneLoadState) {
