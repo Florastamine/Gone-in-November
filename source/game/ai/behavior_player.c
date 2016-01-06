@@ -289,7 +289,7 @@ action act_player()
 				    __act_player_state_singleton->is_moving = true; // then we are moving:
 
 				// apply direction to the movement:
-				vec_set( &force, vector(__act_player_state_singleton->move_speed * ((key_w || joy_force.y > 0) - (key_s || joy_force.y < 0)), __act_player_state_singleton->move_speed * ((key_a || joy_force.x < 0) - (key_d || joy_force.x > 0)), 0) );
+				vec_set( &force, vector(__act_player_state_singleton->move_speed * ((key_w || key_cuu || joy_force.y > 0) - (key_s || key_cud || joy_force.y < 0)), __act_player_state_singleton->move_speed * ((key_a || key_cul || joy_force.x < 0) - (key_d || key_cur || joy_force.x > 0)), 0) );
 
 
 
@@ -368,7 +368,7 @@ action act_player()
 					absDist.y += __act_player_state_singleton->__platform_move_speed.y;
 				}
 				// get input for trace:
-				vec_set( &traceInput, vector((key_w - key_s), (key_a - key_d), 0));
+				vec_set( &traceInput, vector(((key_w || key_cuu || joy_force.y > 0) - (key_s || key_cud || joy_force.y < 0)), ((key_a || key_cul || joy_force.x < 0) - (key_d || key_cur || joy_force.x > 0)), 0));
 				vec_rotate( &traceInput, vector(camera->pan, 0, 0));
 				// save our position:
 				vec_set(&tracePos, &my->x);
@@ -423,7 +423,7 @@ action act_player()
 				// switch to ladder state:
 				__act_player_state_singleton->state = STATE_LADDER;
 				// allow player to move up and down:
-				force.z = __act_player_state_singleton->climb_speed * (key_w - key_s);
+				force.z = __act_player_state_singleton->climb_speed * ((key_w || key_cuu || joy_force.y > 0) - (key_s || key_cud || joy_force.y < 0));
 				// accelerate forces:
 				accelerate(&absDist, force.z * time_step, __act_player_state_singleton->movement_friction_ground);
 				// ignore groups:
