@@ -1018,23 +1018,23 @@ void gui_static_text_render(StaticText* text, float posx, float posy, float alph
  *
  * Quickly hides a StaticText object.
  */
-void gui_static_text_hide(StaticText *text)
-{
-	if(text)
-	{
-		CLList *current = text->texts;
+ void gui_static_text_hide(StaticText *text)
+ {
+ 	if(text)
+ 	{
+ 		CLList *current = text->texts;
 
-		do
-		{
-			if(current->element->flags & SHOW)
-				current->element->flags &= (~SHOW);
+ 		do
+ 		{
+ 			if(current->element->flags & SHOW)
+ 				current->element->flags &= (~SHOW);
 
-			if (current->next != NULL)
-				current = current->next;
+ 			if (current->next != NULL)
+ 				current = current->next;
 
-		} while (current->next != NULL);
-	}
-}
+ 		} while (current->next != NULL);
+ 	}
+ }
 
 void gui_static_text_render(StaticText *text, Pair *pos, float alpha, int layer)
 {
@@ -1291,4 +1291,366 @@ float gui_pbar_get_translucency( ProgressBar *pbar )
 	}
 
 	return r;
+}
+
+/*
+ * void gui_dialogue_update_pos( StaticDialogue *dialog, float x, float y )
+ *
+ * Updates the current position of the dialogue object.
+ * Everything will be automatically updated and adjusted.
+ */
+void gui_dialogue_update_pos( StaticDialogue *dialog, float x, float y )
+{
+	if(dialog)
+	{
+		// Update the GUI elements.
+		if(x != dialog->x)
+		{
+			dialog->background->pos_x = dialog->x = x;
+			dialog->avatar->pos_x = ifelse(dialog->avatar != NULL, x + STATIC_DIALOGUE_AVATAR_OFFSET_X, dialog->avatar->pos_x);
+		}
+
+		if(y != dialog->y)
+		{
+			dialog->background->pos_y = dialog->y = y;
+			dialog->avatar->pos_y = ifelse(dialog->avatar != NULL, y - (bmap_height(dialog->avatar->bmap)/2) - STATIC_DIALOGUE_AVATAR_OFFSET_Y, dialog->avatar->pos_y);
+		}
+
+		// Now re-parse the text with the new position, which means you can modify the text one more time
+		// before calling the resize function.
+		gui_dialogue_parse(dialog, dialog->__cursor + 1);
+	}
+}
+
+/*
+ * void gui_dialogue_update_layer( StaticDialogue *dialog, int layer )
+ *
+ * Updates the dialogue object with a new layer order.
+ */
+void gui_dialogue_update_layer( StaticDialogue *dialog, int layer )
+{
+	if(dialog)
+	{
+		dialog->layer = (int) ifelse(layer > 0, layer, abs(layer));
+
+		layer_sort(dialog->background, dialog->layer);
+		layer_sort(dialog->avatar, dialog->layer + 1);
+
+		// We don't need to update the static text layer as it always uses
+		// dialog->layer, which we've changed below. We just need to re-parse the text.
+		gui_dialogue_parse(dialog, dialog->__cursor + 1);
+	}
+}
+
+/*
+ * StaticDialogue *gui_dialogue_new( const char *text_file, const char *avatar, const char *background, int layer, int unicode, float width, float height )
+ *
+ * Allocates and initializes a new dialogue object. The text file must exists and contains at least one string.
+ * If no background image is provided, a default, black-filled image is created instead. Otherwise, the background is cut (from top-left) to fit the given width and height.
+ * Additionally, the image must be in the following formats: .tga, .bmp or .pcx.
+ * Pass true to the unicode flag if you want to use UTF-8-encoded texts.
+ * After the object is created, additional setup (font, alpha, ...) can be done through particular APIs (check the header), or call gui_dialogue_render() to make the object visible, and use the gui_dialogue_parse*() functions to navigate between lines.
+ *
+ * Objects created this way must be destroyed later via gui_dialogue_free().
+ */
+StaticDialogue *gui_dialogue_new( const char *text_file, const char *avatar, const char *background, int layer, int unicode, float width, float height )
+{
+	if(!text_file)
+		return NULL;
+
+	width = (float) ifelse(width > 0, width, 640.0);
+	height = (float) ifelse(height > 0, height, 160.0);
+
+	StaticDialogue *dialog = MALLOC(1, StaticDialogue);
+	dialog->__container    = txt_create(STATIC_DIALOGUE_MAX_DIALOGUES, 1);
+	dialog->__cursor       = 0;
+	dialog->layer          = (int) ifelse(layer > 0, layer, 1);
+	dialog->background     = pan_create(NULL, dialog->layer);
+	dialog->font           = font_create("Arial#20b");
+	dialog->alpha          = 100.0;
+
+	/*
+	 * Pastes the text file's content into the container, and returns the number of strings pasted.
+	 * Becauses txt_load(w)() uses delimit_str in combination with file_str_readto() to parse
+	 * content into the struct, we have to modify the original delimiter so the comma character (',')
+	 * can be read normally.
+	 */
+	STRING *old_delimiter = str_create(delimit_str);
+	str_cpy(delimit_str, "!##$&&^@#^^"); // Nobody would knows.
+
+	if(unicode)
+		dialog->lines = txt_loadw(dialog->__container, text_file);
+	else
+		dialog->lines = txt_load(dialog->__container, text_file);
+
+	str_cpy(delimit_str, old_delimiter);
+
+	if(avatar)
+	{
+		dialog->avatar           = pan_create(NULL, dialog->layer + 1);
+		dialog->avatar->bmap     = bmap_create(avatar);
+	}
+
+	if(background)
+		dialog->background->bmap = bmap_createpart(background, 0.0, 0.0, width, height); // Cut from the top-left corner (0; 0).
+	else
+		dialog->background->bmap = bmap_createblack(width, height, 16);
+
+	// Set the default position and render the very first static text object.
+	gui_dialogue_update_pos(dialog, (screen_size.x - bmap_width(dialog->background->bmap)) / 2, screen_size.y - bmap_height(dialog->background->bmap) - 16.0);
+
+	return dialog;
+}
+
+/*
+ * void gui_dialogue_free( StaticDialogue *dialog )
+ *
+ * Frees a previously initialized dialogue object through gui_dialogue_new().
+ */
+void gui_dialogue_free( StaticDialogue *dialog )
+{
+	if(dialog)
+	{
+		#ifdef    _UTILITIES_H_
+			txt_remove_ex(dialog->__container);
+		#else
+			int i = 0;
+			for(; i < dialog->__container->strings; i++)
+				str_remove((dialog->__container->pstring)[i]);
+
+			txt_remove(dialog->__container);
+		#endif
+
+		safe_remove(dialog->background);
+
+		if(dialog->avatar)
+			safe_remove(dialog->avatar);
+
+		if(dialog->string)
+			gui_static_text_free(dialog->string);
+
+		FREE(dialog);
+	}
+}
+
+/*
+ * void gui_dialogue_render( StaticDialogue *dialog )
+ *
+ * Renders a dialogue object.
+ */
+void gui_dialogue_render( StaticDialogue *dialog )
+{
+	if(dialog)
+	{
+		if(dialog->avatar)
+			if( !(dialog->avatar->flags & SHOW) )
+				dialog->avatar->flags |= (SHOW);
+
+		if( !(dialog->background->flags & SHOW) )
+		{
+			dialog->background->flags |= (SHOW);
+
+			// Performs fading in if the background has transparency set.
+			if(dialog->alpha < 100.0)
+			{
+				dialog->background->alpha = 0.0;
+
+				while(dialog->background->alpha < dialog->alpha)
+				{
+					dialog->background->alpha += STATIC_DIALOGUE_FADE_SPEED * time_step;
+					wait(1.0);
+				}
+			}
+
+			if(dialog->string) // Shows the text object.
+			{
+				CLList *current = dialog->string->texts;
+
+				do
+				{
+					if(!(current->element->flags & SHOW))
+						current->element->flags |= (SHOW);
+
+					if (current->next != NULL)
+						current = current->next;
+
+				} while (current->next != NULL);
+			}
+		}
+	}
+}
+
+/*
+ * void gui_dialogue_hide( StaticDialogue *dialog )
+ *
+ * Hides a dialogue object.
+ */
+void gui_dialogue_hide( StaticDialogue *dialog )
+{
+	if(dialog)
+	{
+		gui_static_text_hide(dialog->string);
+
+		if(dialog->avatar)
+			if(dialog->avatar->flags & SHOW)
+				dialog->avatar->flags &= ~(SHOW);
+
+		// Performs fading out if the background image has transparency set.
+		if(dialog->background->flags & SHOW)
+		{
+			if(dialog->background->flags & TRANSLUCENT)
+			{
+				while(dialog->background->alpha > 0.0)
+				{
+					dialog->background->alpha -= STATIC_DIALOGUE_FADE_SPEED * time_step;
+					wait(1.0);
+				}
+			}
+
+			dialog->background->flags &= ~(SHOW);
+		}
+	}
+}
+
+/*
+ * void gui_dialogue_parse( StaticDialogue *dialog, int pos )
+ *
+ * Parses and renders a given text. Possible range: [1; dialog->lines]
+ * (dialog->lines is the number of dialogue strings scanned from the text file).
+ *
+ * Additional functions used for sequential parsing is provided below. gui_dialogue_parse_next()
+ * automatically destroys the object after the last dialogue line is reached.
+ */
+void gui_dialogue_parse( StaticDialogue *dialog, int pos )
+{
+	if(dialog)
+	{
+		if((pos > 0 && pos <= dialog->lines) && dialog->lines > 0 && (dialog->background->flags & SHOW))
+		{
+			if(dialog->string)
+				gui_static_text_free(dialog->string);
+
+			float write_x = 0, write_y = 0; // Calculate the final position we'll be writing our text to.
+
+			write_x = dialog->background->pos_x + STATIC_DIALOGUE_TEXT_OFFSET_X; // X offset is easy.
+
+			if(dialog->avatar)
+				write_y = dialog->avatar->pos_y + bmap_height(dialog->avatar->bmap) + STATIC_DIALOGUE_TEXT_OFFSET_Y;
+			else
+				write_y = dialog->background->pos_y + STATIC_DIALOGUE_TEXT_OFFSET_Y;
+
+			// Now create and parse the static string, and re-size the dialogue height to fit. (TODO!)
+			dialog->string = gui_static_text_new((dialog->__container->pstring)[pos - 1], dialog->font, 0, bmap_width(dialog->background->bmap) - STATIC_DIALOGUE_TEXT_OFFSET_X);
+
+			// Render the text.
+			gui_static_text_render(dialog->string, write_x, write_y, 100.0, dialog->layer + 2);
+		}
+	}
+}
+
+/*
+ * void gui_dialogue_update_color( StaticDialogue *dialog, VECTOR *color )
+ *
+ * Replaces the color of the dialogue image with a new one.
+ */
+void gui_dialogue_update_color( StaticDialogue *dialog, VECTOR *color )
+{
+	if(dialog && color)
+		bmap_fill(dialog->background->bmap, color, dialog->alpha);
+}
+
+void gui_dialogue_parse_next( StaticDialogue *dialog )
+{
+	if(dialog->__cursor < dialog->lines)
+	{
+		gui_dialogue_parse(dialog, dialog->__cursor + 1);
+		dialog->__cursor += 1;
+	}
+	else // We've reached the end of the text, let's destroy the dialogue and (probably) add some eye-catching effects to it.
+	{
+		gui_dialogue_hide(dialog);
+
+		while(proc_status(gui_dialogue_hide))
+			wait(1.0);
+
+		gui_dialogue_free(dialog);
+	}
+}
+
+void gui_dialogue_parse_prev( StaticDialogue *dialog )
+{
+	if(dialog->__cursor >= 0)
+	{
+		gui_dialogue_parse(dialog, dialog->__cursor + 1);
+		dialog->__cursor -= 1;
+	}
+}
+
+/*
+ * void gui_dialogue_update_font( StaticDialogue *dialog, consg Font *font )
+ *
+ * Updates the font used for text rendering with a new one.
+ */
+void gui_dialogue_update_font( StaticDialogue *dialog, const Font *font )
+{
+	if(dialog)
+		dialog->font = font;
+}
+
+/*
+ * void gui_dialogue_update_alpha( StaticDialogue *dialog, float alpha )
+ *
+ * Updates the alpha value of the dialogue image.
+ * At 0.0 or lower, the image is not rendered (switched off), because <= 0.0 equals to full transparent.
+ * At 100.0 or higher, the image's translucent flag is switched off, because >= 100.0 equals to full opaque.
+ */
+void gui_dialogue_update_alpha( StaticDialogue *dialog, float alpha )
+{
+	if(dialog)
+	{
+		if(alpha > 0.0 && alpha < 100.0)
+		{
+			dialog->background->flags |= (TRANSLUCENT);
+			dialog->background->alpha = alpha;
+		}
+		else if(alpha >= 100.0)
+		{
+			if(dialog->background->flags & TRANSLUCENT)
+				dialog->background->flags &= ~(TRANSLUCENT);
+		}
+
+		dialog->alpha = alpha; // Store for later use.
+	}
+}
+
+FONT *gui_dialogue_get_font( StaticDialogue *dialog )
+{
+	if(!dialog)
+		return NULL;
+
+	return dialog->font;
+}
+
+float gui_dialogue_get_alpha( StaticDialogue *dialog )
+{
+	if(dialog)
+		return dialog->alpha;
+
+	return -1.0;
+}
+
+int gui_dialogue_get_lines( StaticDialogue *dialog )
+{
+	if(dialog)
+		return dialog->lines;
+
+	return -1;
+}
+
+int gui_dialogue_get_layer( StaticDialogue *dialog )
+{
+	if(dialog)
+		return dialog->layer;
+
+	return -1;
 }

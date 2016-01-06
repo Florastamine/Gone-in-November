@@ -307,5 +307,121 @@ __namespace(ProgressBar) {
 	int gui_pbar_get_layer( __In ProgressBar *pbar );
 }
 
+__namespace(StaticDialogue) {
+	#define    STATIC_DIALOGUE_MAX_DIALOGUES      92
+
+	#define    STATIC_DIALOGUE_AVATAR_OFFSET_X    15.0
+	#define    STATIC_DIALOGUE_AVATAR_OFFSET_Y    0.0
+	#define    STATIC_DIALOGUE_TEXT_OFFSET_X      15.0
+	#define    STATIC_DIALOGUE_TEXT_OFFSET_Y      10.0
+	#define    STATIC_DIALOGUE_FADE_SPEED         8.5
+
+	typedef struct {
+		Text       *__container; /* Internal container which contains the list of scanned, unparsed strings.                                     */
+		int         __cursor;    /* Internal counter used in gui_dialogue_parse_next() and gui_dialogue_parse_prev() which acts as a "pointer".  */
+
+		StaticText *string;      /* A static string object which is displayed together with the background/avatar image.                         */
+
+		Panel      *avatar;      /* Pointer to the dialogue object's avatar.                                                                     */
+		Panel      *background;  /* Pointer to the dialogue object's background image, can either be a simple bitmap or a cut-off from an image. */
+
+		Font       *font;        /* Pointer to the font used for text rendering.                                                                 */
+
+		float       x;           /* Attributes related to the dialogue object that can simply be retrieved through helper                        */
+		float       y;           /* functions or by direct access. It's better not to modify them.                                               */
+		float       alpha;
+		int         layer;
+		int         lines;
+	} StaticDialogue;
+
+	/*
+	 * StaticDialogue *gui_dialogue_new( const char *text_file, const char *avatar, const char *background, int layer, int unicode, float width, float height )
+	 *
+	 * Allocates and initializes a new dialogue object. The text file must exists and contains at least one string.
+	 * If no background image is provided, a default, black-filled image is created instead. Otherwise, the background is cut (from top-left) to fit the given width and height.
+	 * Additionally, the image must be in the following formats: .tga, .bmp or .pcx.
+	 * Pass true to the unicode flag if you want to use UTF-8-encoded texts.
+	 * After the object is created, additional setup (font, alpha, ...) can be done through particular APIs (check the header), or call gui_dialogue_render() to make the object visible, and use the gui_dialogue_parse*() functions to navigate between lines.
+	 *
+	 * Objects created this way must be destroyed later via gui_dialogue_free().
+	 */
+	StaticDialogue *gui_dialogue_new( __In const char *text_file, __In const char *avatar, __In const char *background, __In int layer, __In int unicode, __In float width, __In float height );
+
+	/*
+	 * void gui_dialogue_free( StaticDialogue *dialog )
+	 *
+	 * Frees a previously initialized dialogue object through gui_dialogue_new().
+	 */
+	void gui_dialogue_free( __In StaticDialogue *dialog );
+
+	/*
+	 * void gui_dialogue_update_pos( StaticDialogue *dialog, float x, float y )
+	 *
+	 * Updates the current position of the dialogue object.
+	 * Everything will be automatically updated and adjusted.
+	 */
+	void gui_dialogue_update_pos( __In __Out StaticDialogue *dialog, __In float x, __In float y );
+
+	/*
+	 * void gui_dialogue_update_layer( StaticDialogue *dialog, int layer )
+	 *
+	 * Updates the dialogue object with a new layer order.
+	 */
+	void gui_dialogue_update_layer( __In __Out StaticDialogue *dialog, __In int layer );
+
+	/*
+	 * void gui_dialogue_update_font( StaticDialogue *dialog, consg Font *font )
+	 *
+	 * Updates the font used for text rendering with a new one.
+	 */
+	void gui_dialogue_update_font( __In StaticDialogue *dialog, __In const Font *font );
+
+	/*
+	 * void gui_dialogue_update_alpha( StaticDialogue *dialog, float alpha )
+	 *
+	 * Updates the alpha value of the dialogue image.
+	 */
+	void gui_dialogue_update_alpha( __In StaticDialogue *dialog, __In float alpha );
+
+	/*
+	 * void gui_dialogue_update_color( StaticDialogue *dialog, VECTOR *color )
+	 *
+	 * Replaces the color of the dialogue image with a new one.
+	 */
+	void gui_dialogue_update_color( __In StaticDialogue *dialog, __In VECTOR *color );
+
+	/*
+	 * void gui_dialogue_render( StaticDialogue *dialog )
+	 *
+	 * Renders a dialogue object.
+	 */
+	void gui_dialogue_render( __In StaticDialogue *dialog );
+
+	/*
+	 * void gui_dialogue_hide( StaticDialogue *dialog )
+	 *
+	 * Hides a dialogue object.
+	 */
+	void gui_dialogue_hide( StaticDialogue *dialog );
+
+	/*
+	 * void gui_dialogue_parse( StaticDialogue *dialog, int pos )
+	 *
+	 * Parses and renders a given text. Possible range: [1; dialog->lines]
+	 * (dialog->lines is the number of dialogue strings scanned from the text file).
+	 *
+	 * Additional functions used for sequential parsing is provided below. gui_dialogue_parse_next()
+	 * automatically destroys the object after the last dialogue line is reached.
+	 */
+	void gui_dialogue_parse( __In StaticDialogue *dialogue, __In int pos );
+	void gui_dialogue_parse_next( __In StaticDialogue *dialog );
+	void gui_dialogue_parse_prev( __In StaticDialogue *dialog );
+
+	FONT *gui_dialogue_get_font( __In StaticDialogue *dialog );
+	int gui_dialogue_get_lines( __In StaticDialogue *dialog );
+	int gui_dialogue_get_layer( __In StaticDialogue *dialog );
+	float gui_dialogue_get_alpha( __In StaticDialogue *dialog );
+}
+
 #include "gui_utilities.c"
 #endif /* gui_utilities.h */
