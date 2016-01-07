@@ -115,11 +115,17 @@ __static void __act_player_update_camera()
 
 	camera->z -= (camera->z - __act_player_state_singleton->__cam_pos.z) * __act_player_state_singleton->cam_lerp;
 	camera->z = clamp(camera->z, __act_player_state_singleton->__cam_pos.z - __act_player_state_singleton->cam_smooth_offset, __act_player_state_singleton->__cam_pos.z + __act_player_state_singleton->cam_smooth_offset);
+	camera->arc += (int) ifelse(key_z != 0, -1, 1) * 3.5 * time_step; // 3.5 gives the zooming speed. Magic numbers is bad, I know, but I'm just too lazy to re-factor these.
 
 	if(camera->tilt > 75.0)
 	    camera->tilt = 75.0;
 	if(camera->tilt < -70.0)
 	    camera->tilt = -70.0;
+
+	if(camera->arc <= 45.0)
+		camera->arc = 45.0;
+	if(camera->arc >= 75.0)
+		camera->arc = 75.0;
 
 	// Handle ray shots
 	VECTOR shot_target;
@@ -290,8 +296,6 @@ action act_player()
 
 				// apply direction to the movement:
 				vec_set( &force, vector(__act_player_state_singleton->move_speed * ((key_w || key_cuu || joy_force.y > 0) - (key_s || key_cud || joy_force.y < 0)), __act_player_state_singleton->move_speed * ((key_a || key_cul || joy_force.x < 0) - (key_d || key_cur || joy_force.x > 0)), 0) );
-
-
 
 				// if movement speed is more than allowed:
 				if(vec_length(vector(force.x, force.y, 0)) > __act_player_state_singleton->move_speed)
@@ -473,9 +477,11 @@ action act_player()
 			vec_set( &(__act_player_state_singleton->__object_stand->x), &my->x);
 			vec_set( &(__act_player_state_singleton->__object_stand->pan), &my->pan);
 		}
-		// attach camera:
+
+		// Update camera:
 		__act_player_update_camera();
-		wait(1);
+
+		wait(1.0);
 	}
 
 	act_player_free();
