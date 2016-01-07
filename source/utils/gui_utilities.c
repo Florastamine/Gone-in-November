@@ -1127,6 +1127,10 @@ void gui_pbar_update_pos(  ProgressBar *pbar,  float x,  float y )
 			pbar->outline->pos_y = y;
 			pbar->bar->pos_y = pbar->outline->pos_y + PROGRESS_BAR_RELATIVE_OFFSET_Y * 0.5;
 		}
+
+		// Update the string.
+		pbar->string->pos_x = pbar->outline->pos_x + 1.5;
+		pbar->string->pos_y = pbar->outline->pos_y - pbar->string->font->dy - 5.0; // Play with 5.0 - just an approximation. TODO it's a bugggggg
 	}
 }
 
@@ -1185,6 +1189,7 @@ ProgressBar *gui_pbar_new(  const STRING *outliner_file,  const STRING *bar_file
 	ProgressBar *pbar = MALLOC(1, ProgressBar);
 	pbar->layer   = layer;
 	pbar->outline = pan_create(NULL, layer);
+	pbar->string  = txt_create(1, layer);
 	pbar->bar     = pan_create(NULL, layer + 1);
 
 	if(bar_file)
@@ -1212,6 +1217,28 @@ ProgressBar *gui_pbar_new(  const STRING *outliner_file,  const STRING *bar_file
 	return pbar;
 }
 
+/*
+ * void gui_pbar_update_text( ProgressBar *pbar, const String *string, const Font *font, const Vector *color )
+ *
+ * Updates the progress bar string's various attributes.
+ */
+void gui_pbar_update_text( ProgressBar *pbar, const String *string, const Font *font, const Vector *color )
+{
+	if(pbar)
+	{
+		if(string)
+			str_cpy((pbar->string->pstring)[0], string);
+		else
+			str_cpy((pbar->string->pstring)[0], "Loading...");
+
+		if(font)
+			pbar->string->font = font;
+
+		if(color)
+			vec_set(&(pbar->string->blue), color);
+	}
+}
+
 ProgressBar *gui_pbar_new()
 {
 	return gui_pbar_new(0, 0, 0.0, 1);
@@ -1230,6 +1257,7 @@ void gui_pbar_render( ProgressBar *pbar )
 		{
 			pbar->bar->flags |= (SHOW);
 			pbar->outline->flags |= (SHOW);
+			pbar->string->flags |= (SHOW);
 		}
 	}
 }
@@ -1247,6 +1275,7 @@ void gui_pbar_hide(  ProgressBar *pbar )
 		{
 			pbar->bar->flags &= ~(SHOW);
 			pbar->outline->flags &= ~(SHOW);
+			pbar->string->flags &= ~(SHOW);
 		}
 	}
 }

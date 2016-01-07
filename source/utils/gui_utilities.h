@@ -240,6 +240,8 @@ __namespace(ProgressBar) {
 
 		float progress;           /* Current progress of the bar, in percent.                           */
 		int   layer;              /* Uniform layer for both the outliner and the bar.                   */
+
+		Text  *string;            /* An additional string to be shown together with the progress bar.   */
 	} ProgressBar;
 
 	/*
@@ -263,6 +265,13 @@ __namespace(ProgressBar) {
 	 * Updates the progress bar with a new progress value (in percent).
 	 */
 	void gui_pbar_update_progress( __In ProgressBar *pbar, __In float progress );
+
+	/*
+	 * void gui_pbar_update_text( ProgressBar *pbar, const String *string, const Font *font, const Vector *color )
+	 *
+	 * Updates the progress bar string's various attributes.
+	 */
+	void gui_pbar_update_text( __In __Out ProgressBar *pbar, __In const String *string, __In const Font *font, __In const Vector *color );
 
 	/*
 	 * void gui_pbar_update_pos(  ProgressBar *pbar,  float x,  float y )
