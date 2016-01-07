@@ -316,11 +316,26 @@ __namespace(StaticDialogue) {
 	#define    STATIC_DIALOGUE_TEXT_OFFSET_Y      10.0
 	#define    STATIC_DIALOGUE_FADE_SPEED         8.5
 
+	// Immutable, don't modify!
+	#define    SOUND_SHOW                         0
+	#define    SOUND_HIDE                         1
+	#define    SOUND_TRAVERSAL                    2
+
 	typedef struct {
 		Text       *__container; /* Internal container which contains the list of scanned, unparsed strings.                                     */
 		int         __cursor;    /* Internal counter used in gui_dialogue_parse_next() and gui_dialogue_parse_prev() which acts as a "pointer".  */
 
 		StaticText *string;      /* A static string object which is displayed together with the background/avatar image.                         */
+
+		Sound      *snd_visible;     /* Sound played when the dialogue is shown.                                                                     */
+		Sound      *snd_invisible;   /* Sound played when the dialogue is invisible.                                                                 */
+		Sound      *snd_traversal;   /* Sound played whenever a dialogue line is shown.                                                              */
+
+		float       volume;
+
+		fixed      __snd_visible_handler;      /* Handlers to the three sound effects mentioned above. You can then use these handlers to, e.g., */
+		fixed      __snd_invisible_handler;    /* perform various sound operations on it (snd_tune(), snd_pause(), snd_add(), ...)               */
+		fixed      __snd_traversal_handler;
 
 		Panel      *avatar;      /* Pointer to the dialogue object's avatar.                                                                     */
 		Panel      *background;  /* Pointer to the dialogue object's background image, can either be a simple bitmap or a cut-off from an image. */
@@ -384,6 +399,25 @@ __namespace(StaticDialogue) {
 	void gui_dialogue_update_alpha( __In StaticDialogue *dialog, __In float alpha );
 
 	/*
+	 * void gui_dialogue_update_sound( StaticDialogue *dialog, int channel, String *snd_file )
+	 *
+	 * Sets the sound to be played when certain events of the dialogue object is executed.
+	 * (visible, invisible and when traversing between dialogue lines).
+	 * The second parameter accepts SOUND_SHOW, SOUND_HIDE or SOUND_TRAVERSAL and the third
+	 * parameter gives the exact location to the sound file to be played with certain events.
+	 *
+	 * To adjust the current volume of the sound effects, use gui_dialogue_update_volume().
+	 */
+	void gui_dialogue_update_sound( __In __Out StaticDialogue *dialog, __In int channel, __In String *snd_file );
+
+	/*
+	 * void gui_dialogue_update_volume( StaticDialogue *dialog, float volume )
+	 *
+	 * Updates the current volume of the dialogue sound effects.
+	 */
+	void gui_dialogue_update_volume( __In __Out StaticDialogue *dialog, __In float volume );
+
+	/*
 	 * void gui_dialogue_update_color( StaticDialogue *dialog, VECTOR *color )
 	 *
 	 * Replaces the color of the dialogue image with a new one.
@@ -402,7 +436,7 @@ __namespace(StaticDialogue) {
 	 *
 	 * Hides a dialogue object.
 	 */
-	void gui_dialogue_hide( StaticDialogue *dialog );
+	void gui_dialogue_hide( __In StaticDialogue *dialog );
 
 	/*
 	 * void gui_dialogue_parse( StaticDialogue *dialog, int pos )
@@ -421,6 +455,7 @@ __namespace(StaticDialogue) {
 	int gui_dialogue_get_lines( __In StaticDialogue *dialog );
 	int gui_dialogue_get_layer( __In StaticDialogue *dialog );
 	float gui_dialogue_get_alpha( __In StaticDialogue *dialog );
+	float gui_dialogue_get_volume( __In StaticDialogue *dialog );
 }
 
 #include "gui_utilities.c"

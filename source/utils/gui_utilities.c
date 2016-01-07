@@ -1368,6 +1368,10 @@ StaticDialogue *gui_dialogue_new( const char *text_file, const char *avatar, con
 	dialog->background     = pan_create(NULL, dialog->layer);
 	dialog->font           = font_create("Arial#20b");
 	dialog->alpha          = 100.0;
+	dialog->snd_visible    = NULL;
+	dialog->snd_invisible  = NULL;
+	dialog->snd_traversal  = NULL;
+	dialog->volume         = 100.0;
 
 	/*
 	 * Pastes the text file's content into the container, and returns the number of strings pasted.
@@ -1442,6 +1446,16 @@ void gui_dialogue_render( StaticDialogue *dialog )
 {
 	if(dialog)
 	{
+		// If the dialogue is already shown, or if there is an instance of the function is being run, then we'll just return.
+		if((dialog->background->flags & SHOW) || proc_status(gui_dialogue_render) > 1)
+			return;
+
+		// Otherwise play the sound if one is present.
+		if(dialog->snd_visible)
+			if(!snd_playing(dialog->__snd_visible_handler))
+				dialog->__snd_visible_handler = snd_play(dialog->snd_visible, gui_dialogue_get_volume(dialog), 0);
+
+		// And then display the GUI elements.
 		if(dialog->avatar)
 			if( !(dialog->avatar->flags & SHOW) )
 				dialog->avatar->flags |= (SHOW);
@@ -1487,8 +1501,17 @@ void gui_dialogue_render( StaticDialogue *dialog )
  */
 void gui_dialogue_hide( StaticDialogue *dialog )
 {
+	// If there is an instance of the function is being run, return, or the dialogue is already invisible.
+	if(proc_status(gui_dialogue_hide) > 1 || !(dialog->background->flags & SHOW))
+		return;
+
 	if(dialog)
 	{
+		// Otherwise play the sound effect (if it's present), and then hide the object.
+		if(dialog->snd_invisible)
+			if(!snd_playing(dialog->__snd_invisible_handler))
+				dialog->__snd_invisible_handler = snd_play(dialog->snd_invisible, gui_dialogue_get_volume(dialog), 0);
+
 		gui_static_text_hide(dialog->string);
 
 		if(dialog->avatar)
@@ -1541,6 +1564,11 @@ void gui_dialogue_parse( StaticDialogue *dialog, int pos )
 
 			// Now create and parse the static string, and re-size the dialogue height to fit. (TODO!)
 			dialog->string = gui_static_text_new((dialog->__container->pstring)[pos - 1], dialog->font, 0, bmap_width(dialog->background->bmap) - STATIC_DIALOGUE_TEXT_OFFSET_X);
+
+			// Play the sound if present.
+			if(dialog->snd_traversal)
+				if(!snd_playing(dialog->__snd_traversal_handler))
+					dialog->__snd_traversal_handler = snd_play(dialog->snd_traversal, gui_dialogue_get_volume(dialog), 0);
 
 			// Render the text.
 			gui_static_text_render(dialog->string, write_x, write_y, 100.0, dialog->layer + 2);
@@ -1623,6 +1651,54 @@ void gui_dialogue_update_alpha( StaticDialogue *dialog, float alpha )
 	}
 }
 
+/*
+ * void gui_dialogue_update_volume( StaticDialogue *dialog, float volume )
+ *
+ * Updates the current volume of the dialogue sound effects.
+ */
+void gui_dialogue_update_volume( StaticDialogue *dialog, float volume )
+{
+	if(dialog)
+		dialog->volume = (float) ifelse(volume > 0.0, volume, midi_vol);
+}
+
+#define __CREATE_SOUND(channel, file) if(dialog->snd_##channel##) snd_remove(dialog->snd_##channel##); dialog->snd_##channel## = snd_create(file)
+
+/*
+ * void gui_dialogue_update_sound( StaticDialogue *dialog, int channel, String *snd_file )
+ *
+ * Sets the sound to be played when certain events of the dialogue object is executed.
+ * (visible, invisible and when traversing between dialogue lines).
+ * The second parameter accepts SOUND_SHOW, SOUND_HIDE or SOUND_TRAVERSAL and the third
+ * parameter gives the exact location to the sound file to be played with certain events.
+ */
+void gui_dialogue_update_sound( StaticDialogue *dialog, int channel, String *snd_file )
+{
+	if(dialog && snd_file)
+	{
+		switch(channel)
+		{
+			 case    SOUND_SHOW:
+			 {
+				 __CREATE_SOUND(visible, snd_file);
+				 break;
+			 }
+
+			 case    SOUND_HIDE:
+			 {
+				 __CREATE_SOUND(invisible, snd_file);
+				 break;
+			 }
+
+			 case    SOUND_TRAVERSAL:
+			 {
+				 __CREATE_SOUND(traversal, snd_file);
+				 break;
+			 }
+		}
+	}
+}
+
 FONT *gui_dialogue_get_font( StaticDialogue *dialog )
 {
 	if(!dialog)
@@ -1633,24 +1709,20 @@ FONT *gui_dialogue_get_font( StaticDialogue *dialog )
 
 float gui_dialogue_get_alpha( StaticDialogue *dialog )
 {
-	if(dialog)
-		return dialog->alpha;
-
-	return -1.0;
+	return (float) ifelse(dialog, dialog->alpha, -1.0);
 }
 
 int gui_dialogue_get_lines( StaticDialogue *dialog )
 {
-	if(dialog)
-		return dialog->lines;
-
-	return -1;
+	return (int) ifelse(dialog, dialog->lines, -1);
 }
 
 int gui_dialogue_get_layer( StaticDialogue *dialog )
 {
-	if(dialog)
-		return dialog->layer;
+	return (int) ifelse(dialog, dialog->layer, -1);
+}
 
-	return -1;
+float gui_dialogue_get_volume( StaticDialogue *dialog )
+{
+	return (float) ifelse(dialog, dialog->volume, -1.0);
 }

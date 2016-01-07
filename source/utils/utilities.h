@@ -201,7 +201,7 @@ typedef ENTITY                             Object;
 typedef TEXT                               Text;
 typedef VIEW                               View;
 typedef FONT                               Font;
-typedef SOUND                              Stream;
+typedef SOUND                              Sound;
 typedef PARTICLE                           Particle;
 typedef VECTOR                             Vector3;
 typedef VECTOR                             Vector;
