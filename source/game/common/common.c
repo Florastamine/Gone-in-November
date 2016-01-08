@@ -319,7 +319,8 @@ __static void __p_fade_in( PANEL *p, float f, float t, float s )
 		__p_set_translucent(p);
 
 		p->alpha = f;
-		while(p->alpha < t) {
+		while(p->alpha < t)
+		{
 			p->alpha += s * time_step;
 
 			wait(1.0);
@@ -334,7 +335,8 @@ __static void __p_fade_out( PANEL *p, float f, float t, float s )
 		__p_set_translucent(p);
 
 		p->alpha = f;
-		while(p->alpha > t) {
+		while(p->alpha > t)
+		{
 			p->alpha -= s * time_step;
 
 			wait(1.0);
@@ -610,7 +612,7 @@ void game_scene_load( STRING *scene )
 	if(game_scene_is_fade())
 	{
 		__p_fade_in(p, 0.0, 100.0, game_scene_get_fade_speed());
-		while(proc_status(__p_fade_in)) wait(1.0); // Block the local static function (because of wait(1) could allow
+		while(proc_status(__p_fade_in) > 1) wait(1.0); // Block the local static function (because of wait(1) could allow
 		                                           // level_load() to be executed at the same time due to concurrency).
 	}
 
