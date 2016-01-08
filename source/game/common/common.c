@@ -645,33 +645,6 @@ void game_scene_load( STRING *scene )
 	game_log_write( str_printf(NULL, "Scene <%s> loaded. Operation took %f seconds.", _chr(scene), load_time * POW_10_6) );
 }
 
-__static void __cfade_out()
-{
-	float old = MPlayer_singleton->volume;
-	while( MPlayer_singleton->volume > 0.0 )
-	{
-		media_tune( game_mplayer_get_handle(), MPlayer_singleton->volume, 0, 0 );
-
-		MPlayer_singleton->volume -= MPLAYER_CROSSFADE_SPEED * time_step;
-		wait(1.0);
-	}
-
-	MPlayer_singleton->volume = old;
-}
-
-__static void __cfade_in()
-{
-	float old = MPlayer_singleton->volume;
-	MPlayer_singleton->volume = 0.0;
-	while( MPlayer_singleton->volume < old )
-	{
-		media_tune( game_mplayer_get_handle(), MPlayer_singleton->volume, 0, 0 );
-
-		MPlayer_singleton->volume += MPLAYER_CROSSFADE_SPEED * time_step;
-		wait(1.0);
-	}
-}
-
 /*
  * void game_mplayer_new( const STRING *path, const STRING *extension )
  *
@@ -820,26 +793,15 @@ void  game_mplayer_set_volume( float vol )
 	    MPlayer_singleton->volume = abs(vol);
 }
 
-BOOL  game_mplayer_get_cfade()
-{
-	if(MPlayer_singleton)
-	    return MPlayer_singleton->fade;
-}
-
-void  game_mplayer_set_cfade( BOOL b )
-{
-	if(MPlayer_singleton)
-	    MPlayer_singleton->fade = b;
-}
-
 void game_mplayer_next()
 {
 	if(MPlayer_singleton)
 	{
 		if( game_mplayer_get_pos() < game_mplayer_get_total_tracks() )
-		    MPlayer_singleton->pos =  game_mplayer_get_pos() + 1;
-
-		game_mplayer_play();
+		{
+			MPlayer_singleton->pos =  game_mplayer_get_pos() + 1;
+			game_mplayer_play();
+		}
 	}
 }
 
@@ -848,33 +810,26 @@ void game_mplayer_prev()
 	if(MPlayer_singleton)
 	{
 		if(game_mplayer_get_pos() > 1)
-		    MPlayer_singleton->pos =  game_mplayer_get_pos() - 1;
-
-		game_mplayer_play();
+		{
+			MPlayer_singleton->pos =  game_mplayer_get_pos() - 1;
+			game_mplayer_play();
+		}
 	}
 }
 
 void game_mplayer_pause()
 {
-	if( media_playing(game_mplayer_get_handle()) )
+	if(MPlayer_singleton)
 	{
-		if( game_mplayer_get_cfade() )
-		{
-			__cfade_out();
-			while(proc_status(__cfade_out)) wait(1.0);
-		}
-		media_pause(game_mplayer_get_handle());
+		if( media_playing(game_mplayer_get_handle()) )
+			media_pause(game_mplayer_get_handle());
 	}
 }
 
 void game_mplayer_play()
 {
 	game_mplayer_stop();
-	while(proc_status(game_mplayer_stop)) wait(1.0); // In case of crossfading
-
 	MPlayer_singleton->handle = media_play((MPlayer_singleton->track_list->pstring)[MPlayer_singleton->pos - 1], NULL, game_mplayer_get_volume());
-	if( game_mplayer_get_cfade() ) // Crossfading enabled?
-	    __cfade_in();
 }
 
 void game_mplayer_play( int id )
@@ -901,14 +856,7 @@ void game_mplayer_play( STRING *substr )
 void game_mplayer_stop()
 {
 	if( media_playing(game_mplayer_get_handle()) )
-	{
-		if( game_mplayer_get_cfade() )
-		{
-			__cfade_out();
-			while(proc_status(__cfade_out)) wait(1.0);
-		}
 		media_stop(game_mplayer_get_handle());
-	}
 }
 
 /*

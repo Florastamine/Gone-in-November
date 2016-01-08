@@ -376,9 +376,6 @@ __namespace(Player) {
 
 	void  game_mplayer_set_volume( __In float vol );
 	float game_mplayer_get_volume();
-
-	BOOL  game_mplayer_get_cfade();
-	void  game_mplayer_set_cfade( __In BOOL b );
 }
 
 #include "common.c"
