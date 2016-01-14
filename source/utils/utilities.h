@@ -571,6 +571,7 @@ __namespace() {
    intptr_t __cdecl _execl( const char *cmdname, const char *arg0, ... );
    errno_t __cdecl strcpy_s( char *strDestination,  size_t numberOfElements,  const char *strSource );
    errno_t __cdecl _access_s( const char *path, int mode );
+   int __cdecl system(const char *command);
 
 	int  ___libc_init__done__ = 0;
 	int  __assertion_allowed  = 1;

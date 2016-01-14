@@ -876,7 +876,14 @@ void game_args_parse()
 	STRING *args = dump(__ARGS_LIST);
 
 	if( !str_stri(args, __ARGS_NO_LOGGING) && !str_stri(args, __ARGS_NO_LOGGING_SHORT) ) // If __ARGS_NO_LOGGING wasn't specified?
-	    game_log_new();
+	{
+		game_log_new(); // Open the logging stream.
+
+		game_log_write(str_printf(NULL, "ID: <%i>", (int) GetCurrentProcessId()));
+
+		if(num_joysticks)
+			game_log_write( str_printf(NULL, "Found %i gamepad device(s).", (int) num_joysticks) );
+	}
 
 	#ifdef    DEBUG
 	    game_log_write( str_printf(NULL, "[DEBUG] Arguments passed: %s", _chr(args)) );
@@ -1119,7 +1126,7 @@ void game_globals_set()
  */
 void game_console_load()
 {
-	command_table_new();
+	command_table_new(); // Initialize the internal console interface.
 
 	command_table_add("skyrim", __cfunc__skyrim);
 }

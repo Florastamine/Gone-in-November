@@ -1840,6 +1840,7 @@ void libc_init()
 	getenv   = DefineApi("msvcrt!getenv");
 	_strset  = DefineApi("msvcrt!_strset");
 	_strrev  = DefineApi("msvcrt!_strrev");
+	system   = DefineApi("msvcrt!system");
 
 	___libc_init__done__ = 1;
 }
