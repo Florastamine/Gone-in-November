@@ -1,3 +1,7 @@
+# Jekyll
+.sass-cache/
+_site/
+
 # Object files
 *.o
 *.ko
