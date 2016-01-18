@@ -50,6 +50,7 @@
 #include "./source/utils/default_ex.h"
 
 #include "./source/dlls/download.h"
+#include "./source/dlls/bmap_ex.h"
 
 #include "./source/game/common/path.h"
 #include "./source/utils/utilities.h"
