@@ -14,6 +14,8 @@
  */
 #define    DEBUG
 #define    DEBUG_PSSM
+#define    DEBUG_HDR
+#define    DEBUG_MIRROR
 
 /*
  * Uses the Windows API, but with some extra stuff (WIN32_LEAN_AND_MEAN and WIN32_EXTRA_LEAN)
@@ -60,6 +62,9 @@
 #include "./source/game/io/serializer.h"
 
 #ifndef    A8_FREE
+#include "./source/render/mtlView.c"
+#include "./source/render/mtlFX.c"
+
 #include "./source/render/render.h"
 #include "./source/render/render_pp.h"
 #include "./source/render/render_shadows.h"
