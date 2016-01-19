@@ -2028,3 +2028,84 @@ void object_draw(void *ptr)
 {
 	object_draw(ptr, 3.0);
 }
+
+/*
+ * void ini_write(const char *filename, char *section, char *entry, char *value)
+ * void ini_write_int(const char *filename, char *section, char *entry, int i)
+ * void ini_write_float(const char *filename, char *section, char *entry, float f)
+ *
+ * Writes a generic char array, integer, or float value to the specified INI file.
+ * The path to the file must be an absolute path.
+ */
+void ini_write(const char *filename, char *section, char *entry, char *value)
+{
+	#ifdef    WINDOWS_API
+		WritePrivateProfileString(section, entry, value, filename);
+	#endif
+}
+
+void ini_write_int(const char *filename, char *section, char *entry, int i)
+{
+	ini_write(filename, section, entry, _chr(str_for_int(NULL, i)));
+}
+
+void ini_write_float(const char *filename, char *section, char *entry, float f)
+{
+	ini_write(filename, section, entry, _chr(str_for_float(NULL, f)));
+}
+
+/*
+ * TEXT *ini_read_sections(const char *filename)
+ *
+ * Reads out all sections of the specified INI file.
+ * The path to the file must be an absolute path.
+ *
+ * text->strings contains the number of read sections.
+ */
+TEXT *ini_read_sections(const char *filename)
+{
+	TEXT *text = txt_create(0, 1);
+
+	#ifdef    WINDOWS_API
+		int len = GetPrivateProfileString(NULL, NULL, NULL, __ini_buffer__, INI_BUFFER_LENGTH - 1, filename);
+		char *str = __ini_buffer__;
+
+		while(str < __ini_buffer__ + len)
+		{
+			txt_addstring(text, str_create(str));
+			str += strlen(str) + 1;
+		}
+	#endif
+
+	return text;
+}
+
+/*
+ * const char *ini_read(const char *filename, char *section, char *entry, char *defaultValue)
+ * int ini_read_int(char *filename, char *section, char *entry, int defaultValue)
+ * float ini_read_float(char *filename, char *section, char *entry, float defaultValue)
+ *
+ * Reads out a generic char array, an integer, or a float value out of an INI file.
+ * The path to file file must be an absolute path.
+ */
+const char *ini_read(const char *filename, char *section, char *entry, char *defaultValue)
+{
+	char *buffer = MALLOC(INI_BUFFER_LENGTH, char);
+
+	#ifdef    WINDOWS_API
+		int len = GetPrivateProfileString(section, entry, defaultValue, __ini_buffer__, INI_BUFFER_LENGTH - 1, filename);
+		strcpy(buffer, __ini_buffer__);
+	#endif
+
+	return buffer;
+}
+
+int ini_read_int(char *filename, char *section, char *entry, int defaultValue)
+{
+	return str_to_int( ini_read(filename, section, entry, str_for_int(NULL, defaultValue)) );
+}
+
+float ini_read_float(char *filename, char *section, char *entry, float defaultValue)
+{
+	return str_to_float(ini_read(filename, section, entry, str_for_float(NULL, defaultValue)));
+}

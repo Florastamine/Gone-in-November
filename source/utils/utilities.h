@@ -81,6 +81,7 @@
  * + v0.3.1-alpha
  * - Added Lemming's str_width_ex().
  * - Added hex_to_rgb(), object_draw().
+ * - Added a set of functionalities for reading from/writing to .ini files.
  * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
@@ -905,6 +906,49 @@ __namespace(io) {
      * Fetchs the extension of a given file name.
      */
 	char *file_get_ext ( __In const char *fn );
+
+    /*
+     * A set of facilities used for writing to and reading from .ini files.
+     * You should use the Windows registry whenever possible (it is available in the Gamestudio API
+     * through the sys_get/set*() functions), as Microsoft may deprecate and/or remove the INI API in the future.
+     * But INI is portable across platforms and it's easier to read.
+     */
+    #define    INI_BUFFER_LENGTH    3072
+    __static char __ini_buffer__[INI_BUFFER_LENGTH];
+
+    /*
+     * void ini_write(const char *filename, char *section, char *entry, char *value)
+     * void ini_write_int(const char *filename, char *section, char *entry, int i)
+     * void ini_write_float(const char *filename, char *section, char *entry, float f)
+     *
+     * Writes a generic char array, integer, or float value to the specified INI file.
+     * The path to the file must be an absolute path.
+     */
+    void ini_write(const char *filename, char *section, char *entry, char *value);
+    void ini_write_int(const char *filename, char *section, char *entry, int i);
+    void ini_write_float(const char *filename, char *section, char *entry, float f);
+
+    /*
+     * const char *ini_read(const char *filename, char *section, char *entry, char *defaultValue)
+     * int ini_read_int(char *filename, char *section, char *entry, int defaultValue)
+     * float ini_read_float(char *filename, char *section, char *entry, float defaultValue)
+     *
+     * Reads out a generic char array, an integer, or a float value out of an INI file.
+     * The path to the file must be an absolute path.
+     */
+    const char *ini_read(const char *filename, char *section, char *entry, char *defaultValue);
+    int ini_read_int(char *filename, char *section, char *entry, int defaultValue);
+    float ini_read_float(char *filename, char *section, char *entry, float defaultValue);
+
+    /*
+     * TEXT *ini_read_sections(const char *filename)
+     *
+     * Reads out all sections of the specified INI file.
+     * The path to the file must be an absolute path.
+     *
+     * text->strings contains the number of read sections.
+     */
+    TEXT *ini_read_sections(const char *filename);
 }
 
 __namespace(GUI) {

@@ -482,7 +482,7 @@ void hdr_event()
 			viewFilter[2]->material->skill3 = mtl_hdr->skill3; // Exposure Compensation Factor
 			viewFilter[2]->material->skin1 = cameraTarget;
 #ifdef DEBUG_HDR
-			DEBUG_BMAP(viewSecond->bmap,10,0.5);
+			// DEBUG_BMAP(viewSecond->bmap,10,0.5);
 			DEBUG_BMAP(viewFilter[0]->bmap,150,0.5);
 			DEBUG_BMAP(viewFilter[1]->bmap,290,0.5);
 #endif
