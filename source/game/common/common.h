@@ -88,9 +88,14 @@
 #define LAYER_GUI_2     7
 #define LAYER_GUI_3     8
 #define LAYER_GUI_4     9
-#define LAYER_MESSAGE   10
-#define LAYER_DEBUG_1   11
-#define LAYER_DEBUG_2   12
+#define LAYER_GUI_5     10
+#define LAYER_GUI_6     11
+#define LAYER_GUI_7     12
+#define LAYER_GUI_8     13
+#define LAYER_GUI_9     14
+#define LAYER_MESSAGE   15
+#define LAYER_DEBUG_1   16
+#define LAYER_DEBUG_2   17
 
 /*
  * GameState (struct)
