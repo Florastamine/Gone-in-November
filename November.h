@@ -83,6 +83,7 @@
 #include "./source/game/common/common.h"
 #include "./source/game/fx/unmanaged.h"
 #include "./source/game/gui/gui.h"
+#include "./source/game/gui/gui_menu.h"
 #include "./source/game/ai/behavior.h"
 
 #endif /* November.h */
