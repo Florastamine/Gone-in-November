@@ -20,9 +20,6 @@
  * A plain simple and rewritten inventory system from the TUST project
  * (https://github.com/MasterQ32/TUST), which fixed, modified and added features.
  * TODO: - Custom function pointers for managing items in the inventory.
- *       - Custom inventory size, background image, and coloring.
- *       - Padding variables for additional data (item type, belong to whom, etc. ect.)
- *       - Get count of bag.
  *
  * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
@@ -35,16 +32,17 @@
 #define    INV_SIZE_X            254
 #define    INV_SIZE_Y            290
 #define    INV_ITEM_SIZE         32
-#define    INV_ITEMS_X           6
-#define    INV_ITEMS_Y           6
 #define    INV_ITEMS_OFFSET_X    20
 #define    INV_ITEMS_OFFSET_Y    30
-#define    INV_ITEM_GAP          4 // Gap between item slots
 
+#define    BAG_SIZE_X                  254
+#define    BAG_SIZE_Y                  290
+#define    BAG_ITEM_GAP_LENGTH         4
+#define    ITEM_MAX_PAD_VARS           8
 #define    BAG_ITEM_MAX_NAME_LENGTH    128
 #define    BAG_ITEM_MAX_DESC_LENGTH    256
 
-#define    BAG_PAD(bag, num)    *(bag->pad + (num - 1))
+#define    ITEM_PAD(item, num)    *(item->pad + (num - 1))
 
 /*
  * BagItem (struct)
@@ -78,10 +76,13 @@ typedef struct Bag
 	PANEL *container;
 
 	int count;
+	int max_items;
 
 	TEXT *text;
 } Bag;
 
+Bag *bag_new(const char *background_file, const char *name, int layer, const int max_items, const float w, const float h);
+Bag *bag_new(const char *background_file, const char *name, int layer, const int max_items);
 Bag *bag_new(const char *background_file, const char *name, int layer);
 void bag_free(Bag *bag);
 
@@ -101,6 +102,14 @@ void bag_center(Bag *bag);
 
 void bag_set_pos(Bag *bag, float x, float y);
 VECTOR *bag_get_pos(Bag *bag);
+
+int bag_get_count(Bag *bag);
+
+void bag_set_color(Bag *bag, COLOR *color);
+void bag_set_color(Bag *bag);
+
+void bag_set_alpha(Bag *bag, float alpha);
+float bag_get_alpha(Bag *bag);
 
 #include "inventory.c"
 #endif /* inventory.h */

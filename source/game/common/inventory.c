@@ -23,12 +23,17 @@
  * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
-Bag *bag_new(const char *background_file, const char *name, int layer)
+Bag *bag_new(const char *background_file, const char *name, int layer, const int max_items, const float w, const float h)
 {
-	Bag* bag = sys_malloc(sizeof(Bag));
+	w = abs(w);
+	h = abs(h);
+
+	Bag* bag = (Bag *) sys_malloc(sizeof(Bag));
 	bag->count = 0;
+	bag->max_items = (int) ifelse(max_items > 0, max_items, 36);
 
 	int nInvItemsX = 0, nInvItemsY = 0;
+	int items_line = (int) sqrt(bag->max_items);
 	layer = (int) ifelse(layer > 0, layer, 1);
 
 	// Create background panel
@@ -38,8 +43,7 @@ Bag *bag_new(const char *background_file, const char *name, int layer)
 		bag->container->bmap = bmap_create(background_file);
 	else
 	{
-		const BMAP *img = bmap_createblack(INV_SIZE_X, INV_SIZE_Y, 24);
-		bag->container->bmap = img;
+		bag->container->bmap = bmap_createblack(w, h, 16);
 
 		// Draw item boxes
 		int vFormat = bmap_lock(bag->container->bmap, 0);
@@ -47,20 +51,20 @@ Bag *bag_new(const char *background_file, const char *name, int layer)
 		int i, j, k;
 
 		// For each box...
-		for(i=0; i<INV_ITEMS_X; i++)
+		for(i=0; i < items_line; i++)
 		{
-			for(j=0; j<INV_ITEMS_Y; j++)
+			for(j=0; j < items_line; j++)
 			{
 				// Draw the borders
 				for(k=0; k<INV_ITEM_SIZE+2; k++)
 				{
 					// Top and left border
-					pixel_to_bmap(bag->container->bmap, INV_ITEMS_OFFSET_X+(i*(INV_ITEM_SIZE+INV_ITEM_GAP))+k, INV_ITEMS_OFFSET_Y+(j*(INV_ITEM_SIZE+INV_ITEM_GAP)), vPixel);
-					pixel_to_bmap(bag->container->bmap, INV_ITEMS_OFFSET_X+(i*(INV_ITEM_SIZE+INV_ITEM_GAP)), INV_ITEMS_OFFSET_Y+(j*(INV_ITEM_SIZE+INV_ITEM_GAP))+k, vPixel);
+					pixel_to_bmap(bag->container->bmap, INV_ITEMS_OFFSET_X+(i*(INV_ITEM_SIZE+BAG_ITEM_GAP_LENGTH))+k, INV_ITEMS_OFFSET_Y+(j*(INV_ITEM_SIZE+BAG_ITEM_GAP_LENGTH)), vPixel);
+					pixel_to_bmap(bag->container->bmap, INV_ITEMS_OFFSET_X+(i*(INV_ITEM_SIZE+BAG_ITEM_GAP_LENGTH)), INV_ITEMS_OFFSET_Y+(j*(INV_ITEM_SIZE+BAG_ITEM_GAP_LENGTH))+k, vPixel);
 
 					// Right and bottom border
-					pixel_to_bmap(bag->container->bmap, INV_ITEMS_OFFSET_X+(i*(INV_ITEM_SIZE+INV_ITEM_GAP))+INV_ITEM_SIZE+1, INV_ITEMS_OFFSET_Y+(j*(INV_ITEM_SIZE+INV_ITEM_GAP))+k, vPixel);
-					pixel_to_bmap(bag->container->bmap, INV_ITEMS_OFFSET_X+(i*(INV_ITEM_SIZE+INV_ITEM_GAP))+k, INV_ITEMS_OFFSET_Y+(j*(INV_ITEM_SIZE+INV_ITEM_GAP))+INV_ITEM_SIZE+1, vPixel);
+					pixel_to_bmap(bag->container->bmap, INV_ITEMS_OFFSET_X+(i*(INV_ITEM_SIZE+BAG_ITEM_GAP_LENGTH))+INV_ITEM_SIZE+1, INV_ITEMS_OFFSET_Y+(j*(INV_ITEM_SIZE+BAG_ITEM_GAP_LENGTH))+k, vPixel);
+					pixel_to_bmap(bag->container->bmap, INV_ITEMS_OFFSET_X+(i*(INV_ITEM_SIZE+BAG_ITEM_GAP_LENGTH))+k, INV_ITEMS_OFFSET_Y+(j*(INV_ITEM_SIZE+BAG_ITEM_GAP_LENGTH))+INV_ITEM_SIZE+1, vPixel);
 				}
 			}
 		}
@@ -79,6 +83,16 @@ Bag *bag_new(const char *background_file, const char *name, int layer)
 		str_cpy((bag->text->pstring)[0], "Inventory");
 
 	return bag;
+}
+
+Bag *bag_new(const char *background_file, const char *name, int layer, const int max_items)
+{
+	return bag_new(background_file, name, layer, max_items, BAG_SIZE_X, BAG_SIZE_Y);
+}
+
+Bag *bag_new(const char *background_file, const char *name, int layer)
+{
+	return bag_new(background_file, name, layer, 0, BAG_SIZE_X, BAG_SIZE_Y);
 }
 
 void bag_free(Bag *bag)
@@ -125,10 +139,11 @@ __static void __bag_process(Bag *bag, const int mode)
 			{
 				if(mode == __SHOW)
 				{
+					int j = (int) sqrt(bag->max_items);
 					bag->iterator->container->flags |= (SHOW);
 
-					bag->iterator->container->pos_x = bag->container->pos_x + 1 + INV_ITEMS_OFFSET_X + (INV_ITEM_GAP * (i%INV_ITEMS_X)) + (INV_ITEM_SIZE*(i%INV_ITEMS_X));
-					bag->iterator->container->pos_y = bag->container->pos_y + 1 + INV_ITEMS_OFFSET_Y + (INV_ITEM_GAP * (integer(i/INV_ITEMS_Y))) + (INV_ITEM_SIZE*(integer(i/INV_ITEMS_Y)));
+					bag->iterator->container->pos_x = bag->container->pos_x + 1 + INV_ITEMS_OFFSET_X + (BAG_ITEM_GAP_LENGTH * (i % j)) + (INV_ITEM_SIZE*(i % j));
+					bag->iterator->container->pos_y = bag->container->pos_y + 1 + INV_ITEMS_OFFSET_Y + (BAG_ITEM_GAP_LENGTH * (integer(i/j))) + (INV_ITEM_SIZE*(integer(i/j)));
 				}
 				else
 					bag->iterator->container->flags &= ~(SHOW);
@@ -185,7 +200,7 @@ void bag_add_item(Bag *bag, BagItem *item)
 {
 	if(bag && item)
 	{
-		if(bag->count < INV_ITEMS_X * INV_ITEMS_Y)
+		if(bag->count < bag->max_items)
 		{
 			if(!(bag->tail))
 			{
@@ -303,6 +318,7 @@ BagItem *item_new(Bag *bag, const char *name, const char *description, const cha
 	BagItem *item        = (BagItem *) sys_malloc(sizeof(BagItem));
 	item->name           = (char *) sys_malloc(BAG_ITEM_MAX_NAME_LENGTH * sizeof(char));
 	item->description    = (char *) sys_malloc(BAG_ITEM_MAX_DESC_LENGTH * sizeof(char));
+	item->pad            = (float *) sys_malloc(ITEM_MAX_PAD_VARS * sizeof(float));
 
 	if(name)
 		if(strlen(name) <= BAG_ITEM_MAX_NAME_LENGTH)
@@ -320,7 +336,10 @@ BagItem *item_new(Bag *bag, const char *name, const char *description, const cha
 	item->container->size_y = INV_ITEM_SIZE;
 
 	if(!image)
+	{
 		item->container->bmap = bmap_createblack(INV_ITEM_SIZE, INV_ITEM_SIZE, 16);
+		bmap_fill( item->container->bmap, vector(random(255.0), random(255.0), random(255.0)), 100.0 );
+	}
 	else
 		item->container->bmap = bmap_create(image);
 
@@ -361,4 +380,51 @@ void bag_render_items(Bag *bag)
 void bag_hide_items(Bag *bag)
 {
 	__bag_process_items__(bag, __HIDE);
+}
+
+int bag_get_count(Bag *bag)
+{
+	return (int) ifelse(bag != NULL, bag->count, -1);
+}
+
+void bag_set_color(Bag *bag, COLOR *color)
+{
+	if(bag)
+		if(color)
+			bmap_fill(bag->container->bmap, color, 100.0);
+		else
+			bmap_fill(bag->container->bmap, nullvector, 100.0);
+}
+
+void bag_set_color(Bag *bag)
+{
+	bag_set_color(bag, NULL);
+}
+
+void bag_set_alpha(Bag *bag, float alpha)
+{
+	if(bag)
+	{
+		if(alpha >= 0.0 && alpha < 100.0) // Not totally transparent nor opaque
+		{
+			if(!(bag->container->flags & SHOW))
+				bag->container->flags |= (SHOW);
+			if(!(bag->container->flags & TRANSLUCENT))
+				bag->container->flags |= (TRANSLUCENT);
+
+			bag->container->alpha = alpha;
+		}
+		else if(alpha < 0.0) // Totally transparent, then do not render it.
+		{
+			// TODO: Do not render if alpha <= 0.0
+		}
+		else // Totally opaque, then do not render its translucency.
+			if(bag->container->flags & TRANSLUCENT)
+				bag->container->flags &= ~(TRANSLUCENT);
+	}
+}
+
+float bag_get_alpha(Bag *bag)
+{
+	return (float) ifelse(bag != NULL, bag->container->alpha, -1.0);
 }

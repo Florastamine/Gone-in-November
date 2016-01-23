@@ -81,6 +81,7 @@
 #include "./source/game/shared.h"
 #include "./source/game/common/cfuncs.h"
 #include "./source/game/common/common.h"
+#include "./source/game/common/inventory.h"
 #include "./source/game/common/scene_list.h"
 #include "./source/game/common/scene.h"
 #include "./source/game/fx/unmanaged.h"
