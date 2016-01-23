@@ -40,7 +40,7 @@ Bag *bag_new(const char *background_file, const char *name, int layer, const int
 	bag->container = pan_create(NULL, layer);
 
 	if(background_file)
-		bag->container->bmap = bmap_create(background_file);
+		bag->container->bmap = bmap_createpart(background_file, 0, 0, w, h);
 	else
 	{
 		bag->container->bmap = bmap_createblack(w, h, 16);
