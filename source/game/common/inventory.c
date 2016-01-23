@@ -405,18 +405,12 @@ void bag_set_alpha(Bag *bag, float alpha)
 {
 	if(bag)
 	{
-		if(alpha >= 0.0 && alpha < 100.0) // Not totally transparent nor opaque
+		if(alpha < 100.0)
 		{
-			if(!(bag->container->flags & SHOW))
-				bag->container->flags |= (SHOW);
 			if(!(bag->container->flags & TRANSLUCENT))
 				bag->container->flags |= (TRANSLUCENT);
 
 			bag->container->alpha = alpha;
-		}
-		else if(alpha < 0.0) // Totally transparent, then do not render it.
-		{
-			// TODO: Do not render if alpha <= 0.0
 		}
 		else // Totally opaque, then do not render its translucency.
 			if(bag->container->flags & TRANSLUCENT)
