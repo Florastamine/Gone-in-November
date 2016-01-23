@@ -44,6 +44,7 @@ void scene_data_free(ChapterData *data);
 
 void scene_add(ChapterData *data);
 void scene_remove(ChapterData *data);
+void scene_load(ChapterData *data, const void *loader);
 void scene_load(ChapterData *data);
 
 #include "scene.c"

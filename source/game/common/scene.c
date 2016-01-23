@@ -80,7 +80,7 @@ void scene_remove(ChapterData *data)
         ChapterListRemoveNode(ChapterList_singleton, data);
 }
 
-void scene_load(ChapterData *data)
+void scene_load(ChapterData *data, const void *loader)
 {
     if(ChapterList_singleton && data)
     {
@@ -100,7 +100,16 @@ void scene_load(ChapterData *data)
 
         // Begin loading the level.
         if(file_exists(link->data->chapter_iname))
-            game_scene_load(link->data->chapter_iname);
+        {
+            void *__scene_loader(const char *name);
+
+            if(loader)
+                __scene_loader = loader;
+            else
+                __scene_loader = level_load; // level_load() is Acknex's default scene loader.
+
+            __scene_loader(link->data->chapter_iname);
+        }
         else
         {
             game_log_write(str_printf(NULL, "Request to load the scene data block (internal_name = %s) failed. Reason: The scene file doesn't exist.", link->data->chapter_iname));
@@ -125,4 +134,9 @@ void scene_load(ChapterData *data)
     }
 
     // Done.
+}
+
+void scene_load(ChapterData *data)
+{
+    scene_load(data, NULL);
 }
