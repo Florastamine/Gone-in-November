@@ -76,6 +76,12 @@ copy "%ACKPATH%\D3DCompiler_42.dll" ..\builds\
 copy "%ACKPATH%\cudart32_41_22.dll" ..\builds\
 copy "%ACKPATH%\d3dx9_30.dll" ..\builds\
 
+rem Compress the GiN executable
+IF EXIST "%UPXPATH%\upx.exe" (
+echo Performing UPX compression...
+%UPXPATH%\upx -9 -f ..\builds\November.exe
+)
+
 mkdir ..\builds\redist
 xcopy .\redist\*.* ..\builds\redist\ /s /e /y
 
@@ -118,9 +124,9 @@ rename "..\builds\acknex.dll" "Kernel.dll"
 )
 
 del /f /s /q ..\builds\*.md
-
 cleanup
 
+cls
 rem ----- End of building -----
 
 set end_time=%time%
