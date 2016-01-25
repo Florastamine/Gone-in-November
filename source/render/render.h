@@ -46,15 +46,12 @@
 #define ATTRIBUTE_DEPTH                    1
 #define ATTRIBUTE_VOLPART                  2
 #define ATTRIBUTE_TEXMOV                   3
-#define ATTRIBUTE_REFRACTION_COL           4
 
 __namespace(render) {
 	typedef struct {
 		float depth;
 		float volpart;
 		float texmov;
-		
-		VECTOR *refraction;
 	} Attribute;
 	
 	typedef struct {	

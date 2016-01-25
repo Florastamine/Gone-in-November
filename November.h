@@ -73,8 +73,6 @@
 #include "./source/render/render_rain.h"
 #include "./source/render/render_dof.h"
 #include "./source/render/render_hdr.h"
-#include "./source/render/render_reflect.h"
-#include "./source/render/render_refract.h"
 #include "./source/render/render_utils.h"
 #endif
 

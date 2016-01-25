@@ -30,14 +30,6 @@ void render_queue_start()
 	    if( render_hdr_get_queued() ) render_hdr();
 	#endif
 	
-	#ifdef    __REFLECT
-	    if( render_reflect_get_queued() ) render_reflect();
-	#endif
-	
-	#ifdef    __REFRACT
-	    if( render_refract_get_queued() ) render_refract();
-	#endif
-	
 	/*
 	#ifdef    __SHADOW
 	    if( render_shadow_get_queued() ) render_shadow();

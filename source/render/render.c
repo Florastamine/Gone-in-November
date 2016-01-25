@@ -69,7 +69,6 @@ Attribute *attribute_new()
 {
 	Attribute *attribute = (Attribute *) sys_malloc(sizeof(Attribute));
 	
-	attribute->refraction = vector(1.0, 1.0, 1.0);
 	attribute->depth = 0;
 	attribute->volpart = 0;
 	attribute->texmov = 0;
@@ -113,10 +112,6 @@ void render_attribute_setup( ENTITY *object, const int mode, int value )
 		
 		case ATTRIBUTE_TEXMOV:
 		    attribute->texmov = value;
-		    break;
-		
-		case ATTRIBUTE_REFRACTION_COL:
-		    // vec_set(attribute->luminance, vec_fill(nullvector, value / 255));
 		    break;
 		
 		default: return;
