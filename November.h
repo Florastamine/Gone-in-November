@@ -60,20 +60,21 @@
 #include "./source/game/io/file.h"
 #include "./source/game/io/region.h"
 #include "./source/game/io/serializer.h"
+#include "./source/game/io/trophy.h"
 
 #ifndef    A8_FREE
-#include "./source/render/mtlView.c"
-#include "./source/render/mtlFX.c"
+    #include "./source/render/mtlView.c"
+    #include "./source/render/mtlFX.c"
 
-#include "./source/render/render.h"
-#include "./source/render/render_pp.h"
-#include "./source/render/render_shadows.h"
-#include "./source/render/render_surface.h"
-#include "./source/render/render_lrays.h"
-#include "./source/render/render_rain.h"
-#include "./source/render/render_dof.h"
-#include "./source/render/render_hdr.h"
-#include "./source/render/render_utils.h"
+    #include "./source/render/render.h"
+    #include "./source/render/render_pp.h"
+    #include "./source/render/render_shadows.h"
+    #include "./source/render/render_surface.h"
+    #include "./source/render/render_lrays.h"
+    #include "./source/render/render_rain.h"
+    #include "./source/render/render_dof.h"
+    #include "./source/render/render_hdr.h"
+    #include "./source/render/render_utils.h"
 #endif
 
 #include "./source/game/shared.h"

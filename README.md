@@ -2,9 +2,9 @@
 
 Welcome to Gone In November's official development page!
 
-Gone In November is a first-person exploration, surreal interactive story about rain, solitude, being forgotten and loss. It is currently in active development by one person and it is written with the help of the Acknex rendering/game library.
+Gone In November is a first-person exploration, surreal interactive story which is currently in active development by one person and it is written with the help of the Acknex rendering/game library.
 
-As the game code is updated directly on this GitHub page, you can easily tell if the game is still being developed just by looking at the last commit date. If it was made more than a month ago, then something must be wrong!
+As the game code is updated directly on this GitHub page, you can easily tell if the game is still being developed just by looking at the last commit's date. If it was made more than a month ago, then something must be wrong!
 
 If you wish to collaborate, let me know. I'll be very happy! (as the game is progressing fairly slow). Leave me a message at:
 * My personal Gmail account (florastamine@gmail.com)
@@ -13,16 +13,17 @@ If you wish to collaborate, let me know. I'll be very happy! (as the game is pro
 
 Currently I am accepting only 2D artists and composers.
 
-More information (early releases, progress, news) can be found on the game's main web page: [Here!](https://dl.dropboxusercontent.com/u/26857618/DP/index.html)
+More information (early releases, progress, news) can be found on the game's main web page: [Here!](http://florastamine.github.io/Gone-in-November/)
 
 ## Instructions on how to build the source code
+The source code cannot be built at the moment as it requires game assets which unfortunately cannot be given out due to licensing problems. You will need to wait for the game to be released.
 
 ### What you'll need:
 * Git (I use [git-scm](https://git-scm.com/))
 * [Atom](http://atom.io/), or your favorite text editor.
 * Acknex toolset (which can be downloaded [here](http://server.conitec.net/down/gstudio8_setup.exe))
 * The original game.
-* Custom game DLLs, which you can obtain [here](https://dl.dropboxusercontent.com/u/26857618/acknex_plugins.zip). Unzip everything to your `acknex_plugins` folder. 
+* Custom game DLLs, which you can obtain [here](https://dl.dropboxusercontent.com/u/26857618/acknex_plugins.zip). Unzip everything to your `acknex_plugins` folder.
 
 ### Downloading & Installing the toolset
 Since the game is written in **Lite-C** (which is actually C but with some elements borrowed from C++), you will need a special Lite-C toolset to be able to compile GiN, which can be downloaded [here](http://server.conitec.net/down/gstudio8_setup.exe). Upon installing the tools, select the option to install the free version. **(GiN can still be compiled with the free version, but shaders will not be enabled)**.
@@ -49,8 +50,10 @@ You have to specify the absolute path or relative path to the game folder, which
 #### ACKPATH
 Absolute path to the Acknex toolset folder (which contains **acknex.exe**)
 
-### Compiling the source code
+### Compiling/Running the source code
 After you've changed these variables in **./utils/ackvars.bat**, open **./November.c** with your text editor/IDE, and right after the first comment block, comment out the ```A8_FREE``` switch (if you're using the free version). Now simply run **./utils/build.bat** to start the build process. The result files will be in the **./builds/** folder.
 
+To run the project, simply move the resource file to the root of your cloned repository, and run **./utils/run.bat**. Or just open up SED, navigate to **./November.c** and hit F6.
+
 ## License
-Except most of the code in `./source/render/` and assets, everything else is released under the [WTFPL](http://www.wtfpl.net/) license, which means you can literally do whatever the f*ck you want with it.
+Except most of the code in `./source/render/` and game assets, everything else is released under the [WTFPL](http://www.wtfpl.net/) license, which means you can literally do whatever the f*ck you want with it.

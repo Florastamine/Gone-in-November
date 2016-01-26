@@ -44,9 +44,7 @@ status/exclusion.excl
 status/log.log
 
 # General
-GiN/
 wdf/main.cd/*
-November.c
 bindings.h
 *.ico
 *.cfg
