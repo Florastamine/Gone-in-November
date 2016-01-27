@@ -30,10 +30,11 @@
  */
 action act_rigid_body()
 {
-    my->flags |= (POLYGON);
+    ent_set_type(my, DYNAMIC_GENERIC);
 
  	c_setminmax(my);
  	my->push = OBSTACLE_GROUP;
+    my->flags |= (POLYGON);
 
     wait(1);
     switch((int) my->skill1)
@@ -92,6 +93,8 @@ action act_barrier()
  */
 action act_ssndsrc()
 {
+    ent_set_type(my, STATIC_SOUND_SOURCE);
+
     my->flags |= (INVISIBLE | PASSABLE);
 
     if(my->skill1 <= 0.0)
@@ -121,6 +124,8 @@ action act_ssndsrc()
  */
 action act_particle()
 {
+    ent_set_type(my, STATIC_PARTICLE);
+
     my->flags |= (PASSABLE);
 
     #ifdef    DEBUG

@@ -139,7 +139,7 @@ __static void __act_player_update_camera()
 	if (trace_hit)
 	{
 		#ifdef    DEBUG
-		    draw_point3d(&hit->x, COLOR_SCARLET, 75.0, 4.0);
+		    draw_point3d(&hit->x, COLOR_SCARLET, 100.0, 5.0);
 		#endif
 	}
 }
@@ -233,6 +233,8 @@ __static int __joy_force_y_to_int()
  */
 action act_player()
 {
+	ent_set_type(my, DYNAMIC_PLAYER);
+
 	#ifdef ACKPHYSX_H
 	game_log_write("Request to infiltrate the soul...");
 
