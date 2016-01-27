@@ -96,7 +96,7 @@
 #define __In
 #define __Out
 
-#define __VERSION "v0.3.0-alpha" // Seems familiar?
+#define __VERSION "v0.3.1-alpha" // Seems familiar?
 
 #ifdef    ENFORCE_STRICT
     #ifndef    PRAGMA_POINTER
