@@ -81,7 +81,7 @@ int main(int argc, char **argl)
 	pXent_setgroup(level_ent, LEVEL_GROUP);
 
 	// Activates PSSM shadows (four passes) and renders fog.
-	pssm_run(4);
+	// pssm_run(4);
 
 	game_fog_set(1, COLOR_SCARLET, vector(10.0, 5000.0, 0.0)); // Set the fog color (COLOR_SCARLET) and its range to the first (1) fog color slot.
 	game_fog_render(1); // Merely sets fog_color to ID.

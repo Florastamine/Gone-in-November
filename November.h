@@ -13,7 +13,7 @@
  * allows you to see the split passes and  manually adjust the sun position.
  */
 #define    DEBUG
-#define    DEBUG_PSSM
+// #define    DEBUG_PSSM
 #define    DEBUG_HDR
 #define    DEBUG_MIRROR
 
@@ -68,7 +68,7 @@
 
     #include "./source/render/render.h"
     #include "./source/render/render_pp.h"
-    #include "./source/render/render_shadows.h"
+    // #include "./source/render/render_shadows.h"
     #include "./source/render/render_surface.h"
     #include "./source/render/render_lrays.h"
     #include "./source/render/render_rain.h"
