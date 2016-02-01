@@ -1,6 +1,5 @@
 # Launcher code
-launcher/target/
-launcher/Cargo.lock
+launcher/bin/
 
 # Jekyll
 .sass-cache/

@@ -24,7 +24,7 @@ The source code cannot be built at the moment as it requires game assets which u
 * Acknex toolset (which can be downloaded [here](http://server.conitec.net/down/gstudio8_setup.exe))
 * The original game.
 * Custom game DLLs, which you can obtain [here](https://dl.dropboxusercontent.com/u/26857618/acknex_plugins.zip). Unzip everything to your `acknex_plugins` folder.
-* [rustc](https://www.rust-lang.org/) and [MinGW-w64](http://sourceforge.net/projects/mingw-w64/) for building the game launcher. (optional!)
+* A [Go](https://golang.org/) compiler for building the game launcher. **(optional!)**
 
 ### Downloading & Installing the toolset
 Since the game is written in **Lite-C** (which is actually C but with some elements borrowed from C++), you will need a special Lite-C toolset to be able to compile GiN, which can be downloaded [here](http://server.conitec.net/down/gstudio8_setup.exe). Upon installing the tools, select the option to install the free version. **(GiN can still be compiled with the free version, but shaders will not be enabled)**.
@@ -57,6 +57,8 @@ A complete list of environment variables can be found in the following files: [*
 After you've changed these variables in **./utils/ackvars.bat**, open **./November.c** with your text editor/IDE, and right after the first comment block, comment out the ```A8_FREE``` switch (if you're using the free version). Now simply run **./utils/build.bat** to start the build process. The result files will be in the **./builds/** folder.
 
 To run the project, simply move the resource file to the root of your cloned repository, and run **./utils/run.bat**. Or just open up SED, navigate to **./November.c** and hit F6.
+
+If you have a [Go](https://golang.org/) compiler lying around, the build script will also automagically build the game launcher for you. This is an optional step, as the game can still be started without the launcher.
 
 ## License
 Except most of the code in `./source/render/` and game assets, everything else is released under the [WTFPL](http://www.wtfpl.net/) license, which means you can literally do whatever the f*ck you want with it.
