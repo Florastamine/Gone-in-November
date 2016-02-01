@@ -24,6 +24,7 @@ The source code cannot be built at the moment as it requires game assets which u
 * Acknex toolset (which can be downloaded [here](http://server.conitec.net/down/gstudio8_setup.exe))
 * The original game.
 * Custom game DLLs, which you can obtain [here](https://dl.dropboxusercontent.com/u/26857618/acknex_plugins.zip). Unzip everything to your `acknex_plugins` folder.
+* [rustc](https://www.rust-lang.org/) and [MinGW-w64](http://sourceforge.net/projects/mingw-w64/) for building the game launcher. (optional!)
 
 ### Downloading & Installing the toolset
 Since the game is written in **Lite-C** (which is actually C but with some elements borrowed from C++), you will need a special Lite-C toolset to be able to compile GiN, which can be downloaded [here](http://server.conitec.net/down/gstudio8_setup.exe). Upon installing the tools, select the option to install the free version. **(GiN can still be compiled with the free version, but shaders will not be enabled)**.
@@ -49,6 +50,8 @@ You have to specify the absolute path or relative path to the game folder, which
 
 #### ACKPATH
 Absolute path to the Acknex toolset folder (which contains **acknex.exe**)
+
+A complete list of environment variables can be found in the following files: [**./utils/ackvars.md**](https://github.com/Florastamine/Gone-in-November/blob/master/utils/ackvars.md), which contains a list of variables and their descriptions; [**./utils/ackvars.bat**](https://github.com/Florastamine/Gone-in-November/blob/master/utils/ackvars.bat), which is the actual "header", containing the variables for use during the compiling process.
 
 ### Compiling/Running the source code
 After you've changed these variables in **./utils/ackvars.bat**, open **./November.c** with your text editor/IDE, and right after the first comment block, comment out the ```A8_FREE``` switch (if you're using the free version). Now simply run **./utils/build.bat** to start the build process. The result files will be in the **./builds/** folder.

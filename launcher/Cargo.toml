@@ -4,3 +4,4 @@ version = "0.1.0"
 authors = ["Florastamine <remilla.scarlet.94@gmail.com>"]
 
 [dependencies]
+hyper = "*"
