@@ -24,7 +24,7 @@ acknex __bind.c -nwnd -eq -nj -nv -wnd
 echo Packing resources and creating executables
 rem (if we've not specified a resource file yet.)
 
-IF NOT EXIST "%GAMEPATH%\*.wrs" (
+IF NOT EXIST "%GAMEPATH%\*.gpk" (
 
 echo Resource file not found. Will attempt to compile the resources...
 wed -r ..\\November.c >> log.log
@@ -44,6 +44,8 @@ xcopy ..\November.cd\*.* ..\builds\ /s /e /y
 del /f /s /q ..\November.cd\*.*
 rd ..\November.cd
 
+ren ..\builds\November.wrs base.gpk
+
 ) ELSE (
 
 echo Resources found at existing game path. Will only compile the executable.
@@ -56,7 +58,7 @@ rem Copy the executable & resources afterwards
 mkdir ..\builds\
 move ..\*.exe ..\builds
 move ..\*.dll ..\builds
-copy "%GAMEPATH%\*.wrs" ..\builds
+copy "%GAMEPATH%\*.gpk" ..\builds
 
 rem Copy remaining DLLs what are not automatically copied when using acknex -exe 
 rem instead or wed -r...
@@ -80,6 +82,21 @@ rem Compress the GiN executable
 IF EXIST "%UPXPATH%\upx.exe" (
 echo Performing UPX compression...
 %UPXPATH%\upx -9 -f ..\builds\November.exe
+)
+
+rem Build the launcher.
+IF EXIST "%GOROOT%\bin\go.exe" (
+echo Found a Go installation. Will attempt to compile the launcher.
+
+rem Backup the original GOPATH variable.
+set _GOPATH=%GOPATH%
+
+rem Go!
+set GOPATH=%REPOPATH%\launcher\
+go install launcher >> %GOPATH%\build_log.log
+copy %GOPATH%\bin\launcher.exe ..\builds\
+
+set GOPATH=%_GOPATH%
 )
 
 mkdir ..\builds\redist
