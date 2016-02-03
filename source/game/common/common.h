@@ -44,6 +44,7 @@
 
 #define __PSVS_VERSION   3030
 #define __GAME_VERSION   "v0.1.0-alpha-DEBUG"
+#define __GAME_DATA      "base.gpk"
 
 /*
  * Launch parameters.
@@ -287,8 +288,6 @@ __namespace(November) {
      */
     void game_title_set();
 
-    __static void __game_version_export();
-
     /*
      * void game_fog_set(int ID, VECTOR *color, VECTOR *range)
      *
@@ -313,6 +312,21 @@ __namespace(November) {
      * The user/player can then press [F11] to switch on the console (type "exit" to switch off the console).
      */
     void game_console_load();
+
+    /*
+     * game_resources_load()
+     *
+     * Loads the game resources' file. During development, resources are not packed into a single file
+     * but scattered across different folders and repositories, but in the completed game, resource files
+     * are used instead. .wrs format files are automatically loaded during startup. But again, if you want
+     * to use custom extensions, you'll have to manually load it with add_resource().
+     */
+    char *__game_data_buffer = NULL;
+    void game_resources_load();
+
+    void game_resources_free();
+
+    __static void __game_version_export();
 }
 
 __namespace(SceneLoadState) {
@@ -354,7 +368,7 @@ __namespace(SceneLoadState) {
 	void game_scene_load( __In STRING *scene );
 }
 
-__namespace(Player) {
+__namespace(MPlayer) {
 	void game_mplayer_new( __In const STRING *path, __In const STRING *extension );
 	void game_mplayer_new( __In const STRING *extension );
 	void game_mplayer_new();

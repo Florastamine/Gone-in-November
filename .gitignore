@@ -46,6 +46,8 @@ status/_sync.bat
 status/exclusion.excl
 status/log.log
 
+scene/obstacle/
+
 # General
 wdf/main.cd/*
 bindings.h

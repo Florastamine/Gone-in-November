@@ -102,7 +102,7 @@ void game_physx_new()
 	{
 		game_log_write("PhysX hasn't been initialized. Initializing PhysX...");
 
-		#ifdef ACKPHYSX_H
+		#ifdef    ACKPHYSX_H
 		// Initializes the PhysX subsystem. Straight outta <ackPhysX>
 		if( !NxPhysicsSDK )
 		{
@@ -284,7 +284,11 @@ __static void __game_event_on_exit()
 	// game_log_write( str_printf(NULL, "Triggering the pre-terminate event (%s))", function_name_get(__game_event_on_exit)) );
 	game_log_write( "Triggering the pre-terminate event (__game_event_on_exit()))" );
 
+	// Frees the game state and its subsystems.
 	game_state_free();
+
+	// Frees the buffer holding the (loaded) game resources.
+	game_resources_free();
 }
 
 __static void __game_event_on_close()
@@ -986,9 +990,13 @@ void game_title_set()
 
 __static void __game_version_export()
 {
-	fixed f = file_open_write(__VER_FILE);
-	file_str_write(f, __GAME_VERSION);
-	file_close(f);
+	#ifdef    DEBUG
+		fixed f = file_open_write(__VER_FILE);
+		file_str_write(f, __GAME_VERSION);
+		file_close(f);
+	#endif
+
+	return;
 }
 
 /*
@@ -1129,4 +1137,51 @@ void game_console_load()
 	command_table_new(); // Initialize the internal console interface.
 
 	command_table_add("skyrim", __cfunc__skyrim);
+}
+
+/*
+ * game_resources_load()
+ *
+ * Loads the game resources' file. During development, resources are not packed into a single file
+ * but scattered across different folders and repositories, but in the completed game, resource files
+ * are used instead. .wrs format files are automatically loaded during startup. But again, if you want
+ * to use custom extensions, you'll have to manually load it with add_resource().
+ */
+void game_resources_load()
+{
+	if(!file_exists(__GAME_DATA))
+	{
+		game_log_write("Game resource file couldn't be found.");
+
+		#ifdef    DEBUG
+			game_log_write("If you are using external, unpacked resources, please remove/comment out the call to game_resources_load().");
+		#endif
+
+		return; // Explicit flow control.
+	}
+
+	__game_data_buffer = file_load(__GAME_DATA, NULL, NULL);
+	if(__game_data_buffer != NULL)
+	{
+		long buffer_size = 0;
+
+		add_buffer(__GAME_DATA, __game_data_buffer, &buffer_size);
+		game_log_write(str_printf(NULL, "Resource file added to filesystem with a total size of %d.", (double) buffer_size));
+	}
+	else
+		game_log_write("Failed to load the resource file.");
+}
+
+/*
+ * void game_resources_free()
+ *
+ * Frees the previously allocated game resources buffer.
+ */
+void game_resources_free()
+{
+	if(__game_data_buffer != NULL)
+	{
+		add_new(); // Unloads the buffer from the filesystem.
+		file_load(NULL, __game_data_buffer, NULL); // Frees the actual buffer.
+	}
 }

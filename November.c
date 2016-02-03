@@ -41,12 +41,15 @@ int main(int argc, char **argl)
 	// Exports the game version to the game folder. This is used by the external launcher
 	// which uses the file for updating purposes. The completed, released version should
 	// have a versioning file ready already.
-	#ifdef    DEBUG
-		__game_version_export();
-	#endif
+	__game_version_export();
 
-	// Initialize a new game state, PhysX engine, and the GUI state.
+	// Initialize a new game state.
 	game_state_new();
+
+	// Load resources. In the final, completed game, resources are loaded from add_resource().
+	game_resources_load();
+
+	// Continue to initialize the remaining subsystems. (PhysX engine and the GUI state).
 	game_physx_new();
 	game_gui_state_new();
 
