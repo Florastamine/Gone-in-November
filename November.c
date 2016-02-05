@@ -22,7 +22,7 @@
  *
  * GiN entry point. Initialize global variables, video devices, reading
  * configuration files, setting up parameters, starting subsystems,
- * and handling the main game loop, as well as cleaning up.
+ * and handling the main game loop, as well as cleaning up. 
  */
 int main(int argc, char **argl)
 {
