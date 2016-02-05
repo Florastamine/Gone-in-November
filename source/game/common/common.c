@@ -239,6 +239,9 @@ void game_log_new()
  */
 void game_log_free()
 {
+	if( !__GameState_singleton )
+		return;
+		
 	if( __GameState_singleton->__game_log_loaded__ )
 	{
 		game_log_write("Logging channel closed.");
@@ -260,6 +263,9 @@ void game_log_free()
  */
 void game_log_write(const STRING *content)
 {
+	if( !__GameState_singleton )
+		return;
+
 	if( __GameState_singleton->__game_log_loaded__ )
 	{
 		// Straight outta <utilities>
