@@ -23,24 +23,28 @@
  */
 void __assert( const char *message )
 {
-	char *__string = MALLOC(strlen(message) + ASSERT_MESSAGE_LENGTH, char);
-	fixed f = file_open_append("lassert.log");
+	#ifndef    DISABLE_ASSERT
+		char *__string = MALLOC(strlen(message) + ASSERT_MESSAGE_LENGTH, char);
+		fixed f = file_open_append("lassert.log");
 
-	sprintf( __string, "[%i:%i, %i.%i.%i] Assertion failed: %s",
-	(int) sys_hours,
-	(int) sys_minutes,
-	(int) sys_day,
-	(int) sys_month,
-	(int) sys_year,
-	ifelse(message, message, _chr("Undescribed assertion.")) );
+		sprintf( __string, "[%i:%i, %i.%i.%i] Assertion failed: %s",
+		(int) sys_hours,
+		(int) sys_minutes,
+		(int) sys_day,
+		(int) sys_month,
+		(int) sys_year,
+		ifelse(message, message, _chr("Undescribed assertion.")) );
 
-	file_str_write(f, __string);
-	file_asc_write(f, 13);
-	file_asc_write(f, 10);
+		file_str_write(f, __string);
+		file_asc_write(f, 13);
+		file_asc_write(f, 10);
 
-	FREE(__string);
-	file_close(f);
-	sys_exit((void *) 0);
+		FREE(__string);
+		file_close(f);
+		sys_exit((void *) 0);
+	#endif
+
+	return;
 }
 
 /*

@@ -83,6 +83,9 @@
  * - Added hex_to_rgb(), object_draw().
  * - Added a set of functionalities for reading from/writing to .ini files.
  * __________________________________________________________________
+ * + v0.3.2-alpha
+ * - Cleaner assertions, and they are enabled by default (just put a #define DISABLE_ASSERT somewhere to disable asserts).
+ * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
  */
@@ -143,9 +146,7 @@
 #define CALLOC(number, type)               (type *) calloc( number, sizeof(type) )
 #define REALLOC(inlet, type, number)       (type *) realloc( inlet, sizeof(type) * number )
 #define FREE(block)                        sys_free(block)
-#define ASSERT(condition, message)         do { if( !(condition) && __assertion_allowed ) __assert(message); } while(false)
-#define ASSERT_ON(p)                       __assertion_allowed = 1
-#define ASSERT_OFF(p)                      __assertion_allowed = 0
+#define ASSERT(condition, message)         do { if( !(condition) ) __assert(message); } while(false)
 #define WAIT_PROCESS(process)              while( proc_status(process) ) wait(1.0)
 #define KILL_PROCESS(process)              proc_kill(4) /* This macro exists because it helps eliminating magic numbers. */
 #define WALK_THROUGH(object, function)     object = ptr_first(object); while(object) { function(object); o = o.link.next; wait(1.0); }
@@ -575,7 +576,6 @@ __namespace() {
    int __cdecl system(const char *command);
 
 	int  ___libc_init__done__ = 0;
-	int  __assertion_allowed  = 1;
 
     /*
      * void libc_init()
