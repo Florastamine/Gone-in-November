@@ -251,9 +251,13 @@ action act_player()
 	__act_player_state_singleton->__object = my;
 	player = my;
 
+	// This is not necessary and can obscure views sometimes.
+	/*
 	#ifndef    DEBUG
 		my->flags |= (INVISIBLE);
 	#endif
+	*/
+	my->flags |= (INVISIBLE);
 
 	#ifdef    DEBUG
 	   my->flags |= (SHADOW);
