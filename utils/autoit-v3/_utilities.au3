@@ -10,7 +10,7 @@
 
 Global Const $__FILE_NAME__ = "AU3assert.log"
 
-Func assert($__cond, $__msg = "")
+Func u_assert($__cond, $__msg = "")
    if Not $__cond Then
 	  Local Const $tfhandle = FileOpen($__FILE_NAME__, $FO_APPEND)
 	  If Not ($tfhandle = -1) Then
@@ -22,12 +22,12 @@ Func assert($__cond, $__msg = "")
    EndIf
 EndFunc
 
-Func wait_window_active($__window)
+Func u_window_wait_active($__window)
    WinWaitActive($__window)
    Sleep(500)
 EndFunc
 
-Func close_current_window()
+Func u_window_close_active()
    Send("{LALT}+{SPACE}")
    Send("{C}")
 
