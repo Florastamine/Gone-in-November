@@ -241,7 +241,7 @@ void game_log_free()
 {
 	if( !__GameState_singleton )
 		return;
-		
+
 	if( __GameState_singleton->__game_log_loaded__ )
 	{
 		game_log_write("Logging channel closed.");
@@ -1190,4 +1190,25 @@ void game_resources_free()
 		add_new(); // Unloads the buffer from the filesystem.
 		file_load(NULL, __game_data_buffer, NULL); // Frees the actual buffer.
 	}
+}
+
+/*
+ * int game_locker_check()
+ *
+ * A simple function to test if the game was launched through the launcher.
+ * For: 1/ simplicity; 2/ Lite-C doesn't have full support for the facilities and libraries needed for
+ * checking if a given process is running; and 3/ I don't like Windows and the whole Windows API in general:
+ * I'll just test for a file created by the launcher when it's running (the "locker"). If the file doesn't exist,
+ * then we'll assume the game wasn't launched through the launcher, and will just quit the game.
+ */
+int game_locker_check()
+{
+	int i = 0;
+	#ifdef    LAUNCHER_LINKAGE
+		i = (int) ifelse(txt_for_dir(txt_create(1, 0), ".\\save\\*.lock") > 0, 1, 0);
+	#else
+		i = 1;
+	#endif
+
+	return i;
 }

@@ -9,6 +9,13 @@
 // #define    A8_FREE
 
 /*
+ * "Links" with the launcher. If this is commented out, the game can be started
+ * without the launcher, but I don't recommend to do so as you'll lost the ability
+ * of automatically updating of the game.
+ */
+#define    LAUNCHER_LINKAGE
+
+/*
  * These switches toggle debugging panels, functionalities and texts, while DEBUG_PSSM
  * allows you to see the split passes and  manually adjust the sun position.
  */

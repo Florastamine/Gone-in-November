@@ -22,10 +22,13 @@
  *
  * GiN entry point. Initialize global variables, video devices, reading
  * configuration files, setting up parameters, starting subsystems,
- * and handling the main game loop, as well as cleaning up. 
+ * and handling the main game loop, as well as cleaning up.
  */
 int main(int argc, char **argl)
 {
+	// See if the game was launched through the Go-based launcher.
+	ASSERT(game_locker_check() != 0, "Please run the game through the launcher!");
+
 	// Overrides some of Acknex's global variables (their default values are way too low)
 	game_globals_set();
 

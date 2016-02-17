@@ -327,6 +327,17 @@ __namespace(November) {
     void game_resources_free();
 
     __static void __game_version_export();
+
+    /*
+     * int game_locker_check()
+     *
+     * A simple function to test if the game was launched through the launcher.
+     * For: 1/ simplicity; 2/ Lite-C doesn't have full support for the facilities and libraries needed for
+     * checking if a given process is running; and 3/ I don't like Windows and the whole Windows API in general:
+     * I'll just test for a file created by the launcher when it's running (the "locker"). If it doesn't exist,
+     * then we'll assume the game wasn't launched through the launcher, and will just quit the game.
+     */
+    int game_locker_check();
 }
 
 __namespace(SceneLoadState) {
