@@ -37,7 +37,6 @@
 #RequireAdmin
 
 #include-once
-#include <AutoItConstants.au3>
 #include "_utilities.au3"
 
 Global Const $MED_PATH          = "H:\Development\Gamestudio\GStudio8"
@@ -181,9 +180,9 @@ Func __set_bits_for_skin($hWnd, $ID)
 EndFunc
 
 Func lock_controls($hWnd)
-   BlockInput($BI_DISABLE)
+   ; BlockInput($BI_DISABLE)
 EndFunc
 
 Func unlock_controls($hWnd)
-   BlockInput($BI_ENABLE)
+   ; BlockInput($BI_ENABLE)
 EndFunc
