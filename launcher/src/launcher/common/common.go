@@ -19,6 +19,8 @@ package common
 
 import (
     "runtime"
+    "os"
+    "fmt"
 )
 
 const (
@@ -30,7 +32,22 @@ const (
 
 var (
     DLDirectory    string = ""
+    LockerPath     string = "./"
+    LockerFileName string = ""
+    Debug          bool   = false
 )
+
+func SetDebug(Flag bool) {
+    if Flag {
+        Debug = true
+    } else {
+        Debug = false
+    }
+}
+
+func GetDebug() bool {
+    return Debug
+}
 
 func GetDownloadDirectory() string {
     return DLDirectory
@@ -39,6 +56,10 @@ func GetDownloadDirectory() string {
 func SetDownloadDirectory(Directory string) {
     if Directory != "" {
         DLDirectory = Directory
+
+        if GetDebug() {
+            fmt.Println("[DEBUG LOG] Download directory selected at: ", GetDownloadDirectory())
+        }
     }
 }
 
@@ -49,4 +70,68 @@ func GetExecutableName() string {
     }
 
     return GameExecutable
+}
+
+func CreateLocker() bool {
+    locker, err := os.Create(GetLockerDirectory() + GetLockerFileName())
+    if err != nil {
+        return false
+    }
+
+    data := make([]byte, 1)
+    _, err_write := locker.Write(data)
+    if err_write != nil {
+        return false
+    }
+
+    locker.Close()
+    return true
+}
+
+func DestroyLocker() bool {
+    err := os.Remove(GetLockerDirectory() + GetLockerFileName())
+    if err != nil {
+        return false
+    }
+
+    return true
+}
+
+func SetLockerFileName(File string) {
+    if File != "" {
+        LockerFileName = File
+
+        if GetDebug() {
+            fmt.Println("[DEBUG LOG] Locker name changed to: ", GetLockerFileName())
+        }
+    }
+}
+
+func GetLockerFileName() string {
+    return LockerFileName
+}
+
+func GetLockerDirectory() string {
+    return LockerPath
+}
+
+func SetLockerDirectory(Directory string) {
+    if Directory != "" {
+        LockerPath = Directory
+
+        if GetDebug() {
+            fmt.Println("[DEBUG LOG] Locker directory selected at: ", GetLockerDirectory())
+        }
+    }
+}
+
+func IsExist(File string) bool {
+    _, err := os.Stat(File) // It efficiently wraps the check for empty arguments, because err will yield nil anyway.
+    if err != nil {
+        if os.IsNotExist(err) {
+            return false
+        }
+    }
+
+    return true
 }

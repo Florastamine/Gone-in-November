@@ -1,4 +1,4 @@
-/* launcher.go */
+/* libzip.go */
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
@@ -16,3 +16,19 @@
  *
  */
 package libzip
+
+var (
+    Debug          bool   = false
+)
+
+func SetDebug(Flag bool) {
+    if Flag {
+        Debug = true
+    } else {
+        Debug = false
+    }
+}
+
+func GetDebug() bool {
+    return Debug
+}

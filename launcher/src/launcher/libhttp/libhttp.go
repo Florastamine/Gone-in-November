@@ -24,9 +24,29 @@ import (
     "io"
 )
 
+var (
+    Debug          bool   = false
+)
+
+func SetDebug(Flag bool) {
+    if Flag {
+        Debug = true
+    } else {
+        Debug = false
+    }
+}
+
+func GetDebug() bool {
+    return Debug
+}
+
 func Connected() bool {
     _, err := http.Get("https://www.dropbox.com/")
     if err != nil {
+        if GetDebug() {
+            fmt.Println("[DEBUG LOG] Probably your computer is not connected to the Internet, or the server has shut down, or there was a problem establishing a HTTP request.")
+        }
+
         return false
     }
 
@@ -36,19 +56,28 @@ func Connected() bool {
 func DownloadFile(url string, file string, path string) bool {
     data, err := os.Create(path + file)
     if err != nil {
-        fmt.Println("_1");
+        if GetDebug() {
+            fmt.Println("[DEBUG LOG] There was a problem trying to create the file descriptor. Operation aborted.")
+        }
+
         return false
     }
 
     rep, err_http := http.Get(url + file)
     if err_http != nil {
-        fmt.Println("_2");
+        if GetDebug() {
+            fmt.Println("[DEBUG LOG] There was a problem trying to download the file. Operation aborted.")
+        }
+
         return false
     }
 
     _, err_write := io.Copy(data, rep.Body)
     if err_write != nil {
-        fmt.Println("_3");
+        if GetDebug() {
+            fmt.Println("[DEBUG LOG] There was a problem trying to finalizing the download. Operation aborted.")
+        }
+
         return false
     }
 
