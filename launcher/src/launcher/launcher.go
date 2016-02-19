@@ -18,14 +18,14 @@
 package main
 
 import (
-    "fmt"
-    "time"
-    "io/ioutil"
-    "strconv"
-    "os"
-    "os/exec"
-    "runtime"
-    "path/filepath"
+    "fmt"                   // .Println(), .Sprintf()
+    "time"                  // .Now(), not necessary.
+    "io/ioutil"             // .ReadFile()
+    "strconv"               // .ParseInt(), .Atoi()
+    "os"                    // .TempDir(), .Args[], .MkdirAll(), ...
+    "os/exec"               // .Command(), .Output()
+    "runtime"               // .GOOS, not necessary.
+    "path/filepath"         // Extra fs utilities.
 
     "launcher/common"
     "launcher/libhttp"
@@ -42,6 +42,9 @@ func main() {
     common.SetLockerDirectory(locker_path)
     common.SetLockerFileName(common.GameName + ".lock")
 
+    // Select the directory where the temporary files will be downloaded/created on.
+    common.SetDownloadDirectory(os.TempDir() + "\\")
+
     // Create the locker.
     common.CreateLocker()
 
@@ -54,9 +57,8 @@ func main() {
     r := libhttp.Connected()
     if r {
         fmt.Println("Successfully connected to the server. Checking for updates...")
-        common.SetDownloadDirectory(os.TempDir() + "\\")
 
-        err_download := libhttp.DownloadFile(common.FilePath, common.FileName, common.GetDownloadDirectory())
+        err_download, _ := libhttp.DownloadFile(common.FilePath, common.FileName, common.GetDownloadDirectory())
         if err_download != true {
             fmt.Println("Failed to download the definition file. Abort updating the game.")
 
@@ -84,8 +86,39 @@ func main() {
                 local_version, _ = strconv.Atoi(string(data_local))
                 fmt.Println("Remote version : [", remote_version, "]; Local version: [", local_version, "].");
 
+                // If the local version is lower than the version that was received from the remote server,
+                // we perform the updating process.
                 if remote_version > local_version  {
-                    fmt.Println("Downloading update packages...")
+                    var update_pack_loc string = common.GameName + string(data_remote) + ".zip"           // Name of the ZIP package.
+                    var update_pack_sav string = common.GetDownloadDirectory() + common.GameName + "\\"   // Temporary path to which the package will be downloaded.
+                    var update_pack_len int64                                                             // Size of the package, in bytes.
+                    var update_pack_err bool
+
+                    update_pack_err, update_pack_len = libhttp.DownloadFile(common.FilePath, update_pack_loc, update_pack_sav)
+                    if update_pack_err != true {
+                        fmt.Println("Cannot download the update package. ")
+                    } else {
+                        fmt.Println("[Phase 1] Downloading update packages... [", update_pack_loc, "; ", float64(update_pack_len / 1024), " KBs]")
+                        fmt.Println("Please be patient.")
+
+                        // Because we are doing stuff in the temporary directory, and the main partition running out of space-kind-of-exception is very rare, we
+                        // won't be catching errors here.
+                        _ = os.MkdirAll(update_pack_sav, os.ModeDir | os.ModeTemporary)
+                        _ = os.MkdirAll(update_pack_sav + "package\\", os.ModeDir | os.ModeTemporary)
+
+                        fmt.Println("[Phase 2] Extracting the package...")
+                        fmt.Println("Please be patient.")
+                        if result := libzip.Extract(update_pack_sav + update_pack_loc, update_pack_sav + "package\\") ; !result {
+                            fmt.Println("Cannot extract the package")
+                        }
+
+                        fmt.Println("[Phase 3] Copying update files...")
+                        fmt.Println("Please be patient.")
+
+                        fmt.Println("[Phase 4] Cleaning up...")
+                        fmt.Println("Please be patient.")
+                    }
+
                 } else {
                     fmt.Println("Skipping the update process...")
                 }

@@ -53,14 +53,14 @@ func Connected() bool {
     return true
 }
 
-func DownloadFile(url string, file string, path string) bool {
+func DownloadFile(url string, file string, path string) (bool, int64) {
     data, err := os.Create(path + file)
     if err != nil {
         if GetDebug() {
             fmt.Println("[DEBUG LOG] There was a problem trying to create the file descriptor. Operation aborted.")
         }
 
-        return false
+        return false, 0
     }
 
     rep, err_http := http.Get(url + file)
@@ -69,7 +69,7 @@ func DownloadFile(url string, file string, path string) bool {
             fmt.Println("[DEBUG LOG] There was a problem trying to download the file. Operation aborted.")
         }
 
-        return false
+        return false, 0
     }
 
     _, err_write := io.Copy(data, rep.Body)
@@ -78,8 +78,8 @@ func DownloadFile(url string, file string, path string) bool {
             fmt.Println("[DEBUG LOG] There was a problem trying to finalizing the download. Operation aborted.")
         }
 
-        return false
+        return false, 0
     }
 
-    return true
+    return true, rep.ContentLength
 }
