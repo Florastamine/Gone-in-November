@@ -41,6 +41,10 @@ func GetDebug() bool {
     return Debug
 }
 
+/*
+ * This is a slightly modified version of Astockwell's answer in this Stackoverflow question:
+ * http://stackoverflow.com/questions/20357223/easy-way-to-unzip-file-with-golang
+ */
 func Extract(src, loc string) bool {
     descriptor, err := zip.OpenReader(src)
     if err != nil {

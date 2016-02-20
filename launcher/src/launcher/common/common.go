@@ -20,6 +20,7 @@ package common
 import (
     "runtime"
     "os"
+    "io"
     "fmt"
 )
 
@@ -73,6 +74,10 @@ func GetExecutableName() string {
 }
 
 func CreateLocker() bool {
+    if GetDebug() {
+        fmt.Println("[DEBUG LOG] Creating the locker...")
+    }
+
     locker, err := os.Create(GetLockerDirectory() + GetLockerFileName())
     if err != nil {
         return false
@@ -89,6 +94,10 @@ func CreateLocker() bool {
 }
 
 func DestroyLocker() bool {
+    if GetDebug() {
+        fmt.Println("[DEBUG LOG] Releasing the locker...")
+    }
+
     err := os.Remove(GetLockerDirectory() + GetLockerFileName())
     if err != nil {
         return false
@@ -130,6 +139,46 @@ func IsExist(File string) bool {
     if err != nil {
         if os.IsNotExist(err) {
             return false
+        }
+    }
+
+    return true
+}
+
+func CopyFile(Dest, Src string) bool {
+    in, err := os.Open(Src)
+    if err != nil {
+        if GetDebug() {
+            fmt.Println("[DEBUG LOG] Cannot perform file copying: Cannot open the source file.")
+        }
+
+        return false
+    }
+
+    out, err := os.Create(Dest)
+    if err != nil {
+        if GetDebug() {
+            fmt.Println("[DEBUG LOG] Cannot perform file copying: Cannot create the destination file.")
+        }
+
+        return false
+    }
+
+    _, err = io.Copy(out, in)
+    if err != nil {
+        if GetDebug() {
+            fmt.Println("[DEBUG LOG] Cannot perform file copying: Cannot copy to the target file.")
+        }
+
+        return false
+    }
+
+    in.Close()
+    err = out.Close()
+
+    if err != nil {
+        if GetDebug() {
+            fmt.Println("[DEBUG LOG] Cannot perform file copying: Cannot \"finalize\" the target file after copying. The file may be corrupted.")
         }
     }
 

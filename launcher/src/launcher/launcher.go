@@ -14,6 +14,13 @@
  *
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  *
+ * A simple Go-based game launcher that does the updating stuff before executing the game, including
+ * downloading, manipulating and extracting (zipped) update files.
+ *
+ * _______________________________________________
+ * + v0.1.0
+ * - First working release.
+ * _______________________________________________
  */
 package main
 
@@ -46,7 +53,10 @@ func main() {
     common.SetDownloadDirectory(os.TempDir() + "\\")
 
     // Create the locker.
-    common.CreateLocker()
+    err := common.CreateLocker()
+    if !err {
+        os.Exit(1)
+    }
 
     // Print out some basic information.
     fmt.Println(common.GameName + " launcher" + " (" + os.Args[0] + "), running under " + runtime.GOOS)
@@ -94,29 +104,42 @@ func main() {
                     var update_pack_len int64                                                             // Size of the package, in bytes.
                     var update_pack_err bool
 
+                    fmt.Print("[Phase 1] Downloading update packages... [", update_pack_loc, "]")
+
                     update_pack_err, update_pack_len = libhttp.DownloadFile(common.FilePath, update_pack_loc, update_pack_sav)
                     if update_pack_err != true {
                         fmt.Println("Cannot download the update package. ")
                     } else {
-                        fmt.Println("[Phase 1] Downloading update packages... [", update_pack_loc, "; ", float64(update_pack_len / 1024), " KBs]")
-                        fmt.Println("Please be patient.")
+                        // Print out the size of the update package.
+                        fmt.Println("[", float64(update_pack_len / 1024), " KBs]")
+
+                        fmt.Print("[Phase 2] Copying update files...")
+                        _ = common.CopyFile("./" + update_pack_loc, update_pack_sav + update_pack_loc)
+                        fmt.Println("done.")
 
                         // Because we are doing stuff in the temporary directory, and the main partition running out of space-kind-of-exception is very rare, we
                         // won't be catching errors here.
+                        /*
                         _ = os.MkdirAll(update_pack_sav, os.ModeDir | os.ModeTemporary)
                         _ = os.MkdirAll(update_pack_sav + "package\\", os.ModeDir | os.ModeTemporary)
+                        */
 
-                        fmt.Println("[Phase 2] Extracting the package...")
-                        fmt.Println("Please be patient.")
-                        if result := libzip.Extract(update_pack_sav + update_pack_loc, update_pack_sav + "package\\") ; !result {
+                        fmt.Print("[Phase 3] Extracting the package...")
+                        if result := libzip.Extract("./" + update_pack_loc, "./") ; !result {
                             fmt.Println("Cannot extract the package")
                         }
+                        fmt.Println("done.")
 
-                        fmt.Println("[Phase 3] Copying update files...")
-                        fmt.Println("Please be patient.")
+                        fmt.Print("[Phase 4] Cleaning up...")
+                        if common.IsExist("./" + update_pack_loc) {
+                            if common.GetDebug() {
+                                fmt.Println("Deleting the update package... (", "./" + update_pack_loc, ")")
+                            }
 
-                        fmt.Println("[Phase 4] Cleaning up...")
-                        fmt.Println("Please be patient.")
+                            os.Remove("./" + update_pack_loc)
+                        }
+                        fmt.Println("done.")
+
                     }
 
                 } else {

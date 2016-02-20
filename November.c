@@ -27,7 +27,7 @@
 int main(int argc, char **argl)
 {
 	// See if the game was launched through the Go-based launcher.
-	ASSERT(game_locker_check() != 0, "Please run the game through the launcher!");
+	// ASSERT(game_locker_check() != 0, "Please run the game through the launcher!");
 
 	// Overrides some of Acknex's global variables (their default values are way too low)
 	game_globals_set();
