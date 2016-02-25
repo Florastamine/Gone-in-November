@@ -314,6 +314,14 @@ __namespace(November) {
     void game_console_load();
 
     /*
+     * int game_is_first_time()
+     *
+     * Tests if the game was run for the first time by reading the value from the registry key defined in
+     * the Windows registry.
+     */
+    int game_is_first_time();
+
+    /*
      * game_resources_load()
      *
      * Loads the game resources' file. During development, resources are not packed into a single file

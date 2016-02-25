@@ -1212,3 +1212,20 @@ int game_locker_check()
 
 	return i;
 }
+
+/*
+ * int game_is_first_time()
+ *
+ * Tests if the game was run for the first time by reading the value from the registry key defined in
+ * the Windows registry. If the key/value pair cannot be found, the function will automatically create one.
+ */
+int game_is_first_time()
+{
+	const RegistryItem *item = reg_key_new("GiNFT");
+	int r = reg_key_exists("Software", item);
+
+	if(!r)
+		reg_key_write("Software", item);
+
+	return (int) ifelse(!r, 1, 0);
+}

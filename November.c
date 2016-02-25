@@ -49,6 +49,10 @@ int main(int argc, char **argl)
 	// Initialize a new game state.
 	game_state_new();
 
+	// ...and write an additional line if the game was started for the first time.
+	if(game_is_first_time())
+		game_log_write("First time booting the game.");
+
 	// Load resources. In the final, completed game, resources are loaded from add_resource().
 	game_resources_load();
 
