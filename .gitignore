@@ -39,6 +39,7 @@ _site/
 *.fbx
 *.skb
 *.skp
+*.dae
 
 # Gamestudio-specific
 builds/
