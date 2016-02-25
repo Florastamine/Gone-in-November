@@ -2113,3 +2113,121 @@ float ini_read_float(char *filename, char *section, char *entry, float defaultVa
 {
 	return str_to_float(ini_read(filename, section, entry, str_for_float(NULL, defaultValue)));
 }
+
+/*
+ * http://www.cplusplus.com/reference/cstring/strncpy/
+ * We need this to perform a safer copy operation.
+ */
+char * strncpy ( char * destination, const char * source, size_t num );
+
+/*
+ * RegistryItem *reg_key_new(const char *key, const char *value)
+ *
+ * Creates a registry item which can be used later for writing/reading to/from the Windows registry.
+ * The function uses strncpy().
+ */
+RegistryItem *reg_key_new(const char *key, const char *value)
+{
+	// item->value can be left empty, but not for the key.
+	if(!key)
+		return NULL;
+
+	// Check if strncpy() is registered by DefineApi() (through libc_init() or by whatever means).
+	// If not, we register the function, and perform copying.
+	if(!strncpy)
+		strncpy = DefineApi("msvcrt!strncpy");
+
+	RegistryItem *item = NULL;
+
+	item         = MALLOC(1, RegistryItem);
+	item->key    = MALLOC(REGISTRY_KEY_MAX_KEY_LENGTH, char);
+
+	if(strlen(key) > REGISTRY_KEY_MAX_KEY_LENGTH)
+		strncpy(item->key, key, REGISTRY_KEY_MAX_KEY_LENGTH);
+	else
+		strcpy(item->key, key);
+
+	if(value) {
+		item->value  = MALLOC(REGISTRY_KEY_MAX_VALUE_LENGTH, char);
+
+		if(strlen(value) > REGISTRY_KEY_MAX_VALUE_LENGTH)
+			strncpy(item->value, value, REGISTRY_KEY_MAX_VALUE_LENGTH);
+		else
+			strcpy(item->value, value);
+	}
+	else
+		item->value = dump("Unnamed registry value.");
+
+	return item;
+}
+
+/*
+ * void reg_key_free(RegistryItem *item)
+ *
+ * Frees a previously allocated key/value registry item.
+ */
+void reg_key_free(RegistryItem *item)
+{
+	if(item) {
+		FREE(item->key);
+		FREE(item->value);
+
+		FREE(item);
+	}
+}
+
+/*
+ * int reg_key_write(const char *location, RegistryItem *item)
+ *
+ * Writes a RegistryItem item to the Windows registry.
+ * Returns !0 upon succeed, 0 otherwise.
+ */
+int reg_key_write(const char *location, RegistryItem *item)
+{
+	int ret = 0;
+
+	if(location && item)
+		ret = sys_setstr(location, item->key, item->value);
+
+	return ret;
+}
+
+/*
+ * int reg_key_exists(const char *location, RegistryItem *item)
+ *
+ * Checks if a given key/value pair exists in the Windows registry.
+ * Returns !0 upon succeed, 0 otherwise.
+ *
+ * A little explanation on this line:
+ * 		if( !str_cmp(sys_getstr(location, item->key, _str(item->value)), "") )
+ * Because sys_getstr() doesn't return NULL if the pair couldn't be found, it returns an initialized,
+ * empty string, so we can't do this:
+ * 		if(sys_getstr(...))
+ * And so str_cmp() is used.
+ */
+int reg_key_exists(const char *location, RegistryItem *item)
+{
+	if(location && item)
+		if( !str_cmp(sys_getstr(location, item->key, _str(item->value)), "") )
+			return 1;
+
+	return 0;
+}
+
+/*
+ * int reg_key_to_int(const RegistryItem *item)
+ * float reg_key_to_float(const RegistryItem *item)
+ *
+ * Utility functions which perform numeric conversion from the value field of the RegistryItem instance.
+ */
+int reg_key_to_int(const RegistryItem *item)
+{
+	if(item)
+		return str_to_int(item->value);
+}
+
+float reg_key_to_float(const RegistryItem *item)
+{
+	if(item)
+		return str_to_float(item->value);
+}

@@ -86,6 +86,9 @@
  * + v0.3.2-alpha
  * - Cleaner assertions, and they are enabled by default (just put a #define DISABLE_ASSERT somewhere to disable asserts).
  * __________________________________________________________________
+ * + v0.4.0-alpha
+ * - Added a set of simple functions for writing to and reading from the Windows registry.
+ * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
  */
@@ -99,7 +102,7 @@
 #define __In
 #define __Out
 
-#define __VERSION "v0.3.1-alpha" // Seems familiar?
+#define __VERSION "v0.4.0-alpha" // Seems familiar?
 
 #ifdef    ENFORCE_STRICT
     #ifndef    PRAGMA_POINTER
@@ -949,6 +952,63 @@ __namespace(io) {
      * text->strings contains the number of read sections.
      */
     TEXT *ini_read_sections(const char *filename);
+
+    /*
+     * A set of simple functions which wrap around sys_setstr() and sys_getstr()
+     * for reading from and writing to the Windows registry.
+     * Due to Lite-C's limitations, and I don't want to make a mess out of function overloading,
+     * so currently these functions can only operate on string/string key/value pairs. For converting
+     * to numeric values, str_to_int()/str_to_float() can be used instead:
+     *      int i = str_to_int(item->value);
+     * or by using reg_key_to_int()/reg_key_to_float():
+     *      int i = reg_key_to_int(item);
+     */
+    #define    REGISTRY_KEY_MAX_KEY_LENGTH    128
+    #define    REGISTRY_KEY_MAX_VALUE_LENGTH  128
+
+    typedef struct {
+        char *key;
+        char *value;
+    } RegistryItem;
+
+    /*
+     * RegistryItem *reg_key_new(const char *key, const char *value)
+     *
+     * Creates a registry item which can be used later for writing/reading to/from the Windows registry.
+     */
+    RegistryItem *reg_key_new(const char *key, const char *value);
+
+    /*
+     * void reg_key_free(RegistryItem *item)
+     *
+     * Frees a previously allocated key/value registry item.
+     */
+    void reg_key_free(RegistryItem *item);
+
+    /*
+     * int reg_key_write(const char *location, RegistryItem *item)
+     *
+     * Writes a RegistryItem item to the Windows registry.
+     * Returns !0 upon succeed, 0 otherwise.
+     */
+    int reg_key_write(const char *location, RegistryItem *item);
+
+    /*
+     * int reg_key_exists(const char *location, RegistryItem *item)
+     *
+     * Checks if a given key/value pair exists in the Windows registry.
+     * Returns !0 upon succeed, 0 otherwise.
+     */
+    int reg_key_exists(const char *location, RegistryItem *item);
+
+    /*
+     * int reg_key_to_int(const RegistryItem *item)
+     * float reg_key_to_float(const RegistryItem *item)
+     *
+     * Utility functions which perform numeric conversion from the value field of the RegistryItem instance.
+     */
+    int reg_key_to_int(const RegistryItem *item);
+    float reg_key_to_float(const RegistryItem *item);
 }
 
 __namespace(GUI) {
