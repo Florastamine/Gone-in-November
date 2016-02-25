@@ -2161,6 +2161,11 @@ RegistryItem *reg_key_new(const char *key, const char *value)
 	return item;
 }
 
+RegistryItem *reg_key_new(const char *key)
+{
+	return reg_key_new(key, NULL);
+}
+
 /*
  * void reg_key_free(RegistryItem *item)
  *

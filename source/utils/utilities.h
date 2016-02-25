@@ -976,6 +976,7 @@ __namespace(io) {
      *
      * Creates a registry item which can be used later for writing/reading to/from the Windows registry.
      */
+    RegistryItem *reg_key_new(const char *key);
     RegistryItem *reg_key_new(const char *key, const char *value);
 
     /*
