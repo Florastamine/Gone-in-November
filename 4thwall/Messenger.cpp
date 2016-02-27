@@ -36,7 +36,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     int argc{}, i{};
     LPWSTR *argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 
-    if(argv == NULL)
+    if(argv == NULL || argc < 1)
         return 0;
 
     if(argc)
