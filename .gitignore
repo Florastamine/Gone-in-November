@@ -91,3 +91,4 @@ bindings.h
 
 #
 !*.html
+*.lnk

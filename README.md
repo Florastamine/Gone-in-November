@@ -25,6 +25,7 @@ The source code cannot be built at the moment as it requires game assets which u
 * The original game.
 * Custom game DLLs, which you can obtain [here](https://dl.dropboxusercontent.com/u/26857618/acknex_plugins.zip). Unzip everything to your `acknex_plugins` folder.
 * A [Go](https://golang.org/) compiler for building the game launcher. **(optional!)**
+* [g++](https://gcc.gnu.org/) for building the messenger. **(optional!)**
 
 ### Downloading & Installing the toolset
 Since the game is written in **Lite-C** (which is actually C but with some elements borrowed from C++), you will need a special Lite-C toolset to be able to compile GiN, which can be downloaded [here](http://server.conitec.net/down/gstudio8_setup.exe). Upon installing the tools, select the option to install the free version. **(GiN can still be compiled with the free version, but shaders will not be enabled)**.
@@ -59,6 +60,8 @@ After you've changed these variables in **./utils/ackvars.bat**, open **./Novemb
 To run the project, simply move the resource file to the root of your cloned repository, and run **./utils/run.bat**. Or just open up SED, navigate to **./November.c** and hit F6.
 
 If you have a [Go](https://golang.org/) compiler lying around, the build script will also automagically build the game launcher for you. This is an optional step, as the game can still be started without the launcher.
+
+If [g++](https://gcc.gnu.org/) is available for use through ```GNUPATH``` (defined in **./utils/ackvars.bat**), the build script will attempt to compile the messenger. This is also an optional step, as you can just copy the appropriate executable from your original copy of GiN.
 
 ## License
 Except most of the code in `./source/render/` and game assets, everything else is released under the [WTFPL](http://www.wtfpl.net/) license, which means you can literally do whatever the f*ck you want with it.

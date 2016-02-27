@@ -99,6 +99,13 @@ copy %GOPATH%\bin\launcher.exe ..\builds\
 set GOPATH=%_GOPATH%
 )
 
+rem Build the messenger.
+IF EXIST "%GNUPATH%\bin\g++.exe" (
+echo Found a g++ installation. Will attempt to compile the messenger.
+
+g++ -std=c++11 -o ..\builds\Messenger.exe ..\4thwall\Messenger.cpp
+)
+
 mkdir ..\builds\redist
 xcopy .\redist\*.* ..\builds\redist\ /s /e /y
 
