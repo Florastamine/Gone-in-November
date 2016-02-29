@@ -1356,18 +1356,21 @@ __static void menu_audio_test_box_click(var _button_number, PANEL* _panel)
 	{
 		case 3:
 		{
-			snd_play(sndMusicTest, vNewGameMusicVolume, 0);
+			if(sndMusicTest)
+				snd_play(sndMusicTest, vNewGameMusicVolume, 0);
 			break;
 		}
 
 		case 4:
 		{
-			snd_play(sndSpeechTest, vNewGameSpeechVolume, 0);
+			if(sndSpeechTest)
+				snd_play(sndSpeechTest, vNewGameSpeechVolume, 0);
 			break;
 		}
 		case 5:
 		{
-			snd_play(sndEffectsTest, vNewGameEffectsVolume, 0);
+			if(sndEffectsTest)
+				snd_play(sndEffectsTest, vNewGameEffectsVolume, 0);
 			break;
 		}
 	}
@@ -1413,7 +1416,49 @@ void menu_change_theme(int section, float r, float g, float b)
 		case    COLOR_BORDER:
 		{
 			vec_set(__gui_color_border__, vector(b, g, r));
+		}
+	}
+}
+
+/*
+ * void menu_change_sound_test(int section, const char *file)
+ *
+ * Alters the current sound effect used for testing the volume in the main menu.
+ * Possible constants (which is passed to the first parameter) are:
+ * SOUND_TEST_MUSIC     -- Will alter the sound effect of the "music" slider.
+ * SOUND_TEST_SPEECH    -- Will alter the sound effect of the "speech" slider.
+ * SOUND_TEST_EFFECTS   -- Will alter the sound effect of the "effects" slider.
+ */
+void menu_change_sound_test(int section, const char *file)
+{
+	if(!file)
+		return;
+
+	switch(section)
+	{
+		case    SOUND_TEST_MUSIC:
+		{
+			if(sndMusicTest)
+				snd_remove(sndMusicTest);
+			sndMusicTest = snd_create(file);
+
 			break;
+		}
+
+		case    SOUND_TEST_SPEECH:
+		{
+			if(sndSpeechTest)
+				snd_remove(sndSpeechTest);
+			sndSpeechTest = snd_create(file);
+
+			break;
+		}
+
+		case    SOUND_TEST_EFFECTS:
+		{
+			if(sndEffectsTest)
+				snd_remove(sndEffectsTest);
+			sndEffectsTest = snd_create(file);
 		}
 	}
 }

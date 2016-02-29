@@ -76,6 +76,10 @@
 #define    COLOR_CLICKED         2
 #define    COLOR_BORDER          3
 
+#define    SOUND_TEST_MUSIC      1
+#define    SOUND_TEST_SPEECH     2
+#define    SOUND_TEST_EFFECTS    3
+
 FONT   *__gui_rendering_font  = "Arial#12b";
 VECTOR *__gui_color_click__   = { x = 0; y = 0; z = 128; }
 VECTOR *__gui_color_border__  = { x = 255; y = 255; z = 255; }
@@ -159,9 +163,9 @@ TEXT* txtMessageBoxCaption		= NULL;
 TEXT* txtMessageBoxBtn1			= NULL;
 TEXT* txtMessageBoxBtn2			= NULL;
 
-SOUND* sndMusicTest				= "beep1.wav";
-SOUND* sndSpeechTest			= "beep1.wav";
-SOUND* sndEffectsTest			= "beep1.wav";
+SOUND* sndMusicTest				= NULL;
+SOUND* sndSpeechTest			= NULL;
+SOUND* sndEffectsTest			= NULL;
 
 // Variables to hold a game state until changes are applied
 var vNewGameDifficulty			= 0;
@@ -267,6 +271,17 @@ int menu_message_result();
  * COLOR_BORDER   -- Will alter the color of the component's border.
  */
 void menu_change_theme(int section, float r, float g, float b);
+
+/*
+ * void menu_change_sound_test(int section, const char *file)
+ *
+ * Alters the sound effect used for testing the volume in the main menu.
+ * Possible constants (which is passed to the first parameter) are:
+ * SOUND_TEST_MUSIC     -- Will alter the sound effect of the "music" slider.
+ * SOUND_TEST_SPEECH    -- Will alter the sound effect of the "speech" slider.
+ * SOUND_TEST_EFFECTS   -- Will alter the sound effect of the "effects" slider.
+ */
+void menu_change_sound_test(int section, const char *file);
 
 /**
  * Click on the game, graphics, audio, input menu
