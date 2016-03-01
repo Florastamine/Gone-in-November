@@ -20,8 +20,8 @@
 /*
  * int main(int argc, char **argl)
  *
- * GiN entry point. Initialize global variables, video devices, reading
- * configuration files, setting up parameters, starting subsystems,
+ * GiN entry point. Initialize variables, structs, video devices, parsing
+ * configuration files, setting up parameters, booting up subsystems,
  * and handling the main game loop, as well as cleaning up.
  */
 int main(int argc, char **argl)
