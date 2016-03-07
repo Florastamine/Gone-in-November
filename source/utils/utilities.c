@@ -2179,6 +2179,8 @@ void reg_key_free(RegistryItem *item)
 
 		FREE(item);
 	}
+    
+    item = NULL;
 }
 
 /*

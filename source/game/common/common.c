@@ -1226,6 +1226,7 @@ int game_is_first_time()
 
 	if(!r)
 		reg_key_write("Software", item);
-
-	return (int) ifelse(!r, 1, 0);
+        
+	reg_key_free(item);
+    return (int) ifelse(!r, 1, 0);
 }
