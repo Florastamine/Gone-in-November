@@ -416,5 +416,16 @@ __namespace(MPlayer) {
 	float game_mplayer_get_volume();
 }
 
+__namespace(Narrative) {
+    /*
+     * void game_break(const char *message)
+     *
+     * A very simple attempt at breaking the fourth wall.
+     * It triggers the "messenger" ("Messenger.exe"), feeds the provided argument,
+     * and then terminates the game through a direct call to __game_event_on_close().
+     */
+    void game_break(const char *message);
+}
+
 #include "common.c"
 #endif /* common.h */

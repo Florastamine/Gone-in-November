@@ -1226,7 +1226,32 @@ int game_is_first_time()
 
 	if(!r)
 		reg_key_write("Software", item);
-        
+
 	reg_key_free(item);
     return (int) ifelse(!r, 1, 0);
+}
+
+/*
+ * void game_break(const char *message)
+ *
+ * A very simple attempt at breaking the fourth wall.
+ * It triggers the "messenger" ("Messenger.exe"), feeds the provided argument,
+ * and then terminates the game through a direct call to __game_event_on_close().
+ */
+void game_break(const char *message)
+{
+    if(!message)
+        return;
+
+    game_log_write("Signal received from the other side..");
+
+    #ifdef    DEBUG
+        printf("There is an attempt to break the fourth wall but since we're running the game in development mode, let's skip that.");
+    #else
+        if(file_exists("Messenger.exe"))
+            exec("Messenger.exe", message);
+
+        wait(1.0); // A wait() is necessary for exec() to finish its job, 1.0 is enough.
+        __game_event_on_close();
+    #endif
 }
