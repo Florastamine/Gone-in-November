@@ -4,8 +4,8 @@ cls
 title Building in progress...
 
 rem Starts localization of environment variables in a batch file.
-rem Localization continues until a matching endlocal command is 
-rem encountered or the end of the batch file is reached. 
+rem Localization continues until a matching endlocal command is
+rem encountered or the end of the batch file is reached.
 rem https://technet.microsoft.com/en-us/library/bb491001.aspx
 setlocal
 
@@ -60,13 +60,16 @@ move ..\*.exe ..\builds
 move ..\*.dll ..\builds
 copy "%GAMEPATH%\*.gpk" ..\builds
 
-rem Copy remaining DLLs what are not automatically copied when using acknex -exe 
+rem Copy remaining DLLs what are not automatically copied when using acknex -exe
 rem instead or wed -r...
 copy "%ACKPATH%\acknex_plugins\ackphysX.dll" ..\builds\
 copy "%ACKPATH%\d3dx9_42.dll" ..\builds\
 copy "%ACKPATH%\d3dx9_30.dll" ..\builds\
 copy "%ACKPATH%\Nx*.dll" ..\builds\
 copy "%ACKPATH%\PhysX*.dll" ..\builds\
+
+rem ...Also for the other DLLs.
+copy ..\4thwall\*.dll ..\builds\
 
 rem F_cking WED can't take a simple relative path or accept wildcards?
 rem wed -p ..\builds\november.exe
