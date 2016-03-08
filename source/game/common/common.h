@@ -420,11 +420,19 @@ __namespace(Narrative) {
     /*
      * void game_break(const char *message)
      *
-     * A very simple attempt at breaking the fourth wall.
-     * It triggers the "messenger" ("Messenger.exe"), feeds the provided argument,
-     * and then terminates the game through a direct call to __game_event_on_close().
+     * Breaking the fourth wall without copying anything.
      */
     void game_break(const char *message);
+
+    /*
+     * void game_break_ex(const char *message, const char *archive, const char *file)
+     *
+     * A very simple attempt at breaking the fourth wall.
+     * It triggers the "messenger" ("Messenger.exe"), feeds the provided argument,
+     * copies a file out of the archive (.wrs, .pak,... - see file_cpy()),
+     * and then terminates the game through a direct call to __game_event_on_close().
+     */
+    void game_break_ex(const char *message, const char *archive, const char *file);
 }
 
 #include "common.c"
