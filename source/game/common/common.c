@@ -890,6 +890,7 @@ void game_args_parse()
 		game_log_new(); // Open the logging stream.
 
 		game_log_write(str_printf(NULL, "ID: <%i>", (int) GetCurrentProcessId()));
+		game_log_write(str_printf(NULL, "Engine release: %f", (double) version));
 
 		if(num_joysticks)
 			game_log_write( str_printf(NULL, "Found %i gamepad device(s).", (int) num_joysticks) );

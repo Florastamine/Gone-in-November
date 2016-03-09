@@ -59,6 +59,11 @@ int main(int argc, char **argl)
 	// Continue to initialize the remaining subsystems. (PhysX engine and the GUI state).
 	game_physx_new();
 	game_gui_state_new();
+	
+	render_new();
+	render_setup_rt();
+	render_hdr_new();
+	render_hdr_set_queued(true);
 
 	// After setting up the GUI states, we can tweak a few knobs to customize
 	// its default behavior, like setting up the default loading screen, and the reticule.
@@ -105,6 +110,8 @@ int main(int argc, char **argl)
 
 	// Shows the GUI.
 	game_gui_render();
+	
+	render_hdr();
 
 	// Main game loop, which can be terminated with the "ESC" key.
 	while( !key_esc )

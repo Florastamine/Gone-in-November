@@ -79,7 +79,7 @@
     #include "./source/render/render_surface.h"
     #include "./source/render/render_lrays.h"
     #include "./source/render/render_rain.h"
-    #include "./source/render/render_dof.h"
+    // #include "./source/render/render_dof.h"
     #include "./source/render/render_hdr.h"
     #include "./source/render/render_utils.h"
 #endif
