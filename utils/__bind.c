@@ -1,9 +1,9 @@
-#include <acknex.h>
-#include "..\\source\\utils\\utilities.h"
+#include   <acknex.h>
+#include   "..\\source\\utils\\utilities.h"
 
-#define    INCLUDE_GUARD_HEADER "#ifndef    __BINDINGS_H__\r\n#define    __BINDINGS_H__\r\n"
-#define    INCLUDE_GUARD_FOOTER "\r\n#endif"
-#define    FILE "..\\source\\game\\bind\\bindings.h"
+#define    INCLUDE_GUARD_HEADER    "#ifndef    __BINDINGS_H__\r\n#define    __BINDINGS_H__\r\n"
+#define    INCLUDE_GUARD_FOOTER    "\r\n#endif"
+#define    FILE                    "..\\source\\game\\bind\\bindings.h"
 
 TEXT     *files_list = { strings = 10000; }
 STRING   *current_directory = "";
@@ -28,11 +28,12 @@ int main(void)
 	txt_addstring(directories, "..\\scene");
 	txt_addstring(directories, "..\\fx");
 	txt_addstring(directories, "..\\object");
-	
+
 	txt_addstring(directories, "..\\2d");
 	txt_addstring(directories, "..\\2d\\fx");
 	txt_addstring(directories, "..\\2d\\gui");
 	txt_addstring(directories, "..\\2d\\sprites");
+	txt_addstring(directories, "..\\4thwall");
 
 	txt_addstring(extensions, "ogg");
 	txt_addstring(extensions, "wav");
@@ -41,12 +42,12 @@ int main(void)
 	txt_addstring(extensions, "tga");
 	txt_addstring(extensions, "mdl");
 	txt_addstring(extensions, "jpg");
-	
+
 	txt_addstring(extensions, "fx");
 	txt_addstring(extensions, "fxo");
 	txt_addstring(extensions, "wmb");
 	txt_addstring(extensions, "hmp");
-	
+
 	binder_perform( FILE, directories, extensions );
 
 	txt_remove_ex(directories);
@@ -58,7 +59,7 @@ int main(void)
 void binder_perform(STRING *file, TEXT *dirs, TEXT *exts)
 {
 	binder_write_header(file);
-	
+
 	int i, j;
 	for (i = 0; i < dirs->strings; i++)
 	{
@@ -68,8 +69,8 @@ void binder_perform(STRING *file, TEXT *dirs, TEXT *exts)
 			binder_write_data(file);
 		}
 	}
-	
-	binder_write_footer(file);	
+
+	binder_write_footer(file);
 }
 
 void binder_write_header(STRING *file)
@@ -81,7 +82,7 @@ void binder_write_header(STRING *file)
 		file_str_write(channel, FILE);
 		file_str_write(channel, " */\n");
 		file_str_write(channel, INCLUDE_GUARD_HEADER);
-		
+
 		file_close(channel);
 	}
 }
@@ -94,11 +95,12 @@ void binder_write_footer(STRING *file)
 		file_str_write(channel, INCLUDE_GUARD_FOOTER);
 		file_str_write(channel, " /* ");
 		file_str_write(channel, FILE);
+		file_str_write(channel, str_printf(NULL, " - Bindings generated on %i/%i/%i", (int) sys_day, (int) sys_month, (int) sys_year));
 		file_str_write(channel, " */");
-		
+
 		file_asc_write(channel, 13);
 		file_asc_write(channel, 10);
-		
+
 		file_close(channel);
 	}
 }
@@ -106,7 +108,7 @@ void binder_write_footer(STRING *file)
 void binder_write_data(STRING *file)
 {
 	if( files_found <= 0 ) return;
-	
+
 	int i = 0;
 	fixed channel = file_open_append(file);
 	STRING *str = "";
@@ -125,7 +127,7 @@ void binder_write_data(STRING *file)
 			str_cat(str, "\"\r\n");
 			file_str_write(channel, str);
 		}
-		
+
 		file_close(channel);
 	}
 }
