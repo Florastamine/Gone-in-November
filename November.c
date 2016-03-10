@@ -25,7 +25,7 @@
  * and handling the main game loop, as well as cleaning up.
  */
 int main(int argc, char **argl)
-{
+{	
 	// See if the game was launched through the Go-based launcher.
 	// ASSERT(game_locker_check() != 0, "Please run the game through the launcher!");
 
@@ -59,7 +59,7 @@ int main(int argc, char **argl)
 	// Continue to initialize the remaining subsystems. (PhysX engine and the GUI state).
 	game_physx_new();
 	game_gui_state_new();
-	
+
 	render_new();
 	render_setup_rt();
 	render_hdr_new();
@@ -82,7 +82,7 @@ int main(int argc, char **argl)
 	// Creates a new chapter and push it to the scene list.
 	scene_new();
 
-	ChapterData *ChapterOne = scene_data_new("Prologue",                               // Name of the chapter.
+	ChapterData *ChapterOne = scene_data_new("359",                               // Name of the chapter.
 	                                        _chr(game_asset_get_scene("scene.wmb")),   // Internal name of the chapter. (scene name)
 											NULL,                                      // Name of the thumbnail image.
 											NULL,                                      // Sun color.
@@ -110,7 +110,7 @@ int main(int argc, char **argl)
 
 	// Shows the GUI.
 	game_gui_render();
-	
+
 	render_hdr();
 
 	// Main game loop, which can be terminated with the "ESC" key.
