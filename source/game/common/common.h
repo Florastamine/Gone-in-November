@@ -99,6 +99,11 @@
 #define LAYER_DEBUG_2   17
 
 /*
+ * Fixed string constants.
+ */
+const STRING *STR_NIL = "nil";
+
+/*
  * GameState (struct)
  * This struct contains everything related to the current game state.
  */
