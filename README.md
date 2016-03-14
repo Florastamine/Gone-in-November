@@ -8,10 +8,10 @@ As the game code is updated directly on this GitHub page, you can easily tell if
 
 If you wish to collaborate, let me know. I'll be very happy! (as the game is progressing fairly slow). Leave me a message at:
 * My personal Gmail account (florastamine@gmail.com)
-* My vn-sharing.net account (http://vn-sharing.net/forum/member.php?u=15466)
+* My vnsharing account (http://vnsharing.site/forum/member.php?u=15466)
 * My opserver.de/ubb7 account (http://www.opserver.de/ubb7/ubbthreads.php?ubb=showprofile&User=18896)
-
-Currently I am accepting only 2D artists and composers.
+* My Game Jolt account (http://gamejolt.com/profile/huy-nguyen/410187)
+* My Steam account (http://steamcommunity.com/id/Florastamine/)
 
 More information (early releases, progress, news) can be found on the game's main web page: [Here!](http://florastamine.github.io/Gone-in-November/)
 
