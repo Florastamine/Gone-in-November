@@ -883,7 +883,7 @@ void game_args_parse()
 	if( !file_exists(__ARGS_LIST) )
 	    return;
 
-	STRING *args = dump(__ARGS_LIST);
+	STRING *args = str_create(dump(__ARGS_LIST));
 
 	if( !str_stri(args, __ARGS_NO_LOGGING) && !str_stri(args, __ARGS_NO_LOGGING_SHORT) ) // If __ARGS_NO_LOGGING wasn't specified?
 	{
