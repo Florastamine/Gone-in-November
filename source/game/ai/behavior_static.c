@@ -232,6 +232,7 @@ action act_obj_beam()
  * skill2 : Door opening speed.
  * skill3 : How "wide" you want the door to be.
  * skill4 : Unique ID of the door.
+ * skill5: Door opening/closing mode, 0 for clockwise, 1 for counter-clockwise.
  */
 action act_door()
 {
@@ -249,7 +250,7 @@ action act_door()
     SOUND *src_close  = NULL;
 
     if(my->string1)
-        src_open = snd_create(game_asset_get_sound(my->string1);
+        src_open = snd_create(game_asset_get_sound(my->string1));
     if(my->string2)
         src_close = snd_create(game_asset_get_sound(my->string2));
 
@@ -271,34 +272,62 @@ action act_door()
 
                 angle = my->pan;
 
-                if((int) !my->skill5)   // skill5 stores the state of the door (0 = closed, 1 = opened).
+                if((int) !my->skill6)   // skill6 stores the state of the door (0 = closed, 1 = opened).
                                         // We're testing if the door was closed before.
                 {
                     if(src_open)
                         snd_play(src_open, 100.0, 0.0);
 
-                    while(my->pan <= angle + my->ANGLE) // If the door was closed (my->skill4 == 0), open it.
+                    if(my->skill5 == C_CLOCKWISE) // If we're opening the door in counter-clockwise mode.
                     {
-                        my->pan += my->SPEED * time_step;
-                        wait(1.0);
+                        while(my->pan <= angle + my->ANGLE)
+                        {
+                            my->pan += my->SPEED * time_step;
+                            wait(1.0);
+                        }
+
+                        my->pan = angle + my->ANGLE; // Small fine-tuning.
+                    }
+                    else
+                    {
+                        while(my->pan >= angle - my->ANGLE)
+                        {
+                            my->pan -= my->SPEED * time_step;
+                            wait(1.0);
+                        }
+
+                        my->pan = angle - my->ANGLE;
                     }
 
-                    my->pan = angle + my->ANGLE; // Small fine-tuning.
-                    my->skill5 = (int) 1;
+                    my->skill6 = (int) 1;
                 }
-                else // Close the door, because my->skill5 is already 1.
+                else // Close the door, because my->skill6 is already 1.
                 {
                     if(src_close)
                         snd_play(src_close, 100.0, 0.0);
 
-                    while(my->pan >= angle - my->ANGLE)
+                    if(my->skill5 == C_CLOCKWISE) // If we're opening the door in counter-clockwise mode.
                     {
-                        my->pan -= my->SPEED * time_step;
-                        wait(1.0);
+                        while(my->pan >= angle - my->ANGLE)
+                        {
+                            my->pan -= my->SPEED * time_step;
+                            wait(1.0);
+                        }
+
+                        my->pan = angle - my->ANGLE;
+                    }
+                    else
+                    {
+                        while(my->pan <= angle + my->ANGLE)
+                        {
+                            my->pan += my->SPEED * time_step;
+                            wait(1.0);
+                        }
+
+                        my->pan = angle + my->ANGLE;
                     }
 
-                    my->pan = angle - my->ANGLE;
-                    my->skill5 = (int) 0;
+                    my->skill6 = (int) 0; // Mark the door as "closed".
                 }
             }
         }

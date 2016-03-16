@@ -94,6 +94,7 @@ action act_obj_beam();
  * skill2 : Door opening speed.
  * skill3 : How "wide" you want the door to be.
  * skill4 : Unique ID of the door.
+ * skill5: Door opening/closing mode, 0 for clockwise, 1 for counter-clockwise.
  */
 #define    CLOCKWISE    0
 #define    C_CLOCKWISE  1

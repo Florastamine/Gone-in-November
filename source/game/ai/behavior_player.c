@@ -258,7 +258,7 @@ action act_player()
 		my->flags |= (INVISIBLE);
 	#endif
 	*/
-	my->flags |= (INVISIBLE);
+	my->flags |= (INVISIBLE | POLYGON);
 
 	#ifdef    DEBUG
 	   my->flags |= (SHADOW);
