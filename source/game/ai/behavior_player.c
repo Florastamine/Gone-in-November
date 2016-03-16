@@ -67,6 +67,8 @@ void act_player_new()
 		vec_zero(__act_player_state_singleton->__platform_move_speed);
 		vec_zero(__act_player_state_singleton->__cam_pos);
 		vec_zero(__act_player_state_singleton->__cam_ang);
+		vec_zero(__act_player_state_singleton->__last_pos);
+		vec_zero(__act_player_state_singleton->__first_pos);
 
 		__act_player_state_singleton->__move_type                 = MOVE_ON_FOOT;
 		__act_player_state_singleton->state                       = STATE_IDLE;
@@ -91,6 +93,12 @@ void act_player_new()
 		__act_player_state_singleton->can_climb                   = false;
 		__act_player_state_singleton->is_moving                   = false;
 		__act_player_state_singleton->can_move                    = true;
+
+		// Create the corresponding footstep sound effects. TODO: re-factor them into customizable functions with arbitrary stuff.
+		(__act_player_state_singleton->__footstep_sound)[0]       = snd_create(game_asset_get_sound("foot0.wav"));
+		(__act_player_state_singleton->__footstep_sound)[1]       = snd_create(game_asset_get_sound("foot1.wav"));
+		(__act_player_state_singleton->__footstep_sound)[2]       = snd_create(game_asset_get_sound("foot2.wav"));
+		(__act_player_state_singleton->__footstep_sound)[3]       = snd_create(game_asset_get_sound("foot3.wav"));
 
 		double d = dtimer();
 		game_log_write( str_printf(NULL, "Finished building a home for the soul. (%f seconds)", d * POW_10_6) );
@@ -234,7 +242,7 @@ __static int __joy_force_y_to_int()
  */
 action act_player()
 {
-	ent_set_type(my, DYNAMIC_PLAYER);
+	ent_set_type(me, DYNAMIC_PLAYER);
 
 	#ifdef ACKPHYSX_H
 	game_log_write("Request to infiltrate the soul...");
@@ -246,6 +254,7 @@ action act_player()
 
 	BOOL    IS_GROUNDED = 0, SLEEP_ONCE = 0;
 	VECTOR  force, absForce, dist, absDist, velocity, friction, tracePos, traceInput;
+	fixed   footstep_handle = 0;
 
 	act_player_new(); // Allocates and fills the singleton so we can fetch and set values from/to it.
 
@@ -278,7 +287,6 @@ action act_player()
 
 	while( __act_player_state_singleton->health > 0 )
 	{
-
 		if(__act_player_state_singleton->can_move)
 		{
 			if(__act_player_state_singleton->__move_type == MOVE_ON_FOOT)
@@ -299,10 +307,24 @@ action act_player()
 				__act_player_state_singleton->is_moving = false;
 
 				if(velResult > 10) // if we have movement speed:
-				    __act_player_state_singleton->is_moving = true; // then we are moving:
+					__act_player_state_singleton->is_moving = true; // then we are moving:
 
 				// apply direction to the movement:
 				vec_set( &force, vector(__act_player_state_singleton->move_speed * ((key_w || key_cuu || joy_force.y > 0) - (key_s || key_cud || joy_force.y < 0)), __act_player_state_singleton->move_speed * ((key_a || key_cul || joy_force.x < 0) - (key_d || key_cur || joy_force.x > 0)), 0) );
+
+				// Applies the current force which was calculated by the key presses (W, A, S, D,...) to the "last" vector, which then can be used to measure the "delta" of the movement.
+				vec_set(&(__act_player_state_singleton->__last_pos), &force);
+
+				// Check if we're moving __on the ground__ (hence the absence of the z axis):
+				// (TODO: Come up with some nicer checks, f.e. (first_pos - last_pos) > epsilon or something like that.)
+				if((__act_player_state_singleton->__last_pos).x != (__act_player_state_singleton->__first_pos).x ||
+				   (__act_player_state_singleton->__last_pos).y != (__act_player_state_singleton->__first_pos).y)
+				{
+					int r = rand() % FOOTSTEP_SOUND_VARIANTS;
+
+					if( !snd_playing(footstep_handle) )
+						footstep_handle = snd_play((__act_player_state_singleton->__footstep_sound)[r], 15.0, 0.0);
+				}
 
 				// if movement speed is more than allowed:
 				if(vec_length(vector(force.x, force.y, 0)) > __act_player_state_singleton->move_speed)

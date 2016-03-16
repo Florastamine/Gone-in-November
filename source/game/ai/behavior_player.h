@@ -2,26 +2,26 @@
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
- * 
+ *
  *  Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
- * 
+ *
  *  Everyone is permitted to copy and distribute verbatim or modified
  *  copies of this license document, and changing it is allowed as long
  *  as the name is changed.
  *
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
- * 
+ *
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  * __________________________________________________________________
- * 
+ *
  * <behavior_player>
- * 
+ *
  * Player code, first person, with credits goes to 3Run.
  * I modified, optimized and simplified his original code for PRAGMA_POINTER
- * compatibility and better coding structures. As a result (and as the nature of 
+ * compatibility and better coding structures. As a result (and as the nature of
  * GiN), the code won't include ducking and jumping.
- * 
+ *
  * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
@@ -29,7 +29,7 @@
 #define    __HOLLA_HOLLA_GET_DOLLAS__
 
 #define __action /* This serves nothing - merely just a mark for distinguish between normal functions and "action" functions. */
-#define __static 
+#define __static
 #define __In
 #define __Out
 
@@ -57,14 +57,16 @@
 #define MOVE_ON_FOOT                      1
 #define MOVE_ON_LADDER                    2
 
+#define FOOTSTEP_SOUND_VARIANTS           4
+
 #define SPEED_X                           skill75
 #define SPEED_Y                           skill76
 #define SPEED_Z                           skill77
 
 /*
 * __act_player_state (struct)
-* 
-* This struct contains information related to the first-person player, 
+*
+* This struct contains information related to the first-person player,
 * and is intended to not be accessed internally (thus the double underscore at the beginning of the identifier).
 * For reading/writing/serializing/deserializing from/into the struct's singleton, use accessors instead.
 */
@@ -72,37 +74,42 @@ typedef struct {
 	// Stuff used for internal calculations, shouldn't be yielded directly.
 	ENTITY *__object;
 	ENTITY *__object_stand;
-	
+
 	VECTOR  __bbox_lowest_pos;
 	VECTOR  __platform_move_speed;
-	
+
 	float   __quants_covered;              /* "Private" movement speed - which is not the actual movement speed but the distance covered returned by c_move(). */
 	float   __distance_to_ground;
 	int     __move_type;
-	
+
+	SOUND  *__footstep_sound[FOOTSTEP_SOUND_VARIANTS];
+
+	VECTOR  __last_pos;
+	VECTOR  __first_pos;
+
 	// Camera (play with these values!)
 	VECTOR  __cam_pos;                     /* For internal use only - if you want to get camera pos & ang, yield &camera->x and &camera->pan instead. */
 	ANGLE   __cam_ang;
-	
+
 	float   cam_height;						   /* Camera height, which is added to player->z. */
 	float   cam_lerp;							   /* Lerping factor. */
 	float   cam_smooth;						   /* Smoothing factor. */
 	float   cam_smooth_offset;				   /* Smoothing offset. */
-	
+
 	// Properties
 	float   friction;							   /* Movement friction. Higher values causes the player to "slip" on the surface as if it is made from ice. */
 	float   movement_friction;
 	float   movement_friction_air;
 	float   movement_friction_ground;
-	
+
 	float   move_speed;                      /* *Actual* movement speed, climb speed and    */
 	float   climb_speed;                     /* walk/run multilpliers. Alter-able in-game.  */
 	float   run_multiplier;
 	float   walk_multiplier;
-	
+
 	float   health;
 	int     state;                           /* State machine */
-	
+
 	// Flags
 	BOOL    can_stand;                        /* 1 - if we can stand up, 0 - if there is a celling above the head. */
 	BOOL    can_climb;
@@ -144,6 +151,10 @@ void  act_player_set_friction( __In float f );
 
 float act_player_get_camera_height();
 void  act_player_set_camera_height( __In float f );
+
+int act_player_get_footstep_num();
+void act_player_set_footstep( __In int ID, __In const char *file_name );
+void act_player_realloc_footstep( __In int ID );
 
 #include "behavior_player.c"
 #endif /* behavior_player.h */
