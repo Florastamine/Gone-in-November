@@ -16,6 +16,16 @@
  */
 
 /*
+ * VECTOR *gui_screen_get_center()
+ *
+ * Returns the center point of the screen.
+ */
+VECTOR *gui_screen_get_center()
+{
+	return vector(screen_size.x / 2, screen_size.y / 2, 0.0);
+}
+
+/*
  * Pair *gui_panel_get_size( Panel *panel )
  *
  * Returns the size of a given panel.

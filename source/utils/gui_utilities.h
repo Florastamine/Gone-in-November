@@ -67,6 +67,8 @@ __namespace(global) {
 
 	float gui_panel_get_rotation( Panel *panel );
 	void  gui_panel_set_rotation( __Out Panel *panel, float amount );
+
+	VECTOR *gui_screen_get_center();
 }
 
 __namespace(button) {
