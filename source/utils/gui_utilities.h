@@ -469,5 +469,59 @@ __namespace(StaticDialogue) {
 	float gui_dialogue_get_volume( __In StaticDialogue *dialog );
 }
 
+__namespace(NotifierText) {
+	typedef struct {
+		Text       *__container;              /* Internal container of the text object, which is used for storing the actual text for rendering. */
+
+		Vector3    *position;                 /* Position of the text object, relative to the game window. */
+		Vector3    *color;                    /* Color of the text object.                                 */
+
+		String     *content;                  /* Contains the title string.                                */
+
+		float       time;                     /* Time (in seconds) to display the title.                   */
+		float       delay;                    /* Delay time (in seconds) for each character in the title to be displayed. */
+
+		Sound      *sound;                    /* Pointer to the sound file which is played whenever a new character is shown. */
+	} StaticTitleText;
+
+	/*
+	 * StaticTitleText *gui_title_new( Vector3 *pos, Vector3 *color, String *content, float time, int layer )
+	 *
+	 * Creates and returns a new static title text object, and gives it a few basic properties.
+	 * After the text is created, it can be shown with a call to gui_title_show().
+	 * Upon the completion of gui_title_show(), the text will be automatically freed.
+	 */
+	StaticTitleText *gui_title_new( __In Vector3 *pos, __In Vector3 *color, __In String *content, __In float time, __In int layer );
+
+	/*
+	 * void gui_title_free( StaticTitleText *text )
+	 *
+	 * Frees a previously created static text object.
+	 */
+	void gui_title_free( __In __Out StaticTitleText *text );
+
+	/*
+	 * void gui_title_set_sound( StaticTitleText *text, const char *filename )
+	 *
+	 * Sets the sound file to be played whenever a character is shown during the execution of gui_title_show().
+	 */
+	void gui_title_set_sound( __In __Out StaticTitleText *text, __In const char *filename );
+
+	/*
+	 * void gui_title_set_delay( StaticTitleText *text, float delay )
+	 *
+	 * Sets the delay time (in seconds) between each character's appearance.
+	 */
+	void gui_title_set_delay( __In __Out StaticTitleText *text, __In float delay );
+
+	/*
+	 * void gui_title_show( StaticTitleText *text )
+	 *
+	 * Performs rendering the text object, and frees itself whenever it's done.
+	 * (text objects are intended to be only displayed one - YODO - You Only Display Once(TM)).
+	 */
+	void gui_title_show( __In __Out StaticTitleText *text );
+}
+
 #include "gui_utilities.c"
 #endif /* gui_utilities.h */

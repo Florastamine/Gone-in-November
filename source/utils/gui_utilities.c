@@ -1208,7 +1208,7 @@ ProgressBar *gui_pbar_new(  const STRING *outliner_file,  const STRING *bar_file
 	{
 		pbar->bar->bmap = bmap_createblack(PROGRESS_BAR_DEFAULT_BAR_SIZE_X, PROGRESS_BAR_DEFAULT_BAR_SIZE_Y, 16); // 16 bit so that it can be filled with bmap_fill().
 
-		// bmap_fill(pbar->bar->bmap, vec_fill(nullvector, 255.0), 100.0); /* "Can we get much higher, can we get much lighter?       */
+		// bmap_fill(pbar->bar->bmap, vec_fill(nullvector, 255.0), 100.0); /* "can we get much higher, can we get much lighter?       */
 		                                                                   /* Navigator to heaven..."                                 */
 																		   /* Seriously, comment out this line to enjoy a beautiful   */
 																		   /* lift off.                                               */
@@ -1764,4 +1764,161 @@ int gui_dialogue_get_layer( StaticDialogue *dialog )
 float gui_dialogue_get_volume( StaticDialogue *dialog )
 {
 	return (float) ifelse(dialog, dialog->volume, -1.0);
+}
+
+/*
+ * StaticTitleText *gui_title_new( Vector3 *pos, Vector3 *color, String *content, float time, int layer )
+ *
+ * Creates and returns a new static title text object, and gives it a few basic properties.
+ * After the text is created, it can be shown with a call to gui_title_show().
+ * Upon the completion of gui_title_show(), the text will be automatically freed.
+ */
+StaticTitleText *gui_title_new( Vector3 *pos, Vector3 *color, String *content, float time, int layer )
+{
+	/*
+	* "Ông can ơi ông can,
+	* Con mời ông lên con biếu ông nhang,
+	* Ông can vẫn là ông can, từ Cao Bằng cho tới Long An,
+	* Xin để con yên ổn làm ăn, dù cho 1 chữ con cũng quyết không than,
+	* Tụi con xây đền thờ để tượng ông sau nhà, cúng bái ông để cho ông không gian,
+	* Tụi con ăn tép, sao ông lại ăn tôm,
+	* Nhà không có két, thì ông cũng ăn trộm,
+	* Nhà con không quả cũng không trái, nhưng khi được việc ông ghé vào ăn thơm.
+	* Không phải nói phét, nhưng chẳng cần xin phép, mặt mày lấm lét ông ăn cả mâm cơm,
+	* Nhưng sao mọi khi thì chỉ có tụi con, mỗi khi nào ăn đạn và ăn bom?"
+	*                                                B-Ray, Young H (Ông Can)
+	 */
+	StaticTitleText *text = MALLOC(1, StaticTitleText);
+	text->position        = (VECTOR *) vifelse(pos != NULL, vector(pos->x, pos->y, pos->z), nullvector);
+	text->color           = (VECTOR *) vifelse(color != NULL, vector(color->x, color->y, color->z), nullvector);
+	text->time            =            ifelse(time > 0.0, time, 5.0);
+	text->sound           = NULL;
+	text->delay           = .35;
+
+	if(content)
+		text->content = str_create(content);
+	else
+		text->content = str_create("Unnamed StaticTitleText");
+
+	layer = (int) ifelse(layer > 0, layer, 1);
+	text->__container           = txt_create(1, layer);
+	text->__container->font     = font_create("Arial#18b");
+	text->__container->pos_x    = text->position->x;
+	text->__container->pos_y    = text->position->y;
+
+	vec_set(&(text->__container->blue), text->color);
+
+	return text;
+}
+
+/*
+ * void gui_title_free( StaticTitleText *text )
+ *
+ * Frees a previously created static text object.
+ */
+void gui_title_free( StaticTitleText *text )
+{
+	/*
+	 * Roi cung anh mot lan, tan cung anh mot lan,
+	 * nhu la mua tren mai ton, nhu la mua tren mai ton...
+	 *                                            - Den.
+	 */
+	if(text != NULL) {
+		// Removes the internal text container.
+		str_remove((text->__container->pstring)[0]);
+		txt_remove(text->__container);
+
+		// ...and also removes the text object itself.
+		str_remove(text->content);
+		ptr_remove(text->sound);
+
+		FREE(text);
+	}
+}
+
+/*
+ * void gui_title_show( StaticTitleText *text )
+ *
+ * Performs rendering the text object, and frees itself whenever it's done.
+ * (text objects are intended to be only displayed one - YODO - You Only Display Once(TM)).
+ */
+void gui_title_show( StaticTitleText *text )
+{
+	if(text != NULL)
+	{
+		text->__container->flags |= (LIGHT | SHOW);
+
+		int len = str_len(text->content), i = 1;
+
+		str_remove((text->__container->pstring)[0]);
+		(text->__container->pstring)[0] = str_create_ex(len + 1);
+
+		while(i <= len)
+		{
+			/*
+			 * str_getchr() will return a single char at the position specified by i in string text->content.
+			 * The whole (((text->__container->pstring)[0])->chars)[i - 1] gives access to the (i - 1)-th character
+			 * in the internal (char *) array inside (STRING *), because str_cat() only accepts (STRING *) to be concatenated, and
+			 * passing str_cat(str, &c) would yield errors.
+			 * To make sure the internal char * array has enough room, we've allocated beforehand with str_create_ex() (which is defined in <utilities>).
+			 */
+			(((text->__container->pstring)[0])->chars)[i - 1] = str_getchr(text->content, i);
+
+			if(text->sound)
+				snd_play(text->sound, 25.0, 0.0);
+
+			wait(-text->delay);
+
+			i++;
+			wait(1.0);
+		}
+		(((text->__container->pstring)[0])->chars)[i - 1] = 0; // Garbage otherwise.
+
+		// Now wait for text->time seconds before hiding the string.
+		float time = 0.0;
+		while(time < text->time)
+		{
+			time += time_step / 16;
+			wait(1.0);
+		}
+
+		i = 1;
+		float new_delay = text->delay * 0.5; // Cuts the delay time in half, disappear time should be only 1/2 of the total delay.
+		while(i <= len)
+		{
+			str_setchr((text->__container->pstring)[0], i, ' ');
+
+			if(text->sound)
+				snd_play(text->sound, 25.0, 0.0);
+
+			wait(-new_delay);
+
+			i++;
+			wait(1.0);
+		}
+
+		gui_title_free(text);
+	}
+}
+
+/*
+ * void gui_title_set_sound( StaticTitleText *text, const char *filename )
+ *
+ * Sets the sound file to be played whenever a character is shown during the execution of gui_title_show().
+ */
+void gui_title_set_sound( StaticTitleText *text, const char *filename )
+{
+    if(text)
+        text->sound = snd_create(filename);
+}
+
+/*
+ * void gui_title_set_delay( StaticTitleText *text, float delay )
+ *
+ * Sets the delay time (in seconds) between each character's appearance.
+ */
+void gui_title_set_delay( StaticTitleText *text, float delay )
+{
+	if(text)
+		text->delay = delay;
 }
