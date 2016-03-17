@@ -261,8 +261,6 @@ action act_door()
     {
         if(vec_dist(player->x, my->x) <= my->DISTANCE)
         {
-            draw_text(str_for_num(NULL, my->pan), 100.0, 100.0, COLOR_WHITE);
-
             if(!key_f)
                 draw_text("Press [F] to feel the door!", 50.0, 50.0, COLOR_SCARLET);
             else
