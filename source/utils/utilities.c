@@ -2179,7 +2179,7 @@ void reg_key_free(RegistryItem *item)
 
 		FREE(item);
 	}
-    
+
     item = NULL;
 }
 
@@ -2237,4 +2237,43 @@ float reg_key_to_float(const RegistryItem *item)
 {
 	if(item)
 		return str_to_float(item->value);
+}
+
+/*
+ * float fifelse( int cond, float a, float b )
+ *
+ * A float variant of ifelse().
+ */
+float fifelse( int cond, float a, float b )
+{
+	if(cond)
+		return a;
+
+	return b;
+}
+
+/*
+ * double difelse( int cond, double a, double b )
+ *
+ * A double variant of ifelse().
+ */
+double difelse( int cond, double a, double b )
+{
+	if(cond)
+		return a;
+
+	return b;
+}
+
+/*
+ * VECTOR *vifelse( int cond, VECTOR *a, VECTOR *b )
+ *
+ * A VECTOR variant of ifelse().
+ */
+VECTOR *vifelse( int cond, VECTOR *a, VECTOR *b )
+{
+	if(cond)
+		return a;
+
+	return b;
 }
