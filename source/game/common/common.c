@@ -1125,6 +1125,7 @@ void game_globals_set()
 	terrain_lod = 4;
 	detail_size = 80;
 	time_smooth = 0.9;
+	d3d_shadowdepth = 32;
 	random_seed(0);
 
 	// Enable standard stencil shadows if the header <render_shadows> isn't included.
