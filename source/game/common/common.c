@@ -313,6 +313,12 @@ void game_event_setup()
 {
 	on_close         = __game_event_on_close;
 	on_exit          = __game_event_on_exit;
+
+	#ifdef    __FSAA_DLL_H__
+		render_sky           = fsaa_eventSky;
+		render_entities      = fsaa_eventEntities;
+		on_d3d_lost          = fsaa_eventLost;
+	#endif
 }
 
 __static void __p_set_translucent( PANEL *p )
@@ -893,6 +899,10 @@ void game_args_parse()
 		game_log_write(str_printf(NULL, "Engine release %f", (double) version));
 		game_log_write(str_printf(NULL, "Game release %s", (char *) __GAME_VERSION));
 
+		#ifdef    __FSAA_DLL_H__
+			game_log_write(str_printf(NULL, "Video card anti-aliasing level %i", (int) fsaa_maxQualityNonMaskable()));
+		#endif
+
 		if(num_joysticks)
 			game_log_write( str_printf(NULL, "Found %i gamepad device(s).", (int) num_joysticks) );
 	}
@@ -946,8 +956,8 @@ __static void __game_video_set(
 	int   fsaf /* ... */
 ) {
 	video_set(width, height, bit_depth, ifelse(fullscreen, FULLSCREEN, WINDOWED));
-	d3d_antialias     = fsaa;
 	d3d_anisotropy    = fsaf;
+	d3d_antialias     = fsaa;
 }
 
 /*
@@ -956,12 +966,23 @@ __static void __game_video_set(
  * Reads and applies video settings from the video configuration file
  * defined in <common.h>/__VIDEO_CFG.
  */
+
+__static int __FSAA_GetQuality() {
+	#ifdef    __FSAA_DLL_H__
+		return fsaa_maxQualityNonMaskable();
+	#endif
+
+	return 4; // 4 is enough. 8 or 9 for d3d_antialias is too risky. For cards
+	          // with the maximum anti-aliasing level belows 8 - 9, setting this variable
+			  // to 8 or 9 could effectively disables AA.
+}
+
 void game_video_cfg_parse()
 {
 	fixed f = file_open_read(__VIDEO_CFG);
 
 	if(!f) // Set default values if the configuration file couldn't be found.
-		__game_video_set( sys_metrics(0), sys_metrics(1), 32, true, 4, 8 );
+		__game_video_set( sys_metrics(0), sys_metrics(1), 32, true, __FSAA_GetQuality(), 8 );
 	else
 	{
 		String *content              = "";

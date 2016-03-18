@@ -116,7 +116,9 @@ void scene_load(ChapterData *data, const void *loader)
             return;
         }
 
-        // And load associated data.
+        // Performs post-load operations.
+
+        // 1. Loads associated data.
         if(link->data->sun_color)
             vec_set(sun_color, link->data->sun_color);
 
@@ -131,8 +133,12 @@ void scene_load(ChapterData *data, const void *loader)
             camera->fog_start = link->data->fog_range->x;
             camera->fog_end = link->data->fog_range->y;
         }
-    }
 
+        // 2. Fetchs and enables FSAA if <FSAA> is enabled. (d3d_antialias acts as a dummy variable.)
+        #ifdef    __FSAA_DLL_H__
+            fsaa_setQuality(d3d_antialias);
+        #endif
+    }
     // Done.
 }
 
