@@ -30,7 +30,7 @@ The source code cannot be built at the moment as it requires game assets which u
 ### Downloading & Installing the toolset
 Since the game is written in **Lite-C** (which is actually C but with some elements borrowed from C++), you will need a special Lite-C toolset to be able to compile GiN, which can be downloaded [here](http://server.conitec.net/down/gstudio8_setup.exe). Upon installing the tools, select the option to install the free version. **(GiN can still be compiled with the free version, but shaders will not be enabled)**.
 
-Note that, when viewing the code repository using [GitHub.com](https://github.com/), you can see a small portion of the code is marked as the "**FLUX**" language. This is not correct - they are Direct3D shader code (HLSL).
+~~Note that, when viewing the repository within [GitHub.com](https://github.com/), you can see a small portion of the code is marked as the "**FLUX**" language. This is not correct - they are Direct3D shader code (HLSL).~~ Seems like the issue was resolved [with the release of Linguist 4.8.0](https://github.com/github/linguist/pull/2842).
 
 ### Getting the source code & Preparing
 I recommend building from the "tagged" releases as it is guaranteed to be stable. Thus, when you've done cloning the repository, make sure to "revert" the codebase to the nearest tag before compiling.
