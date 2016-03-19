@@ -523,5 +523,60 @@ __namespace(NotifierText) {
 	void gui_title_show( __In __Out StaticTitleText *text );
 }
 
+__namespace(CreditsText) {
+	#define    CREDITS_TEXT_MAX_LINES      64    // Increase this limit if you're having trouble with long files.
+
+	typedef struct {
+		Text       *__container;            /* Internal container which contains the actual credits strings.         */
+
+		Vector3    *color;                  /* Color of the background (if an image wasn't supplied).                */
+		String     *image_file;             /* Not an actual pointer to the bitmap but contains the image file name. */
+
+		String     *track_file;             /* Contains the mp3/ogg/whatever file name. */
+		fixed       track_handle;           /* Pointer to the music track being played. */
+
+		String     *text_file;
+
+		float       scroll_speed;           /* Scrolling speed. */
+	} CreditsText;
+
+	/*
+	 * CreditsText *gui_credits_new( const char *text_file, const char *track_file, const char image_file, const Vector3 *image_color, int layer )
+	 *
+	 * Creates a brand new credits text object to be displayed later.
+	 * Just fill in some basic information, and with a call to gui_credits_show(), you're set.
+	 * Make sure to free your scenes, lock player controls, etc. ect. first before showing the credits, because gui_credits_*() (and everything in <gui_utilities>)
+	 * can only handle the UI part, and they were designed to do so.
+	 */
+	CreditsText *gui_credits_new( __In const char *text_file, __In const char *track_file, __In const char image_file, __In const Vector3 *image_color, __In int layer );
+
+	/*
+	 * void gui_credits_free( CreditsText *text )
+	 *
+	 * Frees a previously allocated credits text object through gui_credits_new().
+	 */
+	void gui_credits_free( __In CreditsText *text );
+
+	/*
+	 * void gui_credits_set_font( CreditsText *text, const char *font_file )
+	 *
+	 * Changes the display font of a CreditsText object.
+	 */
+	void gui_credits_set_font( __In CreditsText *text, __In const char *font_file );
+
+	void gui_credits_set_pos( __In __Out CreditsText *text, __In float x, __In float y );
+	void gui_credits_set_pos( __In __Out CreditsText *text, __In Vector3 *pos );
+
+	void gui_credits_set_speed( __In __Out CreditsText *text, __In float speed );
+
+	/*
+	 * void gui_credits_show( CreditsText *text )
+	 *
+	 * Performs rendering of the specified credits text object.
+	 * After the credits is displayed, the object will be permanently deleted through gui_credits_free().
+	 */
+	void gui_credits_show( __In __Out CreditsText *text );
+}
+
 #include "gui_utilities.c"
 #endif /* gui_utilities.h */

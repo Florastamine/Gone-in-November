@@ -1922,3 +1922,147 @@ void gui_title_set_delay( StaticTitleText *text, float delay )
 	if(text)
 		text->delay = delay;
 }
+
+/*
+ * CreditsText *gui_credits_new( const char *text_file, const char *track_file, const char image_file, const Vector3 *image_color, int layer )
+ *
+ * Creates a brand new credits text object to be displayed later.
+ * Just fill in some basic information, and with a call to gui_credits_show(), you're set.
+ * Make sure to free your scenes, lock player controls, etc. ect. first before showing the credits, because gui_credits_*() (and everything in <gui_utilities>)
+ * can only handle the UI part, and they were designed to do so.
+ */
+CreditsText *gui_credits_new( const char *text_file, const char *track_file, const char image_file, const Vector3 *image_color, int layer )
+{
+	if( !text_file )
+		return NULL;
+
+	layer = (int) ifelse(layer > 0, layer, 1);
+
+	CreditsText *text         = MALLOC(1, CreditsText);
+	text->scroll_speed        = 4.2; // https://en.wikipedia.org/wiki/42_(number)
+	text->text_file           = str_create(text_file);
+	text->image_file          = (STRING *) sifelse(image_file, str_create(image_file), NULL);
+	text->track_file          = (STRING *) sifelse(track_file, str_create(track_file), NULL);
+	text->color               = (VECTOR *) vifelse(image_color, image_color, nullvector);
+	text->__container         = txt_create(CREDITS_TEXT_MAX_LINES, layer + 1);
+	text->__container->font   = font_create("Arial#18");
+
+	txt_load(text->__container, text->text_file); 	/*
+													 * Parse the plain text file to the container without taking
+													 * Unicode into account. Parsing Unicode can be done through
+													 * txt_loadw() but it requires a little more work on the implementation.
+													 */
+
+	return text;
+}
+
+/*
+ * void gui_credits_free( CreditsText *text )
+ *
+ * Frees a previously allocated credits text object through gui_credits_new().
+ */
+void gui_credits_free( CreditsText *text )
+{
+	if(text) {
+		if(text->image_file)
+			str_remove(text->image_file);
+		if(text->track_file)
+			str_remove(text->track_file);
+
+		str_remove(text->text_file);
+
+		// Remove all the strings in the credits text container...
+		int i = 1;
+		while(i <= text->__container->strings)
+		{
+			if((text->__container->pstring)[i - 1])
+				str_remove((text->__container->pstring)[i - 1]);
+
+			i += 1;
+			wait(1.0);
+		}
+		// ...and also remove the container itself.
+		txt_remove(text->__container);
+
+		FREE(text);
+	}
+}
+
+/*
+ * void gui_credits_set_font( CreditsText *text, const char *font_file )
+ *
+ * Changes the display font of a CreditsText object.
+ */
+void gui_credits_set_font( CreditsText *text, const char *font_file )
+{
+	if(text && font_file)
+		text->__container->font = font_create(font_file);
+}
+
+/*
+ * void gui_credits_show( CreditsText *text )
+ *
+ * Performs rendering of the specified credits text object.
+ * After the credits is displayed, the object will be permanently deleted through gui_credits_free().
+ * (TODO: Implement keypress to finish the sequence instead of automagic deletion.)
+ */
+void gui_credits_show( CreditsText *text )
+{
+	if(text) {
+		// This temporary frame (BMAP container) is used to render the background image inside.
+		Panel *frame = pan_create(NULL, text->__container->layer - 1);
+
+		// If an image file was supplied before, create the image, pass it to the frame object
+		// and stretches the image to fit the screen size. Otherwise, create a black background and
+		// fill whatever color that is stored in text->color.
+		if(text->image_file)
+		{
+			frame->bmap = bmap_create(text->image_file);
+			gui_panel_set_scale(frame, SCALE_X | SCALE_Y);
+		}
+		else
+		{
+			frame->bmap = bmap_createblack(screen_size.x, screen_size.y, 16);
+			bmap_fill(frame->bmap, text->color, 100.0);
+		}
+
+		if(text->track_file)
+			text->track_handle = media_play(text->track_file, NULL, 100.0);
+
+		frame->flags |= (SHOW);
+		text->__container->flags |= (SHOW);
+
+		float h = txt_height(text->__container) + text->__container->pos_y;
+		while(text->__container->pos_y > -h) // Inverse the height so that we can scroll the text upwards.
+		{
+			text->__container->pos_y -= text->scroll_speed * time_step;
+			wait(1.0);
+		}
+
+		if(media_playing(text->track_handle))
+			media_stop(text->track_handle);
+
+		frame->flags                &= ~(SHOW);
+		text->__container->flags    &= ~(SHOW);
+
+		pan_remove(frame);
+		gui_credits_free(text);
+	}
+}
+
+void gui_credits_set_pos( CreditsText *text, float x, float y )
+{
+	if(text)
+		gui_text_set_pos(text->__container, x, y);
+}
+
+void gui_credits_set_pos( CreditsText *text, Vector3 *pos )
+{
+	gui_credits_set_pos(text, pos->x, pos->y);
+}
+
+void gui_credits_set_speed( CreditsText *text, float speed )
+{
+	if(text)
+		text->scroll_speed = fifelse(speed > 0.0, speed, 4.2);
+}
