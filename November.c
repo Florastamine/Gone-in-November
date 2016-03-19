@@ -25,7 +25,7 @@
  * and handling the main game loop, as well as cleaning up.
  */
 int main(int argc, char **argl)
-{	
+{
 	// See if the game was launched through the Go-based launcher.
 	// ASSERT(game_locker_check() != 0, "Please run the game through the launcher!");
 
@@ -72,7 +72,7 @@ int main(int argc, char **argl)
 	game_scene_set_load_screen("image.jpg");
 	game_scene_set_delay(3.0);
 	game_scene_set_fade_speed(4.5);
-	game_scene_set_fade(true);
+	game_scene_set_fade(false);
 
 	game_scene_set_load_text_pos(10.0, 10.0);
 	game_scene_set_desc_text_pos(50.0, 125.0);
@@ -92,7 +92,7 @@ int main(int argc, char **argl)
 	scene_add(ChapterOne);
 
 	// Loads a chapter from the list, with a custom scene loader (game_scene_load()).
-	scene_load(ChapterOne, game_scene_load);
+	scene_load(ChapterOne, level_load);
 	pXent_setgroup(level_ent, LEVEL_GROUP);
 
 	// Activates PSSM shadows (four passes) and renders fog.
@@ -112,6 +112,10 @@ int main(int argc, char **argl)
 	game_gui_render();
 
 	render_hdr();
+
+	StaticTitleText *title = gui_title_new( gui_screen_get_center(), COLOR_BLEU_DE_FRANCE, "the lazy dog jumps over the quick brown fox", 5.0, 15 );
+	gui_title_set_sound( title, _chr(game_asset_get_sound("typewriter-key-1.wav")) );
+	gui_title_show(title);
 
 	// Main game loop, which can be terminated with the "ESC" key.
 	while( !key_esc )

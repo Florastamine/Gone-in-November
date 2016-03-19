@@ -58,6 +58,7 @@
 #include "path_source.h"
 #include "./source/utils/default_ex.h"
 
+#include "./source/dlls/FSAA.h"
 #include "./source/dlls/download.h"
 #include "./source/dlls/bmap_ex.h"
 
