@@ -88,7 +88,7 @@
  * __________________________________________________________________
  * + v0.4.0-alpha
  * - Added a set of simple functions for writing to and reading from the Windows registry.
- * - Added fifelse(), a float variant of ifelse(), along with vifelse() (VECTOR) and difelse() (double).
+ * - Added fifelse(), a float variant of ifelse(), along with vifelse() (VECTOR), sifelse() (STRING) and difelse() (double).
  * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
@@ -753,6 +753,13 @@ __namespace(numeric) {
      * A VECTOR variant of ifelse().
      */
     VECTOR *vifelse( __In int cond, __In VECTOR *a, __In VECTOR *b );
+
+    /*
+     * STRING *sifelse( int cond, STRING *a, STRING *b )
+     *
+     * A STRING variant of ifelse().
+     */
+    STRING *sifelse( __In int cond, __In STRING *a, __In STRING *b );
 }
 
 __namespace(window) {

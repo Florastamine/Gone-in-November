@@ -2277,3 +2277,16 @@ VECTOR *vifelse( int cond, VECTOR *a, VECTOR *b )
 
 	return b;
 }
+
+/*
+ * STRING *sifelse( int cond, STRING *a, STRING *b )
+ *
+ * A STRING variant of ifelse().
+ */
+STRING *sifelse( int cond, STRING *a, STRING *b )
+{
+	if(cond)
+		return a;
+
+	return b;
+}
