@@ -83,7 +83,7 @@ void act_player_new()
 		__act_player_state_singleton->movement_friction_ground    = 0.8;
 		__act_player_state_singleton->move_speed                  = 42 + 42 + 21; /* ;) */
 		__act_player_state_singleton->climb_speed                 = 2.5;
-		__act_player_state_singleton->run_multiplier              = 2.5;
+		__act_player_state_singleton->run_multiplier              = 1.5;
 		__act_player_state_singleton->walk_multiplier             = 1.0;
 
 		__act_player_state_singleton->__distance_to_ground        = 0.0;
@@ -215,7 +215,12 @@ __static void __act_player_register_physics()
 __static void __act_player_create_bbox()
 {
 	__act_player_state_singleton->__object_stand = ent_create( game_asset_get_object("bbox_stand.mdl") , &my->x, NULL); // create stand shape
-	__act_player_state_singleton->__object_stand->flags |= (INVISIBLE | PASSABLE);
+	__act_player_state_singleton->__object_stand->flags |= (POLYGON);
+	object_scale_set(__act_player_state_singleton->__object_stand, player->scale_x);
+
+	#ifdef    DEBUG
+		__act_player_state_singleton->__object_stand->flags |= (INVISIBLE);
+	#endif
 
 	while(proc_status(ent_create)) wait(1.0);
 	c_setminmax(__act_player_state_singleton->__object_stand);

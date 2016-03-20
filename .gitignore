@@ -48,6 +48,8 @@ status/exclusion.excl
 status/log.log
 
 scene/obstacle/
+utils-w10/
+design/
 
 # General
 wdf/main.cd/*
@@ -70,6 +72,7 @@ bindings.h
 *.log
 *.jpg
 *.pad
+*.tif
 
 ./progress_temp.txt
 
