@@ -254,12 +254,21 @@ action act_door()
         src_open = snd_create(game_asset_get_sound(my->string1));
     if(my->string2)
         src_close = snd_create(game_asset_get_sound(my->string2));
+
+    VECTOR _text_pos;
+    vec_set(&_text_pos, gui_screen_get_center());
+
     while(my)
     {
         if(vec_dist(player->x, my->x) <= my->DISTANCE)
         {
             if(!key_f)
-                draw_text("Press [F] to feel the door!", 50.0, 50.0, COLOR_SCARLET);
+            {
+                if((int) my->skill6)
+                    draw_text(lstr_close_door, _text_pos.x, _text_pos.y, COLOR_SCARLET);
+                else
+                    draw_text(lstr_open_door, _text_pos.x, _text_pos.y, COLOR_SCARLET);
+            }
             else
             {
                 while(key_f)

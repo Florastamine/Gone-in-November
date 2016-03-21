@@ -60,10 +60,18 @@ int main(int argc, char **argl)
 	game_physx_new();
 	game_gui_state_new();
 
-	render_new();
-	render_setup_rt();
-	render_hdr_new();
-	render_hdr_set_queued(true);
+	// Detect supported languages.
+	const char *s_language = "en";
+
+	region_new();
+	region_scan();
+	bool b = region_set_language(s_language);
+
+	if(b) {
+		game_log_write(str_printf(NULL, "Language successfully set to %s", region_get_language()));
+	}
+
+	localized_init();
 
 	// After setting up the GUI states, we can tweak a few knobs to customize
 	// its default behavior, like setting up the default loading screen, and the reticule.
@@ -102,16 +110,22 @@ int main(int argc, char **argl)
 	game_fog_render(1); // Merely sets fog_color to ID.
 
 	// If the video card does meet the game's required version of vertex/pixel shaders.
-	if(game_psvs_test() >= __PSVS_VERSION)
-		pp_set(camera, mtl_sharpen2); // Then apply a sharpen filter onto the screen. (for testing purposes).
+	if( game_psvs_test() )
+	{
+		// Sets up HDR.
+		render_new();
+		render_setup_rt();
+		render_hdr_new();
+		render_hdr_set_queued(true);
+
+		render_hdr();
+	}
 
 	// Creates a sky cube which "wraps" around the scene.
 	object_sky_create( game_asset_get_2d_sprite("envy+6.tga"), 1 );
 
 	// Shows the GUI.
 	game_gui_render();
-
-	render_hdr();
 
 	StaticTitleText *title = gui_title_new( gui_screen_get_center(), COLOR_BLEU_DE_FRANCE, "the lazy dog jumps over the quick brown fox", 5.0, 15 );
 	gui_title_set_sound( title, _chr(game_asset_get_sound("typewriter-key-1.wav")) );
@@ -120,10 +134,6 @@ int main(int argc, char **argl)
 	// Main game loop, which can be terminated with the "ESC" key.
 	while( !key_esc )
 	{
-		#ifdef    DEBUG
-			draw_text(__GAME_VERSION, 10.0, 10.0, COLOR_BLEU_DE_FRANCE);
-		#endif
-
 		game_physx_loop();
 
 		wait(1.0);

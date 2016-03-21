@@ -295,6 +295,9 @@ __static void __game_event_on_exit()
 
 	// Frees the buffer holding the (loaded) game resources.
 	game_resources_free();
+
+	// Frees the multilingual module.
+	region_free();
 }
 
 __static void __game_event_on_close()
