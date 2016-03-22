@@ -41,6 +41,10 @@ _site/
 *.skp
 *.dae
 
+# Fonts
+*.ttf
+*.fon
+
 # Gamestudio-specific
 builds/
 status/_sync.bat
