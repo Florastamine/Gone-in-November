@@ -959,8 +959,13 @@ __static void __game_video_set(
 	int   fsaf /* ... */
 ) {
 	video_set(width, height, bit_depth, ifelse(fullscreen, FULLSCREEN, WINDOWED));
-	d3d_anisotropy    = fsaf;
 	d3d_antialias     = fsaa;
+
+	if(fsaf > 0)
+	{
+		d3d_anisotropy    = fsaf;
+		d3d_mipmapping    = 4;
+	}
 }
 
 /*
@@ -1150,6 +1155,7 @@ void game_globals_set()
 	detail_size = 80;
 	time_smooth = 0.9;
 	d3d_shadowdepth = 32;
+	d3d_texdepth = 32;
 	random_seed(0);
 
 	// Enable standard stencil shadows if the header <render_shadows> isn't included.
