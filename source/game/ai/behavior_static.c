@@ -338,3 +338,13 @@ action act_door()
         wait(1.0);
     }
 }
+
+/*
+ * action act_lray()
+ *
+ * Generic light-ray.
+ */
+action act_lray()
+{
+    render_light_rays_on(me);
+}

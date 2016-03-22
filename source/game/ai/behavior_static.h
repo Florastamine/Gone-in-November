@@ -26,6 +26,13 @@
 #define    __BEHAVIOUR_STATIC_H__
 
 /*
+ * action act_lray()
+ *
+ * Generic light-ray.
+ */
+action act_lray();
+
+/*
  * Body types for use within act_rigid_body().
  */
 #define    BODY_CONVEX    1

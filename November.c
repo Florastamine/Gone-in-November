@@ -17,6 +17,29 @@
  */
 #include "November.h"
 
+TEXT *t = {
+	strings = 1;
+	font = "Arial#50b";
+
+	flags = SHOW;
+}
+
+void ptr(var percent) {
+	if(percent < 1.0)
+		str_cpy((t->pstring)[0], _str("."));
+	if(percent >= 100.0)
+		t->flags &= ~(SHOW);
+
+	str_cat((t->pstring)[0], _str("."));
+}
+
+FONT *f = "Essai#45";
+TEXT *vt = {
+	string("the quick brown fox jumps over the lazy dog");
+	font = f;
+	flags = SHOW;
+}
+
 /*
  * int main(int argc, char **argl)
  *
@@ -32,9 +55,13 @@ int main(int argc, char **argl)
 	// Overrides some of Acknex's global variables (their default values are way too low)
 	game_globals_set();
 
+	AddFontResource("Essai.ttf");
+
 	// Wait for the video device.
 	while( !ready() )
 		wait(1.0);
+
+	on_level = ptr;
 
 	// After the video device is initialized, parse the video configuration file
 	// and apply video settings to the current video device, and set the new game title.
@@ -127,8 +154,11 @@ int main(int argc, char **argl)
 	// Shows the GUI.
 	game_gui_render();
 
-	StaticTitleText *title = gui_title_new( gui_screen_get_center(), COLOR_BLEU_DE_FRANCE, "the lazy dog jumps over the quick brown fox", 5.0, 15 );
+	const char *text = "I wonder how she's doing lately.\nWe haven't seen each other for so long...";
+
+	StaticTitleText *title = gui_title_new( vector(20.0, screen_size.y - 150.0, 0.0) , COLOR_BLEU_DE_FRANCE, text, 5.0, 15 );
 	gui_title_set_sound( title, _chr(game_asset_get_sound("typewriter-key-1.wav")) );
+	gui_credits_set_font(title, "avery.bmp");
 	gui_title_show(title);
 
 	// Main game loop, which can be terminated with the "ESC" key.
