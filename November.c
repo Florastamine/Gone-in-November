@@ -51,6 +51,7 @@ int main(int argc, char **argl)
 {
 	// See if the game was launched through the Go-based launcher.
 	// ASSERT(game_locker_check() != 0, "Please run the game through the launcher!");
+	ASSERT(file_exists("./translation/__language.pad") != 0, "Language list cannot be found!");
 
 	// Overrides some of Acknex's global variables (their default values are way too low)
 	game_globals_set();
@@ -139,8 +140,9 @@ int main(int argc, char **argl)
 	// If the video card does meet the game's required version of vertex/pixel shaders.
 	if( game_psvs_test() )
 	{
-		// Sets up HDR.
 		render_new();
+
+		// Sets up HDR.
 		render_setup_rt();
 		render_hdr_new();
 		render_hdr_set_queued(true);
@@ -149,7 +151,7 @@ int main(int argc, char **argl)
 	}
 
 	// Creates a sky cube which "wraps" around the scene.
-	object_sky_create( game_asset_get_2d_sprite("envy+6.tga"), 1 );
+	Object *cube = object_sky_create( game_asset_get_2d_sprite("envy+6.tga"), 1 );
 
 	// Shows the GUI.
 	game_gui_render();

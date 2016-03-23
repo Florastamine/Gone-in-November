@@ -29,6 +29,9 @@ const (
     GameName       string = "Gone-in-November"
     FileName       string = "__version.lock"
     FilePath       string = "https://dl.dropboxusercontent.com/u/26857618/DP/"
+
+    LangFileName   string = "__language.pad"
+    LangFilePath   string = "./translation/"
 )
 
 var (

@@ -152,8 +152,15 @@ func main() {
         fmt.Println("You are not connected to the Internet. Abort updating the game.");
     }
 
+    // Checks if the language definition can be found, if it's not, invoke the language definition generator.
+    if common.IsExist(common.LangFilePath + common.LangFileName) != true {
+        _ = os.Chdir(common.LangFilePath)
+        _, _ = exec.Command(common.LangFilePath + "generate_language_list.exe").Output()
+    }
+
     // Launch the game.
     fmt.Println("Running the game... [" + common.GetExecutableName() + "]")
+    _ = os.Chdir("./")
     _, _ = exec.Command(common.GetExecutableName()).Output()
 
     // Release the locker.

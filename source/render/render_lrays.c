@@ -158,7 +158,6 @@ void render_light_rays()
 	while(1)
 	{
 		mtl_lightRay->skill3 = floatv( (render_light_rays_get_singleton())->ray_length );
-
 		vec_set( &vektor, &sun_pos);
 		if( vec_to_screen( &vektor, camera) )
 		{
