@@ -1,5 +1,5 @@
 @echo off
-title 
+title
 
 rem Cleans up the cruft left by both Acknex and WED.
 
@@ -13,7 +13,9 @@ del /f /s /q ..\scene\*.wed
 del /f /s /q ..\scene\*.raw
 del /f /s /q ..\scene\*.$$w
 
-rem Gamestudio builds 
+del /f /s /q ..\object\*.bak
+
+rem Gamestudio builds
 del /f ..\*.exe
 
-pause 
+pause
