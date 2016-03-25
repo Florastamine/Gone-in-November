@@ -2,20 +2,20 @@
 /*
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *                     Version 2, December 2004
- * 
+ *
  *  Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
- * 
+ *
  *  Everyone is permitted to copy and distribute verbatim or modified
  *  copies of this license document, and changing it is allowed as long
  *  as the name is changed.
  *
  *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
- * 
+ *
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
- * 
+ *
  * __________________________________________________________________
- * 
+ *
  * <render_surface>
  * A collection of ready-to-use object-based shaders.
  * Fur (SM1.x) - (weird - Intel HD 4400 couldn't correctly render this?)
@@ -26,14 +26,14 @@
  * Generic blur (SM2.0)
  * Ocean (SM2.0) - weird rendering artifacts with HD4400?
  * Velvety (SM3.0)
- * 
+ *
  * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  *          Slin
  *          mocosgames
  *          ello
  *          PHeMoX
  *          Steempipe
- * Shader definitions are preceded by smtl_* rather than mtl_* in order to 
+ * Shader definitions are preceded by smtl_* rather than mtl_* in order to
  * avoid conflicts with Gamestudio default materials.
  * __________________________________________________________________
  */
@@ -70,9 +70,6 @@ BMAP *__smtl_chrome__lookup;
 MATERIAL *smtl_chrome = { effect = "mtlChrome.fx"; }
 
 void smtl_chrome_add(ENTITY *object, VECTOR *normalized_color);
-
-/* -- Simple light rays -- */
-void smtl_lrays_add(ENTITY *object);
 
 /* -- Generic blur -- */
 MATERIAL *smtl_gblur = { effect = "mtlBlur.fx"; }

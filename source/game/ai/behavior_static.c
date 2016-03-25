@@ -348,3 +348,12 @@ action act_lray()
 {
     render_light_rays_on(me);
 }
+
+action act_glasses()
+{
+    if(!(my->flags & TRANSLUCENT))
+        my->flags |= (TRANSLUCENT);
+
+    if(var_cmp(my->pan, 0.0))
+        my->pan = .001;
+}
