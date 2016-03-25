@@ -2290,3 +2290,13 @@ STRING *sifelse( int cond, STRING *a, STRING *b )
 
 	return b;
 }
+
+/*
+ * bool var_cmp(var a, var b)
+ *
+ * Compares two vars the "correct" way.
+ */
+bool var_cmp(var a, var b)
+{
+	return abs(a - b) < VAR_EPSILON;
+}

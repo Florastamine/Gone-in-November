@@ -89,6 +89,7 @@
  * + v0.4.0-alpha
  * - Added a set of simple functions for writing to and reading from the Windows registry.
  * - Added fifelse(), a float variant of ifelse(), along with vifelse() (VECTOR), sifelse() (STRING) and difelse() (double).
+ * - Added var_cmp() for var data type comparison.
  * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
@@ -132,6 +133,7 @@
 #define GRAVITY_ACCELERATION               (9.80665)  /* Standard acceleration of freefall, 9.81 m/s^2, insurance included. */
 #define FLT_MAX                            (3.4 * pow(10, 38))
 #define DBL_MAX                            (1.8 * pow(10, 308))
+#define VAR_EPSILON                        0.001
 #define POW_10_6                           (double) 1000000.0
 #define ASSERT_MESSAGE_LENGTH              128
 
@@ -759,7 +761,14 @@ __namespace(numeric) {
      *
      * A STRING variant of ifelse().
      */
-    STRING *sifelse( __In int cond, __In STRING *a, __In STRING *b );
+    STRING *sifelse( __In int cond, __In STRING *a, __In STRING *b);
+
+    /*
+     * bool var_cmp(var a, var b)
+     *
+     * Compares two vars the "correct" way.
+     */
+    bool var_cmp(var a, var b);
 }
 
 __namespace(window) {
