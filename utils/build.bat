@@ -24,7 +24,7 @@ acknex __bind.c -nwnd -eq -nj -nv -wnd
 echo Packing resources and creating executables
 rem (if we've not specified a resource file yet.)
 
-IF NOT EXIST "%GAMEPATH%\*.gpk" (
+IF NOT EXIST "%GAMEPATH%\*.wrs" (
 
 echo Resource file not found. Will attempt to compile the resources...
 wed -r ..\\November.c >> log.log
@@ -44,8 +44,6 @@ xcopy ..\November.cd\*.* ..\builds\ /s /e /y
 del /f /s /q ..\November.cd\*.*
 rd ..\November.cd
 
-ren ..\builds\November.wrs base.gpk
-
 ) ELSE (
 
 echo Resources found at existing game path. Will only compile the executable.
@@ -58,7 +56,7 @@ rem Copy the executable & resources afterwards
 mkdir ..\builds\
 move ..\*.exe ..\builds
 move ..\*.dll ..\builds
-copy "%GAMEPATH%\*.gpk" ..\builds
+copy "%GAMEPATH%\*.wrs" ..\builds
 
 rem Copy remaining DLLs what are not automatically copied when using acknex -exe
 rem instead or wed -r...

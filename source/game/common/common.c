@@ -1188,27 +1188,7 @@ void game_console_load()
  */
 void game_resources_load()
 {
-	if(!file_exists(__GAME_DATA))
-	{
-		game_log_write("Game resource file couldn't be found.");
-
-		#ifdef    DEBUG
-			game_log_write("If you are using external, unpacked resources, please remove/comment out the call to game_resources_load().");
-		#endif
-
-		return; // Explicit flow control.
-	}
-
-	__game_data_buffer = file_load(__GAME_DATA, NULL, NULL);
-	if(__game_data_buffer != NULL)
-	{
-		long buffer_size = 0;
-
-		add_buffer(__GAME_DATA, __game_data_buffer, &buffer_size);
-		game_log_write(str_printf(NULL, "Resource file added to filesystem with a total size of %d.", (double) buffer_size));
-	}
-	else
-		game_log_write("Failed to load the resource file.");
+	return;
 }
 
 /*
@@ -1218,11 +1198,7 @@ void game_resources_load()
  */
 void game_resources_free()
 {
-	if(__game_data_buffer != NULL)
-	{
-		add_new(); // Unloads the buffer from the filesystem.
-		file_load(NULL, __game_data_buffer, NULL); // Frees the actual buffer.
-	}
+	return;
 }
 
 /*
