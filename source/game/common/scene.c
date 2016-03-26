@@ -122,7 +122,7 @@ void scene_load(ChapterData *data, const void *loader)
         if(link->data->sun_color)
             vec_set(sun_color, link->data->sun_color);
 
-        if(link->data->sun_light != -1.0)
+        if(!var_cmp(link->data->sun_light, 1.0))
             sun_light = link->data->sun_light;
 
         if(link->data->fog_color)
