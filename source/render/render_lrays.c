@@ -157,6 +157,12 @@ void render_light_rays()
 
 	while(1)
 	{
+		if(render_light_rays_get_debug())
+		{
+			DEBUG_VAR(vektor.x, 10.0);
+			DEBUG_VAR(vektor.y, 20.0);
+		}
+		
 		mtl_lightRay->skill3 = floatv( (render_light_rays_get_singleton())->ray_length );
 		vec_set( &vektor, &sun_pos);
 		if( vec_to_screen( &vektor, camera) )
@@ -224,8 +230,7 @@ void render_light_rays_reset_debug()
  */
 BOOL render_light_rays_get_debug()
 {
-	if( __sun_dummy->flags & SHOW ) return true;
-	return false;
+	return (__sun_dummy->flags & SHOW);
 }
 
 /*
