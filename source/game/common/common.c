@@ -1278,3 +1278,14 @@ void game_break(const char *message)
 {
 	game_break_ex(message, NULL, NULL);
 }
+
+/*
+ * void game_static_init()
+ *
+ * Performs static initialization, which includes font registering/initialization,
+ * event set-ups, etc.
+ */
+void game_static_init()
+{
+	AddFontResource("./etc/Essai.ttf");
+}

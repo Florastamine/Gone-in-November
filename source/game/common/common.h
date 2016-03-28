@@ -350,6 +350,14 @@ __namespace(November) {
      * then we'll assume the game wasn't launched through the launcher, and will just quit the game.
      */
     int game_locker_check();
+
+    /*
+     * void game_static_init()
+     *
+     * Performs static initialization, which includes font registering/initialization,
+     * event set-ups, etc.
+     */
+    void game_static_init();
 }
 
 __namespace(SceneLoadState) {

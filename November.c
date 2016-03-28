@@ -16,29 +16,7 @@
  *
  */
 #include "November.h"
-
-TEXT *t = {
-	strings = 1;
-	font = "Arial#50b";
-
-	flags = SHOW;
-}
-
-void ptr(var percent) {
-	if(percent < 1.0)
-		str_cpy((t->pstring)[0], _str("."));
-	if(percent >= 100.0)
-		t->flags &= ~(SHOW);
-
-	str_cat((t->pstring)[0], _str("."));
-}
-
-FONT *f = "Essai#45";
-TEXT *vt = {
-	string("the quick brown fox jumps over the lazy dog");
-	font = f;
-	flags = SHOW;
-}
+#include "Unmanaged.h"
 
 /*
  * int main(int argc, char **argl)
@@ -56,13 +34,9 @@ int main(int argc, char **argl)
 	// Overrides some of Acknex's global variables (their default values are way too low)
 	game_globals_set();
 
-	AddFontResource("Essai.ttf");
-
 	// Wait for the video device.
 	while( !ready() )
 		wait(1.0);
-
-	on_level = ptr;
 
 	// After the video device is initialized, parse the video configuration file
 	// and apply video settings to the current video device, and set the new game title.
@@ -73,6 +47,11 @@ int main(int argc, char **argl)
 	// which uses the file for updating purposes. The completed, released version should
 	// have a versioning file ready already.
 	__game_version_export();
+
+	// Static initialization.
+	game_static_init();
+
+	on_level = __level_load_event;
 
 	// Initialize a new game state.
 	game_state_new();
@@ -103,7 +82,9 @@ int main(int argc, char **argl)
 
 	// After setting up the GUI states, we can tweak a few knobs to customize
 	// its default behavior, like setting up the default loading screen, and the reticule.
-	game_gui_set_reticule( game_asset_get_gui("reticule.bmp") );
+	#ifdef    DEBUG
+		game_gui_set_reticule( game_asset_get_gui("reticule.bmp") );
+	#endif
 
 	game_scene_set_load_screen("image.jpg");
 	game_scene_set_delay(3.0);
@@ -134,7 +115,7 @@ int main(int argc, char **argl)
 	// Activates PSSM shadows (four passes) and renders fog.
 	// pssm_run(4);
 
-	game_fog_set(1, COLOR_SCARLET, vector(10.0, 5000.0, 0.0)); // Set the fog color (COLOR_SCARLET) and its range to the first (1) fog color slot.
+	game_fog_set(1, vector(189.0, 238.0, 240.0), vector(15.0, 12424.0, 0.0)); // Set the fog color and its range to the first (1) fog color slot.
 	game_fog_render(1); // Merely sets fog_color to ID.
 
 	// If the video card does meet the game's required version of vertex/pixel shaders.
@@ -147,11 +128,23 @@ int main(int argc, char **argl)
 		render_hdr_new();
 		render_hdr_set_queued(true);
 
+		(render_hdr_get_singleton())->bloom_strength *= 0.5;
+
 		render_hdr();
+
+		// Sets up light shafts.
+		render_light_rays_new();
+		render_light_rays_setup(1.7, 8.4);
+
+		render_light_rays();
+
+		#ifdef    DEBUG
+			render_light_rays_set_debug();
+		#endif
 	}
 
 	// Creates a sky cube which "wraps" around the scene.
-	Object *cube = object_sky_create( game_asset_get_2d_sprite("envy+6.tga"), 1 );
+	Object *cube = object_sky_create( game_asset_get_2d_sprite("noon+6.tga"), 1 );
 
 	// Shows the GUI.
 	game_gui_render();
