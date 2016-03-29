@@ -22,6 +22,12 @@
  * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
  * __________________________________________________________________
  */
+__static void __text_init_pos(Text *text) {
+    if(text) {
+        text->pos_x = (screen_size.x - str_width((text->pstring)[0], text->font)) * 0.5;
+        text->pos_y = screen_size.y - 150.0;
+    }
+}
 
 /*
  * action act_rigid_body()
@@ -175,9 +181,13 @@ action act_obj_beam()
     {
         // Prepares the necessary ingredients, i. e. parses string1 and puts the result to the container - just do the right things.
         Text *t = txt_create(0, 1);
+        Text *subtitle = txt_create(1, LAYER_GUI_1);
         float dist = 0.0;
 
         str_parse_delim(t, _chr(my->string1), ';');
+        (subtitle->pstring)[0] = lstr_interact;
+        subtitle->font = Normal_Text_Font;
+        __text_init_pos(subtitle);
 
         // Fine-tunes the result.
         if(!fabsf)
@@ -192,12 +202,16 @@ action act_obj_beam()
         {
             if(vec_dist(player->x, my->x) <= dist)
             {
-                if( !key_f )
-                    draw_text("Press [F] to feel the trigger!", 10.0, 10.0, COLOR_WHITE);
+                if( !mouse_left )
+                    if(!(subtitle->flags & SHOW))
+                        subtitle->flags |= (SHOW);
                 else
                 {
-                    while(key_f)
+                    while(mouse_left)
                         wait(1.0);
+
+                    if(subtitle->flags & SHOW)
+                        subtitle->flags &= ~(SHOW);
 
                     if( !(str_cmpi((t->pstring)[0], STR_NIL)) )
                         ent_create(game_asset_get_object((t->pstring)[0]), vector(my->skill1, my->skill2, my->skill3), NULL);
@@ -208,8 +222,12 @@ action act_obj_beam()
                     }
 
                     txt_remove_ex(t);
+                    txt_remove_ex(subtitle);
                     ent_remove(my);
                 }
+            } else {
+                if(subtitle->flags & SHOW)
+                    subtitle->flags &= ~(SHOW);
             }
 
             wait(1.0);
@@ -255,24 +273,37 @@ action act_door()
     if(my->string2)
         src_close = snd_create(game_asset_get_sound(my->string2));
 
-    VECTOR _text_pos;
-    vec_set(&_text_pos, gui_screen_get_center());
+    Text *subtitle = txt_create(1, LAYER_GUI_1);
+    (subtitle->pstring)[0] = lstr_open_door;
+    subtitle->font = Normal_Text_Font;
+    __text_init_pos(subtitle);
 
     while(my)
     {
         if(vec_dist(player->x, my->x) <= my->DISTANCE)
         {
-            if(!key_f)
+            if(!mouse_left)
             {
                 if((int) my->skill6)
-                    draw_text(lstr_close_door, _text_pos.x, _text_pos.y, COLOR_SCARLET);
+                {
+                    // draw_text(lstr_close_door, _text_pos.x, _text_pos.y, COLOR_SCARLET);
+                    (subtitle->pstring)[0] = lstr_close_door;
+                }
                 else
-                    draw_text(lstr_open_door, _text_pos.x, _text_pos.y, COLOR_SCARLET);
+                {
+                    // draw_text(lstr_open_door, _text_pos.x, _text_pos.y, COLOR_SCARLET);
+                    (subtitle->pstring)[0] = lstr_open_door;
+                }
+                if(!(subtitle->flags & SHOW))
+                    subtitle->flags |= (SHOW);
             }
             else
             {
-                while(key_f)
+                while(mouse_left)
                     wait(1.0);
+
+                if(subtitle->flags & SHOW)
+                    subtitle->flags &= ~(SHOW);
 
                 angle = my->pan;
 
@@ -335,8 +366,14 @@ action act_door()
                 }
             }
         }
+        else {
+            if(subtitle->flags & SHOW)
+                subtitle->flags &= ~(SHOW);
+        }
+
         wait(1.0);
     }
+    txt_remove_ex(subtitle);
 }
 
 /*

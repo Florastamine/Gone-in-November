@@ -29,7 +29,7 @@
  * This is necessary, for example, to record the game's trailer/teaser, where the UI
  * can easily distract the viewer if got brought with the trailer.
  */
-#define    UI_LESS
+// #define    UI_LESS
 
 /*
  * Uses the Windows API, but with some extra stuff (WIN32_LEAN_AND_MEAN and WIN32_EXTRA_LEAN)

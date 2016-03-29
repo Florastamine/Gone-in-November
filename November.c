@@ -97,7 +97,9 @@ int main(int argc, char **argl)
 	// After setting up the GUI states, we can tweak a few knobs to customize
 	// its default behavior, like setting up the default loading screen, and the reticule.
 	#ifdef    DEBUG
-		game_gui_set_reticule( game_asset_get_gui("reticule.bmp") );
+		#ifndef    UI_LESS
+			game_gui_set_reticule( game_asset_get_gui("reticule.bmp") );
+		#endif
 	#endif
 
 	game_scene_set_load_screen("image.jpg");

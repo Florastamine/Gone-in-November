@@ -103,6 +103,11 @@
 const STRING *STR_NIL = "nil";
 
 /*
+ *
+ */
+FONT *Normal_Text_Font = "Essai#15b";
+
+/*
  * GameState (struct)
  * This struct contains everything related to the current game state.
  */

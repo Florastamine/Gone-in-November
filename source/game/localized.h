@@ -39,8 +39,9 @@
  */
 void    localized_init();
 
-String *lstr_open_door                       = NULL;
-String *lstr_close_door                      = NULL;
+String *lstr_open_door                       = "";
+String *lstr_close_door                      = "";
+String *lstr_interact                        = "";
 
 #include "localized.c"
 #endif /* localized.h */
