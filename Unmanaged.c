@@ -5,14 +5,10 @@ TEXT *__level_load_event_text = {
 	font = "Arial#20b";
 }
 
-int g_calls = 0;
-bool g_init  = false;
-
 void init() {
-	VECTOR v;
-	vec_set(&v, gui_screen_get_center());
+	__level_load_event_text->pos_x = screen_size.x / 2;
+	__level_load_event_text->pos_y = screen_size.y / 2;
 
-	gui_text_set_pos(__level_load_event_text, v.x, v.y);
 	__level_load_event_text->flags |= (SHOW);
 }
 
@@ -26,11 +22,31 @@ void __level_load_event(var percent)
 
 	if(percent < 0.1)
 		str_cpy((__level_load_event_text->pstring)[0], "Loading");
-	else if(percent > 100.0 || var_cmp(percent, 100.0))
+	else if(percent >= 100.0)
 		__level_load_event_text->flags &= ~(SHOW);
 	else
 	{
         str_cat((__level_load_event_text->pstring)[0], ".");
         g_calls++;
     }
+}
+
+void g_set_day(int day)
+{
+	if(day >= DAY_1 && day <= DAY_5)
+	{
+		int i = 0;
+		for(; i <= MAX_DAYS; i++)
+		{
+			if(i != day)
+				g_days[i] = false;
+		}
+
+		g_days[i] = true;
+	}
+}
+
+BOOL g_get_day(int day)
+{
+	return g_days[day];
 }

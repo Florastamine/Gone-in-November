@@ -15,8 +15,22 @@
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  *
  */
-#include "November.h"
 #include "Unmanaged.h"
+#include "November.h"
+
+void v ()
+{
+	ENTITY *e = ptr_first(player);
+	while(e) {
+		if((int) e->skill8 == LIVINGR_00)
+		{
+			BMAP *b = bmap_create("tex1.bmp");
+			ptr_remove(ent_getskin(e, 1));
+			ent_setskin(e, b, 1);
+		}
+		e = e.link.next;
+	}
+}
 
 /*
  * int main(int argc, char **argl)
@@ -110,10 +124,10 @@ int main(int argc, char **argl)
 
 	// Loads a chapter from the list, with a custom scene loader (game_scene_load()).
 	scene_load(ChapterOne, level_load);
-	pXent_setgroup(level_ent, LEVEL_GROUP);
 
 	// Activates PSSM shadows (four passes) and renders fog.
 	// pssm_run(4);
+	on_v = v;
 
 	game_fog_set(1, vector(189.0, 238.0, 240.0), vector(15.0, 12424.0, 0.0)); // Set the fog color and its range to the first (1) fog color slot.
 	game_fog_render(1); // Merely sets fog_color to ID.
