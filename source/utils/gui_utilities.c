@@ -2066,3 +2066,43 @@ void gui_credits_set_speed( CreditsText *text, float speed )
 	if(text)
 		text->scroll_speed = fifelse(speed > 0.0, speed, 4.2);
 }
+
+/*
+ * void gui_open_eyes(float speed, int layer)
+ *
+ * Simulates a very simple eyes opening effect.
+ */
+void gui_open_eyes(float speed, int layer)
+{
+	#define    HALVES    2
+
+	speed =        ifelse(speed > 0.0, speed, 3.5);
+	layer = (int)  ifelse(layer > 0, layer, 1);
+	PANEL *halves[HALVES];
+
+	int i = 0;
+	for(; i < HALVES; i++)
+	{
+		halves[i]               = pan_create(NULL, layer);
+		(halves[i])->bmap       = bmap_createblack(screen_size.x, screen_size.y * 0.5, 8);
+		(halves[i])->flags     |= SHOW;
+
+		if(i == 1)
+			(halves[i])->pos_y = screen_size.y * 0.5;
+	}
+
+	var dy = -bmap_height((halves[0])->bmap);
+
+	while((halves[0])->pos_y > dy) {
+		(halves[0])->pos_y -= speed * time_step;
+		(halves[1])->pos_y += speed * time_step;
+
+		wait(1.0);
+	}
+
+	for(i = 0; i < HALVES; i++)
+	{
+		bmap_remove((halves[i])->bmap);
+		pan_remove(halves[i]);
+	}
+}

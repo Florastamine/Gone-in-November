@@ -69,6 +69,13 @@ __namespace(global) {
 	void  gui_panel_set_rotation( __Out Panel *panel, float amount );
 
 	VECTOR *gui_screen_get_center();
+
+	/*
+	 * void gui_open_eyes(float speed, int layer)
+	 *
+	 * Simulates a very simple eyes opening effect.
+	 */
+	void gui_open_eyes(__In float speed, __In int layer);
 }
 
 __namespace(button) {
