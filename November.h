@@ -78,9 +78,6 @@
 #include "./source/game/io/trophy.h"
 
 #ifndef    A8_FREE
-    #include "./source/render/mtlView.c"
-    #include "./source/render/mtlFX.c"
-
     #include "./source/render/render.h"
     #include "./source/render/render_pp.h"
     // #include "./source/render/render_shadows.h"
