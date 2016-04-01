@@ -37,7 +37,6 @@ void game_gui_state_new()
 
     __GUIState_singleton->reticule->flags    = __GUIState_singleton->reticule->flags | (OVERLAY);
     gui_panel_set_pos( __GUIState_singleton->reticule, 0.0, 0.0 );
-    gui_panel_set_pos( __GUIState_singleton->paper_texture, screen_size.x * 0.25, screen_size.y * 0.25 );
 }
 
 /*
@@ -70,7 +69,13 @@ void game_gui_set_reticule( Bitmap *reticule )
 void game_gui_set_paper_texture( Bitmap *texture )
 {
     if(texture && __GUIState_singleton )
+    {
         __GUIState_singleton->paper_texture->bmap = texture;
+
+        float px = (screen_size.x - bmap_width(texture)) * 0.5;
+        float py = 75.0;
+        gui_panel_set_pos( __GUIState_singleton->paper_texture, px, py );
+    }
 }
 
 void game_gui_set_paper_texture( String *texture_gstr )
