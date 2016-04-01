@@ -33,8 +33,11 @@ void game_gui_state_new()
 
     // Creates and sets up the reticule.
     __GUIState_singleton->reticule           = pan_create(NULL, LAYER_GUI_1);
+    __GUIState_singleton->paper_texture      = pan_create(NULL, LAYER_GUI_1);
+
     __GUIState_singleton->reticule->flags    = __GUIState_singleton->reticule->flags | (OVERLAY);
     gui_panel_set_pos( __GUIState_singleton->reticule, 0.0, 0.0 );
+    gui_panel_set_pos( __GUIState_singleton->paper_texture, screen_size.x * 0.25, screen_size.y * 0.25 );
 }
 
 /*
@@ -47,6 +50,7 @@ void game_gui_state_free()
     if( __GUIState_singleton )
     {
         safe_remove(__GUIState_singleton->reticule);
+        safe_remove(__GUIState_singleton->paper_texture);
 
         FREE(__GUIState_singleton);
     }
@@ -63,10 +67,28 @@ void game_gui_set_reticule( Bitmap *reticule )
     }
 }
 
+void game_gui_set_paper_texture( Bitmap *texture )
+{
+    if(texture && __GUIState_singleton )
+        __GUIState_singleton->paper_texture->bmap = texture;
+}
+
+void game_gui_set_paper_texture( String *texture_gstr )
+{
+    if(texture_gstr)
+        game_gui_set_paper_texture(bmap_create(texture_gstr));
+}
+
 void game_gui_set_reticule( String *reticule_gstr )
 {
     if(reticule_gstr)
         game_gui_set_reticule(bmap_create(reticule_gstr));
+}
+
+Bitmap *game_gui_get_paper_texture()
+{
+    if(__GUIState_singleton)
+        return __GUIState_singleton->paper_texture->bmap;
 }
 
 Bitmap *game_gui_get_reticule()
