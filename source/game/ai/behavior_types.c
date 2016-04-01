@@ -30,7 +30,7 @@ __static void ent_set_type(ENTITY *entity, const int type)
 
 int ent_get_type(ENTITY *entity)
 {
-    return (int) ifelse(entity != NULL, entity->skill9, -1);
+    return (int) ifelse(entity != NULL, entity->skill99, -1);
 }
 
 /*
