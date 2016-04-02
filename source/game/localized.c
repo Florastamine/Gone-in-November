@@ -39,5 +39,6 @@ void    localized_init()
         REINIT_STRING(lstr_open_door, "open_door.lstr");
         REINIT_STRING(lstr_close_door, "close_door.lstr");
         REINIT_STRING(lstr_interact, "interact.lstr");
+        REINIT_STRING(lstr_read_note, "read_note.lstr");
     #endif
 }

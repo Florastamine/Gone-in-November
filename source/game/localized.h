@@ -42,6 +42,7 @@ void    localized_init();
 String *lstr_open_door                       = "";
 String *lstr_close_door                      = "";
 String *lstr_interact                        = "";
+String *lstr_read_note                       = "";
 
 #include "localized.c"
 #endif /* localized.h */
