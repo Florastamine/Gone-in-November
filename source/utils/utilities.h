@@ -90,6 +90,7 @@
  * - Added a set of simple functions for writing to and reading from the Windows registry.
  * - Added fifelse(), a float variant of ifelse(), along with vifelse() (VECTOR), sifelse() (STRING) and difelse() (double).
  * - Added var_cmp() for var data type comparison.
+ * - Added HIDE_FLAGS_SAFE() and SHOW_FLAGS_SAFE() macros in place of set()/reset().
  * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
@@ -163,6 +164,8 @@
 #define PRINT_STRING(string)               printf("%s", (char *) string)
 #define PRINT_BOOL(comparison)             printf("%s", (char *) ifelse(comparison, _chr("true"), _chr("false")))
 #define BIND_KEY(key, function)            on_##key = function
+#define HIDE_FLAGS_SAFE(object, f)         if(object) if(object->flags & f) object->flags &= ~(f)
+#define SHOW_FLAGS_SAFE(object, f)         if(object) if(!(object->flags & f)) object->flags |= (f)
 
 /*
  * A small selection of ready-to-use color vectors.
