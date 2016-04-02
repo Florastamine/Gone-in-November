@@ -106,6 +106,7 @@ const STRING *STR_NIL = "nil";
  *
  */
 FONT *Normal_Text_Font = "Essai#15b";
+FONT *Note_Text_Font   = "Blood Crow#25b";
 
 /*
  * GameState (struct)

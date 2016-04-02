@@ -394,3 +394,46 @@ action act_glasses()
     if(var_cmp(my->pan, 0.0))
         my->pan = .001;
 }
+
+action act_notepad()
+{
+    if(my->string1)
+    {
+        ent_set_type(my, STATIC_NOTEPAD);
+    }
+}
+
+void __process_note(ENTITY *entity)
+{
+    Text *data = txt_create(1, LAYER_GUI_2);
+    Text *subtitle = txt_create(1, LAYER_GUI_1);
+
+    if(entity->string1)
+    {
+        if(!entity->string2)
+        {
+            if( region_get_unicode(region_get_language()) )
+                entity->string2 = str_createw(entity->string1);
+            else
+                entity->string2 = str_create(entity->string1);
+        }
+        (data->pstring)[0] = entity->string2;
+        data->flags |= (SHOW);
+
+        (subtitle->pstring)[0] = lstr_read_note;
+        subtitle->font = Normal_Text_Font;
+        subtitle->pos_x = 0;
+        subtitle->pos_y = 0;
+        subtitle->flags |= (SHOW);
+
+    }
+
+    txt_remove_ex(data);
+    txt_remove_ex(subtitle);
+}
+
+action act_trigger()
+{
+    if(my->string2)
+        ent_set_type(my, STATIC_TRIGGER);
+}

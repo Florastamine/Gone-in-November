@@ -1288,4 +1288,5 @@ void game_break(const char *message)
 void game_static_init()
 {
 	AddFontResource("./etc/Essai.ttf");
+	AddFontResource("./etc/bloodcrow.ttf");
 }

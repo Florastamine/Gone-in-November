@@ -38,6 +38,9 @@
 #define    STATIC_PARTICLE                   6
 #define    STATIC_SOUND_SOURCE               7
 
+#define    STATIC_NOTEPAD                    8
+#define    STATIC_TRIGGER                    9
+
 __static    void ent_set_type(ENTITY *entity, const int type);
             int ent_get_type(ENTITY *entity);
 
@@ -48,6 +51,8 @@ __static    void ent_set_type(ENTITY *entity, const int type);
  * Function signature for the processor function takes one ENTITY * argument.
  */
 void ent_iterate(const void *processor);
+
+void __process_note(ENTITY *entity);
 
 #include "behavior_types.c"
 #endif /* behavior_types.h */
