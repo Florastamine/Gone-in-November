@@ -132,7 +132,7 @@ void prepare_pepperoni(Object *what)
         __paper_data               = txt_create(1, LAYER_GUI_2);
         __paper_data->font         = Note_Text_Font;
         (__paper_data->pstring)[0] = sifelse(what->string1 != NULL, region_get_string(what->string1), str_create("NULL"));
-        vec_set(&(__paper_data->blue), COLOR_BLACK);
+        vec_set(&(__paper_data->blue), vector(84.0, 84.0, 84.0)); // Replacing vector() with vec_fill(nullvector, 84.0) (to avoid repetitive) and watch the world spin.
 
         __paper_data->pos_x        = __GUIState_singleton->paper_texture->pos_x + 10.0;
         __paper_data->pos_y        = __GUIState_singleton->paper_texture->pos_y + 10.0;
