@@ -134,8 +134,8 @@ void prepare_pepperoni(Object *what)
         (__paper_data->pstring)[0] = sifelse(what->string1 != NULL, region_get_string(what->string1), str_create("NULL"));
         vec_set(&(__paper_data->blue), vector(84.0, 84.0, 84.0)); // Replacing vector() with vec_fill(nullvector, 84.0) (to avoid repetitive) and watch the world spin.
 
-        __paper_data->pos_x        = __GUIState_singleton->paper_texture->pos_x + 10.0;
-        __paper_data->pos_y        = __GUIState_singleton->paper_texture->pos_y + 10.0;
+        __paper_data->pos_x        = __GUIState_singleton->paper_texture->pos_x + 25.0;
+        __paper_data->pos_y        = __GUIState_singleton->paper_texture->pos_y + 25.0;
     }
 
     if(!__paper_subtitle)
@@ -144,8 +144,8 @@ void prepare_pepperoni(Object *what)
 
         __paper_subtitle->font         = Normal_Text_Font;
         (__paper_subtitle->pstring)[0] = lstr_read_note;
-        __paper_subtitle->pos_x        = (screen_size.x - str_width((__paper_subtitle->pstring)[0], __paper_subtitle->font)) * 0.5;
-        __paper_subtitle->pos_y        = screen_size.y - 150.0;
+        __paper_subtitle->pos_x        = (screen_size.x - str_width((__paper_subtitle->pstring)[0], __paper_subtitle->font)) * 0.5 - 75.0;
+        __paper_subtitle->pos_y        = screen_size.y - 200.0;
     }
 
     if(!__paper_sound)
@@ -245,6 +245,10 @@ __static void __act_player_update_camera()
 					#ifdef    DEBUG
 						draw_text("Hit a STATIC_TRIGGER object.", 10.0, 10.0, COLOR_PEARL);
 					#endif
+
+                    if(vec_dist(player->x, hit->entity->x) < RAY_DISTANCE && (this_entity == hit->entity)) {
+                        wait(1.0);
+                    }
 				}
 
 				default:

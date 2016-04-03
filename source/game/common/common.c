@@ -1288,5 +1288,29 @@ void game_break(const char *message)
 void game_static_init()
 {
 	AddFontResource("./etc/Essai.ttf");
-	AddFontResource("./etc/bloodcrow.ttf");
+	AddFontResource("./etc/UVN-remind.ttf");
+	AddFontResource("./etc/ank.ttf");
+}
+
+/*
+ * It'd be more convenient to use a std::map<> and returns the indices, but
+ * I'm just being too lazy to write one.
+ */
+String *game_region_check()
+{
+	if(object_in_region(player, "KitchenA") || object_in_region(player, "KitchenB"))
+		return lstr_rooom_kitchen;
+
+	if(object_in_region(player, "Bathroom"))         return lstr_room_bathroom;
+	if(object_in_region(player, "1stBedroom"))       return lstr_room_1stbedroom;
+	if(object_in_region(player, "LivingRoom"))       return lstr_room_livingroom;
+	if(object_in_region(player, "KitchenHallway"))   return lstr_room_1sthallway;
+
+	if(object_in_region(player, "Balcony"))          return lstr_room_yard;
+	if(object_in_region(player, "Workspace"))        return lstr_room_workspace;
+	if(object_in_region(player, "WorkspaceHallway")) return lstr_room_2ndhallway;
+	if(object_in_region(player, "2ndBedroom"))       return lstr_room_2ndbedroom;
+	if(object_in_region(player, "Laundry"))          return lstr_room_balcony;
+
+	return STR_EMPTY;
 }

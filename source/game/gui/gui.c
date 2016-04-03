@@ -34,9 +34,14 @@ void game_gui_state_new()
     // Creates and sets up the reticule.
     __GUIState_singleton->reticule           = pan_create(NULL, LAYER_GUI_1);
     __GUIState_singleton->paper_texture      = pan_create(NULL, LAYER_GUI_1);
+    __GUIState_singleton->location           = txt_create(1, LAYER_GUI_1);
 
     __GUIState_singleton->reticule->flags    = __GUIState_singleton->reticule->flags | (OVERLAY);
     gui_panel_set_pos( __GUIState_singleton->reticule, 0.0, 0.0 );
+
+    gui_text_set_pos( __GUIState_singleton->location, screen_size.x - 128.0, 15.0 );
+
+    __GUI_done__ = 1;
 }
 
 /*
@@ -50,6 +55,7 @@ void game_gui_state_free()
     {
         safe_remove(__GUIState_singleton->reticule);
         safe_remove(__GUIState_singleton->paper_texture);
+        safe_remove(__GUIState_singleton->location);
 
         FREE(__GUIState_singleton);
     }
@@ -73,7 +79,7 @@ void game_gui_set_paper_texture( Bitmap *texture )
         __GUIState_singleton->paper_texture->bmap = texture;
 
         float px = (screen_size.x - bmap_width(texture)) * 0.5;
-        float py = 75.0;
+        float py = 45.0; // Thụt lề, thụt hoài, thụt thụt hoàiiiiii. Kí tên: Lợn khó tính
         gui_panel_set_pos( __GUIState_singleton->paper_texture, px, py );
     }
 }
@@ -107,5 +113,34 @@ void game_gui_render()
     if(__GUIState_singleton)
     {
         __GUIState_singleton->reticule->flags |= (SHOW);
+        __GUIState_singleton->location->flags |= (SHOW);
     }
+}
+
+Font   *game_gui_get_location_text_font()
+{
+    if(__GUIState_singleton)
+        return __GUIState_singleton->location->font;
+
+    return NULL;
+}
+
+void game_gui_set_location_text_font( Font *font )
+{
+    if(__GUIState_singleton)
+        __GUIState_singleton->location = font;
+}
+
+void game_gui_set_location_text_font( String *font_gstr )
+{
+    if(font_gstr)
+        game_gui_set_location_text_font(font_create(font_gstr));
+}
+
+void game_gui_update()
+{
+    while(!__GUI_done__)
+        wait(1.0);
+
+    (__GUIState_singleton->location->pstring)[0] = game_region_check();
 }

@@ -1,1 +1,2 @@
-*.lstr linguist-language=Other
+/translation/en/*.lstr linguist-language=TeX
+/translation/vn/*.lstr linguist-language=TeX

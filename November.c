@@ -18,18 +18,86 @@
 #include "Unmanaged.h"
 #include "November.h"
 
-void v ()
+ChapterData *ChapterOne = NULL;
+
+// Initializes the scene list, the scenes, and push them into the list.
+void nov_scene_list_init()
 {
-	ENTITY *e = ptr_first(player);
-	while(e) {
-		if((int) e->skill8 == LIVINGR_00)
-		{
-			BMAP *b = bmap_create("tex1.bmp");
-			ptr_remove(ent_getskin(e, 1));
-			ent_setskin(e, b, 1);
-		}
-		e = e.link.next;
+	// Open the scene list.
+	scene_new();
+
+	// Creates the scene nodes.
+	ChapterOne = scene_data_new("Fragment #1",                             // Name of the chapter.
+								_chr(game_asset_get_scene("scene.wmb")),   // Internal name of the chapter. (scene name)
+								NULL,                                      // Name of the thumbnail image.
+								NULL,                                      // Sun color.
+								NULL,                                      // Fog color.
+								NULL,                                      // Fog range.
+								150.0);                                    // Sun light intensity.
+
+	scene_add(ChapterOne);
+
+	on_level = __level_load_event;
+}
+
+// Initializes static variables/subsystems.
+void nov_gui_static_init()
+{
+	// After setting up the GUI states, we can tweak a few knobs to customize
+	// its default behavior, like setting up the default loading screen, and the reticule.
+	#ifdef    DEBUG
+		#ifndef    UI_LESS
+			game_gui_set_reticule( game_asset_get_gui("reticule.bmp") );
+		#endif
+	#endif
+
+	game_gui_set_paper_texture( game_asset_get_gui("paper.jpg") );
+	game_gui_set_location_text_font( Note_Text_Font );
+
+	game_scene_set_load_screen("image.jpg");
+	game_scene_set_delay(3.0);
+	game_scene_set_fade_speed(4.5);
+	game_scene_set_fade(false);
+
+	game_scene_set_load_text_pos(10.0, 10.0);
+	game_scene_set_desc_text_pos(50.0, 125.0);
+	game_scene_set_load_text("Custom loading text");
+	game_scene_set_desc_text_font("Times#25");
+}
+
+// Initializes subsystems (game state, GUI, PhysX, ...)
+void nov_modules_init()
+{
+	// Initialize a new game state.
+	game_state_new();
+
+	// ...and write an additional line if the game was started for the first time.
+	if(game_is_first_time())
+		game_log_write("First time booting the game.");
+
+	// Load resources. In the final, completed game, resources are loaded from add_resource().
+	game_resources_load();
+
+	// Continue to initialize the remaining subsystems. (PhysX engine and the GUI state).
+	game_physx_new();
+	game_gui_state_new();
+}
+
+// Picks a language and perform string initialization based on the chosen language.
+void nov_region_init()
+{
+	// Detect supported languages.
+	const char *s_language = "vn";
+
+	region_new();
+	region_scan();
+	bool b = region_set_language(s_language);
+
+	if(b) {
+		game_log_write(str_printf(NULL, "Language successfully set to %s", region_get_language()));
 	}
+
+	localized_init();
 }
 
 /*
@@ -41,9 +109,12 @@ void v ()
  */
 int main(int argc, char **argl)
 {
+	const char *__err_launcher = "Please run the game through the launcher!";
+	const char *__err_language = "Language list cannot be found! Run generate_language_list.exe to let the language definition be generated once.";
+
 	// See if the game was launched through the Go-based launcher.
-	// ASSERT(game_locker_check() != 0, "Please run the game through the launcher!");
-	ASSERT(file_exists("./translation/__language.pad") != 0, "Language list cannot be found!");
+	// ASSERT(game_locker_check() != 0, __err_launcher);
+	ASSERT(file_exists("./translation/__language.pad") != 0, __err_language);
 
 	// Overrides some of Acknex's global variables (their default values are way too low)
 	game_globals_set();
@@ -65,74 +136,20 @@ int main(int argc, char **argl)
 	// Static initialization.
 	game_static_init();
 
-	on_level = __level_load_event;
+	// Initializes subsystems (game state, GUI, PhysX, ...)
+	nov_modules_init();
 
-	// Initialize a new game state.
-	game_state_new();
+	// Picks a language and perform string initialization based on the chosen language.
+	nov_region_init();
 
-	// ...and write an additional line if the game was started for the first time.
-	if(game_is_first_time())
-		game_log_write("First time booting the game.");
+	// Initializes static variables/subsystems.
+	nov_gui_static_init();
 
-	// Load resources. In the final, completed game, resources are loaded from add_resource().
-	game_resources_load();
-
-	// Continue to initialize the remaining subsystems. (PhysX engine and the GUI state).
-	game_physx_new();
-	game_gui_state_new();
-
-	// Detect supported languages.
-	const char *s_language = "en";
-
-	region_new();
-	region_scan();
-	bool b = region_set_language(s_language);
-
-	if(b) {
-		game_log_write(str_printf(NULL, "Language successfully set to %s", region_get_language()));
-	}
-
-	localized_init();
-
-	// After setting up the GUI states, we can tweak a few knobs to customize
-	// its default behavior, like setting up the default loading screen, and the reticule.
-	#ifdef    DEBUG
-		#ifndef    UI_LESS
-			game_gui_set_reticule( game_asset_get_gui("reticule.bmp") );
-		#endif
-	#endif
-
-	game_scene_set_load_screen("image.jpg");
-	game_scene_set_delay(3.0);
-	game_scene_set_fade_speed(4.5);
-	game_scene_set_fade(false);
-
-	game_scene_set_load_text_pos(10.0, 10.0);
-	game_scene_set_desc_text_pos(50.0, 125.0);
-	game_scene_set_load_text("Custom loading text");
-	game_scene_set_desc_text_font("Times#25");
-
-	// Creates a new chapter and push it to the scene list.
-	scene_new();
-
-	ChapterData *ChapterOne = scene_data_new("359",                               // Name of the chapter.
-	                                        _chr(game_asset_get_scene("scene.wmb")),   // Internal name of the chapter. (scene name)
-											NULL,                                      // Name of the thumbnail image.
-											NULL,                                      // Sun color.
-											NULL,                                      // Fog color.
-											NULL,                                      // Fog range.
-											150.0);                                    // Sun light intensity.
-	scene_add(ChapterOne);
+	// Initializes the scene list, the scenes, and push them into the list.
+	nov_scene_list_init();
 
 	// Loads a chapter from the list, with a custom scene loader (game_scene_load()).
 	scene_load(ChapterOne, level_load);
-
-	// Activates PSSM shadows (four passes) and renders fog.
-	// pssm_run(4);
-	on_v = v;
-
-	game_fog_set(1, vector(189.0, 238.0, 240.0), vector(15.0, 12424.0, 0.0)); // Set the fog color and its range to the first (1) fog color slot.
-	game_fog_render(1); // Merely sets fog_color to ID.
 
 	// If the video card does meet the game's required version of vertex/pixel shaders.
 	if( game_psvs_test() )
@@ -140,13 +157,6 @@ int main(int argc, char **argl)
 		render_new();
 
 		// Sets up HDR.
-		render_setup_rt();
-		render_hdr_new();
-		render_hdr_set_queued(true);
-
-		(render_hdr_get_singleton())->bloom_strength *= 0.5;
-
-		render_hdr();
 
 		// Sets up light shafts.
 		render_light_rays_new();
@@ -170,12 +180,31 @@ int main(int argc, char **argl)
 	StaticTitleText *title = gui_title_new( vector(20.0, screen_size.y - 150.0, 0.0) , COLOR_BLEU_DE_FRANCE, text, 5.0, 15 );
 	gui_title_set_sound( title, _chr(game_asset_get_sound("typewriter-key-1.wav")) );
 	gui_credits_set_font(title, "avery.bmp");
-	gui_title_show(title);
+	// gui_title_show(title);
+
+	// Activates PSSM shadows (four passes) and renders fog.
+	// pssm_run(4);
+
+	gui_open_eyes(6.5, 1);
+
+	game_fog_set(1, vector(189.0, 238.0, 240.0), vector(15.0, 12424.0, 0.0)); // Set the fog color and its range to the first (1) fog color slot.
+	game_fog_render(1); // Merely sets fog_color to ID.
+
+	Vector3 tx;
+	tx.x = screen_size.x - 150.0;
+	tx.y = 15.0;
+	tx.z = 0;
 
 	// Main game loop, which can be terminated with the "ESC" key.
 	while( !key_esc )
 	{
+		// Update PhysX.
 		game_physx_loop();
+
+		// Continuously update the area the player is currently in.
+		#ifndef    UI_LESS
+			draw_text(game_region_check(), tx.x, tx.y, COLOR_WHITE);
+		#endif
 
 		wait(1.0);
 	}

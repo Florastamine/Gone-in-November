@@ -40,5 +40,15 @@ void    localized_init()
         REINIT_STRING(lstr_close_door, "close_door.lstr");
         REINIT_STRING(lstr_interact, "interact.lstr");
         REINIT_STRING(lstr_read_note, "read_note.lstr");
+        REINIT_STRING(lstr_room_1stbedroom, "room_1stbedroom.lstr");
+        REINIT_STRING(lstr_room_2ndbedroom, "room_2ndbedroom.lstr");
+        REINIT_STRING(lstr_room_1sthallway, "room_1sthallway.lstr");
+        REINIT_STRING(lstr_room_2ndhallway, "room_2ndhallway.lstr");
+        REINIT_STRING(lstr_rooom_kitchen, "room_kitchen.lstr");
+        REINIT_STRING(lstr_room_livingroom, "room_living.lstr");
+        REINIT_STRING(lstr_room_bathroom, "room_bathroom.lstr");
+        REINIT_STRING(lstr_room_yard, "room_yard.lstr");
+        REINIT_STRING(lstr_room_balcony, "room_balcony.lstr");
+        REINIT_STRING(lstr_room_workspace, "room_workspace.lstr");
     #endif
 }

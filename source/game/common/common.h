@@ -100,13 +100,15 @@
 /*
  * Fixed string constants.
  */
-const STRING *STR_NIL = "nil";
+const STRING *STR_NIL      = "nil";
+const STRING *STR_EMPTY    = "";
 
 /*
  *
  */
-FONT *Normal_Text_Font = "Essai#15b";
-FONT *Note_Text_Font   = "Blood Crow#25b";
+FONT *Normal_Text_Font = "Essai#25b";
+FONT *Note_Text_Font   = "UVN remind#35b";
+FONT *Loading_Font     = "[ank]*#15b";
 
 /*
  * GameState (struct)
@@ -364,6 +366,19 @@ __namespace(November) {
      * event set-ups, etc.
      */
     void game_static_init();
+
+    #define    LIVING_ROOM    1
+    #define    BEDROOM_1ST    2
+    #define    BEDROOM_2ND    3
+    #define    KITCHEN        4
+    #define    HALLWAY_1ST    5
+    #define    HALLWAY_2ND    6
+    #define    WORKSPACE      7
+    #define    YARD           8
+    #define    BALCONY        9
+    #define    BATHROOM      10
+
+    String *game_region_check();
 }
 
 __namespace(SceneLoadState) {

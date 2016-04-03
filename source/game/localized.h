@@ -43,6 +43,16 @@ String *lstr_open_door                       = "";
 String *lstr_close_door                      = "";
 String *lstr_interact                        = "";
 String *lstr_read_note                       = "";
+String *lstr_room_1stbedroom                 = "";
+String *lstr_room_2ndbedroom                 = "";
+String *lstr_room_1sthallway                 = "";
+String *lstr_room_2ndhallway                 = "";
+String *lstr_rooom_kitchen                   = "";
+String *lstr_room_livingroom                 = "";
+String *lstr_room_bathroom                   = "";
+String *lstr_room_yard                       = "";
+String *lstr_room_balcony                    = "";
+String *lstr_room_workspace                  = "";
 
 #include "localized.c"
 #endif /* localized.h */
