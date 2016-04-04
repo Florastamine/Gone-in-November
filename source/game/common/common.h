@@ -107,7 +107,7 @@ const STRING *STR_EMPTY    = "";
  *
  */
 FONT *Normal_Text_Font = "Essai#25b";
-FONT *Note_Text_Font   = "UVN remind#35b";
+FONT *Note_Text_Font   = "UVN remind#28b";
 FONT *Loading_Font     = "[ank]*#15b";
 
 /*

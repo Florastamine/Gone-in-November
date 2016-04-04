@@ -35,14 +35,28 @@
 #define __Out
 
 /*
+ * GUI states.
+ */
+#define    GUI_MAIN_MENU    1
+#define    GUI_GAME_MENU    2
+#define    GUI_INTRO        3
+
+/*
  * GUIState (struct)
  *
  * This struct contains everything related to the game's GUI: main menu, reticule,
  * message boxes,... everything.
  */
 typedef struct {
+    int state;
+
     Panel *reticule;
     Panel *paper_texture;
+
+    /* GUI_INTRO */
+        Panel *intro_lang_screen;
+        GUIButton *intro_lang_vn_button;
+        GUIButton *intro_lang_en_button;
 } GUIState;
 
 GUIState *__GUIState_singleton = NULL;
@@ -66,6 +80,10 @@ void game_gui_state_new();
  * Frees the GUI state singleton.
  */
 void game_gui_state_free();
+
+void game_gui_set_state( __In const int state );
+
+int game_gui_get_state();
 
 void game_gui_set_reticule( __In Bitmap *reticule );
 void game_gui_set_reticule( __In String *reticule_gstr );

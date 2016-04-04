@@ -30,6 +30,7 @@ void game_gui_state_new()
         game_gui_state_free(); // Then we'll just re-initialize the GUI state.
 
     __GUIState_singleton                     = MALLOC(1, GUIState);
+    __GUIState_singleton->state              = 0;
 
     // Creates and sets up the reticule.
     __GUIState_singleton->reticule           = pan_create(NULL, LAYER_GUI_1);
@@ -37,6 +38,48 @@ void game_gui_state_new()
 
     __GUIState_singleton->reticule->flags    = __GUIState_singleton->reticule->flags | (OVERLAY);
     gui_panel_set_pos( __GUIState_singleton->reticule, 0.0, 0.0 );
+
+    /* GUI_INTRO */ {
+        #define    MARGIN    142.0
+
+        VECTOR xx, xy;
+        vec_zero(xx);
+        vec_zero(xy);
+
+        xx.x = MARGIN;
+        xx.y = xy.y = screen_size.y * 0.5;
+        xy.x = screen_size.x - MARGIN;
+
+        __GUIState_singleton->intro_lang_vn_button = gui_button_new(
+            pair_new(xx.x, xx.y),
+            "Vietnamese",
+            LAYER_GUI_2,
+            game_asset_get_gui("flag-vietnam.png"),
+            game_asset_get_gui("flag-vietnam.png"),
+            game_asset_get_gui("flag-vietnam.png"),
+            NULL,
+            NULL,
+            NULL
+        );
+
+        __GUIState_singleton->intro_lang_en_button = gui_button_new(
+            pair_new(xy.x, xy.y),
+            "English",
+            LAYER_GUI_2,
+            game_asset_get_gui("flag-united_kingdom_great_britainpng"),
+            game_asset_get_gui("flag-united_kingdom_great_britain.png"),
+            game_asset_get_gui("flag-united_kingdom_great_britain.png"),
+            NULL,
+            NULL,
+            NULL
+        );
+
+        gui_button_set_font(__GUIState_singleton->intro_lang_vn_button, Loading_Font);
+        gui_button_set_font(__GUIState_singleton->intro_lang_en_button, Loading_Font);
+
+        __GUIState_singleton->intro_lang_screen        = pan_create(NULL, LAYER_GUI_1);
+        __GUIState_singleton->intro_lang_screen->bmap  = bmap_createblack(screen_size.x, screen_size.y, 8);
+    }
 
     __GUI_done__ = 1;
 }
@@ -52,6 +95,12 @@ void game_gui_state_free()
     {
         safe_remove(__GUIState_singleton->reticule);
         safe_remove(__GUIState_singleton->paper_texture);
+
+        /* GUI_INTRO */ {
+            pan_remove(__GUIState_singleton->intro_lang_screen);
+            gui_button_free(__GUIState_singleton->intro_lang_en_button);
+            gui_button_free(__GUIState_singleton->intro_lang_vn_button);
+        }
 
         FREE(__GUIState_singleton);
     }
@@ -109,6 +158,33 @@ void game_gui_render()
     if(__GUIState_singleton)
     {
         __GUIState_singleton->reticule->flags |= (SHOW);
+
+        switch(__GUIState_singleton->state) {
+
+            case GUI_MAIN_MENU: {
+                HIDE_FLAGS_SAFE(__GUIState_singleton->intro_lang_screen, SHOW);
+
+                gui_button_hide(__GUIState_singleton->intro_lang_en_button);
+                gui_button_hide(__GUIState_singleton->intro_lang_vn_button);
+
+                break;
+            }
+
+            case GUI_GAME_MENU: {
+                break;
+            }
+
+            case GUI_INTRO: {
+                SHOW_FLAGS_SAFE(__GUIState_singleton->intro_lang_screen, SHOW);
+
+                gui_button_show(__GUIState_singleton->intro_lang_en_button);
+                gui_button_show(__GUIState_singleton->intro_lang_vn_button);
+
+                mouse_mode = 4;
+
+                break;
+            }
+        }
     }
 }
 
@@ -116,4 +192,16 @@ void game_gui_update()
 {
     while(!__GUI_done__)
         wait(1.0);
+}
+
+void game_gui_set_state( const int state )
+{
+    if(__GUIState_singleton)
+        __GUIState_singleton->state = (int) ifelse(state > 0, state, GUI_MAIN_MENU);
+}
+
+int game_gui_get_state()
+{
+    if(__GUIState_singleton)
+        return __GUIState_singleton->state;
 }

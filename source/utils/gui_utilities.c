@@ -379,7 +379,7 @@ void gui_button_free( GUIButton *b )
 }
 
 /*
- * const void *gui_button_get_event( GUIButton *b, const int mode )
+ * const void *gui_button_get_f( GUIButton *b, const int mode )
  *
  * Extracts an event from a button object for calling outside of the object.
  * The return result must then be assigned to a function pointer to be invoked.
