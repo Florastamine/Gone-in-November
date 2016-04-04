@@ -43,8 +43,6 @@
 typedef struct {
     Panel *reticule;
     Panel *paper_texture;
-
-    Text *location;
 } GUIState;
 
 GUIState *__GUIState_singleton = NULL;
@@ -75,12 +73,8 @@ void game_gui_set_reticule( __In String *reticule_gstr );
 void game_gui_set_paper_texture( __In Bitmap *texture );
 void game_gui_set_paper_texture( __In String *texture_gstr );
 
-void game_gui_set_location_text_font( __In Font *font );
-void game_gui_set_location_text_font( __In String *font_gstr );
-
 Bitmap *game_gui_get_reticule();
 Bitmap *game_gui_get_paper_texture();
-Font   *game_gui_get_location_text_font();
 
 void game_gui_render();
 void game_gui_hide();
