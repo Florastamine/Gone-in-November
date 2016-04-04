@@ -397,10 +397,10 @@ action act_glasses()
 
 action act_notepad()
 {
+    SHOW_FLAGS_SAFE(my, POLYGON);
+
     if(my->string1)
-    {
         ent_set_type(my, STATIC_NOTEPAD);
-    }
 }
 
 action act_trigger()

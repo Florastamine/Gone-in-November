@@ -160,7 +160,10 @@ void hide_pepperoni_from_mom(Object *mom) {
 
 #define    RAY_DISTANCE    192.0
 
-__static void __act_player_update_camera()
+__static void __act_player_update_camera()  // hôm qua mẹ nói
+                                            // bà cô nào đó có đứa con trai đang định cư và học ở nước ngoài
+                                            // bà cô hỏi mẹ ta xem ta có muốn quen không để còn mối.... ôi trời ạ
+                                            // :'(
 {
 	if(__act_player_state_singleton->can_move && __act_player_state_singleton->__move_type != MOVE_ON_LADDER)
 	{
@@ -193,7 +196,7 @@ __static void __act_player_update_camera()
 
 	// Handle ray shots
 	VECTOR shot_target;
-	long   flags = IGNORE_SPRITES | IGNORE_ME | IGNORE_PASSABLE | IGNORE_PASSENTS | USE_POLYGON | SCAN_TEXTURE;
+	long   flags = IGNORE_ME | IGNORE_PASSABLE | IGNORE_PASSENTS | USE_POLYGON | SCAN_TEXTURE;
 
 	vec_set( &shot_target, vector(RAY_DISTANCE, 0.0, 0.0)); // The second parameter takes the scan range.
 	vec_rotate( &shot_target, &camera->pan);
