@@ -488,7 +488,7 @@ __namespace(NotifierText) {
 		float       time;                     /* Time (in seconds) to display the title.                   */
 		float       delay;                    /* Delay time (in seconds) for each character in the title to be displayed. */
 
-		Sound      *sound;                    /* Pointer to the sound file which is played whenever a new character is shown. */
+		Sound      *sound[4];                    /* Pointer to the sound file which is played whenever a new character is shown. */
 	} StaticTitleText;
 
 	/*
@@ -508,11 +508,11 @@ __namespace(NotifierText) {
 	void gui_title_free( __In __Out StaticTitleText *text );
 
 	/*
-	 * void gui_title_set_sound( StaticTitleText *text, const char *filename )
+	 * void gui_title_set_sound( StaticTitleText *text, int slot, const char *filename )
 	 *
 	 * Sets the sound file to be played whenever a character is shown during the execution of gui_title_show().
 	 */
-	void gui_title_set_sound( __In __Out StaticTitleText *text, __In const char *filename );
+	void gui_title_set_sound( __In __Out StaticTitleText *text, __In int slot, __In const char *filename );
 
 	/*
 	 * void gui_title_set_delay( StaticTitleText *text, float delay )

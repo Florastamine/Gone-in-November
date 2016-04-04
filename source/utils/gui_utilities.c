@@ -1864,8 +1864,9 @@ void gui_title_show( StaticTitleText *text )
 			 */
 			(((text->__container->pstring)[0])->chars)[i - 1] = str_getchr(text->content, i);
 
-			if(text->sound)
-				snd_play(text->sound, 25.0, 0.0);
+			int roll = rand() % 4;
+			if((text->sound)[roll])
+				snd_play((text->sound)[roll], 25.0, 0.0);
 
 			wait(-text->delay);
 
@@ -1902,14 +1903,21 @@ void gui_title_show( StaticTitleText *text )
 }
 
 /*
- * void gui_title_set_sound( StaticTitleText *text, const char *filename )
+ * void gui_title_set_sound( StaticTitleText *text, int slot, const char *filename )
  *
  * Sets the sound file to be played whenever a character is shown during the execution of gui_title_show().
  */
-void gui_title_set_sound( StaticTitleText *text, const char *filename )
+void gui_title_set_sound( StaticTitleText *text, int slot, const char *filename )
 {
     if(text)
-        text->sound = snd_create(filename);
+    {
+		slot = (int) ifelse(slot > 0, slot, 1);
+
+		if((text->sound)[slot])
+			ptr_remove((text->sound)[slot - 1]);
+
+		((text->sound)[slot]) = snd_create(filename);
+	}
 }
 
 /*
