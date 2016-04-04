@@ -6,8 +6,8 @@ TEXT *__level_load_event_text = {
 }
 
 void init() {
-	__level_load_event_text->pos_x = screen_size.x / 2;
-	__level_load_event_text->pos_y = screen_size.y / 2;
+	__level_load_event_text->pos_x = 15.0;
+	__level_load_event_text->pos_y = screen_size.y - 42.0;
 
 	__level_load_event_text->flags |= (SHOW);
 }
