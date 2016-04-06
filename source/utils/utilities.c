@@ -2300,3 +2300,69 @@ bool var_cmp(var a, var b)
 {
 	return abs(a - b) < VAR_EPSILON;
 }
+
+/*
+ * void mouse_lock(bool s)
+ *
+ * "Locks" the Windows pointer within the Acknex window.
+ * (Thanks to Reconnoiter @ http://www.opserver.de/ubb7/)
+ */
+void mouse_lock(bool b)
+{
+	#ifdef    WINDOWS_API
+		__mouse_state = (bool) (b == true);
+		byte toggler = window_focus;
+
+		RECT rekt;
+		GetClientRect(hWnd, &rekt);
+		ClientToScreen(hWnd, &rekt);
+		ClientToScreen(hWnd, rekt.right);
+
+		if(toggler)
+			ClipCursor(&rekt);
+
+			while(__mouse_state != false) {
+				GetClientRect(hWnd, &rekt);
+				ClientToScreen(hWnd, &rekt);
+				ClientToScreen(hWnd, rekt.right);
+
+				if(toggler && !window_focus) {
+					toggler = 0;
+					ClipCursor(NULL);
+				}
+
+				if(!toggler && window_focus) {
+					toggler = 1;
+					ClipCursor(&rekt);
+				}
+
+				wait(1.0);
+			}
+	#endif
+}
+
+void screenshot()
+{
+	if(__screenshot_name)
+	{
+		file_for_screen(__screenshot_name, __screenshot_counter);
+		__screenshot_counter++;
+	}
+}
+
+const char *screenshot_get_name()
+{
+	if(__screenshot_name)
+		return _chr(__screenshot_name);
+}
+
+void screenshot_set_name(const char *cstr)
+{
+	if(__screenshot_name && cstr)
+		str_cpy(__screenshot_name, cstr);
+}
+
+int screenshot_get_counter()
+{
+	return __screenshot_counter;
+}

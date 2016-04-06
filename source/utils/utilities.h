@@ -91,6 +91,7 @@
  * - Added fifelse(), a float variant of ifelse(), along with vifelse() (VECTOR), sifelse() (STRING) and difelse() (double).
  * - Added var_cmp() for var data type comparison.
  * - Added HIDE_FLAGS_SAFE() and SHOW_FLAGS_SAFE() macros in place of set()/reset().
+ * - Added mouse_lock().
  * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
@@ -692,6 +693,16 @@ __namespace() {
     int  __bkptcnt__ = 0;
 	void bkpt();
 	void bkptend();
+
+    int __screenshot_counter = 0;
+    String *__screenshot_name = "Game.jpg";
+
+    const char *screenshot_get_name();
+    void screenshot_set_name(const char *cstr);
+
+    int screenshot_get_counter();
+
+    void screenshot();
 }
 
 __namespace(numeric) {
@@ -1051,6 +1062,15 @@ __namespace(io) {
      */
     int reg_key_to_int(const RegistryItem *item);
     float reg_key_to_float(const RegistryItem *item);
+
+    /*
+     * void mouse_lock(bool s)
+     *
+     * "Locks" the Windows pointer within the Acknex window.
+     * (Thanks to Reconnoiter @ http://www.opserver.de/ubb7/)
+     */
+    bool __mouse_state = false;
+    void mouse_lock( __In bool s);
 }
 
 __namespace(GUI) {
