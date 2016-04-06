@@ -52,3 +52,21 @@ void    localized_init()
         REINIT_STRING(lstr_room_workspace, "room_workspace.lstr");
     #endif
 }
+
+void    localized_free()
+{
+    safe_remove(lstr_open_door);
+    safe_remove(lstr_close_door);
+    safe_remove(lstr_interact);
+    safe_remove(lstr_read_note);
+    safe_remove(lstr_room_1stbedroom);
+    safe_remove(lstr_room_2ndbedroom);
+    safe_remove(lstr_room_1sthallway);
+    safe_remove(lstr_room_2ndhallway);
+    safe_remove(lstr_rooom_kitchen);
+    safe_remove(lstr_room_livingroom);
+    safe_remove(lstr_room_bathroom);
+    safe_remove(lstr_room_yard);
+    safe_remove(lstr_room_balcony);
+    safe_remove(lstr_room_workspace);
+}
