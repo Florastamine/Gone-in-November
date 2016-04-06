@@ -2341,6 +2341,11 @@ void mouse_lock(bool b)
 	#endif
 }
 
+/*
+ * void screenshot()
+ *
+ * Takes a screenshot.
+ */
 void screenshot()
 {
 	if(__screenshot_name)
@@ -2350,6 +2355,12 @@ void screenshot()
 	}
 }
 
+/*
+ * const char *screenshot_get_name()
+ * void screenshot_set_name(const char *cstr)
+ *
+ * Gets and sets the current screenshots' names.
+ */
 const char *screenshot_get_name()
 {
 	if(__screenshot_name)
@@ -2362,6 +2373,13 @@ void screenshot_set_name(const char *cstr)
 		str_cpy(__screenshot_name, cstr);
 }
 
+/*
+ * int screenshot_get_counter()
+ *
+ * Returns the number of screenshots taken. If you want to reserve
+ * this number, save the __screenshot_counter variable somewhere else safe,
+ * and re-load the number with a new value upon booting the game.
+ */
 int screenshot_get_counter()
 {
 	return __screenshot_counter;

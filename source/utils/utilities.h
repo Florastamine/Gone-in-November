@@ -91,7 +91,7 @@
  * - Added fifelse(), a float variant of ifelse(), along with vifelse() (VECTOR), sifelse() (STRING) and difelse() (double).
  * - Added var_cmp() for var data type comparison.
  * - Added HIDE_FLAGS_SAFE() and SHOW_FLAGS_SAFE() macros in place of set()/reset().
- * - Added mouse_lock().
+ * - Added mouse_lock(), screenshot().
  * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
@@ -697,11 +697,31 @@ __namespace() {
     int __screenshot_counter = 0;
     String *__screenshot_name = "Game.jpg";
 
+    /*
+     * const char *screenshot_get_name()
+     * void screenshot_set_name(const char *cstr)
+     *
+     * Gets and sets the current screenshots' names.
+     */
     const char *screenshot_get_name();
     void screenshot_set_name(const char *cstr);
 
+    /*
+     * int screenshot_get_counter()
+     *
+     * Returns the number of screenshots taken. If you want to reserve
+     * this number, save the __screenshot_counter variable somewhere else safe,
+     * and re-load the number with a new value upon booting the game.
+     */
     int screenshot_get_counter();
 
+    /*
+     * void screenshot()
+     *
+     * Takes a screenshot.
+     * The exact location, name and the extension of the
+     * screenshots can be changed with a call to screenshot_set_name().
+     */
     void screenshot();
 }
 
