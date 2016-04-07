@@ -1022,7 +1022,15 @@ void game_video_cfg_parse()
  */
 void game_title_set()
 {
-	video_window( NULL, NULL, 0, str_printf(NULL, "Gone In November %s", __GAME_VERSION) );
+	String *s = str_create("Gone In November ");
+	str_cat(s, __GAME_VERSION);
+
+	#ifdef    DEBUG
+		str_cat(s, "-DEBUG");
+	#endif
+
+	video_window( NULL, NULL, 0, s );
+	str_remove(s);
 }
 
 __static void __game_version_export()
