@@ -65,3 +65,9 @@ If [g++](https://gcc.gnu.org/) is available for use through ```GNUPATH``` (defin
 
 ## License
 Except most of the code in `./source/render/` and game assets, everything else is released under the [WTFPL](http://www.wtfpl.net/) license, which means you can literally do whatever the f*ck you want with it.
+
+## Screenshots
+![](http://www.dropbox.com/s/46b3cj5q9toauq1/GIN1.jpg?dl=0)
+![](http://www.dropbox.com/s/46b3cj5q9toauq1/GIN1.jpg?dl=0)
+![](http://www.dropbox.com/s/mgcmwrf3qa13vqp/GIN3.jpg?dl=0)
+![](http://www.dropbox.com/s/an3e75s1ss1lw7y/GIN4.jpg?dl=0)
