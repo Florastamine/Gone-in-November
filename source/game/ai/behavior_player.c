@@ -112,59 +112,13 @@ void act_player_new()
 	}
 }
 
-Text  *__paper_data          = NULL;
-Text  *__paper_subtitle      = NULL;
-Sound *__paper_sound         = NULL;
-var    __paper_snd_hndl      = 0;
-
-void prepare_pepperoni(Object *what);
-void hide_pepperoni_from_mom(Object *mom);
-
-// Man it's so hard to write efficient, well-maintained code during crunch time.
-// To anybody who is reading this: Stay away from the repository, immediately.
-// Close the GitHub tab, shut off your computer, and run! Run, run, crying like a little child!
-// Run for your life! Run because them dragons are chasing you! Run like you've never run before!
-void prepare_pepperoni(Object *what)
-{
-    // Prepares the pepperonis beforehand so we don't have to do this every single time an object is close to the character.
-    if(!__paper_data)
-    {
-        __paper_data               = txt_create(1, LAYER_GUI_2);
-        __paper_data->font         = Note_Text_Font;
-        (__paper_data->pstring)[0] = sifelse(what->string1 != NULL, region_get_string(what->string1), str_create("NULL"));
-        vec_set(&(__paper_data->blue), vector(84.0, 84.0, 84.0)); // Replacing vector() with vec_fill(nullvector, 84.0) (to avoid repetitive) and watch the world spin.
-
-        __paper_data->pos_x        = __GUIState_singleton->paper_texture->pos_x + 25.0;
-        __paper_data->pos_y        = __GUIState_singleton->paper_texture->pos_y + 25.0;
-    }
-
-    if(!__paper_subtitle)
-    {
-        __paper_subtitle               = txt_create(1, LAYER_GUI_1);
-
-        __paper_subtitle->font         = Normal_Text_Font;
-        (__paper_subtitle->pstring)[0] = lstr_read_note;
-        __paper_subtitle->pos_x        = (screen_size.x - str_width((__paper_subtitle->pstring)[0], __paper_subtitle->font)) * 0.5 - 75.0;
-        __paper_subtitle->pos_y        = screen_size.y - 200.0;
-    }
-
-    if(!__paper_sound)
-        __paper_sound = snd_create(game_asset_get_sound("page-flip-4.wav"));
-}
-
-void hide_pepperoni_from_mom(Object *mom) {
-    HIDE_FLAGS_SAFE(__paper_data, SHOW);
-    HIDE_FLAGS_SAFE(__paper_subtitle, SHOW);
-    HIDE_FLAGS_SAFE(__GUIState_singleton->paper_texture, SHOW);
-}
-
-#define    RAY_DISTANCE    192.0
-
 __static void __act_player_update_camera()  // hôm qua mẹ nói
                                             // bà cô nào đó có đứa con trai đang định cư và học ở nước ngoài
                                             // bà cô hỏi mẹ ta xem ta có muốn quen không để còn mối.... ôi trời ạ
                                             // :'(
 {
+    proc_mode = PROC_LATE; // Only updates the camera after everything has been called.
+
 	if(__act_player_state_singleton->can_move && __act_player_state_singleton->__move_type != MOVE_ON_LADDER)
 	{
 		__act_player_state_singleton->__cam_ang.pan = cycle(__act_player_state_singleton->__cam_ang.pan - (joy_raw.z / 192) - mickey.x / 6.5 * 1.0, 0, 360);
@@ -193,77 +147,6 @@ __static void __act_player_update_camera()  // hôm qua mẹ nói
 		camera->arc = 45.0;
 	if(camera->arc >= 75.0)
 		camera->arc = 75.0;
-
-	// Handle ray shots
-	VECTOR shot_target;
-	long   flags = IGNORE_ME | IGNORE_PASSABLE | IGNORE_PASSENTS | USE_POLYGON | SCAN_TEXTURE;
-
-	vec_set( &shot_target, vector(RAY_DISTANCE, 0.0, 0.0)); // The second parameter takes the scan range.
-	vec_rotate( &shot_target, &camera->pan);
-	vec_add( &shot_target, &camera->x);
-	c_trace(&camera->x, &shot_target, flags);
-
-	if (trace_hit)
-	{
-		#ifdef    DEBUG
-		    draw_point3d(&hit->x, COLOR_SCARLET, 100.0, 5.0);
-		#endif
-
-		// Handle all entity-related traces here.
-		if(hit->entity) {
-            ENTITY *this_entity = hit->entity;
-
-			switch(ent_get_type(hit->entity))
-			{
-				// If we hit a notepad.
-				case    STATIC_NOTEPAD:
-				{
-					#ifdef    DEBUG
-						draw_text("Hit a STATIC_NOTEPAD object.", 10.0, 10.0, COLOR_PEARL);
-					#endif
-
-                    prepare_pepperoni(hit->entity);
-
-					if(vec_dist(player->x, hit->entity->x) < RAY_DISTANCE && (this_entity == hit->entity)) // The second comparison is important because
-                                                                                                           // we need something to check if the player is pointing to something
-                                                                                                           // else while the note is being viewed. If the old entity isn't the same
-                                                                                                           // as the new pointed to entity, break the event (switch to the else { } branch).
-					{
-                        SHOW_FLAGS_SAFE(__paper_subtitle, SHOW);
-
-						while(!mouse_left)
-							wait(1.0);
-
-                        if(!snd_playing(__paper_snd_hndl))
-                            __paper_snd_hndl = snd_play(__paper_sound, 100.0, 0.0);
-
-                        SHOW_FLAGS_SAFE(__paper_data, SHOW);
-                        SHOW_FLAGS_SAFE(__GUIState_singleton->paper_texture, SHOW);
-					}
-				}
-
-				// If we hit a triggered object.
-				case    STATIC_TRIGGER:
-				{
-					#ifdef    DEBUG
-						draw_text("Hit a STATIC_TRIGGER object.", 10.0, 10.0, COLOR_PEARL);
-					#endif
-
-                    if(vec_dist(player->x, hit->entity->x) < RAY_DISTANCE && (this_entity == hit->entity)) {
-                        wait(1.0);
-                    }
-				}
-
-				default:
-                {
-                    break;
-                }
-			}
-
-		}
-	}
-    else // End of if(trace_hit) { }.
-        hide_pepperoni_from_mom(0);
 }
 
 __static void __act_player_scan_foot()

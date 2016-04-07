@@ -75,7 +75,7 @@ action act_ssndsrc();
 action act_particle();
 
 /*
- * action act_obj_beam()
+ * action act_trigger()
  *
  * Creates an object at the position specified by skill1, skill2 and skill3, with orientation defined by skill4..5..6, and plays a sound
  * when the player comes closer than the distance specified in string1 (see below).
@@ -86,7 +86,7 @@ action act_particle();
  *      distance: When the distance between the player and the object is lower than this value, the player will be asked to press [F] in order for the event to be triggered.
  * Pass "nil" to one of the arguments in string1 to skip the particular argument.
  */
-action act_obj_beam();
+action act_trigger();
 
 /*
  * action act_door()
@@ -112,6 +112,18 @@ action act_obj_beam();
 #define    UNIQUE_ID    skill4
 
 action act_door();
+
+/*
+ * action act_notepad()
+ *
+ * A very simple, mini notepad which can be picked up and viewed.
+ * string1 must exists (not empty) and contains the name of the according translation
+ * file (with the .lstr extension). For example:
+ * "read_note.lstr" (without the double quotes).
+ * During level load, the contents of the translation file given in string1 is copied to the entity's internal
+ * container and will be shown when the player comes close to the notepad and hit the left mouse button.
+ */
+action act_notepad()
 
 #include "behavior_static.c"
 #endif /* behavior_static.h */
