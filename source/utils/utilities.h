@@ -88,6 +88,7 @@
  * __________________________________________________________________
  * + v0.4.0-alpha
  * - Added a set of simple functions for writing to and reading from the Windows registry.
+ * - Added a set of functions for cycling through pre-defined views (they reside in the view namespace).
  * - Added fifelse(), a float variant of ifelse(), along with vifelse() (VECTOR), sifelse() (STRING) and difelse() (double).
  * - Added var_cmp() for var data type comparison.
  * - Added HIDE_FLAGS_SAFE() and SHOW_FLAGS_SAFE() macros in place of set()/reset().
@@ -1344,6 +1345,74 @@ __namespace(color) {
      * Converts a hexadecimal color to the equivalent RGB representation.
      */
     VECTOR *hex_to_rgb( __In int color );
+}
+
+__namespace(view) {
+    float __view_speed   = 0.1;
+    int   __view_number  = 0;
+    bool  __view_custom  = false;
+
+    /*
+     * ViewPoint (struct)
+     *
+     * This struct contains information about a view point, including
+     * its world position and orientation.
+     * To create a ViewPoint, use one of the two provided versions of view_point_new().
+     */
+    typedef struct {
+    	VECTOR *pos;    /* Position, relative to the world origin. */
+    	VECTOR *ang;    /* Orientation. */
+    } ViewPoint;
+
+    /*
+     * ViewPoint *view_point_new(float x, float y, float z, float p, float t, float r)
+     * ViewPoint *view_point_new(const VECTOR *pos, const VECTOR *ang)
+     *
+     * Creates a new ViewPoint object and fills it with data about position and orientation.
+     * The second version which takes two const VECTOR *-s does not use the existing arguments
+     * but instead clones two new VECTOR structures based on the arguments. This way, you can safely
+     * free the arguments after the call to view_point_new() (it doesn't use them).
+     */
+    ViewPoint *view_point_new(float x, float y, float z, float p, float t, float r);
+    ViewPoint *view_point_new(const VECTOR *pos, const VECTOR *ang);
+
+    /*
+     * void view_point_free(ViewPoint *vp)
+     *
+     * Frees a previously allocated ViewPoint object.
+     */
+    void view_point_free(ViewPoint *vp);
+
+    /*
+     * void view_add(const ViewPoint *vp, int id)
+     *
+     * Adds a ViewPoint object into the current list. The object must have a unique ID
+     * (which is passed through the second parameter).
+     * To switch to a specified view that was added before using view_add(), use view_switch()
+     * (see below).
+     */
+    void view_add(const ViewPoint *vp, int id);
+
+    /*
+     * void view_switch(int id)
+     *
+     * Switches to the view that was added before through view_add().
+     * Note that when switching the view:
+     * 1/ You must notify that you're not using a custom view. ( view_set_custom(false); )
+     * 2/ The camera mustn't be synced with another entity
+     * (for example, the camera isn't bound to the player; therefore you must unlock the camera
+     * before switching the view).
+     */
+    void view_switch(int id);
+
+    /*
+     * void view_set_custom(bool t)
+     *
+     * Notifying that you're going to use a custom view other than one of the ViewPoint-s.
+     */
+    void view_set_custom(bool t);
+
+    void view_set_speed(float t);
 }
 
 #include "utilities.c"

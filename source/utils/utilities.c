@@ -2384,3 +2384,110 @@ int screenshot_get_counter()
 {
 	return __screenshot_counter;
 }
+
+void view_set_speed(float t)
+{
+	__view_speed = t;
+}
+
+/*
+ * ViewPoint *view_point_new(float x, float y, float z, float p, float t, float r)
+ * ViewPoint *view_point_new(const VECTOR *pos, const VECTOR *ang)
+ *
+ * Creates a new ViewPoint object and fills it with data about position and orientation.
+ * The second version which takes two const VECTOR *-s does not use the existing arguments
+ * but instead clones two new VECTOR structures based on the arguments. This way, you can safely
+ * free the arguments after the call to view_point_new() (it doesn't use them).
+ */
+ViewPoint *view_point_new(float x, float y, float z, float p, float t, float r)
+{
+	ViewPoint *vp = MALLOC(1, ViewPoint);
+	vp->pos       = MALLOC(1, VECTOR);
+	vp->ang       = MALLOC(1, VECTOR);
+
+	vp->pos->x    = x;
+	vp->pos->y    = y;
+	vp->pos->z    = z;
+
+	vp->ang->x    = p;
+	vp->ang->y    = t;
+	vp->ang->z    = r;
+
+	return vp;
+}
+
+ViewPoint *view_point_new(const VECTOR *pos, const VECTOR *ang)
+{
+	if(pos && ang)
+		return view_point_new(pos->x, pos->y, pos->z, ang->x, ang->y, ang->z);
+
+	return NULL;
+}
+
+/*
+ * void view_point_free(ViewPoint *vp)
+ *
+ * Frees a previously allocated ViewPoint object.
+ */
+void view_point_free(ViewPoint *vp)
+{
+	if(vp != NULL)
+	{
+		FREE(vp->pos);
+		FREE(vp->ang);
+
+		FREE(vp);
+	}
+}
+
+/*
+ * void view_add(const ViewPoint *vp, int id)
+ *
+ * Adds a ViewPoint object into the current list. The object must have a unique ID
+ * (which is passed through the second parameter).
+ * To switch to a specified view that was added before using view_add(), use view_switch()
+ * (see below).
+ */
+void view_add(const ViewPoint *vp, int id) {
+	if(!vp)
+		return;
+
+	VECTOR pos, ang;
+	vec_set(&pos, vp->pos);
+	vec_set(&ang, vp->ang);
+
+	while(1)
+	{
+		if((!__view_custom) && (__view_number == id))
+		{
+			vec_lerp(&camera->x, &camera->x, &pos, clamp(__view_speed * time_step, 0, 1));
+			vec_lerp(&camera->pan, &camera->pan, &ang, clamp(__view_speed * time_step, 0, 1));
+		}
+		wait(1.0);
+	}
+}
+
+/*
+ * void view_switch(int id)
+ *
+ * Switches to the view that was added before through view_add().
+ * Note that when switching the view:
+ * 1/ You must notify that you're not using a custom view. ( view_set_custom(false); )
+ * 2/ The camera mustn't be synced with another entity
+ * (for example, the camera isn't bound to the player; therefore you must unlock the camera
+ * before switching the view).
+ */
+void view_switch(int id)
+{
+	__view_number = (int) abs(id);
+}
+
+/*
+ * void view_set_custom(bool t)
+ *
+ * Notifying that you're going to use a custom view other than one of the ViewPoint-s.
+ */
+void view_set_custom(bool t)
+{
+	__view_custom = t;
+}
