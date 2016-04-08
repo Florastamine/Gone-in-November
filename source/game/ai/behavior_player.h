@@ -117,8 +117,9 @@ typedef struct {
 	BOOL    can_move;
 } __act_player_state;
 
-__act_player_state *__act_player_state_singleton = NULL;
+int __camera_locked = 0;
 
+__act_player_state *__act_player_state_singleton = NULL;
 __act_player_state *act_player_get_singleton();
 
 __static void __act_player_update_camera();
@@ -155,6 +156,8 @@ void  act_player_set_camera_height( __In float f );
 int act_player_get_footstep_num();
 void act_player_set_footstep( __In int ID, __In const char *file_name );
 void act_player_realloc_footstep( __In int ID );
+
+void act_player_camera_lock_toggle();
 
 #include "behavior_player.c"
 #endif /* behavior_player.h */

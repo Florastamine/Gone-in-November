@@ -119,24 +119,26 @@ __static void __act_player_update_camera()  // hôm qua mẹ nói
 {
     proc_mode = PROC_LATE; // Only updates the camera after everything has been called.
 
-	if(__act_player_state_singleton->can_move && __act_player_state_singleton->__move_type != MOVE_ON_LADDER)
-	{
-		__act_player_state_singleton->__cam_ang.pan = cycle(__act_player_state_singleton->__cam_ang.pan - (joy_raw.z / 192) - mickey.x / 6.5 * 1.0, 0, 360);
-		__act_player_state_singleton->__cam_ang.tilt = clamp(__act_player_state_singleton->__cam_ang.tilt - (joy_rot.x / 192) - mickey.y / 6.5 * 1.0, -90, 90);
-		__act_player_state_singleton->__cam_ang.roll = 0;
-	}
+    if(!__camera_locked) {
+        if(__act_player_state_singleton->can_move && __act_player_state_singleton->__move_type != MOVE_ON_LADDER)
+        {
+            __act_player_state_singleton->__cam_ang.pan = cycle(__act_player_state_singleton->__cam_ang.pan - (joy_raw.z / 192) - mickey.x / 6.5 * 1.0, 0, 360);
+            __act_player_state_singleton->__cam_ang.tilt = clamp(__act_player_state_singleton->__cam_ang.tilt - (joy_rot.x / 192) - mickey.y / 6.5 * 1.0, -90, 90);
+            __act_player_state_singleton->__cam_ang.roll = 0;
+        }
 
-	vec_set( &camera->pan, &(__act_player_state_singleton->__cam_ang) );
-	vec_set( &(__act_player_state_singleton->__cam_pos), vector(0, 0, __act_player_state_singleton->cam_height));
-	vec_rotate( &(__act_player_state_singleton->__cam_pos) , vector(camera->pan, 0, 0));
-	vec_add( &(__act_player_state_singleton->__cam_pos), &my->x );
-	vec_set( &camera->x, vector(__act_player_state_singleton->__cam_pos.x, __act_player_state_singleton->__cam_pos.y, camera->z) );
-	__act_player_state_singleton->cam_lerp = __act_player_state_singleton->cam_smooth * time_step;
+        vec_set( &camera->pan, &(__act_player_state_singleton->__cam_ang) );
+        vec_set( &(__act_player_state_singleton->__cam_pos), vector(0, 0, __act_player_state_singleton->cam_height));
+        vec_rotate( &(__act_player_state_singleton->__cam_pos) , vector(camera->pan, 0, 0));
+        vec_add( &(__act_player_state_singleton->__cam_pos), &my->x );
+        vec_set( &camera->x, vector(__act_player_state_singleton->__cam_pos.x, __act_player_state_singleton->__cam_pos.y, camera->z) );
+        __act_player_state_singleton->cam_lerp = __act_player_state_singleton->cam_smooth * time_step;
 
-	camera->z -= (camera->z - __act_player_state_singleton->__cam_pos.z) * __act_player_state_singleton->cam_lerp;
-	camera->z = clamp(camera->z, __act_player_state_singleton->__cam_pos.z - __act_player_state_singleton->cam_smooth_offset, __act_player_state_singleton->__cam_pos.z + __act_player_state_singleton->cam_smooth_offset);
-	camera->arc += (int) ifelse(key_z != 0, -1, 1) * 3.5 * time_step; // 3.5 gives the zooming speed. Magic numbers is bad, I know, but I'm just too lazy to re-factor these.
-	camera->z += 35.0;
+        camera->z -= (camera->z - __act_player_state_singleton->__cam_pos.z) * __act_player_state_singleton->cam_lerp;
+        camera->z = clamp(camera->z, __act_player_state_singleton->__cam_pos.z - __act_player_state_singleton->cam_smooth_offset, __act_player_state_singleton->__cam_pos.z + __act_player_state_singleton->cam_smooth_offset);
+        camera->arc += (int) ifelse(key_z != 0, -1, 1) * 3.5 * time_step; // 3.5 gives the zooming speed. Magic numbers is bad, I know, but I'm just too lazy to re-factor these.
+        camera->z += 35.0;
+    }
 
 	if(camera->tilt > 75.0)
 	    camera->tilt = 75.0;
@@ -214,7 +216,7 @@ __static void __act_player_create_bbox()
 	__act_player_state_singleton->__object_stand->flags |= (POLYGON);
 	object_scale_set(__act_player_state_singleton->__object_stand, player->scale_x);
 
-	#ifdef    DEBUG
+	#ifndef    DEBUG
 		__act_player_state_singleton->__object_stand->flags |= (INVISIBLE);
 	#endif
 
@@ -615,4 +617,9 @@ void  act_player_set_camera_height( float f )
 {
 	if(__act_player_state_singleton)
 	    __act_player_state_singleton->cam_height = (float) ifelse(f, f, abs(f));
+}
+
+void act_player_camera_lock_toggle()
+{
+    __camera_locked = 1 - __camera_locked;
 }
