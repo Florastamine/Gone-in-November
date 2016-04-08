@@ -136,7 +136,7 @@ __static void __act_player_update_camera()  // hôm qua mẹ nói
 
         camera->z -= (camera->z - __act_player_state_singleton->__cam_pos.z) * __act_player_state_singleton->cam_lerp;
         camera->z = clamp(camera->z, __act_player_state_singleton->__cam_pos.z - __act_player_state_singleton->cam_smooth_offset, __act_player_state_singleton->__cam_pos.z + __act_player_state_singleton->cam_smooth_offset);
-        camera->arc += (int) ifelse(key_z != 0, -1, 1) * 3.5 * time_step; // 3.5 gives the zooming speed. Magic numbers is bad, I know, but I'm just too lazy to re-factor these.
+        camera->arc += (int) ifelse(mouse_right != 0, -1, 1) * 3.5 * time_step; // 3.5 gives the zooming speed. Magic numbers is bad, I know, but I'm just too lazy to re-factor these.
         camera->z += 35.0;
     }
 
