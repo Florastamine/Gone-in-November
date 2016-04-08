@@ -294,7 +294,7 @@ action act_door()
 
         wait(1.0);
     }
-    txt_remove_ex(subtitle);
+    txt_remove(subtitle);
 }
 
 /*
@@ -414,7 +414,7 @@ action act_notepad()
         safe_remove(bg);
         safe_remove(paper_sound);
         txt_remove_ex(data);
-        txt_remove_ex(subtitle);
+        txt_remove(subtitle);
 
     } // End of if(my->string1).
     else
@@ -532,7 +532,7 @@ action act_trigger()
         } // End of while(my).
 
         // Frees associated resources.
-        txt_remove_ex(subtitle);
+        txt_remove(subtitle);
         safe_remove(event_sound);
 
     } // End of if(my->string1).
