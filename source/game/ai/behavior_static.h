@@ -123,7 +123,7 @@ action act_door();
  * During level load, the contents of the translation file given in string1 is copied to the entity's internal
  * container and will be shown when the player comes close to the notepad and hit the left mouse button.
  */
-action act_notepad()
+action act_notepad();
 
 #include "behavior_static.c"
 #endif /* behavior_static.h */

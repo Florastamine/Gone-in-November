@@ -1301,6 +1301,10 @@ void game_static_init()
 }
 
 /*
+ * String *game_region_check()
+ *
+ * Takes advantage of <utilities>/object_in_region() to check if the player
+ * is in a certain region that was drawn beforehand in WED.
  * It'd be more convenient to use a std::map<> and returns the indices, but
  * I'm just being too lazy to write one.
  */

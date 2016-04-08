@@ -30,23 +30,3 @@ void __level_load_event(var percent)
         g_calls++;
     }
 }
-
-void g_set_day(int day)
-{
-	if(day >= DAY_1 && day <= DAY_5)
-	{
-		int i = 0;
-		for(; i <= MAX_DAYS; i++)
-		{
-			if(i != day)
-				g_days[i] = false;
-		}
-
-		g_days[i] = true;
-	}
-}
-
-BOOL g_get_day(int day)
-{
-	return g_days[day];
-}

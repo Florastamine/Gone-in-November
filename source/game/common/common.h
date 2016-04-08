@@ -378,6 +378,12 @@ __namespace(November) {
     #define    BALCONY        9
     #define    BATHROOM      10
 
+    /*
+     * String *game_region_check()
+     *
+     * Takes advantage of <utilities>/object_in_region() to check if the player
+     * is in a certain region that was drawn beforehand in WED.
+     */
     String *game_region_check();
 }
 

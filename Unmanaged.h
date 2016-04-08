@@ -45,24 +45,11 @@
 
 #define    SCENE_PART    skill8
 
-#define    MAX_DAYS    5
-
-#define    DAY_1       0
-#define    DAY_2       1
-#define    DAY_3       2
-#define    DAY_4       3
-#define    DAY_5       4
-
 int g_calls = 0;
 BOOL g_init  = false;
 
-BOOL g_days[MAX_DAYS];
-
 void init();
 void __level_load_event(var);
-
-void g_set_day(int);
-BOOL g_get_day(int);
 
 #include "Unmanaged.c"
 #endif /* Unmanaged.h */
