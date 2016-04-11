@@ -32,6 +32,7 @@
 #define __static
 #define __In
 #define __Out
+#define __namespace(X) {}
 
 // Collision group
 #define PUSH_GROUP                     1
@@ -158,6 +159,9 @@ void act_player_set_footstep( __In int ID, __In const char *file_name );
 void act_player_realloc_footstep( __In int ID );
 
 void act_player_camera_lock_toggle();
+
+void act_player_camera_lock_to(int pos);
+void act_player_camera_unlock_to();
 
 #include "behavior_player.c"
 #endif /* behavior_player.h */

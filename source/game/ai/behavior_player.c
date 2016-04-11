@@ -616,10 +616,27 @@ float act_player_get_camera_height()
 void  act_player_set_camera_height( float f )
 {
 	if(__act_player_state_singleton)
-	    __act_player_state_singleton->cam_height = (float) ifelse(f, f, abs(f));
+	    __act_player_state_singleton->cam_height = (float) ifelse(f, f, abs(f)); // TODO: plain wrong.
 }
 
 void act_player_camera_lock_toggle()
 {
     __camera_locked = 1 - __camera_locked;
+}
+
+void act_player_camera_lock_to(int pos)
+{
+    if(!__camera_locked)
+        act_player_camera_lock_toggle();
+
+    view_set_custom(false);
+    view_switch(pos);
+}
+
+void act_player_camera_unlock_to()
+{
+    if(__camera_locked)
+        act_player_camera_lock_toggle();
+
+    view_set_custom(true); // Notify that we're using our custom view (player camera).
 }
