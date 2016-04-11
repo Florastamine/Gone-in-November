@@ -39,7 +39,7 @@ void game_gui_state_new()
     __GUIState_singleton->reticule->flags    = __GUIState_singleton->reticule->flags | (OVERLAY);
     gui_panel_set_pos( __GUIState_singleton->reticule, 0.0, 0.0 );
 
-    /* GUI_INTRO */ {
+    /* STATE_INTRO */ {
         #define    MARGIN    142.0
 
         VECTOR xx, xy;
@@ -79,6 +79,8 @@ void game_gui_state_new()
 
         __GUIState_singleton->intro_lang_screen        = pan_create(NULL, LAYER_GUI_1);
         __GUIState_singleton->intro_lang_screen->bmap  = bmap_createblack(screen_size.x, screen_size.y, 8);
+
+        /* End of STATE_INTRO. */
     }
 
     __GUI_done__ = 1;
@@ -96,7 +98,7 @@ void game_gui_state_free()
         safe_remove(__GUIState_singleton->reticule);
         safe_remove(__GUIState_singleton->paper_texture);
 
-        /* GUI_INTRO */ {
+        /* STATE_INTRO */ {
             pan_remove(__GUIState_singleton->intro_lang_screen);
             gui_button_free(__GUIState_singleton->intro_lang_en_button);
             gui_button_free(__GUIState_singleton->intro_lang_vn_button);
@@ -161,7 +163,7 @@ void game_gui_render()
 
         switch(__GUIState_singleton->state) {
 
-            case GUI_MAIN_MENU: {
+            case STATE_MAIN_MENU: {
                 HIDE_FLAGS_SAFE(__GUIState_singleton->intro_lang_screen, SHOW);
 
                 gui_button_hide(__GUIState_singleton->intro_lang_en_button);
@@ -170,11 +172,19 @@ void game_gui_render()
                 break;
             }
 
-            case GUI_GAME_MENU: {
+            case STATE_GAME_MENU: {
                 break;
             }
 
-            case GUI_INTRO: {
+            case STATE_PC: {
+                break;
+            }
+
+            case STATE_NULL: {
+                break;
+            }
+
+            case STATE_INTRO: {
                 SHOW_FLAGS_SAFE(__GUIState_singleton->intro_lang_screen, SHOW);
 
                 gui_button_show(__GUIState_singleton->intro_lang_en_button);
@@ -197,7 +207,7 @@ void game_gui_update()
 void game_gui_set_state( const int state )
 {
     if(__GUIState_singleton)
-        __GUIState_singleton->state = (int) ifelse(state > 0, state, GUI_MAIN_MENU);
+        __GUIState_singleton->state = (int) ifelse(state > 0, state, STATE_MAIN_MENU);
 }
 
 int game_gui_get_state()

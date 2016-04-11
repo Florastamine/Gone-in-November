@@ -37,9 +37,11 @@
 /*
  * GUI states.
  */
-#define    GUI_MAIN_MENU    1
-#define    GUI_GAME_MENU    2
-#define    GUI_INTRO        3
+#define    STATE_MAIN_MENU    1
+#define    STATE_GAME_MENU    2
+#define    STATE_INTRO        3
+#define    STATE_PC           4
+#define    STATE_NULL         5
 
 /*
  * GUIState (struct)
@@ -57,6 +59,13 @@ typedef struct {
         Panel *intro_lang_screen;
         GUIButton *intro_lang_vn_button;
         GUIButton *intro_lang_en_button;
+    /* End of GUI_INTRO. */
+
+    Panel   *PC_boot_screen;
+    Panel   *PC_wallpaper;
+    Bitmap  *PC_cursor;
+
+
 } GUIState;
 
 GUIState *__GUIState_singleton = NULL;
