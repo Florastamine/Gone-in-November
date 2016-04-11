@@ -124,6 +124,17 @@ typedef struct {
 GameState *__GameState_singleton = NULL;
 
 /*
+ * GameObjectives (struct)
+ * This plain simple struct encapsulates simple game objectives.
+ */
+typedef struct {
+    int objectives;
+    int total_objectives;
+} GameObjectives;
+
+GameObjectives *__GameObjectives_singleton = NULL;
+
+/*
  * SceneLoadState (struct)
  * This struct contains information about the loading state.
  * When loading a scene with game_scene_load(), the information
@@ -214,6 +225,13 @@ __namespace(ArgsParse) {
 }
 
 __namespace(November) {
+
+    /*
+     * A list of view points used in the game.
+     */
+    ViewPoint *vp_bedroom    = NULL;
+    ViewPoint *vp_computer   = NULL;
+
     /*
      * void game_state_new()
      *
@@ -366,17 +384,6 @@ __namespace(November) {
      * event set-ups, etc.
      */
     void game_static_init();
-
-    #define    LIVING_ROOM    1
-    #define    BEDROOM_1ST    2
-    #define    BEDROOM_2ND    3
-    #define    KITCHEN        4
-    #define    HALLWAY_1ST    5
-    #define    HALLWAY_2ND    6
-    #define    WORKSPACE      7
-    #define    YARD           8
-    #define    BALCONY        9
-    #define    BATHROOM      10
 
     /*
      * String *game_region_check()

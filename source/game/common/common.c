@@ -62,6 +62,12 @@ void game_state_new()
 	__GameState_singleton->__game_log_loaded__   = false;
 	__GameState_singleton->__game_log_handle__   = 0;
 
+	// Also initialize the objectives singleton.
+	__GameObjectives_singleton = MALLOC(1, GameObjectives);
+
+	__GameObjectives_singleton->objectives         = 0;
+	__GameObjectives_singleton->total_objectives   = 0;
+
 	// And call the event setup (so that the state and some other stuff gets automatically destroyed prior to exiting the game.)
 	game_event_setup();
 
@@ -87,6 +93,9 @@ void game_state_free()
 		// Now free the game state.
 		FREE(__GameState_singleton);
 	}
+
+	if( __GameObjectives_singleton )
+		FREE(__GameObjectives_singleton);
 }
 
 /*
@@ -298,6 +307,9 @@ __static void __game_event_on_exit()
 
 	// Frees the multilingual module.
 	region_free();
+
+	// Frees the localized strings.
+	localized_free();
 }
 
 __static void __game_event_on_close()
@@ -1295,9 +1307,14 @@ void game_break(const char *message)
  */
 void game_static_init()
 {
+	// Register the following fonts to the font table, so we can use it without installing into %WINDIR%\Fonts\.
 	AddFontResource("./etc/Essai.ttf");
 	AddFontResource("./etc/UVN-remind.ttf");
 	AddFontResource("./etc/ank.ttf");
+
+	// Creates the view points. The coordinates are manually captured.
+	vp_computer    = view_point_new(800.0, 395.0, 431.0, 354.0, -16.0, 0.0);
+	vp_bedroom     = view_point_new(1237.0, 613.0, 396.0, 260.0, 6.0, 32.0);
 }
 
 /*
