@@ -1794,6 +1794,7 @@ StaticTitleText *gui_title_new( Vector3 *pos, Vector3 *color, String *content, f
 	text->time            =            ifelse(time > 0.0, time, 5.0);
 	text->sound           = NULL;
 	text->delay           = .35;
+	text->fade_mode       = CHAR_BY_CHAR;
 
 	if(content)
 		text->content = str_create(content);
@@ -1883,19 +1884,35 @@ void gui_title_show( StaticTitleText *text )
 			wait(1.0);
 		}
 
-		i = 1;
-		float new_delay = text->delay * 0.5; // Cuts the delay time in half, disappear time should be only 1/2 of the total delay.
-		while(i <= len)
+		if(text->fade_mode == CHAR_BY_CHAR)
 		{
-			str_setchr((text->__container->pstring)[0], i, ' ');
+			i = 1;
+			float new_delay = text->delay * 0.5; // Cuts the delay time in half, disappear time should be only 1/2 of the total delay.
+			while(i <= len)
+			{
+				str_setchr((text->__container->pstring)[0], i, ' ');
 
-			if(text->sound)
-				snd_play(text->sound, 25.0, 0.0);
+				int r = rand() % 4;
+				if((text->sound)[r])
+					snd_play((text->sound)[r], 25.0, 0.0);
 
-			wait(-new_delay);
+				wait(-new_delay);
 
-			i++;
-			wait(1.0);
+				i++;
+				wait(1.0);
+			}
+		}
+		else
+		{
+			if(!(text->__container->flags & TRANSLUCENT))
+				SHOW_FLAGS_SAFE(text->__container, TRANSLUCENT);
+
+			text->__container->alpha = 100.0;
+			while(text->__container->alpha > 0.0)
+			{
+				text->__container->alpha -= 4.2 * time_step;
+				wait(1.0);
+			}
 		}
 
 		gui_title_free(text);
@@ -2113,4 +2130,16 @@ void gui_open_eyes(float speed, int layer)
 		bmap_remove((halves[i])->bmap);
 		pan_remove(halves[i]);
 	}
+}
+
+/*
+ * void gui_title_set_mode( StaticTitleText *text, const int mode )
+ *
+ * Changes the disappearance mode of the static text object. Can be FADE_OUT
+ * (fades out the whole text, then destroy it) or CHAR_BY_CHAR (destroys the text character-by-character).
+ */
+void gui_title_set_mode( StaticTitleText *text, const int mode )
+{
+	if(text)
+		text->fade_mode = mode;
 }

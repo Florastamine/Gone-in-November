@@ -477,6 +477,9 @@ __namespace(StaticDialogue) {
 }
 
 __namespace(NotifierText) {
+	#define    FADE_OUT        1
+	#define    CHAR_BY_CHAR    2
+
 	typedef struct {
 		Text       *__container;              /* Internal container of the text object, which is used for storing the actual text for rendering. */
 
@@ -487,8 +490,9 @@ __namespace(NotifierText) {
 
 		float       time;                     /* Time (in seconds) to display the title.                   */
 		float       delay;                    /* Delay time (in seconds) for each character in the title to be displayed. */
+		int         fade_mode;                /* Fading out mode. */
 
-		Sound      *sound[4];                    /* Pointer to the sound file which is played whenever a new character is shown. */
+		Sound      *sound[4];                 /* Pointer to the sound file which is played whenever a new character is shown. */
 	} StaticTitleText;
 
 	/*
@@ -528,6 +532,14 @@ __namespace(NotifierText) {
 	 * (text objects are intended to be only displayed one - YODO - You Only Display Once(TM)).
 	 */
 	void gui_title_show( __In __Out StaticTitleText *text );
+
+	/*
+	 * void gui_title_set_mode( StaticTitleText *text, const int mode )
+	 *
+	 * Changes the disappearance mode of the static text object. Can be FADE_OUT
+	 * (fades out the whole text, then destroy it) or CHAR_BY_CHAR (destroys the text character-by-character).
+	 */
+	void gui_title_set_mode( __In __Out StaticTitleText *text, __In const int mode );
 }
 
 __namespace(CreditsText) {
