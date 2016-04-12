@@ -81,6 +81,16 @@ void game_gui_state_new()
         __GUIState_singleton->intro_lang_screen->bmap  = bmap_createblack(screen_size.x, screen_size.y, 8);
 
         /* End of STATE_INTRO. */
+
+        __GUIState_singleton->PC_boot_screen        = pan_create(NULL, LAYER_GUI_4);
+        __GUIState_singleton->PC_boot_screen->bmap  = bmap_create(game_asset_get_gui("PC_boot.jpg"));
+        gui_panel_set_center(__GUIState_singleton->PC_boot_screen, CENTER_X | CENTER_Y);
+
+        __GUIState_singleton->PC_wallpaper          = pan_create(NULL, LAYER_GUI_3);
+        __GUIState_singleton->PC_wallpaper->bmap    = bmap_create(game_asset_get_gui("PC_wallpaper.jpg"));
+        gui_panel_set_center(__GUIState_singleton->PC_wallpaper, CENTER_X | CENTER_Y);
+
+        __GUIState_singleton->PC_cursor             = bmap_create(game_asset_get_gui("PC_cursor.bmp"));
     }
 
     __GUI_done__ = 1;
@@ -155,43 +165,82 @@ Bitmap *game_gui_get_reticule()
         return __GUIState_singleton->reticule->bmap;
 }
 
+__static void __GUIState_show_main_menu()
+{
+    return;
+}
+
+__static void __GUIState_show_intro()
+{
+    SHOW_FLAGS_SAFE(__GUIState_singleton->intro_lang_screen, SHOW);
+
+    gui_button_show(__GUIState_singleton->intro_lang_en_button);
+    gui_button_show(__GUIState_singleton->intro_lang_vn_button);
+
+    mouse_mode = 4;
+}
+
+__static void __GUIState_hide_intro()
+{
+    HIDE_FLAGS_SAFE(__GUIState_singleton->intro_lang_screen, SHOW);
+
+    gui_button_hide(__GUIState_singleton->intro_lang_en_button);
+    gui_button_hide(__GUIState_singleton->intro_lang_vn_button);
+}
+
+__static void __GUIState_show_PC()
+{
+    SHOW_FLAGS_SAFE(__GUIState_singleton->PC_boot_screen, SHOW);
+    SHOW_FLAGS_SAFE(__GUIState_singleton->PC_wallpaper, SHOW);
+
+    __GUIState_singleton->PC_cursor_original = mouse_map;
+    mouse_map   = __GUIState_singleton->PC_cursor;
+    mouse_mode  = 4;
+}
+
+__static void __GUIState_show_game_menu()
+{
+    return;
+}
+
 void game_gui_render()
 {
     if(__GUIState_singleton)
     {
-        __GUIState_singleton->reticule->flags |= (SHOW);
+        #ifdef    DEBUG
+            __GUIState_singleton->reticule->flags |= (SHOW);
+        #endif
 
-        switch(__GUIState_singleton->state) {
-
+        switch(__GUIState_singleton->state)
+        {
             case STATE_MAIN_MENU: {
-                HIDE_FLAGS_SAFE(__GUIState_singleton->intro_lang_screen, SHOW);
-
-                gui_button_hide(__GUIState_singleton->intro_lang_en_button);
-                gui_button_hide(__GUIState_singleton->intro_lang_vn_button);
+                __GUIState_hide_intro();
+                __GUIState_show_main_menu();
 
                 break;
             }
 
             case STATE_GAME_MENU: {
+                __GUIState_hide_intro();
+                __GUIState_show_game_menu();
+
                 break;
             }
 
             case STATE_PC: {
-                break;
-            }
+                __GUIState_hide_intro();
+                __GUIState_show_PC();
 
-            case STATE_NULL: {
                 break;
             }
 
             case STATE_INTRO: {
-                SHOW_FLAGS_SAFE(__GUIState_singleton->intro_lang_screen, SHOW);
+                __GUIState_show_intro();
 
-                gui_button_show(__GUIState_singleton->intro_lang_en_button);
-                gui_button_show(__GUIState_singleton->intro_lang_vn_button);
+                break;
+            }
 
-                mouse_mode = 4;
-
+            case STATE_NULL: {
                 break;
             }
         }

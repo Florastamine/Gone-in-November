@@ -64,7 +64,7 @@ typedef struct {
     Panel   *PC_boot_screen;
     Panel   *PC_wallpaper;
     Bitmap  *PC_cursor;
-
+    Bitmap  *PC_cursor_original;
 
 } GUIState;
 
