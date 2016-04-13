@@ -104,11 +104,13 @@ const STRING *STR_NIL      = "nil";
 const STRING *STR_EMPTY    = "";
 
 /*
- *
+ * Default fonts used in the game. These are not always available on every
+ * PC and thus have to be registered through AddFontResource().
  */
 FONT *Normal_Text_Font = "Essai#25b";
 FONT *Note_Text_Font   = "UVN remind#28b";
 FONT *Loading_Font     = "[ank]*#15b";
+FONT *Intro_Text_Font  = "iCiel Andes Rounded Light#25";
 
 /*
  * GameState (struct)
@@ -231,6 +233,14 @@ __namespace(November) {
      */
     ViewPoint *vp_bedroom    = NULL;
     ViewPoint *vp_computer   = NULL;
+
+    #define    VP_BEDROOM    1
+    #define    VP_COMPUTER   2
+
+    /*
+     * A static CreditsText object used for... displaying the credits screen, of course.
+     */
+    CreditsText *credits = NULL;
 
     /*
      * void game_state_new()
@@ -386,12 +396,37 @@ __namespace(November) {
     void game_static_init();
 
     /*
+     * void game_static_free()
+     *
+     * Frees everything that were previously initialized with game_static_init().
+     */
+    void game_static_free();
+
+    /*
      * String *game_region_check()
      *
      * Takes advantage of <utilities>/object_in_region() to check if the player
      * is in a certain region that was drawn beforehand in WED.
      */
     String *game_region_check();
+
+    #define    DAY_1         1
+    #define    DAY_2         2
+    #define    DAY_3         3
+    #define    DAY_4         4
+    #define    DAY_5         5
+    #define    TOTAL_DAYS    5
+
+    int          day_current = DAY_1;
+    ChapterData *day[TOTAL_DAYS];
+
+    /*
+     * int game_day_switch(int id)
+     *
+     * Performs days switching. This does more than just simply changing the current_day variable.
+     * It does the actual preparation, scene switching and post-initialization.
+     */
+    int        game_day_switch( __In int d);
 }
 
 __namespace(SceneLoadState) {

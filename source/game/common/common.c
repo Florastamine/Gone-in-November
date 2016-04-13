@@ -310,6 +310,12 @@ __static void __game_event_on_exit()
 
 	// Frees the localized strings.
 	localized_free();
+
+	// Frees the music player.
+	game_mplayer_free();
+
+	// Frees static-initialized stuff.
+	game_static_free();
 }
 
 __static void __game_event_on_close()
@@ -675,7 +681,7 @@ void game_scene_load( STRING *scene )
 	txt_remove_ex(t1);
 	pan_remove(p);
 
-	game_log_write( str_printf(NULL, "Scene <%s> loaded. Operation took %f seconds.", _chr(scene), load_time * POW_10_6) );
+	game_log_write( str_printf(NULL, "Scene <%s> loaded. Operation took %f seconds with %i errors.", _chr(scene), load_time * POW_10_6, __SceneLoadState_singleton->error) );
 }
 
 /*
@@ -1311,10 +1317,27 @@ void game_static_init()
 	AddFontResource("./etc/Essai.ttf");
 	AddFontResource("./etc/UVN-remind.ttf");
 	AddFontResource("./etc/ank.ttf");
+	AddFontResource("./etc/AndesRoundedLight.otf");
 
-	// Creates the view points. The coordinates are manually captured.
+	// Creates and registers the view points. The coordinates are manually captured.
 	vp_computer    = view_point_new(800.0, 395.0, 431.0, 354.0, -16.0, 0.0);
 	vp_bedroom     = view_point_new(1237.0, 613.0, 396.0, 260.0, 6.0, 32.0);
+
+	view_add(vp_bedroom, VP_BEDROOM);
+	view_add(vp_computer, VP_COMPUTER);
+}
+
+/*
+ * void game_static_free()
+ *
+ * Frees everything that were previously initialized with game_static_init().
+ */
+void game_static_free()
+{
+	view_point_free(vp_bedroom);
+	view_point_free(vp_computer);
+
+	gui_credits_free(credits);
 }
 
 /*
@@ -1342,4 +1365,36 @@ String *game_region_check()
 	if(object_in_region(player, "Laundry"))          return lstr_room_balcony;
 
 	return STR_EMPTY;
+}
+
+/*
+ * int game_day_switch(int id)
+ *
+ * Performs days switching. This does more than just simply changing the current_day variable.
+ * It does the actual preparation, scene switching and post-initialization.
+ */
+void scene_load(ChapterData *data, const void *loader); // Pretty much the only way to resolve the cyclic dependencies in this situation.
+
+int game_day_switch(int d)
+{
+	if( d >= DAY_1 && d <= DAY_5 ) // If we've passed the correct day.
+	{
+		game_log_write(str_printf(NULL, "Attempting to switch to day %i.", (int) d));
+
+		scene_load(day[d - 1], game_scene_load);
+		WAIT_PROCESS(scene_load);
+
+		day_current = d; // Notify that we've switched to a new day.
+		return 1;
+	}
+	else
+	{
+		game_log_write("In <common>/game_day_switch(): Passed parameter is not in the correct range. Operation aborted.");
+		return -1;
+	}
+}
+
+int game_day_get()
+{
+	return day_current;
 }
