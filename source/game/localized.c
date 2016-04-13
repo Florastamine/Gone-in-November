@@ -39,6 +39,7 @@ void    localized_init()
         REINIT_STRING(lstr_open_door, "open_door.lstr");
         REINIT_STRING(lstr_close_door, "close_door.lstr");
         REINIT_STRING(lstr_interact, "interact.lstr");
+        REINIT_STRING(lstr_interact_sleep, "interact_sleep.lstr");
         REINIT_STRING(lstr_read_note, "read_note.lstr");
         REINIT_STRING(lstr_room_1stbedroom, "room_1stbedroom.lstr");
         REINIT_STRING(lstr_room_2ndbedroom, "room_2ndbedroom.lstr");
@@ -58,6 +59,7 @@ void    localized_free()
     safe_remove(lstr_open_door);
     safe_remove(lstr_close_door);
     safe_remove(lstr_interact);
+    safe_remove(lstr_interact_sleep);
     safe_remove(lstr_read_note);
     safe_remove(lstr_room_1stbedroom);
     safe_remove(lstr_room_2ndbedroom);
