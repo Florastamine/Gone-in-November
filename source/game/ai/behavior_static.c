@@ -539,3 +539,92 @@ action act_trigger()
     else
         game_log_write(str_printf(NULL, "[WARNING] Entity %s is defined as a trigger entity but string1 is not defined.", _chr(str_for_entname(NULL, me)) ));
 }
+
+/*
+ * action act_level_changer()
+ *
+ * A generic, tweakable level changing entity. By default, this entity will closes down the current level and loads the next one if:
+ * - You've completed all of the objectives in the current level.
+ *
+ * string1: Contains the full file name of the translation file which will be popped up when the player comes close to the trigger entity.
+ * string2: Contains the full file name of the sound effect you want to be played when the player hits the left mouse button.
+ * skill1: Distance between the player and the entity in which the trigger is activated.
+ * skill2: ID of one of the initialized ViewPoint-s.
+ */
+action act_level_changer()
+{
+    while( !player ) wait(1.0);
+
+    #ifndef    DEBUG
+        SHOW_FLAGS_SAFE(my, INVISIBLE);
+    #endif
+
+    ent_set_type(my, STATIC_TRIGGER_LEVEL);
+    SHOW_FLAGS_SAFE(my, POLYGON);
+
+    VECTOR shot_target;
+    long   flags = IGNORE_PASSABLE | IGNORE_PASSENTS | IGNORE_WORLD | USE_POLYGON | IGNORE_FLAG2;
+    bool   custom_interact_text = false;
+
+    Text *subtitle = txt_create(1, LAYER_GUI_1);
+
+    if(my->string1)
+    {
+        (subtitle->pstring)[0] = region_get_string(my->string1);
+        custom_interact_text = true;
+    }
+    else
+        (subtitle->pstring)[0] = lstr_interact;
+
+    subtitle->font = Normal_Text_Font;
+    __text_init_pos(subtitle);
+
+    if(my->string2)
+        Sound *event_sound = snd_create(game_asset_get_sound(my->string2));
+
+    while(my)
+    {
+        vec_set( &shot_target, vector(my->DISTANCE, 0.0, 0.0)); // The second parameter takes the scan range.
+        vec_rotate( &shot_target, &camera->pan);
+        vec_add( &shot_target, &camera->x);
+        c_trace(&camera->x, &shot_target, flags);
+
+        if(trace_hit && hit->entity) // Check if we're shooting an entity instead of static geometry/sprites/level blocks/<..>
+        {
+            if(ent_get_type(hit->entity) == STATIC_TRIGGER_LEVEL) // Check if we're shooting at the right entity
+            {
+                if(vec_dist(player->x, my->x) <= my->DISTANCE) // Check if we're close enough to the entity.
+                {
+                    SHOW_FLAGS_SAFE(subtitle, SHOW);
+
+                    if(mouse_left)
+                    {
+                        while(mouse_left)
+                            wait(1.0);
+
+                        snd_play(event_sound, 100.0, 0.0);
+                        act_player_camera_lock_to( (int) my->skill2 );
+                    }
+                }
+                else
+                    HIDE_FLAGS_SAFE(subtitle, SHOW);
+
+            }
+            else // End of if(ent_get_type(hit->entity) == STATIC_TRIGGER_LEVEL)
+                HIDE_FLAGS_SAFE(subtitle, SHOW);
+
+        }
+        else // End of if(trace_hit && hit->entity)
+            HIDE_FLAGS_SAFE(subtitle, SHOW);
+
+        wait(1.0);
+    } // End of while(my).
+
+    // Frees associated resources.
+    if(custom_interact_text)
+        txt_remove_ex(subtitle);
+    else
+        txt_remove(subtitle);
+
+    safe_remove(event_sound);
+}

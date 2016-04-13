@@ -40,7 +40,8 @@
 
 #define    STATIC_NOTEPAD                    8
 #define    STATIC_TRIGGER                    9
-#define    STATIC_DOOR                      10
+#define    STATIC_TRIGGER_LEVEL             10
+#define    STATIC_DOOR                      11
 
 __static    void ent_set_type(ENTITY *entity, const int type);
             int ent_get_type(ENTITY *entity);

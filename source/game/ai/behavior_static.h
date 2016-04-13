@@ -25,6 +25,8 @@
 #ifndef    __BEHAVIOUR_STATIC_H__
 #define    __BEHAVIOUR_STATIC_H__
 
+#define    DISTANCE     skill1
+
 /*
  * action act_lray()
  *
@@ -106,7 +108,6 @@ action act_trigger();
 #define    CLOCKWISE    0
 #define    C_CLOCKWISE  1
 
-#define    DISTANCE     skill1
 #define    SPEED        skill2
 #define    ANGLE        skill3
 #define    UNIQUE_ID    skill4
@@ -124,6 +125,19 @@ action act_door();
  * container and will be shown when the player comes close to the notepad and hit the left mouse button.
  */
 action act_notepad();
+
+/*
+ * action act_level_changer()
+ *
+ * A generic, tweakable level changing entity. By default, this entity will closes down the current level and loads the next one if:
+ * - You've completed all of the objectives in the current level.
+ *
+ * string1: Contains the full file name of the translation file which will be popped up when the player comes close to the trigger entity.
+ * string2: Contains the full file name of the sound effect you want to be played when the player hits the left mouse button.
+ * skill1: Distance between the player and the entity in which the trigger is activated.
+ * skill2: ID of one of the initialized ViewPoint-s.
+ */
+action act_level_changer();
 
 #include "behavior_static.c"
 #endif /* behavior_static.h */
