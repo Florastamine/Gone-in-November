@@ -382,6 +382,10 @@ action act_notepad()
                             snd_play(paper_sound, 100.0, 0.0);
                             SHOW_FLAGS_SAFE(data, SHOW);
                             SHOW_FLAGS_SAFE(bg, SHOW);
+
+                            if(my->FLAG1 && __GameObjectives_singleton)
+                                if(__GameObjectives_singleton->objectives < __GameObjectives_singleton->total_objectives)
+                                    __GameObjectives_singleton->objectives += 1;
                         }
                     }
                     else
@@ -515,6 +519,10 @@ action act_trigger()
 
                             snd_play(event_sound, 100.0, 0.0);
                             ptr_remove(hit->entity);
+
+                            if(my->FLAG1 && __GameObjectives_singleton)
+                                if(__GameObjectives_singleton->objectives < __GameObjectives_singleton->total_objectives)
+                                    __GameObjectives_singleton->objectives += 1;
                         }
                     }
                     else
