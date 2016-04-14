@@ -383,7 +383,7 @@ action act_notepad()
                             SHOW_FLAGS_SAFE(data, SHOW);
                             SHOW_FLAGS_SAFE(bg, SHOW);
 
-                            if(my->FLAG1 && __GameObjectives_singleton)
+                            if((my->flags & FLAG1) && __GameObjectives_singleton)
                                 if(__GameObjectives_singleton->objectives < __GameObjectives_singleton->total_objectives)
                                     __GameObjectives_singleton->objectives += 1;
                         }
@@ -520,7 +520,7 @@ action act_trigger()
                             snd_play(event_sound, 100.0, 0.0);
                             ptr_remove(hit->entity);
 
-                            if(my->FLAG1 && __GameObjectives_singleton)
+                            if((my->flags & FLAG1) && __GameObjectives_singleton)
                                 if(__GameObjectives_singleton->objectives < __GameObjectives_singleton->total_objectives)
                                     __GameObjectives_singleton->objectives += 1;
                         }
@@ -635,4 +635,14 @@ action act_level_changer()
         txt_remove(subtitle);
 
     safe_remove(event_sound);
+}
+
+action act_special_door()
+{
+    #ifdef    DEBUG
+        SHOW_FLAGS_SAFE(my, PASSABLE | TRANSLUCENT);
+        my->alpha = 75.0;
+    #else
+        SHOW_FLAGS_SAFE(my, POLYGON);
+    #endif
 }
