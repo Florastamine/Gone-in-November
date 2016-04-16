@@ -94,6 +94,9 @@
  * - Added HIDE_FLAGS_SAFE() and SHOW_FLAGS_SAFE() macros in place of set()/reset().
  * - Added mouse_lock(), screenshot().
  * __________________________________________________________________
+ * + v0.4.1-alpha
+ * - Added GET_FLAGS_SAFE().
+ * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
  */
@@ -168,6 +171,7 @@
 #define BIND_KEY(key, function)            on_##key = function
 #define HIDE_FLAGS_SAFE(object, f)         if(object) if(object->flags & f) object->flags &= ~(f)
 #define SHOW_FLAGS_SAFE(object, f)         if(object) if(!(object->flags & f)) object->flags |= (f)
+#define GET_FLAGS_SAFE(object, f)          (bool) ifelse(object && object->flags & f, true, false)
 
 /*
  * A small selection of ready-to-use color vectors.
