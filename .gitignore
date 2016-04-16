@@ -44,6 +44,7 @@ _site/
 # Fonts
 *.ttf
 *.fon
+*.otf
 
 # Gamestudio-specific
 builds/
