@@ -284,8 +284,8 @@ __static void __gui_button_text_align( GUIButton *b )
 {
 	Vector2 _tpos;
 
-	_tpos.first     = (b->position->first + bmap_width( b->__container->bmap ) * 0.5 ) - 1/4;
-	_tpos.second    = (b->position->second + bmap_height( b->__container->bmap ) * 0.5 ) - 1/4;
+	_tpos.first     = (b->position->first + bmap_width( b->__container->bmap ) * 0.5 ) + b->margin->first;
+	_tpos.second    = (b->position->second + bmap_height( b->__container->bmap ) * 0.5 ) + b->margin->second;
 
 	gui_text_set_pos  ( b->string, &_tpos );
 }
@@ -318,6 +318,7 @@ GUIButton *gui_button_new( Vector2 *pos,
 {
 	GUIButton *b = MALLOC(1, GUIButton);
 
+	b->margin              = pair_new();
 	b->__container         = pan_create(NULL, layern);
 	b->image_on            = bmap_create(image_on);
 	b->image_off           = bmap_create(image_off);
@@ -446,6 +447,27 @@ Vector2 *gui_button_get_pos( GUIButton *b )
 {
 	if(b)
 		return b->position;
+
+	return NULL;
+}
+
+void gui_button_set_margin( GUIButton *b, float lmx, float lmy )
+{
+	if(b)
+	{
+		b->margin->first = lmx;
+		b->margin->second = lmy; // "lmy" instead of "my" (name collision with my ENTITY).
+
+		__gui_button_text_align(b);
+	}
+}
+
+Vector2 *gui_button_get_margin( GUIButton *b )
+{
+	if(b)
+		return b->margin;
+
+	return NULL;
 }
 
 /*
@@ -541,6 +563,9 @@ void gui_button_show( GUIButton *b )
 	if(b)
 	{
 		if( !gui_button_get_invisibility(b) ) {
+			if(!(b->__container->flags & OVERLAY))
+				b->__container->flags |= (OVERLAY);
+
 			b->__container->flags |= (SHOW);
 			b->string->flags      |= (SHOW);
 		}

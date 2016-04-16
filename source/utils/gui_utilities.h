@@ -98,6 +98,8 @@ __namespace(button) {
 		// Vector2 *scale;       /* A pair struct describing the scale of the button. (deprecated - it's not necessary) */
 
 		Text *string;            /* A text object contains the button label. Can be left blank. */
+
+		Vector2 *margin;         /* By default, the text is positioned at the center of the image. If you want some adjustments, see here. */
 	} GUIButton;
 
 	GUIButton *gui_button_new( Vector2 *pos,
@@ -121,6 +123,9 @@ __namespace(button) {
 
 	void gui_button_set_pos( __Out GUIButton *b, float x, float y );
 	Vector2 *gui_button_get_pos( GUIButton *b );
+
+	void gui_button_set_margin( __In __Out GUIButton *b, float mx, float my );
+	Vector2 *gui_button_get_margin( __In GUIButton *b );
 
 	void gui_button_set_color( __Out GUIButton *b, Vector3 *color );
 	void gui_button_set_color( __Out GUIButton *b, float __red, float __green, float __blue );
