@@ -171,7 +171,7 @@
 #define BIND_KEY(key, function)            on_##key = function
 #define HIDE_FLAGS_SAFE(object, f)         if(object) if(object->flags & f) object->flags &= ~(f)
 #define SHOW_FLAGS_SAFE(object, f)         if(object) if(!(object->flags & f)) object->flags |= (f)
-#define GET_FLAGS_SAFE(object, f)          (bool) ifelse(object && object->flags & f, true, false)
+#define GET_FLAGS_SAFE(object, f)          (bool) ifelse(object && object->flags & (f), true, false)
 
 /*
  * A small selection of ready-to-use color vectors.
