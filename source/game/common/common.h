@@ -113,6 +113,23 @@ FONT *Loading_Font     = "[ank]*#15b";
 FONT *Intro_Text_Font  = "iCiel Andes Rounded Light#25";
 
 /*
+ *
+ */
+fixed  sndMouseClickHandle = 0;
+SOUND *sndMouseClick       = NULL;
+
+fixed sndPCShutdownHandle  = 0;
+SOUND *sndPCShutdown       = NULL;
+
+fixed sndPCBootupHandle    = 0;
+SOUND *sndPCBootup         = NULL;
+
+fixed sndPCLoginHandle     = 0;
+SOUND *sndPCLogin          = NULL;
+
+MATERIAL *matCrt           = NULL;
+
+/*
  * GameState (struct)
  * This struct contains everything related to the current game state.
  */
@@ -135,6 +152,30 @@ typedef struct {
 } GameObjectives;
 
 GameObjectives *__GameObjectives_singleton = NULL;
+
+/*
+ * GamePostData (struct)
+ * This struct contains data to be post-loaded after the call to scene_load().
+ * For example, you may want custom fog range and value to be loaded into the level, and this value is varied
+ * between levels. This struct spares you some ugly global variables.
+ * The reason why there isn't any pointer members is, no utility functions are available for this struct (_new(), _free(), ...)
+ * and so you have to create the struct yourself. Best bet is to create it as a normal object, and pass it like so:
+ *
+ * GamePostData gpd;
+ * <...>
+ * game_day_switch(game_day_get() + 1, &gpd);
+ */
+typedef struct {
+    int     objectives;
+
+    int     fog_color_id;
+    Vector3 fog_color;
+
+    float   sun_light;
+
+    int     use_custom; // Mark this as 1 or larger to be able to use custom values.
+    float   custom[16]; // Custom values, these are passed to the level entity's skill99..skill83 (level_ent).
+} GamePostData;
 
 /*
  * SceneLoadState (struct)
@@ -233,9 +274,11 @@ __namespace(November) {
      */
     ViewPoint *vp_bedroom    = NULL;
     ViewPoint *vp_computer   = NULL;
+    ViewPoint *vp_kitchen    = NULL;
 
     #define    VP_BEDROOM    1
     #define    VP_COMPUTER   2
+    #define    VP_KITCHEN    3
 
     /*
      * A static CreditsText object used for... displaying the credits screen, of course.
@@ -421,12 +464,12 @@ __namespace(November) {
     ChapterData *day[TOTAL_DAYS];
 
     /*
-     * int game_day_switch(int id)
+     * int game_day_switch(int d, const GamePostData *gpd)
      *
      * Performs days switching. This does more than just simply changing the current_day variable.
      * It does the actual preparation, scene switching and post-initialization.
      */
-    int        game_day_switch( __In int d);
+    int        game_day_switch( __In int d, __In GamePostData *gpd );
 }
 
 __namespace(SceneLoadState) {

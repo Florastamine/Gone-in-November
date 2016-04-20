@@ -1322,9 +1322,20 @@ void game_static_init()
 	// Creates and registers the view points. The coordinates are manually captured.
 	vp_computer    = view_point_new(800.0, 395.0, 431.0, 354.0, -16.0, 0.0);
 	vp_bedroom     = view_point_new(1237.0, 613.0, 396.0, 260.0, 6.0, 32.0);
+	vp_kitchen     = view_point_new(166.0, 192.0, 133.0, 332.0, -3.0, 0.0);
 
 	view_add(vp_bedroom, VP_BEDROOM);
 	view_add(vp_computer, VP_COMPUTER);
+	view_add(vp_kitchen, VP_KITCHEN);
+
+	//
+	sndMouseClick = snd_create(game_asset_get_sound("PC_click.wav"));
+	sndPCShutdown = snd_create(game_asset_get_sound("PC_boot.wav"));
+	sndPCBootup   = snd_create(game_asset_get_sound("PC_boot.wav"));
+
+	#ifndef    A8_FREE
+		matCrt = ppCrtNewMtl(PP_CRT_MODE_SCANLINE);
+	#endif
 }
 
 /*
@@ -1336,8 +1347,18 @@ void game_static_free()
 {
 	view_point_free(vp_bedroom);
 	view_point_free(vp_computer);
+	view_point_free(vp_kitchen);
 
 	gui_credits_free(credits);
+
+	snd_remove(sndMouseClick);
+	snd_remove(sndPCShutdown);
+	snd_remove(sndPCBootup);
+
+	#ifndef    A8_FREE
+		if(matCrt)
+			safe_remove(matCrt);
+	#endif
 }
 
 /*
@@ -1368,14 +1389,14 @@ String *game_region_check()
 }
 
 /*
- * int game_day_switch(int id)
+ * int game_day_switch(int d, GamePostData *gpd)
  *
  * Performs days switching. This does more than just simply changing the current_day variable.
  * It does the actual preparation, scene switching and post-initialization.
  */
 void scene_load(ChapterData *data, const void *loader); // Pretty much the only way to resolve the cyclic dependencies in this situation.
 
-int game_day_switch(int d)
+int game_day_switch(int d, GamePostData *gpd)
 {
 	if( d >= DAY_1 && d <= DAY_5 ) // If we've passed the correct day.
 	{
@@ -1383,6 +1404,39 @@ int game_day_switch(int d)
 
 		scene_load(day[d - 1], game_scene_load);
 		WAIT_PROCESS(scene_load);
+
+		if(gpd) {
+
+			#ifdef    DEBUG
+				String *_01 = str_printf(NULL,
+					"Inspecting the GamePostData struct...\nobjectives = %i, fog_color_id = %i, fog_color->x = %f, fog_color->y = %f, fog_color->z = %f, sun_light = %f",
+					(int) gpd->objectives,
+					(int) gpd->fog_color_id,
+					(double) (gpd->fog_color).x,
+					(double) (gpd->fog_color).y,
+					(double) (gpd->fog_color).z,
+					(double) gpd->sun_light
+				);
+				game_log_write(_01);
+				str_remove(_01);
+			#endif
+
+			__GameObjectives_singleton->total_objectives = gpd->objectives;
+			fog_color                                    = gpd->fog_color_id;
+			sun_light                                    = gpd->sun_light;
+
+			vec_set(&d3d_fogcolor1, &(gpd->fog_color));
+
+			if(gpd->use_custom)
+			{
+				int i = 0, j = 100;
+				for(; i <= 16; i++)
+				{
+					(level_ent->skill)[j - 1] = (gpd->custom)[i];
+					j -= 1;
+				}
+			}
+		}
 
 		day_current = d; // Notify that we've switched to a new day.
 		return 1;

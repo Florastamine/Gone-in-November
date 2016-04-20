@@ -42,6 +42,7 @@ _site/
 *.dae
 
 # Fonts
+etc/
 *.ttf
 *.fon
 *.otf
