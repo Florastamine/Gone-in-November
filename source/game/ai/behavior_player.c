@@ -281,8 +281,12 @@ action act_player()
 	my->group = PLAYER_GROUP;
 	my->push = PLAYER_GROUP;
 	my->eflags |= FAT | NARROW;
-	vec_set( &my->min_x, vector(-6, -6, -16));
-	vec_set( &my->max_x, vector(6, 6, 24));
+	vec_set( &my->min_x, vector(-12, -12, -32));
+	vec_set( &my->max_x, vector(36.0, 36.0, 192.0)); // This damn line of code took me a few months to figure out 'cause
+                                                     // apparently the bounding box is so small that it "penetrates" through
+                                                     // the door and/or slim entities.
+                                                     // The values are a bit tricky to adjust correctly here -
+                                                     // they not only have to handle level obstacles but also the level geometry.
 
 	__act_player_register_physics();
 	__act_player_create_bbox();
