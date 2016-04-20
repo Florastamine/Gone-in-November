@@ -25,7 +25,7 @@
 #ifndef    __BEHAVIOUR_STATIC_H__
 #define    __BEHAVIOUR_STATIC_H__
 
-#define    DISTANCE     skill1
+#define    DISTANCE     skill11
 
 /*
  * action act_lray()
