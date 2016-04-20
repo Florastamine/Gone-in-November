@@ -162,6 +162,7 @@ action act_particle()
 action act_door()
 {
     while( !player ) wait(1.0);
+
     ent_set_type(my, STATIC_DOOR);
 
     // This is the "relative" variable used for rotating the door "relatively" to the current angle.
@@ -576,6 +577,11 @@ action act_level_changer()
 
     Text *subtitle = txt_create(1, LAYER_GUI_1);
 
+    Panel *fader = pan_create(NULL, LAYER_GUI_2);
+    fader->bmap  = bmap_createblack(screen_size.x, screen_size.y, 8);
+    SHOW_FLAGS_SAFE(fader, TRANSLUCENT);
+    fader->alpha = 0.0;
+
     if(my->string1)
     {
         (subtitle->pstring)[0] = region_get_string(my->string1);
@@ -612,6 +618,13 @@ action act_level_changer()
 
                         snd_play(event_sound, 100.0, 0.0);
                         act_player_camera_lock_to( (int) my->skill2 );
+
+                        SHOW_FLAGS_SAFE(fader, SHOW);
+                        while(fader->alpha < 100.0)
+                        {
+                            fader->alpha += 3.5 * time_step;
+                            wait(1.0);
+                        }
                     }
                 }
                 else
@@ -635,6 +648,7 @@ action act_level_changer()
         txt_remove(subtitle);
 
     safe_remove(event_sound);
+    pan_remove(fader);
 }
 
 action act_special_door()
