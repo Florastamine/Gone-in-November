@@ -432,10 +432,9 @@ action act_notepad()
  * Creates an object at the position specified by skill1, skill2 and skill3, with orientation defined by skill4..5..6, and plays a sound
  * when the player comes closer than the distance specified in string1 (see below).
  * string1 takes the following form:
- *  filename; audioname; distance
+ *  filename; audioname
  *      filename: Name of the model/entity you want to be created (extensions cannot be left out, which means you can use wmb, mdl or hmp or whatever ent_create() supports.)
  *      audioname: Name of the sound file you want to be played (extensions cannot be left out, which means you can use whatever format snd_create() supports, which are .ogg and .wav.)
- *      distance: When the distance between the player and the object is lower than this value, the player will be asked to press [F] in order for the event to be triggered.
  * Pass "nil" to one of the arguments in string1 to skip the particular argument.
  */
 action act_trigger()
@@ -444,6 +443,14 @@ action act_trigger()
 
     if(my->string1)
     {
+        // Parse string1. [0] contains the object filename, while [1] contains the sound.
+        Text *string1_parsed = txt_create(0, 0);
+        str_parse_delim(string1_parsed, _chr(my->string1), ';');
+
+        // We (sort of) "precache" the result of the str_cmpi() call, because doing it in runtime is generally not a good idea.
+        bool precache_object_creatable = (bool) ifelse( str_cmpi((string1_parsed->pstring)[0], "nil"), false, true );
+        bool precache_sound_playable   = (bool) ifelse( str_cmpi((string1_parsed->pstring)[1], "nil"), false, true );
+
         // Set the object's default scaling if the users forgot to set the values.
         if((int) my->skill7 == 0) my->skill7 = 1.0;
         if((int) my->skill8 == 0) my->skill8 = 1.0;
@@ -468,8 +475,6 @@ action act_trigger()
         (subtitle->pstring)[0] = lstr_interact;
         subtitle->font = Normal_Text_Font;
         __text_init_pos(subtitle);
-
-        Sound *event_sound = snd_create(game_asset_get_sound("page-flip-4.wav"));
 
         while(my)
         {
@@ -512,13 +517,16 @@ action act_trigger()
                                 (double) scl.z);
                             #endif
 
-                            Object *object = ent_create(game_asset_get_object("359_notebook.mdl"), nullvector, NULL);
+                            if(precache_object_creatable)
+                                Object *object = ent_create(game_asset_get_object((string1_parsed->pstring)[0]), nullvector, NULL);
+
+                            if(precache_sound_playable)
+                                snd_play(snd_create((string1_parsed->pstring)[1]), 100.0, 0.0);
 
                             vec_set(&object->pan    , &rot);
                             vec_set(&object->x      , &pos);
                             vec_set(&object->scale_x, &scl);
 
-                            snd_play(event_sound, 100.0, 0.0);
                             ptr_remove(hit->entity);
 
                             if((my->flags & FLAG1) && __GameObjectives_singleton)
@@ -542,7 +550,6 @@ action act_trigger()
 
         // Frees associated resources.
         txt_remove(subtitle);
-        safe_remove(event_sound);
 
     } // End of if(my->string1).
     else
