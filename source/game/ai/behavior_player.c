@@ -216,9 +216,9 @@ __static void __act_player_create_bbox()
 	__act_player_state_singleton->__object_stand->flags |= (POLYGON);
 	object_scale_set(__act_player_state_singleton->__object_stand, player->scale_x);
 
-	#ifndef    DEBUG
+	//#ifndef    DEBUG
 		__act_player_state_singleton->__object_stand->flags |= (INVISIBLE);
-	#endif
+	//#endif
 
 	while(proc_status(ent_create)) wait(1.0);
 	c_setminmax(__act_player_state_singleton->__object_stand);
