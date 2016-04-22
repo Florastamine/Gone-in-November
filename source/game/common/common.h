@@ -108,8 +108,8 @@ const STRING *STR_EMPTY    = "";
  * PC and thus have to be registered through AddFontResource().
  */
 FONT *Normal_Text_Font = "Essai#25b";
-FONT *Note_Text_Font   = "UVN remind#28b";
-FONT *Loading_Font     = "[ank]*#15b";
+FONT *Note_Text_Font   = "UVN remind#22b";
+FONT *Loading_Font     = "[ank]*#20b";
 FONT *Intro_Text_Font  = "iCiel Andes Rounded Light#25";
 
 /*
@@ -275,10 +275,12 @@ __namespace(November) {
     ViewPoint *vp_bedroom    = NULL;
     ViewPoint *vp_computer   = NULL;
     ViewPoint *vp_kitchen    = NULL;
+    ViewPoint *vp_wake       = NULL;
 
     #define    VP_BEDROOM    1
     #define    VP_COMPUTER   2
     #define    VP_KITCHEN    3
+    #define    VP_WAKE       4
 
     /*
      * A static CreditsText object used for... displaying the credits screen, of course.

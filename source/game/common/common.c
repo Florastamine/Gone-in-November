@@ -1323,10 +1323,12 @@ void game_static_init()
 	vp_computer    = view_point_new(800.0, 395.0, 431.0, 354.0, -16.0, 0.0);
 	vp_bedroom     = view_point_new(1237.0, 613.0, 396.0, 260.0, 6.0, 32.0);
 	vp_kitchen     = view_point_new(166.0, 192.0, 133.0, 332.0, -3.0, 0.0);
+	vp_wake        = view_point_new(1325.0, 487.0, 476.0, 265.0, -2.0, 0.0);
 
 	view_add(vp_bedroom, VP_BEDROOM);
 	view_add(vp_computer, VP_COMPUTER);
 	view_add(vp_kitchen, VP_KITCHEN);
+	view_add(vp_wake, VP_WAKE);
 
 	//
 	sndMouseClick = snd_create(game_asset_get_sound("PC_click.wav"));
@@ -1348,6 +1350,7 @@ void game_static_free()
 	view_point_free(vp_bedroom);
 	view_point_free(vp_computer);
 	view_point_free(vp_kitchen);
+	view_point_free(vp_wake);
 
 	gui_credits_free(credits);
 
