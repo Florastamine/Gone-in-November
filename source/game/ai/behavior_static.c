@@ -93,7 +93,7 @@ action act_barrier()
  *
  * Static light source - works great for ambiance sounds.
  *
- * string1 specifies the sound file. (must be *.wav)
+ * string1 specifies the sound file. (must be *.wav or *.ogg)
  * skill1 controls the volume.
  * skill2 controls the range (radius)
  */
@@ -153,7 +153,7 @@ action act_particle()
  *
  * string1: Name of the sound file which is supposed to be played when the door is opened.
  * string2: Name of the sound file which is supposed to be played when the door is closed.
- * skill1 : Distance between the player and the door in order for the event to be triggered.
+ * skill11/DISTANCE : Distance between the player and the door in order for the event to be triggered.
  * skill2 : Door opening speed.
  * skill3 : How "wide" you want the door to be.
  * skill4 : Unique ID of the door.
@@ -325,6 +325,8 @@ action act_glasses()
  * "read_note.lstr" (without the double quotes).
  * During level load, the contents of the translation file given in string1 is copied to the entity's internal
  * container and will be shown when the player comes close to the notepad and hit the left mouse button.
+ *
+ * string2 (optional!) contains the complete name & size of the font you're going to use. For example: Arial#15b
  */
 #define    __HIDE_FLAGS_BULK(noparam) HIDE_FLAGS_SAFE(subtitle, SHOW); HIDE_FLAGS_SAFE(data, SHOW); HIDE_FLAGS_SAFE(bg, SHOW)   // Because it's a multiple statement-macro, it must be
                                                                                                                                 // wrapped in brackets.
@@ -351,7 +353,12 @@ action act_notepad()
         bg->pos_y          = 45.0; // Thụt lề, thụt hoài, thụt thụt hoàiiiiii. Kí tên: Lợn khó tính
 
         Text  *data        = txt_create(1, LAYER_GUI_2);
-        data->font         = Note_Text_Font;
+
+        if(!my->string2)
+            data->font         = Note_Text_Font;
+        else
+            data->font         = font_create(my->string2);
+
         (data->pstring)[0] = region_get_string(my->string1);
 
         data->pos_x        = bg->pos_x + 25.0;
@@ -362,9 +369,9 @@ action act_notepad()
 
         while(my)
         {
-            vec_set( &shot_target, vector(my->DISTANCE, 0.0, 0.0)); // The second parameter takes the scan range.
-            vec_rotate( &shot_target, &camera->pan);
-            vec_add( &shot_target, &camera->x);
+            vec_set(&shot_target, vector(my->DISTANCE, 0.0, 0.0)); // The second parameter takes the scan range.
+            vec_rotate(&shot_target, &camera->pan);
+            vec_add(&shot_target, &camera->x);
             c_trace(&camera->x, &shot_target, flags);
 
             if(trace_hit && hit->entity) // Check if we're shooting an entity instead of static geometry/sprites/level blocks/<..>
@@ -386,7 +393,9 @@ action act_notepad()
 
                             if((my->flags & FLAG1) && __GameObjectives_singleton)
                                 if(__GameObjectives_singleton->objectives < __GameObjectives_singleton->total_objectives)
+                                {
                                     __GameObjectives_singleton->objectives += 1;
+                                }
                         }
                     }
                     else
@@ -416,6 +425,12 @@ action act_notepad()
         } // End of while(my).
 
         // Frees associated resources.
+        if(data->font != Normal_Text_Font)
+        {
+            font_remove(data->font);
+            data->font = NULL;
+        }
+
         safe_remove(bg);
         safe_remove(paper_sound);
         txt_remove_ex(data);
@@ -457,16 +472,19 @@ action act_trigger()
         if((int) my->skill9 == 0) my->skill9 = 1.0;
 
         // Default position & rotation.
-        if((int) my->skill1 == 0) my->skill1 = player->x + random(42.0);
-        if((int) my->skill2 == 0) my->skill2 = player->y + random(42.0);
-        if((int) my->skill3 == 0) my->skill3 = player->z;
+        if((int) my->skill1 == 0) my->skill1 = my->x;
+        if((int) my->skill2 == 0) my->skill2 = my->y;
+        if((int) my->skill3 == 0) my->skill3 = my->z;
 
-        if((int) my->skill4 == 0) my->skill4 = random(360.0);
-        if((int) my->skill5 == 0) my->skill5 = random(360.0);
-        if((int) my->skill6 == 0) my->skill6 = random(360.0);
+        if((int) my->skill4 == 0) my->skill4 = my->pan;
+        if((int) my->skill5 == 0) my->skill5 = my->tilt;
+        if((int) my->skill6 == 0) my->skill6 = my->roll;
 
         ent_set_type(my, STATIC_TRIGGER);
+
         SHOW_FLAGS_SAFE(my, POLYGON);
+        SHOW_FLAGS_SAFE(my, TRANSLUCENT);
+        my->alpha = 75.0;
 
         VECTOR shot_target;
         long   flags = IGNORE_PASSABLE | IGNORE_PASSENTS | IGNORE_WORLD | USE_POLYGON | IGNORE_FLAG2;
@@ -527,11 +545,14 @@ action act_trigger()
                             vec_set(&object->x      , &pos);
                             vec_set(&object->scale_x, &scl);
 
-                            ptr_remove(hit->entity);
-
-                            if((my->flags & FLAG1) && __GameObjectives_singleton)
+                            if((my->flags & FLAG1) && __GameObjectives_singleton) {
                                 if(__GameObjectives_singleton->objectives < __GameObjectives_singleton->total_objectives)
+                                {
                                     __GameObjectives_singleton->objectives += 1;
+                                }
+                            }
+
+                            ptr_remove(hit->entity);
                         }
                     }
                     else
@@ -564,9 +585,14 @@ action act_trigger()
  *
  * string1: Contains the full file name of the translation file which will be popped up when the player comes close to the trigger entity.
  * string2: Contains the full file name of the sound effect you want to be played when the player hits the left mouse button.
- * skill1: Distance between the player and the entity in which the trigger is activated.
+ * skill11/DISTANCE: Distance between the player and the entity in which the trigger is activated.
  * skill2: ID of one of the initialized ViewPoint-s.
+ * skill3: Which action you want to take afterwards. The complete table of IDs can be found here.
  */
+
+#define    __SLEEP         1
+#define    __LAUNCH_PC     2
+
 action act_level_changer()
 {
     while( !player ) wait(1.0);
@@ -632,6 +658,19 @@ action act_level_changer()
                             fader->alpha += 3.5 * time_step;
                             wait(1.0);
                         }
+
+                        // HIDE_FLAGS_SAFE(fader, SHOW);
+
+                        switch((int) my->skill3) {
+                            case    __LAUNCH_PC:
+                            {
+                                game_gui_set_state(STATE_PC);
+                                game_gui_render();
+
+                                break;
+                            }
+                        } // End of switch((int) my->skill3).
+
                     }
                 }
                 else
