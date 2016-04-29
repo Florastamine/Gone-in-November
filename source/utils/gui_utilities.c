@@ -1796,7 +1796,8 @@ float gui_dialogue_get_volume( StaticDialogue *dialog )
  *
  * Creates and returns a new static title text object, and gives it a few basic properties.
  * After the text is created, it can be shown with a call to gui_title_show().
- * Upon the completion of gui_title_show(), the text will be automatically freed.
+ * Upon the completion of gui_title_show(), the text will be automatically freed (unless an additional flag
+ * is specified in kill during the call to gui_title_show()).
  */
 StaticTitleText *gui_title_new( Vector3 *pos, Vector3 *color, String *content, float time, int layer )
 {
@@ -1863,12 +1864,13 @@ void gui_title_free( StaticTitleText *text )
 }
 
 /*
- * void gui_title_show( StaticTitleText *text )
+ * void gui_title_show( StaticTitleText *text, int kill )
  *
  * Performs rendering the text object, and frees itself whenever it's done.
- * (text objects are intended to be only displayed one - YODO - You Only Display Once(TM)).
+ * (text objects are intended to be only displayed one - YODO - You Only Display Once(TM)),
+ * unless you explicitly state that it may not do so - just feed 0 to the second parameter.
  */
-void gui_title_show( StaticTitleText *text )
+void gui_title_show( StaticTitleText *text, int kill )
 {
 	if(text != NULL)
 	{
@@ -1940,8 +1942,14 @@ void gui_title_show( StaticTitleText *text )
 			}
 		}
 
-		gui_title_free(text);
+		if( kill )
+			gui_title_free(text);
 	}
+}
+
+void gui_title_show( StaticTitleText *text )
+{
+	gui_title_show(text, 1); // Kills the text object upon completion.
 }
 
 /*

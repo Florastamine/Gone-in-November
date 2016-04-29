@@ -505,7 +505,8 @@ __namespace(NotifierText) {
 	 *
 	 * Creates and returns a new static title text object, and gives it a few basic properties.
 	 * After the text is created, it can be shown with a call to gui_title_show().
-	 * Upon the completion of gui_title_show(), the text will be automatically freed.
+	 * Upon the completion of gui_title_show(), the text will be automatically freed (unless an additional flag
+	 * is specified in kill during the call to gui_title_show()).
 	 */
 	StaticTitleText *gui_title_new( __In Vector3 *pos, __In Vector3 *color, __In String *content, __In float time, __In int layer );
 
@@ -531,12 +532,14 @@ __namespace(NotifierText) {
 	void gui_title_set_delay( __In __Out StaticTitleText *text, __In float delay );
 
 	/*
-	 * void gui_title_show( StaticTitleText *text )
+	 * void gui_title_show( StaticTitleText *text, int kill )
 	 *
 	 * Performs rendering the text object, and frees itself whenever it's done.
-	 * (text objects are intended to be only displayed one - YODO - You Only Display Once(TM)).
+	 * (text objects are intended to be only displayed one - YODO - You Only Display Once(TM)),
+	 * unless you explicitly state that it may not do so - just feed 0 to the second parameter.
 	 */
 	void gui_title_show( __In __Out StaticTitleText *text );
+	void gui_title_show( __In __Out StaticTitleText *text, int kill );
 
 	/*
 	 * void gui_title_set_mode( StaticTitleText *text, const int mode )
