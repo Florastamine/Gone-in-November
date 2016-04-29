@@ -35,11 +35,12 @@ _site/
 *.x86_64
 *.hex
 
-# Models
+# Models & tex
 *.fbx
 *.skb
 *.skp
 *.dae
+*.dds
 
 # Fonts
 etc/
