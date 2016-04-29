@@ -1126,6 +1126,7 @@ __namespace(string) {
 
     /*
      * String *str_create_ex( const int length )
+     * String *str_createw_ex( const int length )
      *
      * An extension to str_create() which is more flexible (but slower).
      * It allows one to explicitly provide the string length in actual integers
@@ -1133,6 +1134,7 @@ __namespace(string) {
      * with different lengths without tinkering with the dirty # symbol.
      */
 	String *str_create_ex( __In const int length );
+    String *str_createw_ex( __In const int length );
 
     /*
      * float str_width_ex(STRING *gstr, FONT *font)

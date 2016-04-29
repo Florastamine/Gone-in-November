@@ -1358,17 +1358,12 @@ void command_table_free()
 	txt_remove(__CommandTable_command);
 }
 
-/*
- * String *str_create_ex( const int length )
- *
- * An extension to str_create() which is more flexible (but slower).
- * It allows one to explicitly provide the string length in actual integers
- * instead of fixed strings. With this, you can create lots of strings
- * with different lengths without tinkering with the dirty # symbol.
- */
-String *str_create_ex( const int length )
+#define    STR_CREATE    1
+#define    STR_CREATE_W  2
+
+__static String *__str_create(const int length, const int mode)
 {
-	ASSERT( length, _chr("<utilities>/str_create_ex(): An attempt to create an empty length string."));
+	ASSERT( length, _chr("<utilities>/__str_create(): An attempt to create an empty length string."));
 
 	char *cstr = MALLOC(length, char);
 
@@ -1381,10 +1376,35 @@ String *str_create_ex( const int length )
 	}
 	*(cstr + length - 1) = '\0';
 
-	String *gstr = str_create(cstr);
+	String *gstr = NULL;
+
+	switch(mode)
+	{
+		case    STR_CREATE:      gstr = str_create(cstr); break;
+		case    STR_CREATE_W:    gstr = str_createw(cstr);
+	}
 	FREE(cstr);
 
 	return gstr; // Otherwise memory leak from not freeing cstr.
+}
+
+/*
+ * String *str_create_ex( const int length )
+ * String *str_createw_ex( const int length )
+ *
+ * An extension to str_create() which is more flexible (but slower).
+ * It allows one to explicitly provide the string length in actual integers
+ * instead of fixed strings. With this, you can create lots of strings
+ * with different lengths without tinkering with the dirty # symbol.
+ */
+String *str_create_ex( const int length )
+{
+	return __str_create(length, STR_CREATE);
+}
+
+String *str_createw_ex( const int length )
+{
+	return __str_create(length, STR_CREATE_W);
 }
 
 /*
