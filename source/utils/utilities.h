@@ -96,6 +96,7 @@
  * __________________________________________________________________
  * + v0.4.1-alpha
  * - Added GET_FLAGS_SAFE().
+ * - Updated str_create_ex() to include a Unicode variant (str_createw_ex()).
  * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
