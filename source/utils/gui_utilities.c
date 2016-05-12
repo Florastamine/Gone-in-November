@@ -1860,6 +1860,7 @@ void gui_title_free( StaticTitleText *text )
 		ptr_remove(text->sound);
 
 		FREE(text);
+		text = NULL;
 	}
 }
 
