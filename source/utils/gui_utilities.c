@@ -1821,6 +1821,7 @@ StaticTitleText *gui_title_new( Vector3 *pos, Vector3 *color, String *content, f
 	text->sound           = NULL;
 	text->delay           = .35;
 	text->fade_mode       = CHAR_BY_CHAR;
+	text->done            = 0;
 
 	if(content)
 		text->content = str_create(content);
@@ -1942,6 +1943,8 @@ void gui_title_show( StaticTitleText *text, int kill )
 				wait(1.0);
 			}
 		}
+
+		text->done += 1;
 
 		if( kill )
 			gui_title_free(text);

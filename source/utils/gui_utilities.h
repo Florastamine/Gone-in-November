@@ -498,6 +498,8 @@ __namespace(NotifierText) {
 		int         fade_mode;                /* Fading out mode. */
 
 		Sound      *sound[4];                 /* Pointer to the sound file which is played whenever a new character is shown. */
+
+		int         done;
 	} StaticTitleText;
 
 	/*
