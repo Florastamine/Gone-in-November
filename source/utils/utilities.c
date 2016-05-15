@@ -2050,7 +2050,42 @@ void object_draw(void *ptr, float dtime)
 
 void object_draw(void *ptr)
 {
-	object_draw(ptr, 3.0);
+	object_draw(ptr, 4.2);
+}
+
+/*
+ * void object_blink( Object *object, float speed )
+ *
+ * Repeatedly blinks an object simply by changing its ambient parameter.
+ * This is pretty straightforward but also have an obvious disadvantage:
+ * Setting sun_light to a quite large value will cause the overall scene lighting
+ * to "overshadow" the entity's ambient lighting.
+ * Recommend value: <= 150.0 for sun_light.
+ *
+ * Depends on var_cmp().
+ */
+void object_blink( Object *object, float speed )
+{
+    if( !object )
+        return;
+
+    speed              = ifelse( var_cmp(speed, 0.0) == true, 4.2, speed );
+    object->ambient    = 0.0;
+
+    while(object)
+    {
+        while (object->ambient < 100.0) {
+            object->ambient += speed * time_step;
+            wait(1.0);
+        }
+
+        while (object->ambient > 0.0) {
+            object->ambient -= speed * time_step;
+            wait(1.0);
+        }
+
+        wait(1.0);
+    }
 }
 
 /*

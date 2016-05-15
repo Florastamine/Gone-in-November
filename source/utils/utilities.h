@@ -98,6 +98,9 @@
  * - Added GET_FLAGS_SAFE().
  * - Updated str_create_ex() to include a Unicode variant (str_createw_ex()).
  * __________________________________________________________________
+ * + v0.4.2-alpha
+ * - Added object_blink().
+ * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
  */
@@ -1334,6 +1337,19 @@ __namespace(object) {
      */
      void object_draw( __In void *ptr, __In float dtime);
      void object_draw( __In void *ptr );
+
+     /*
+      * void object_blink(const Object *object, float speed )
+      *
+      * Repeatedly blinks an object simply by changing its ambient parameter.
+      * This is pretty straightforward but also have an obvious disadvantage:
+      * Setting sun_light to a quite large value will cause the overall scene lighting
+      * to "overshadow" the entity's ambient lighting.
+      * Recommend value: <= 150.0 for sun_light.
+      *
+      * Depends on var_cmp().
+      */
+     void object_blink( __In __Out Object *object, __In float speed );
 }
 
 __namespace(color) {
