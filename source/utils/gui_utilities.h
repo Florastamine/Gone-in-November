@@ -599,12 +599,12 @@ __namespace(CreditsText) {
 	void gui_credits_set_speed( __In __Out CreditsText *text, __In float speed );
 
 	/*
-	 * void gui_credits_show( CreditsText *text )
+	 * void gui_credits_show( CreditsText *text, float volume )
 	 *
 	 * Performs rendering of the specified credits text object.
 	 * After the credits is displayed, the object will be permanently deleted through gui_credits_free().
 	 */
-	void gui_credits_show( __In __Out CreditsText *text );
+	void gui_credits_show( __In __Out CreditsText *text, __In float volume );
 }
 
 #include "gui_utilities.c"

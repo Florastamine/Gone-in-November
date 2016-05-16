@@ -2062,15 +2062,17 @@ void gui_credits_set_font( CreditsText *text, const char *font_file )
 }
 
 /*
- * void gui_credits_show( CreditsText *text )
+ * void gui_credits_show( CreditsText *text, float volume )
  *
  * Performs rendering of the specified credits text object.
  * After the credits is displayed, the object will be permanently deleted through gui_credits_free().
  * (TODO: Implement keypress to finish the sequence instead of automagic deletion.)
  */
-void gui_credits_show( CreditsText *text )
+void gui_credits_show( CreditsText *text, float volume )
 {
 	if(text) {
+		volume = ifelse( var_cmp(volume, 0.0) == true, 100.0, volume );
+
 		// This temporary frame (BMAP container) is used to render the background image inside.
 		Panel *frame = pan_create(NULL, text->__container->layer - 1);
 
@@ -2089,7 +2091,7 @@ void gui_credits_show( CreditsText *text )
 		}
 
 		if(text->track_file)
-			text->track_handle = media_play(text->track_file, NULL, 100.0);
+			text->track_handle = media_play(text->track_file, NULL, volume);
 
 		frame->flags |= (SHOW);
 		text->__container->flags |= (SHOW);
