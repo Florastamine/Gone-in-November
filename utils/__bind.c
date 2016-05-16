@@ -35,13 +35,11 @@ int main(void)
 	txt_addstring(directories, "..\\2d\\sprites");
 	txt_addstring(directories, "..\\4thwall");
 
-	txt_addstring(extensions, "ogg");
-	txt_addstring(extensions, "wav");
-
 	txt_addstring(extensions, "png");
 	txt_addstring(extensions, "tga");
 	txt_addstring(extensions, "mdl");
 	txt_addstring(extensions, "jpg");
+	txt_addstring(extensions, "bmp");
 
 	txt_addstring(extensions, "fx");
 	txt_addstring(extensions, "fxo");
