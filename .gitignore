@@ -80,6 +80,7 @@ bindings.h
 *.jpg
 *.pad
 *.tif
+*.wrs
 
 ./progress_temp.txt
 
