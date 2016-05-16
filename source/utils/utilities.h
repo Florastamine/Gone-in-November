@@ -1340,6 +1340,7 @@ __namespace(object) {
 
      /*
       * void object_blink(const Object *object, float speed )
+      * void object_blink( Object *object, float speed, int *condition )
       *
       * Repeatedly blinks an object simply by changing its ambient parameter.
       * This is pretty straightforward but also have an obvious disadvantage:
@@ -1349,6 +1350,7 @@ __namespace(object) {
       *
       * Depends on var_cmp().
       */
+     void object_blink( __In __Out Object *object, __In float speed, __In int *condition );
      void object_blink( __In __Out Object *object, __In float speed );
 }
 

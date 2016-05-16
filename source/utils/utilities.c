@@ -2055,6 +2055,7 @@ void object_draw(void *ptr)
 
 /*
  * void object_blink( Object *object, float speed )
+ * void object_blink( Object *object, float speed, int *condition )
  *
  * Repeatedly blinks an object simply by changing its ambient parameter.
  * This is pretty straightforward but also have an obvious disadvantage:
@@ -2063,8 +2064,11 @@ void object_draw(void *ptr)
  * Recommend value: <= 150.0 for sun_light.
  *
  * Depends on var_cmp().
+ *
+ * The second variant provides a way to blinks an object until a certain condition is met.
+ * Omit the third parameter to blinks the object until it is destroyed.
  */
-void object_blink( Object *object, float speed )
+void object_blink( Object *object, float speed, int *condition )
 {
     if( !object )
         return;
@@ -2072,7 +2076,7 @@ void object_blink( Object *object, float speed )
     speed              = ifelse( var_cmp(speed, 0.0) == true, 4.2, speed );
     object->ambient    = 0.0;
 
-    while(object)
+    while( *condition )
     {
         while (object->ambient < 100.0) {
             object->ambient += speed * time_step;
@@ -2086,6 +2090,14 @@ void object_blink( Object *object, float speed )
 
         wait(1.0);
     }
+
+	object->ambient = 0.0;
+}
+
+bool __object_blink_default__ = true;
+void object_blink( Object *object, float speed )
+{
+	object_blink( object, speed, &__object_blink_default__ );
 }
 
 /*
