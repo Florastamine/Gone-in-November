@@ -37,13 +37,13 @@ int main(void)
 
 	txt_addstring(extensions, "png");
 	txt_addstring(extensions, "tga");
-	txt_addstring(extensions, "mdl");
 	txt_addstring(extensions, "jpg");
 	txt_addstring(extensions, "bmp");
 
 	txt_addstring(extensions, "fx");
 	txt_addstring(extensions, "fxo");
 	txt_addstring(extensions, "wmb");
+	txt_addstring(extensions, "mdl");
 	txt_addstring(extensions, "hmp");
 
 	binder_perform( FILE, directories, extensions );
