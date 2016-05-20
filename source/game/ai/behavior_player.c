@@ -136,7 +136,7 @@ __static void __act_player_update_camera()  // hôm qua mẹ nói
 
         camera->z -= (camera->z - __act_player_state_singleton->__cam_pos.z) * __act_player_state_singleton->cam_lerp;
         camera->z = clamp(camera->z, __act_player_state_singleton->__cam_pos.z - __act_player_state_singleton->cam_smooth_offset, __act_player_state_singleton->__cam_pos.z + __act_player_state_singleton->cam_smooth_offset);
-        camera->arc += (int) ifelse(mouse_right != 0, -1, 1) * 3.5 * time_step; // 3.5 gives the zooming speed. Magic numbers is bad, I know, but I'm just too lazy to re-factor these.
+        // camera->arc += (int) ifelse(mouse_right != 0, -1, 1) * 3.5 * time_step; // 3.5 gives the zooming speed. Magic numbers is bad, I know, but I'm just too lazy to re-factor these.
         camera->z += 35.0;
     }
 
@@ -145,10 +145,12 @@ __static void __act_player_update_camera()  // hôm qua mẹ nói
 	if(camera->tilt < -70.0)
 	    camera->tilt = -70.0;
 
+    /*
 	if(camera->arc <= 45.0)
 		camera->arc = 45.0;
 	if(camera->arc >= 75.0)
 		camera->arc = 75.0;
+    */
 }
 
 __static void __act_player_scan_foot()
@@ -216,9 +218,9 @@ __static void __act_player_create_bbox()
 	__act_player_state_singleton->__object_stand->flags |= (POLYGON);
 	object_scale_set(__act_player_state_singleton->__object_stand, player->scale_x);
 
-	//#ifndef    DEBUG
+	#ifndef    DEBUG
 		__act_player_state_singleton->__object_stand->flags |= (INVISIBLE);
-	//#endif
+	#endif
 
 	while(proc_status(ent_create)) wait(1.0);
 	c_setminmax(__act_player_state_singleton->__object_stand);
@@ -282,7 +284,7 @@ action act_player()
 	my->push = PLAYER_GROUP;
 	my->eflags |= FAT | NARROW;
 	vec_set( &my->min_x, vector(-12, -12, -32));
-	vec_set( &my->max_x, vector(36.0, 36.0, 192.0)); // This damn line of code took me a few months to figure out 'cause
+	vec_set( &my->max_x, vector(24.0, 24.0, 192.0)); // This damn line of code took me a few months to figure out 'cause
                                                      // apparently the bounding box is so small that it "penetrates" through
                                                      // the door and/or slim entities.
                                                      // The values are a bit tricky to adjust correctly here -
@@ -294,6 +296,9 @@ action act_player()
 
 	while( __act_player_state_singleton->health > 0 )
 	{
+        while( player_lock )
+            wait(1.0);
+
 		if(__act_player_state_singleton->can_move)
 		{
 			if(__act_player_state_singleton->__move_type == MOVE_ON_FOOT)
@@ -330,7 +335,7 @@ action act_player()
 					int r = rand() % FOOTSTEP_SOUND_VARIANTS;
 
 					if( !snd_playing(footstep_handle) )
-						footstep_handle = snd_play((__act_player_state_singleton->__footstep_sound)[r], 15.0, 0.0);
+						footstep_handle = snd_play((__act_player_state_singleton->__footstep_sound)[r], game_volume * 0.2 , 0.0);
 				}
 
 				// if movement speed is more than allowed:
@@ -347,8 +352,10 @@ action act_player()
 				force.x *= (float) ifelse( !IS_GROUNDED, 0.4, 1.0 );
 				force.y *= (float) ifelse( !IS_GROUNDED, 0.4, 1.0 );
 
+                #ifdef DEBUG
 				force.x *= (float) ifelse(key_shift || joy_6, __act_player_state_singleton->run_multiplier, __act_player_state_singleton->walk_multiplier);
 				force.y *= (float) ifelse(key_shift || joy_6 , __act_player_state_singleton->run_multiplier, __act_player_state_singleton->walk_multiplier);
+                #endif
 
 				__act_player_scan_foot();
 				// we are in the air:

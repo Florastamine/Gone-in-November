@@ -118,8 +118,6 @@ typedef struct {
 	BOOL    can_move;
 } __act_player_state;
 
-int __camera_locked = 0;
-
 __act_player_state *__act_player_state_singleton = NULL;
 __act_player_state *act_player_get_singleton();
 
