@@ -100,6 +100,9 @@
  * __________________________________________________________________
  * + v0.4.2-alpha
  * - Added object_blink().
+ * - Added os_get_desktop_directory().
+ * - Modified object_sky_create() so that if the user doesn't erase the previous returned contents
+ *   of the last call to the function, no actual sky objects will stay there.
  * __________________________________________________________________
  * TODO:
  * - Implement STATIC_ASSERT().
@@ -134,6 +137,12 @@
     long WINAPI CreateConsoleScreenBuffer(long dwDesiredAccess, long dwShareMode, long *lpSecurityAttributes, long dwFlags, long lpScreenBufferData);
     long WINAPI SetConsoleActiveScreenBuffer(long hConsoleOutput);
     BOOL WINAPI SetConsoleTextAttribute(HANDLE hConsoleOutput, WORD wAttributes );
+
+    // SHGetFolderPath() gets the path of a folder identified by a CSIDL value.
+    #define     CSIDL_DESKTOPDIRECTORY      16
+
+    HRESULT WINAPI SHGetFolderPath( HWND hwndOwner, int nFolder, HANDLE hToken, DWORD dwFlags, LPTSTR pszPath );
+    APIA(SHGetFolderPath, shell32)
 #endif
 
 /*
@@ -935,6 +944,14 @@ __namespace(video) {
 
 __namespace(os) {
     /*
+     * char *os_get_desktop_directory(int *len)
+     *
+     * Retrieves the location to the desktop folder of the current logged in user.
+     * Additionally an optional argument can be passed to receive the length of the returned buffer. Pass NULL otherwise.
+     */
+    char *os_get_desktop_directory( __In int *len);
+
+    /*
      * char *os_get_name()
      *
      * Retrieves the current OS in use.
@@ -1322,11 +1339,13 @@ __namespace(object) {
 	void object_place( __In __Out Object *object, __In float modifier );
 
     /*
-     * Object *object_sky_create( const String *file, const int layer )
+     * void object_sky_create( const String *file, const int layer )
+     * Object *object_sky_get()
      *
-     * Quick-creates a sky cube.
+     * Quickly creates a sky cube. To retrieve the current sky object in use, use object_sky_get().
      */
-	Object *object_sky_create( __In const String *file, __In const int layer );
+	void object_sky_create( __In const String *file, __In const int layer );
+    Object *object_sky_get();
 
     /*
      * void object_draw(void *ptr, float dtime)

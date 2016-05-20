@@ -66,21 +66,31 @@ void *calloc(int count, size_t size)
 }
 
 /*
- * Object *object_sky_create( const String *file, const int layer )
+ * void object_sky_create( const String *file, const int layer )
+ * Object *object_sky_get()
  *
- * Quick-creates a sky cube without an ugly global struct.
+ * Quickly creates a sky cube without an ugly global struct.
  * (though you can receive the returned object for later modification).
  */
-Object *object_sky_create( const String *file, const int layer )
+Object *__sky_global_object__ = NULL;
+
+void object_sky_create( const String *file, const int layer )
 {
-	Object *sky = NULL;
+	if( NULL != __sky_global_object__ )
+	{
+		ent_remove( __sky_global_object__ );
+		__sky_global_object__ = NULL;
+	}
 
 	if(file)
 	{
-		sky = ent_createlayer( file, SKY | CUBE | SHOW, layer );
+		__sky_global_object__ = ent_createlayer( file, SKY | CUBE | SHOW, layer );
 	}
+}
 
-	return sky; // Return the sky...
+Object *object_sky_get()
+{
+	return __sky_global_object__;
 }
 
 /*
@@ -1883,6 +1893,34 @@ void bkpt()
 void bkptend()
 {
 	__bkptcnt__ = 0;
+}
+
+/*
+ * char *os_get_desktop_directory(int *len)
+ *
+ * Retrieves the location to the desktop folder of the current logged in user.
+ * Additionally an optional argument can be passed to receive the length of the returned buffer. Pass NULL otherwise.
+ */
+char *os_get_desktop_directory( int *len )
+{
+	DWORD    buf_len = 256;
+	HRESULT  h;
+	char    *buf = (char *) sys_malloc((long) buf_len);
+
+	#ifdef    WINDOWS_API
+		h = SHGetFolderPath(NULL, CSIDL_DESKTOPDIRECTORY, NULL, 0, buf);
+
+		if( S_OK == h )
+		{
+			strcat(buf, "\\");
+			*(buf + strlen(buf) + 1) = 0;
+		}
+	#endif
+
+	if(len)
+		*len = strlen(buf);
+
+	return buf;
 }
 
 /*
