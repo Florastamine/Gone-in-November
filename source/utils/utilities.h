@@ -143,6 +143,10 @@
 
     HRESULT WINAPI SHGetFolderPath( HWND hwndOwner, int nFolder, HANDLE hToken, DWORD dwFlags, LPTSTR pszPath );
     APIA(SHGetFolderPath, shell32)
+
+    // Retrieves the amount of RAM that is physically installed on the computer.
+    BOOL WINAPI GetPhysicallyInstalledSystemMemory( long *TotalMemoryInKilobytes );
+    API(GetPhysicallyInstalledSystemMemory, kernel32)
 #endif
 
 /*
@@ -943,6 +947,21 @@ __namespace(video) {
 }
 
 __namespace(os) {
+    /*
+     * long os_get_ram(int mode)
+     *
+     * Retrieves the amount of physically installed RAM memory on this computer.
+     * The first argument can be one of these:
+     * S_KB - Which will convert the result to kilobytes.
+     * S_MB - Which will convert the result to megabytes.
+     * S_GB - Which will convert the result to gigabytes.
+     */
+    #define		S_KB	1
+    #define		S_MB	2
+    #define		S_GB	3
+
+    long os_get_ram( __In int mode);
+
     /*
      * char *os_get_desktop_directory(int *len)
      *

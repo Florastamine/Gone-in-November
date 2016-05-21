@@ -1734,6 +1734,36 @@ float clampf(float x, float a, float b)
 }
 
 /*
+ * long os_get_ram(int mode)
+ *
+ * Retrieves the amount of physically installed RAM memory on this computer.
+ * The first argument can be one of these:
+ * S_KB - Which will convert the result to kilobytes.
+ * S_MB - Which will convert the result to megabytes.
+ * S_GB - Which will convert the result to gigabytes.
+ */
+long os_get_ram(int mode)
+{
+	long l    = 0; // Long Lê (LDleKING)
+	BOOL ret  = 0;
+
+	#ifdef		WINDOWS_API
+		ret = GetPhysicallyInstalledSystemMemory( &l );
+
+		if( ret )
+		{
+			switch(mode)
+			{
+				case	S_MB: l = (long) (l / 1024);
+				case	S_GB: l = (long) (l / 1048576);
+			}
+		}
+	#endif
+
+	return l;
+}
+
+/*
  * char *os_get_name()
  *
  * Retrieves the current OS in use.
