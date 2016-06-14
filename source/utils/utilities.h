@@ -99,8 +99,11 @@
  * - Updated str_create_ex() to include a Unicode variant (str_createw_ex()).
  * __________________________________________________________________
  * + v0.4.2-alpha
+ * - Added WAIT_SOUND().
  * - Added object_blink().
- * - Added os_get_desktop_directory().
+ * - Added os_get_desktop_directory(), os_get_ram().
+ * - Added COLOR_DARK_GREY.
+ *
  * - Modified object_sky_create() so that if the user doesn't erase the previous returned contents
  *   of the last call to the function, no actual sky objects will stay there.
  * __________________________________________________________________
@@ -177,6 +180,7 @@
 #define FREE(block)                        sys_free(block)
 #define ASSERT(condition, message)         do { if( !(condition) ) __assert(message); } while(false)
 #define WAIT_PROCESS(process)              while( proc_status(process) ) wait(1.0)
+#define WAIT_SOUND(handle)                 while(snd_playing(handle)) wait(1.0)
 #define KILL_PROCESS(process)              proc_kill(4) /* This macro exists because it helps eliminating magic numbers. */
 #define WALK_THROUGH(object, function)     object = ptr_first(object); while(object) { function(object); o = o.link.next; wait(1.0); }
 #define SWAP(a, b, type)                   { type X = a; a = b; b = X; } while(false)
@@ -215,6 +219,7 @@
 #define COLOR_PEACH                        (vector(164, 203, 255))
 #define COLOR_PEAR                         (vector(49, 226, 209))
 #define COLOR_PEARL                        (vector(198, 224, 234))
+#define COLOR_DARK_GREY                    (vector(32, 32, 32))
 
 /*
  * Defined constants for inkey() and inchar().
