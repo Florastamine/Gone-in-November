@@ -150,6 +150,18 @@ void gui_text_set_pos( Text *text, float px, float py )
 	}
 }
 
+void gui_text_set_color( Text *text, float r, float g, float b )
+{
+	if( text )
+		vec_set( &text->blue, vector(b, g, r) );
+}
+
+void gui_text_set_color( Text *text, const Vector *col )
+{
+	if( text && col )
+		vec_set( &text->blue, vector(col->x, col->y, col->z) );
+}
+
 /*
  * void gui_panel_set_align( Panel *panel, const int mode )
  *

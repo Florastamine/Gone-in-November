@@ -57,6 +57,9 @@ __namespace(global) {
 	void gui_text_set_pos( Text *text, Pair *pair );
 	void gui_text_set_pos( Text *text, float px, float py );
 
+	void gui_text_set_color( Text *text, float r, float g, float b );
+	void gui_text_set_color( Text *text, const Vector *col );
+
 	Pair *gui_panel_get_size( Panel *panel );
 
 	void gui_panel_set_size( Panel *panel, float sx, float sy );
