@@ -18,10 +18,6 @@
 #include "Unmanaged.h"
 #include "November.h"
 
-#define    MAX_SCENES    5
-
-ChapterData *Chapters[MAX_SCENES];
-
 // Initializes the scene list, the scenes, and push them into the list.
 void nov_scene_list_init()
 {
@@ -31,7 +27,7 @@ void nov_scene_list_init()
 	scene_new();
 
 	// Creates the scene nodes.
-	Chapters[0] = scene_data_new("Fragment #1",                              // Name of the chapter.
+	day[0] = scene_data_new("Fragment #1",                              // Name of the chapter.
 								_chr(game_asset_get_scene("fragment1.wmb")), // Internal name of the chapter. (scene name)
 								NULL,                                        // Name of the thumbnail image.
 								NULL,                                        // Sun color.
@@ -39,14 +35,16 @@ void nov_scene_list_init()
 								NULL,                                        // Fog range.
 								150.0);                                      // Sun light intensity.
 
-	Chapters[1] = scene_data_new("Fragment #2", _chr(game_asset_get_scene("fragment2.wmb")), NULL, NULL, NULL, NULL, 150.0);
-	Chapters[2] = scene_data_new("Fragment #3", _chr(game_asset_get_scene("fragment3.wmb")), NULL, NULL, NULL, NULL, 150.0);
-	Chapters[3] = scene_data_new("Fragment #4", _chr(game_asset_get_scene("fragment4.wmb")), NULL, NULL, NULL, NULL, 150.0);
-	Chapters[4] = scene_data_new("Fragment #5", _chr(game_asset_get_scene("fragment5.wmb")), NULL, NULL, NULL, NULL, 150.0);
+	day[1] = scene_data_new("Fragment #2", _chr(game_asset_get_scene("fragment2.wmb")), NULL, NULL, NULL, NULL, 150.0);
+	day[2] = scene_data_new("Fragment #3", _chr(game_asset_get_scene("fragment3.wmb")), NULL, NULL, NULL, NULL, 150.0);
+	day[3] = scene_data_new("Fragment #4", _chr(game_asset_get_scene("fragment4.wmb")), NULL, NULL, NULL, NULL, 150.0);
+	day[4] = scene_data_new("Fragment #5", _chr(game_asset_get_scene("fragment5.wmb")), NULL, NULL, NULL, NULL, 150.0);
+	day[5] = scene_data_new("Fragment #6", _chr(game_asset_get_scene("fragment6.wmb")), NULL, NULL, NULL, NULL, 150.0);
+	day[6] = scene_data_new("Fragment #7", _chr(game_asset_get_scene("empty.wmb")), NULL, NULL, NULL, NULL, 150.0);
 
 	int i = 0;
-	for(; i < MAX_SCENES; i++)
-		scene_add(Chapters[i]);
+	for(; i < TOTAL_DAYS; i++)
+		scene_add(day[i]);
 }
 
 // Picks a language and perform string initialization based on the chosen language.
@@ -61,10 +59,6 @@ void nov_region_init(const char *language)
 
 	if(b) {
 		game_log_write( str_printf( NULL, "Language successfully set to %s", _chr(region_get_language()) ) );
-
-		#ifdef    DEBUG
-			printf("Language selected: %s", language);
-		#endif
 	}
 
 	localized_init();
@@ -76,42 +70,28 @@ void nov_gui_static_init()
 {
 	// After setting up the GUI states, we can tweak a few knobs to customize
 	// its default behavior, like setting up the default loading screen, and the reticule.
-	#ifdef    DEBUG
-		#ifndef    UI_LESS
-			game_gui_set_reticule( game_asset_get_gui("reticule.bmp") );
-		#endif
+	#ifndef    UI_LESS
+		game_gui_set_reticule( game_asset_get_gui("reticule.bmp") );
 	#endif
 
 	game_gui_set_paper_texture( game_asset_get_gui("paper.jpg") );
 
-	game_scene_set_load_screen("image.jpg");
-	game_scene_set_delay(3.0);
+	game_scene_set_load_screen("loading_image.bmp");
+	game_scene_set_delay(0.0);
 	game_scene_set_fade_speed(4.5);
 	game_scene_set_fade(false);
 
-	game_scene_set_load_text_pos(10.0, 10.0);
-	game_scene_set_desc_text_pos(50.0, 125.0);
-	game_scene_set_load_text("Custom loading text");
+	float f = screen_size.y / 2.0;
+
+	game_scene_set_load_text_pos(15.0, f);
+	game_scene_set_desc_text_pos(48.0, f + 42.0);
+
 	game_scene_set_desc_text_font("Times#25");
-}
 
-__static void __ui_flag_vn_event() {
-    nov_region_init("vn");
+	screenshot_set_name("GIN");
+	on_f12 = screenshot;
 
-	game_gui_set_state(GUI_MAIN_MENU);
-	game_gui_render();
-
-	// Loads a chapter from the list, with a custom scene loader (game_scene_load()).
-	scene_load(Chapters[0], level_load);
-}
-
-__static void __ui_flag_en_event() {
-    nov_region_init("en");
-
-	game_gui_set_state(GUI_MAIN_MENU);
-	game_gui_render();
-
-	scene_load(Chapters[0], level_load);
+	game_static_init();
 }
 
 // Initializes subsystems (game state, GUI, PhysX, ...)
@@ -127,13 +107,13 @@ void nov_modules_init()
 	// Load resources. In the final, completed game, resources are loaded from add_resource().
 	game_resources_load();
 
-	// Continue to initialize the remaining subsystems. (PhysX engine and the GUI state).
+	// Continue to initialize the remaining subsystems. (PhysX engine, music player and the GUI state).
 	game_physx_new();
 	game_gui_state_new();
-
+	game_mplayer_new("./sound/stream/", "*.ogg");
 	// Post-initialization.
-	gui_button_set_event(__GUIState_singleton->intro_lang_vn_button, EVENT_BUTTON_PUSH, NULL, __ui_flag_vn_event);
-	gui_button_set_event(__GUIState_singleton->intro_lang_en_button, EVENT_BUTTON_PUSH, NULL, __ui_flag_en_event);
+	// gui_button_set_event(__GUIState_singleton->intro_lang_vn_button, EVENT_BUTTON_PUSH, NULL, __ui_flag_vn_event);
+	// gui_button_set_event(__GUIState_singleton->intro_lang_en_button, EVENT_BUTTON_PUSH, NULL, __ui_flag_en_event);
 }
 
 /*
@@ -147,16 +127,31 @@ int main(int argc, char **argl)
 {
 	const char *__err_launcher = "Please run the game through the launcher!";
 	const char *__err_language = "Language list cannot be found! Run generate_language_list.exe to let the language definition be generated once.";
+	const char *__wrn_lowres   = "The game requires a monitor with a resolution of at least 1,024 x 768. The game will still run, but certain GUI elements won't be displayed correctly.";
 
 	// See if the game was launched through the Go-based launcher.
 	#ifndef    DEBUG
-		ASSERT(game_locker_check() != 0, __err_launcher);
+		// ASSERT(game_locker_check() != 0, __err_launcher);
 	#endif
 
-	ASSERT(file_exists("./translation/__language.pad") != 0, __err_language);
+	if( sys_metrics(0) < 1024.0 && sys_metrics(1) < 768.0 )
+		printf(__wrn_lowres);
+
+	#ifndef    DEBUG
+		ASSERT(file_exists("./translation/__language.pad") != 0, __err_language);
+	#else
+		if( !file_exists("./translation/__language.pad") )
+		{
+			printf(__err_language);
+
+			sys_exit((void *) 0);
+		}
+	#endif
 
 	// Overrides some of Acknex's global variables (their default values are way too low)
 	game_globals_set();
+
+	// mouse_lock(true);
 
 	// Wait for the video device.
 	while( !ready() )
@@ -172,82 +167,120 @@ int main(int argc, char **argl)
 	// have a versioning file ready already.
 	__game_version_export();
 
-	// Static initialization.
-	game_static_init();
+	// Pops up the GUI to let the user chooses their desired language.
+	// After that, a call to nov_region_init() will be invoked to pick the chosen language and perform string initialization.
+	nov_region_init("en");
 
 	// Initializes subsystems (game state, GUI, PhysX, ...)
 	nov_modules_init();
 
-	// Initializes static variables/subsystems.
+	// Static initialization.
 	nov_gui_static_init();
 
 	// Initializes the scene list, the scenes, and push them into the list.
 	nov_scene_list_init();
 
-	// Pops up the GUI to let the user chooses their desired language.
-	// After that, a call to nov_region_init() will be invoked to pick the chosen language and perform string initialization.
-	game_gui_set_state(GUI_INTRO);
+	game_gui_set_state(STATE_INTRO);
 	game_gui_render();
 
-	// If the video card does meet the game's required version of vertex/pixel shaders.
-/*	if( game_psvs_test() )
-	{
-		render_new();
+	command_table_new();
 
-		// Sets up HDR.
-
-		// Sets up light shafts.
-		render_light_rays_new();
-		render_light_rays_setup(1.7, 8.4);
-
-		render_light_rays();
-
-		#ifdef    DEBUG
-			render_light_rays_set_debug();
-		#endif
-	}
-
-	// Creates a sky cube which "wraps" around the scene.
-	Object *cube = object_sky_create( game_asset_get_2d_sprite("noon+6.tga"), 1 );
-
-	// Shows the GUI.
-	game_gui_render();
-
-	const char *text = "I wonder how she's doing lately.\nWe haven't seen each other for so long...";
-
-	StaticTitleText *title = gui_title_new( vector(20.0, screen_size.y - 150.0, 0.0) , COLOR_BLEU_DE_FRANCE, text, 5.0, 15 );
-	gui_title_set_sound( title, 1, _chr(game_asset_get_sound("laptop_notebook_delete_key_press.wav")) );
-	gui_title_set_sound( title, 2, _chr(game_asset_get_sound("laptop_notebook_key_press.wav")) );
-	gui_title_set_sound( title, 3, _chr(game_asset_get_sound("laptop_notebook_return_or_enter_key_press.wav")) );
-	gui_title_set_sound( title, 4, _chr(game_asset_get_sound("laptop_notebook_spacebar_press.wav")) );
-	gui_credits_set_font(title, "avery.bmp");
-	// gui_title_show(title);
-
-	// Activates PSSM shadows (four passes) and renders fog.
-	// pssm_run(4);
-
-	gui_open_eyes(6.5, 1);
-
-	game_fog_set(1, vector(189.0, 238.0, 240.0), vector(15.0, 12424.0, 0.0)); // Set the fog color and its range to the first (1) fog color slot.
-	game_fog_render(1); // Merely sets fog_color to ID.
-*/
 	Vector3 tx;
 	tx.x = screen_size.x - 150.0;
 	tx.y = 15.0;
 	tx.z = 0;
 
-	// Main game loop, which can be terminated with the "ESC" key.
-	while( !key_esc )
+	Text *todo = txt_create(1, LAYER_DEBUG_1);
+	todo->font = font_create("UVN remind#30b");
+
+	gui_text_set_color(todo, COLOR_DARK_GREY);
+	gui_text_set_pos(todo, __GUIState_singleton->todo_texture->pos_x + 10.0, __GUIState_singleton->todo_texture->pos_y + 10.0);
+
+	// Main game loop, which can be terminated with the "Alt + F4" key.
+	while(!(__GameState_singleton->exit_switch))
 	{
-		// Update PhysX.
+		__GameState_singleton->exit_switch = key_alt && key_f4;
+
+		// Updates PhysX.
 		game_physx_loop();
+
+		// Updates the GUI state.
+		game_gui_update();
 
 		// Continuously update the area the player is currently in.
 		#ifndef    UI_LESS
-			draw_text(game_region_check(), tx.x, tx.y, COLOR_WHITE);
+			if( STATE_NULL == game_gui_get_state() ) // Because draw_*() functions don't take layers into account,
+			                                         // I have to rely a lot on GUI states in order to manage rendering orders of GUI objects.
+			{
+				draw_text(game_region_check(), tx.x, tx.y, COLOR_WHITE);
+			}
 		#endif
 
-		vec_set( &mouse_pos, &mouse_cursor );
+		// Updates FOV.
+		if( NULL != camera )
+		{
+			if( !var_cmp(fov, camera->arc) )
+				camera->arc = fov;
+		}
+
+		// Updates the global volume.
+		if( !var_cmp(volume, game_volume) )
+			game_volume = volume;
+
+		// Updates the mouse sensivity.
+		mickey.x *= sensivity_mul;
+		mickey.y *= sensivity_mul;
+
+		if( key_tab && (STATE_NULL == game_gui_get_state()) )
+		{
+			switch (game_day_get())
+			{
+				case DAY_3:
+				case DAY_4:
+				case DAY_5:
+				case DAY_6:
+				{
+					if( (todo->pstring)[0] != lstr_todo_c3 )
+						(todo->pstring)[0] = lstr_todo_c3;
+					break;
+				}
+
+				case DAY_1:
+				{
+					draw_obj( __GUIState_singleton->todo_texture );
+
+					if( (todo->pstring)[0] != lstr_todo_c1 )
+						(todo->pstring)[0] = lstr_todo_c1;
+					break;
+				}
+
+				case DAY_2:
+				{
+					draw_obj( __GUIState_singleton->todo_texture );
+
+					if( (todo->pstring)[0] != lstr_todo_c2 )
+						(todo->pstring)[0] = lstr_todo_c2;
+					break;
+				}
+			}
+
+			draw_obj(todo);
+		}
+
+		if(key_esc && __can_press_esc)
+		{
+			while(key_esc) wait(1.0);
+
+			wait(1.0);
+
+			__GameState_singleton->menu_switch = 1 - __GameState_singleton->menu_switch;
+
+			switch(__GameState_singleton->menu_switch)
+			{
+				case    1:    game_gui_set_state(STATE_MAIN_MENU); game_gui_render(); break;
+				case    0:    game_gui_set_state(STATE_NULL);      game_gui_render();
+			}
+		}
 
 		wait(1.0);
 	}

@@ -13,13 +13,13 @@
  * without the launcher, but I don't recommend to do so as you'll lost the ability
  * of automatically updating of the game.
  */
-#define    LAUNCHER_LINKAGE
+// #define    LAUNCHER_LINKAGE
 
 /*
  * These switches toggle debugging panels, functionalities and texts, while DEBUG_PSSM
  * allows you to see the split passes and  manually adjust the sun position.
  */
-#define    DEBUG
+// #define    DEBUG
 // #define    DEBUG_PSSM
 #define    DEBUG_HDR
 #define    DEBUG_MIRROR
@@ -71,6 +71,7 @@
 
 #include "./source/game/common/path.h"
 #include "./source/utils/utilities.h"
+#include "./source/utils/gui_utilities.h"
 #include "./source/game/io/crypto.h"
 #include "./source/game/io/file.h"
 #include "./source/game/io/region.h"
@@ -78,6 +79,7 @@
 #include "./source/game/io/trophy.h"
 
 #ifndef    A8_FREE
+    /*
     #include "./source/render/render.h"
     #include "./source/render/render_pp.h"
     // #include "./source/render/render_shadows.h"
@@ -87,14 +89,16 @@
     // #include "./source/render/render_dof.h"
     #include "./source/render/render_hdr.h"
     #include "./source/render/render_utils.h"
+    */
+    #include "./source/render/render_lrays_fixed.h"
 #endif
 
 #include "./source/game/shared.h"
 #include "./source/game/localized.h"
+#include "./source/game/common/scene_list.h"
 #include "./source/game/common/cfuncs.h"
 #include "./source/game/common/common.h"
 #include "./source/game/common/inventory.h"
-#include "./source/game/common/scene_list.h"
 #include "./source/game/common/scene.h"
 #include "./source/game/fx/unmanaged.h"
 #include "./source/game/gui/gui.h"
