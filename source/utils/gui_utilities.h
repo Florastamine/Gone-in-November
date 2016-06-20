@@ -62,6 +62,7 @@ __namespace(global) {
 
 	Pair *gui_panel_get_size( Panel *panel );
 
+	void gui_panel_resize( Panel *panel );
 	void gui_panel_set_size( Panel *panel, float sx, float sy );
 
 	void gui_panel_set_align( Panel *panel, const int mode );

@@ -57,6 +57,22 @@ void gui_panel_set_size( Panel *panel, float sx, float sy )
 }
 
 /*
+ * void gui_panel_resize( Panel *panel )
+ *
+ * Resizes the panel to match with the current BMAP object attached to it.
+ * Both the panel and the corresponding BMAP pointer has to be valid.
+ * This instruction is equivalent to:
+ *     gui_panel_set_size( panel, bmap_width(panel->bmap), bmap_height(panel->bmap) );
+ */
+void gui_panel_resize( Panel *panel )
+{
+	if( !panel || !panel->bmap ) return;
+
+	panel->size_x = bmap_width(panel->bmap);
+	panel->size_y = bmap_height(panel->bmap);
+}
+
+/*
  * Pair *gui_image_get_dimensions( const Bitmap *image )
  *
  * Returns the size (dimensions) of a given bitmap image.
