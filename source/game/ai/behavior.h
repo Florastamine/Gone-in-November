@@ -28,6 +28,8 @@
 
 #define PRAGMA_PRINT "\nBehavior initialization..."
 
+void __draw_hands();
+
 #include "behavior_types.h"
 
 #include "behavior_player.h"

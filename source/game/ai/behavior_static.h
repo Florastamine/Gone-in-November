@@ -28,11 +28,11 @@
 #define    DISTANCE     skill11
 
 /*
- * action act_lray()
+ * void act_lray()
  *
  * Generic light-ray.
  */
-action act_lray();
+void act_lray();
 
 /*
  * Body types for use within act_rigid_body().
@@ -42,22 +42,22 @@ action act_lray();
 #define    BODY_SPHERE    3
 
 /*
- * action act_rigid_body()
+ * void act_rigid_body()
  *
  * Simple yet generic rigid body.
  * Entity's skill1 is reserved for body types (see above).
  */
-action act_rigid_body();
+void act_rigid_body();
 
 /*
- * action act_barrier()
+ * void act_barrier()
  *
  * "Invisible" geometry handlers.
  */
-action act_barrier();
+void act_barrier();
 
 /*
- * action act_ssndsrc()
+ * void act_ssndsrc()
  *
  * Static light source - works great for ambiance sounds.
  *
@@ -65,33 +65,30 @@ action act_barrier();
  * skill1 controls the volume.
  * skill2 controls the range (radius)
  */
-action act_ssndsrc();
+void act_ssndsrc();
 
 /*
- * action act_particle()
+ * void act_particle()
  *
  * General-purpose particle emitter.
  * skill1 controls the ID of the particle effect you want to render.
  * Refer to ./source/game/fx/unmanaged.h for a list of particle IDs available. Make sure to #define them before you can use them.
  */
-action act_particle();
+void act_particle();
 
 /*
- * action act_trigger()
+ * void act_trigger()
  *
  * Creates an object at the position specified by skill1, skill2 and skill3, with orientation defined by skill4..5..6, and plays a sound
- * when the player comes closer than the distance specified in string1 (see below).
- * string1 takes the following form:
- *  filename; audioname; distance
- *      filename: Name of the model/entity you want to be created (extensions cannot be left out, which means you can use wmb, mdl or hmp or whatever ent_create() supports.)
- *      audioname: Name of the sound file you want to be played (extensions cannot be left out, which means you can use whatever format snd_create() supports, which are .ogg and .wav.)
- *      distance: When the distance between the player and the object is lower than this value, the player will be asked to press [F] in order for the event to be triggered.
+ * when the player comes closer than the distance specified in skill11 (see below).
+ * string1 contains the file name of the object you want to create afterwards. (extensions cannot be left out, which means you can use wmb, mdl or hmp or whatever ent_create() supports.)
+ * string2 contains the file name of the sound you want to be played afterwards. (extensions cannot be left out, which means you can use whatever format snd_create() supports, which are .ogg and .wav.)
  * Pass "nil" to one of the arguments in string1 to skip the particular argument.
  */
-action act_trigger();
+void act_trigger();
 
 /*
- * action act_door()
+ * void act_door()
  *
  * A *very* simple implementation of in-game doors. For the purpose of simplicity, I've removed the
  * ability to choose between clockwise or counter-clockwise style of opening/closing doors, as well as
@@ -112,10 +109,10 @@ action act_trigger();
 #define    ANGLE        skill3
 #define    UNIQUE_ID    skill4
 
-action act_door();
+void act_door();
 
 /*
- * action act_notepad()
+ * void act_notepad()
  *
  * A very simple, mini notepad which can be picked up and viewed.
  * string1 must exists (not empty) and contains the name of the according translation
@@ -124,10 +121,10 @@ action act_door();
  * During level load, the contents of the translation file given in string1 is copied to the entity's internal
  * container and will be shown when the player comes close to the notepad and hit the left mouse button.
  */
-action act_notepad();
+void act_notepad();
 
 /*
- * action act_level_changer()
+ * void act_level_changer()
  *
  * A generic, tweakable level changing entity. By default, this entity will closes down the current level and loads the next one if:
  * - You've completed all of the objectives in the current level.
@@ -137,7 +134,7 @@ action act_notepad();
  * skill1: Distance between the player and the entity in which the trigger is activated.
  * skill2: ID of one of the initialized ViewPoint-s.
  */
-action act_level_changer();
+void act_level_changer();
 
 #include "behavior_static.c"
 #endif /* behavior_static.h */

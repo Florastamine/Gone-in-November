@@ -61,6 +61,8 @@ void game_state_new()
 	__GameState_singleton->__game_physx_loaded__ = false;
 	__GameState_singleton->__game_log_loaded__   = false;
 	__GameState_singleton->__game_log_handle__   = 0;
+	__GameState_singleton->menu_switch           = 0;
+	__GameState_singleton->exit_switch           = 0;
 
 	// Also initialize the objectives singleton.
 	__GameObjectives_singleton = MALLOC(1, GameObjectives);
@@ -305,11 +307,11 @@ __static void __game_event_on_exit()
 	// Frees the buffer holding the (loaded) game resources.
 	game_resources_free();
 
-	// Frees the multilingual module.
-	region_free();
-
 	// Frees the localized strings.
 	localized_free();
+
+	// Frees the multilingual module.
+	region_free();
 
 	// Frees the music player.
 	game_mplayer_free();
@@ -620,9 +622,9 @@ void game_scene_load( STRING *scene )
 
 	__game_scene_state_new();
 
-	PANEL *p  = pan_create(NULL, LAYER_GUI_1);
-	TEXT  *t0 = txt_create(1, LAYER_GUI_2);
-	TEXT  *t1 = txt_create(1, LAYER_GUI_2);
+	PANEL *p  = pan_create(NULL, 999);
+	TEXT  *t0 = txt_create(1, 1000);
+	TEXT  *t1 = txt_create(1, 1000);
 
 	// Feed the structs' data with the ones fed from the singleton.
 	p->bmap = game_scene_get_load_screen();
@@ -976,6 +978,11 @@ __static void __game_video_set(
 	int   fsaa,
 	int   fsaf /* ... */
 ) {
+	if( var_cmp(width, -1) == true )
+		width = sys_metrics(0);
+	if( var_cmp(height, -1) == true )
+		height = sys_metrics(1);
+
 	video_set(width, height, bit_depth, ifelse(fullscreen, FULLSCREEN, WINDOWED));
 	d3d_antialias     = fsaa;
 
@@ -1169,7 +1176,7 @@ void game_globals_set()
 {
 	max_paths = 4096;
 	max_particles = 16777216;
-	max_entities = nexus * 128; // By default, max_entities equals to nexus * 10.
+	max_entities = 65536; // By default, max_entities equals to nexus * 10.
 								// We raise that limit 12.8 times, i.e. nexus * 128.
 	clip_particles = 0.7;
 	preload_mode = 2 + 3 + 4 + 8;
@@ -1187,6 +1194,12 @@ void game_globals_set()
 	// Enable standard stencil shadows if the header <render_shadows> isn't included.
 	#ifndef    __RENDER_SHADOWS_H__
 		shadow_stencil = 2;
+	#endif
+
+	#ifdef    DEBUG
+		warn_level = 6;
+	#else
+		warn_level = 0;
 	#endif
 }
 
@@ -1256,7 +1269,7 @@ int game_locker_check()
  */
 int game_is_first_time()
 {
-	const RegistryItem *item = reg_key_new("GiNFT");
+	RegistryItem *item = reg_key_new("GiNFT");
 	int r = reg_key_exists("Software", item);
 
 	if(!r)
@@ -1331,13 +1344,36 @@ void game_static_init()
 	view_add(vp_wake, VP_WAKE);
 
 	//
-	sndMouseClick = snd_create(game_asset_get_sound("PC_click.wav"));
-	sndPCShutdown = snd_create(game_asset_get_sound("PC_boot.wav"));
-	sndPCBootup   = snd_create(game_asset_get_sound("PC_boot.wav"));
+	sndMouseClick   = snd_create(game_asset_get_sound("PC_click.wav"));
+	sndPCBootup     = snd_create(game_asset_get_sound("login-01.wav"));
+	sndPhoneCall    = snd_create(game_asset_get_sound("phone.wav"));
+	sndPCLogout     = snd_create(game_asset_get_sound("logout-01.wav"));
+	sndHumanFall    = snd_create(game_asset_get_sound("body-falling.wav"));
+	sndMessageSent  = snd_create(game_asset_get_sound("alert-06.wav"));
+	sndInvalidClick = snd_create(game_asset_get_sound("alert-05.wav"));
+	sndWasher       = snd_create(game_asset_get_sound("washing-machine-1.wav"));
 
+	panBGHandler                 = pan_create(NULL, 995);
+	panBGHandler->bmap           = bmap_create(game_asset_get_gui("paper.jpg"));
+	panBGHandler->pos_x          = (screen_size.x - bmap_width(panBGHandler->bmap)) * 0.5;
+	panBGHandler->pos_y          = 45.0; // Thụt lề, thụt hoài, thụt thụt hoàiiiiii. Kí tên: Lợn khó tính
+
+	txtDataHandler               = txt_create(1, 996);
+	txtDataHandler->font         = Note_Text_Font;
+	txtDataHandler->pos_x        = panBGHandler->pos_x + 25.0;
+	txtDataHandler->pos_y        = panBGHandler->pos_y + 25.0;
+	vec_set(&(txtDataHandler->blue), vector(84.0, 84.0, 84.0)); // Replacing vector() with vec_fill(nullvector, 84.0) (to avoid repetitive) and watch the world spin.
+
+	txtSubtitleHandler           = txt_create(1, 1);
+	txtSubtitleHandler->font     = Normal_Text_Font;
+	txtSubtitleHandler->pos_y    = (screen_size.y / 2.0) + 64.0;
+	txtSubtitleHandler->pos_x    = (screen_size.x / 2.0) - 156.0;
+
+	/*
 	#ifndef    A8_FREE
 		matCrt = ppCrtNewMtl(PP_CRT_MODE_SCANLINE);
 	#endif
+	*/
 }
 
 /*
@@ -1355,8 +1391,9 @@ void game_static_free()
 	gui_credits_free(credits);
 
 	snd_remove(sndMouseClick);
-	snd_remove(sndPCShutdown);
 	snd_remove(sndPCBootup);
+	snd_remove(sndPhoneCall);
+	snd_remove(sndPCLogout);
 
 	#ifndef    A8_FREE
 		if(matCrt)
@@ -1401,7 +1438,7 @@ void scene_load(ChapterData *data, const void *loader); // Pretty much the only 
 
 int game_day_switch(int d, GamePostData *gpd)
 {
-	if( d >= DAY_1 && d <= DAY_5 ) // If we've passed the correct day.
+	if( d >= DAY_1 && d <= DAY_7 ) // If we've passed the correct day.
 	{
 		game_log_write(str_printf(NULL, "Attempting to switch to day %i.", (int) d));
 
@@ -1423,6 +1460,11 @@ int game_day_switch(int d, GamePostData *gpd)
 				game_log_write(_01);
 				str_remove(_01);
 			#endif
+
+			if( 0 != __GameObjectives_singleton->objectives ) // Make sure to reset the counter.
+			{
+				__GameObjectives_singleton->objectives       = 0;
+			}
 
 			__GameObjectives_singleton->total_objectives = gpd->objectives;
 			fog_color                                    = gpd->fog_color_id;
@@ -1454,4 +1496,243 @@ int game_day_switch(int d, GamePostData *gpd)
 int game_day_get()
 {
 	return day_current;
+}
+
+int game_scene_switch(int day)
+{
+	GamePostData     infoBlock;
+
+	StaticTitleText *local_intro_text       = NULL;
+	Panel           *local_black_panel      = NULL;
+
+	if( __camera_locked )
+		__camera_locked = 0;
+
+	if( __can_press_esc )
+		__can_press_esc = 0;
+
+	if( game_intro_done )
+		game_intro_done = 0;
+
+	game_mplayer_stop();
+
+	switch(day)
+	{
+		case    DAY_1:
+		{
+			infoBlock.objectives = 7;
+			infoBlock.use_custom = false;
+
+			game_scene_set_load_text("memory fragment #4");
+			game_scene_set_desc_text(lstr_induction_c1);
+
+			break;
+		}
+
+		case    DAY_2:
+		{
+			infoBlock.objectives = 1;
+			infoBlock.use_custom = false;
+
+			game_scene_set_load_text("memory fragment #5");
+			game_scene_set_desc_text(lstr_induction_c2);
+
+			break;
+		}
+
+		case    DAY_3:
+		{
+			infoBlock.objectives = 0;
+			infoBlock.use_custom = false;
+
+			game_scene_set_load_text("memory fragment #1");
+			game_scene_set_desc_text(lstr_induction_c3);
+
+			break;
+		}
+
+		case    DAY_4:
+		{
+			infoBlock.objectives = 0;
+			infoBlock.use_custom = false;
+
+			game_scene_set_load_text("memory fragment #2");
+			game_scene_set_desc_text(lstr_induction_c4);
+
+			break;
+		}
+
+		case    DAY_5:
+		{
+			infoBlock.objectives = 0;
+			infoBlock.use_custom = false;
+
+			game_scene_set_load_text("memory fragment #3");
+			game_scene_set_desc_text(lstr_induction_c5);
+
+			break;
+		}
+
+		case    DAY_6:
+		{
+			infoBlock.objectives = 0;
+			infoBlock.use_custom = false;
+
+			game_scene_set_load_text("memory fragment #6");
+			game_scene_set_desc_text(lstr_induction_c6);
+		}
+
+		case    DAY_7:
+		{
+			infoBlock.objectives = 0;
+			infoBlock.use_custom = false;
+
+			game_scene_set_load_text("");
+			game_scene_set_desc_text("");
+		}
+	}
+
+	game_day_switch(day, &infoBlock);
+	WAIT_PROCESS(game_day_switch);
+
+	sun_light = 100.0;
+
+
+		// Sets the sky.
+		switch(day)
+		{
+			case    DAY_1:
+			case    DAY_2:
+			    object_sky_create(game_asset_get_2d_sprite("noon+6.tga"), 42);
+				break;
+
+			case    DAY_3:
+			case    DAY_4:
+			case    DAY_5:
+				object_sky_create(game_asset_get_2d_sprite("nothing+6.jpg"), 42);
+				break;
+
+			case    DAY_6:
+			switch(ending)
+			{
+				case    GOOD_ENDING:
+					object_sky_create(game_asset_get_2d_sprite("noon+6.tga"), 42);
+					break;
+				case    BAD_ENDING:
+					object_sky_create(game_asset_get_2d_sprite("nothing+6.jpg"), 42);
+					break;
+			}
+			break;
+		}
+
+	switch(day)
+	{
+		case    DAY_1:
+		{
+			local_intro_text  = gui_title_new(
+				vector(16.0, 16.0, 0.0),
+				COLOR_WHITE,
+				lstr_intro_c1,
+				10.0,
+				LAYER_GUI_5);
+
+			gui_title_set_delay(local_intro_text, 0.03);
+			gui_title_set_mode(local_intro_text, FADE_OUT);
+			local_intro_text->__container->font = font_create("[ank]*#18b");
+
+			break;
+		}
+
+		case    DAY_3:
+		{
+			local_intro_text  = gui_title_new(
+				vector(16.0, 16.0, 0.0),
+				COLOR_WHITE,
+				lstr_intro_c3,
+				10.0,
+				LAYER_GUI_5);
+
+			gui_title_set_delay(local_intro_text, 0.03);
+			gui_title_set_mode(local_intro_text, FADE_OUT);
+			local_intro_text->__container->font = font_create("[ank]*#18b");
+
+			break;
+		}
+	}
+
+	// Set the fog color and its range from the block to the first (1) fog color slot.
+	switch(day)
+	{
+		case    DAY_1:
+		case    DAY_2:
+			game_fog_set(1, vector(213, 255, 255), vector(10.0, 10042.0, 0.0)); // Abbreviation for soft yellow (http://www.colourlovers.com/color/FFFFD5/soft-yellow)
+			break;
+
+		case    DAY_3:
+		case    DAY_4:
+		case    DAY_5:
+			game_fog_set(1, COLOR_BLACK, vector(10.0, 1400.0, 0.0));
+			break;
+
+		case    DAY_6:
+			switch(ending)
+			{
+				case    GOOD_ENDING:
+					game_fog_set(1, COLOR_WHITE, vector(10.0, 10042.0, 0.0));
+					break;
+				case    BAD_ENDING:
+					game_fog_set(1, COLOR_BLACK, vector(10.0, 10042.0, 0.0));
+					break;
+			}
+			break;
+	}
+	game_fog_render(1); // Merely sets fog_color to ID.
+
+	int layern = 0;
+
+	if( local_intro_text )
+		layern = local_intro_text->__container->layer - 1;
+	else
+		layern = LAYER_GUI_1;
+
+	player_lock = 1;
+	__camera_locked = 1;
+
+	local_black_panel        = pan_create(NULL, layern);
+	local_black_panel->bmap  = bmap_createblack(screen_size.x, screen_size.y, 8);
+
+	SHOW_FLAGS_SAFE(local_black_panel, SHOW);
+	SHOW_FLAGS_SAFE(local_black_panel, TRANSLUCENT);
+	local_black_panel->alpha = 100.0;
+
+	if( local_intro_text )
+	{
+		gui_title_show(local_intro_text, true);
+
+		while(!(local_intro_text->done))
+			wait(1.0);
+	}
+
+	player_lock = 0;
+	__camera_locked = 0;
+	game_intro_done = 1;
+
+	while(local_black_panel->alpha > 0.0)
+	{
+		local_black_panel->alpha -= 4.2 * time_step;
+		wait(1.0);
+	}
+
+	HIDE_FLAGS_SAFE(local_black_panel, SHOW);
+
+	// gui_open_eyes(6.5, 1);
+
+	switch(day)
+	{
+		case DAY_3: game_mplayer_play("ds-1"); break;
+		case DAY_4: game_mplayer_play("ds-2"); break;
+		case DAY_5: game_mplayer_play("ds-3"); break;
+	}
+
+	__can_press_esc = 1;
 }

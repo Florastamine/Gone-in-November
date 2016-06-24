@@ -1,5 +1,6 @@
 TEXT *__level_load_event_text = {
 	strings = 1;
+	layer = 999;
 	string("");
 
 	font = "Arial#20b";
@@ -14,7 +15,7 @@ void init() {
 
 void __level_load_event(var percent)
 {
-	if(!g_init)
+	if( !g_init )
 	{
 		init();
 		g_init = true;

@@ -23,7 +23,7 @@ WINDOW WINSTART
 	// entry: Window title
 	TITLE "Gone in November";
 	
-	SIZE 500, 661;
+	SIZE 230, 45;
 	
 	BG_COLOR RGB(240, 240, 240);
 	
@@ -31,13 +31,13 @@ WINDOW WINSTART
 	 * Prints "Loading..."
 	 */
 	// entry: Arbitrary text
-	TEXT "Loading...", 10, 10;	
+	TEXT "Preparing resources...", 6, 30;	
 	
 	// entry: Text font
 	SET FONT "Verdana", RGB(0,0,0);
 	
 	// enable: Progress bar
-	PROGRESS RGB(0,0,255), 42, 5, 560, 495, 12.5;
+	PROGRESS RGB(0,0,255), 42, 5, 10, 225, 12.5;
 	
 	// enable: Launch button
 	// BUTTON BUTTON_START, SYS_DEFAULT, "Launch", 212, 600, 75, 30;
@@ -50,19 +50,19 @@ WINDOW WINSTART
 	/* Frame
 	 * type (1 - 4), x, y, width, height.
 	 */
-	FRAME FTYP3, 0, 0, 500, 661;
+	FRAME FTYP3, 0, 0, 250, 110;
 	
 	/* Engine messages.
 	 * x, y, width, height.
 	 */
 	// enable: Output engine messages
-	TEXT_STDOUT "Consolas", RGB(0, 0, 0), 10, 30, 500, 840;
+	// TEXT_STDOUT "Consolas", RGB(0, 0, 0), 10, 30, 500, 840;
 	
 	/* Background image. PCX, 255. */
-	PICTURE <1.pcx>, OPAQUE, 0, 0;
+	// PICTURE <1.pcx>, OPAQUE, 0, 0;
 	
 	// entry: Parsing additional cmds
-	COMMAND "-diag -nx 350";
+	COMMAND "-nx 350";
 	
 	// section: 
 } /* main.wdl */

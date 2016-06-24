@@ -41,7 +41,8 @@
 #define    STATE_GAME_MENU    2
 #define    STATE_INTRO        3
 #define    STATE_PC           4
-#define    STATE_NULL         5
+#define    STATE_ENDING       5
+#define    STATE_NULL         6
 
 /*
  * GUIState (struct)
@@ -52,19 +53,74 @@
 typedef struct {
     int state;
 
-    Panel *reticule;
-    Panel *paper_texture;
+    /* STATE_NULL */
+        Panel *reticule;
+        Panel *paper_texture;
+        Panel *todo_texture;
+        Panel *interact_icon;
+    /* End of STATE_NULL. */
 
-    /* GUI_INTRO */
-        Panel *intro_lang_screen;
-        GUIButton *intro_lang_vn_button;
-        GUIButton *intro_lang_en_button;
-    /* End of GUI_INTRO. */
+    Panel *generic_black;
 
-    Panel   *PC_boot_screen;
-    Panel   *PC_wallpaper;
-    Bitmap  *PC_cursor;
-    Bitmap  *PC_cursor_original;
+    /* STATE_MAIN_MENU */
+        Panel     *menu_options;
+        Panel     *menu_keymap;
+        Panel     *menu_logo;
+        Text      *menu_options_2;
+        Text      *menu_options_3;
+        Text      *menu_options_digit;
+        Bitmap    *menu_cursor;
+
+    /* STATE_ENDING */
+        Panel     *ending_background;
+        Panel     *ending_text;
+
+        Bitmap    *ending_text_0;
+        Bitmap    *ending_text_1;
+        Bitmap    *ending_text_2;
+        Bitmap    *ending_text_3;
+        Text      *ending_secrets_found;
+        Text      *ending_exit;
+    /* End of STATE_ENDING. */
+
+    /* STATE_INTRO */
+        Panel *intro_screen;
+        Text  *intro_text;
+    /* End of STATE_INTRO. */
+
+    /* STATE_PC */
+        Panel   *PC_wallpaper;
+        Panel   *PC_window; // Sk*de
+        Panel   *PC_close_button;
+        Panel   *PC_taskbar;
+        Panel   *PC_skyde_contacts;
+        Panel   *PC_skyde_messagebox;
+        Panel   *PC_skyde_chatbox;
+        Panel   *PC_news_list;
+
+        Bitmap  *PC_wallpaper_wallpaper;
+        Bitmap  *PC_wallpaper_logoff;
+        Bitmap  *PC_wallpaper_boot;
+
+        Bitmap  *PC_cursor;
+        Bitmap  *PC_cursor_original;
+
+        GUIButton *PC_icon_shutdown;
+        GUIButton *PC_icon_skyde;
+        GUIButton *PC_icon_news;
+        GUIButton *PC_icon_skyde_login;
+        GUIButton *PC_icon_skyde_exit;
+        GUIButton *PC_icon_skyde_send;
+        GUIButton *PC_icon_skyde_blob1;
+        GUIButton *PC_icon_news;
+        GUIButton *PC_icon_news_provider[4];
+
+        Text *PC_string_table;
+        Text *PC_string_skyde_log_in;
+        Text *PC_string_skyde_chat_with;
+        Text *PC_string_news;
+        Text *PC_skyde_chatbox_input;
+    /* End of STATE_PC. */
 
 } GUIState;
 
@@ -72,6 +128,9 @@ GUIState *__GUIState_singleton = NULL;
 
 __static int __GUI_done__ = 0;
 
+__static    var fov            = 75.0,
+                volume         = 100.0,
+                sensivity_mul  = 1.0;
 /*
  * void game_gui_state_new()
  *

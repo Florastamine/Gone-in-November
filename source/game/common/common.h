@@ -100,34 +100,57 @@
 /*
  * Fixed string constants.
  */
-const STRING *STR_NIL      = "nil";
-const STRING *STR_EMPTY    = "";
+const STRING *STR_NIL       = "nil";
+const STRING *STR_EMPTY     = "";
+const STRING *STR_CODE      = "strcode"; /* This is a very bad way of storing secret content. */
+const STRING *STR_CODE_FILE = "secret.zip";
 
 /*
  * Default fonts used in the game. These are not always available on every
  * PC and thus have to be registered through AddFontResource().
  */
 FONT *Normal_Text_Font = "Essai#25b";
-FONT *Note_Text_Font   = "UVN remind#22b";
+FONT *Note_Text_Font   = "UVN remind#25b";
 FONT *Loading_Font     = "[ank]*#20b";
 FONT *Intro_Text_Font  = "iCiel Andes Rounded Light#25";
 
 /*
- *
+ * Generic sound and dummy text bank.
  */
-fixed  sndMouseClickHandle = 0;
-SOUND *sndMouseClick       = NULL;
-
-fixed sndPCShutdownHandle  = 0;
-SOUND *sndPCShutdown       = NULL;
-
-fixed sndPCBootupHandle    = 0;
 SOUND *sndPCBootup         = NULL;
-
-fixed sndPCLoginHandle     = 0;
 SOUND *sndPCLogin          = NULL;
+SOUND *sndPCLogout         = NULL;
+SOUND *sndMouseClick       = NULL;
+SOUND *sndMessageSent      = NULL;
+SOUND *sndInvalidClick     = NULL;
+SOUND *sndWasher           = NULL;
+
+fixed sndPhoneCallHandle   = 0;
+SOUND *sndPhoneCall        = NULL;
+
+SOUND *sndHumanFall        = NULL;
 
 MATERIAL *matCrt           = NULL;
+
+// Global dummy objects for rendering each of the game's letter.
+// Note the naming convention - it just sucks, because I don't have a lot of time.
+TEXT *txtDataHandler       = NULL;
+TEXT *txtSubtitleHandler   = NULL;
+PANEL *panBGHandler        = NULL;
+
+int player_lock = 0; // So that it can be used on GUI sequences (behaviour code were included after GUI).
+int __camera_locked = 0;
+int __can_press_esc = 1;
+int game_intro_done = 0;
+
+        int __found_secrets = 0;
+const   int __max_secrets   = 6;
+
+#define    BAD_ENDING    1
+#define    GOOD_ENDING   2
+
+int ending = GOOD_ENDING; // http://genius.com/Kendrick-lamar-alright-lyrics
+float game_volume = 100.0;
 
 /*
  * GameState (struct)
@@ -138,6 +161,9 @@ typedef struct {
 
 	BOOL   __game_log_loaded__;
 	fixed  __game_log_handle__;
+
+    int    menu_switch;
+    int    exit_switch;
 } GameState;
 
 GameState *__GameState_singleton = NULL;
@@ -165,6 +191,8 @@ GameObjectives *__GameObjectives_singleton = NULL;
  * <...>
  * game_day_switch(game_day_get() + 1, &gpd);
  */
+var pv;
+
 typedef struct {
     int     objectives;
 
@@ -460,7 +488,9 @@ __namespace(November) {
     #define    DAY_3         3
     #define    DAY_4         4
     #define    DAY_5         5
-    #define    TOTAL_DAYS    5
+    #define    DAY_6         6
+    #define    DAY_7         7
+    #define    TOTAL_DAYS    7
 
     int          day_current = DAY_1;
     ChapterData *day[TOTAL_DAYS];

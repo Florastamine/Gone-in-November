@@ -55,5 +55,26 @@ String *lstr_room_yard                       = "";
 String *lstr_room_balcony                    = "";
 String *lstr_room_workspace                  = "";
 
+String *lstr_induction_c1                    = "";
+String *lstr_induction_c2                    = "";
+String *lstr_induction_c3                    = "";
+String *lstr_induction_c4                    = "";
+String *lstr_induction_c5                    = "";
+String *lstr_induction_c6                    = "";
+String *lstr_induction_c2                    = "";
+String *lstr_intro_c1                        = "";
+String *lstr_intro_c3                        = "";
+String *lstr_not_done_jobs                   = "";
+String *lstr_todo_c1                         = "";
+String *lstr_todo_c2                         = "";
+String *lstr_todo_c3                         = "";
+String *lstr_todo_c6                         = "";
+
+String *lstr_options_1                       = "";
+String *lstr_options_2                       = "";
+String *lstr_options_3                       = "";
+
+String *lstr_beta_warning                    = "";
+
 #include "localized.c"
 #endif /* localized.h */
