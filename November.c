@@ -209,7 +209,7 @@ int main(int argc, char **argl)
 
 		// Continuously update the area the player is currently in.
 		#ifndef    UI_LESS
-			if( STATE_NULL == game_gui_get_state() ) // Because draw_*() functions don't take layers into account,
+			if( STATE_NULL == game_gui_get_state() && game_intro_done ) // Because draw_*() functions don't take layers into account,
 			                                         // I have to rely a lot on GUI states in order to manage rendering orders of GUI objects.
 			{
 				draw_text(game_region_check(), tx.x, tx.y, COLOR_WHITE);
