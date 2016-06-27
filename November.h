@@ -44,7 +44,7 @@
  * Performs file lookup in subdirectories. In published builds, data are packed into
  * resource files (.wrs or .pak), so this switch must be toggled off.
  */
-#define    PERFORM_PATH_LOOKUP
+// #define    PERFORM_PATH_LOOKUP
 
 /*
  * Performs cryptography on everything written out.

@@ -128,6 +128,7 @@ int main(int argc, char **argl)
 	const char *__err_launcher = "Please run the game through the launcher!";
 	const char *__err_language = "Language list cannot be found! Run generate_language_list.exe to let the language definition be generated once.";
 	const char *__wrn_lowres   = "The game requires a monitor with a resolution of at least 1,024 x 768. The game will still run, but certain GUI elements won't be displayed correctly.";
+	const char *__wrn_lowram   = "This game is currently not optimized for the final release, and thus it needs 4 GB RAM or more in order to run the game smoothly. If you're having less than 4 GB RAM, clicking \"OK\" will force the game to run, but it may causes unexpected issues. If you want to quit, open Task Manager and close the game's task.\n\nSorry for the inconvenience.";
 
 	// See if the game was launched through the Go-based launcher.
 	#ifndef    DEBUG
@@ -136,6 +137,9 @@ int main(int argc, char **argl)
 
 	if( sys_metrics(0) < 1024.0 && sys_metrics(1) < 768.0 )
 		printf(__wrn_lowres);
+
+	if( os_get_ram(S_MB) < 4086 ) // Note that this is 4086, not 4096.
+		printf(__wrn_lowram);
 
 	#ifndef    DEBUG
 		ASSERT(file_exists("./translation/__language.pad") != 0, __err_language);
