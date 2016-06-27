@@ -920,6 +920,7 @@ void game_args_parse()
 
 		game_log_write(str_printf(NULL, "ID: <%i>", (int) GetCurrentProcessId()));
 		game_log_write(str_printf(NULL, "Engine release %f", (double) version));
+		game_log_write(str_printf(NULL, "Memory: %ld MBytes", (long) os_get_ram(S_MB)) );
 		game_log_write(str_printf(NULL, "Game release %s", (char *) __GAME_VERSION));
 
 		#ifdef    __FSAA_DLL_H__

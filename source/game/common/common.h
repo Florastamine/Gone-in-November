@@ -43,7 +43,7 @@
 #endif
 
 #define __PSVS_VERSION   3030
-#define __GAME_VERSION   "v0.9.0-beta"
+#define __GAME_VERSION   "v0.9.1-beta"
 
 /*
  * Launch parameters.
