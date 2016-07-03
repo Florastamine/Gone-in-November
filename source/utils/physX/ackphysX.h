@@ -1,10 +1,10 @@
 /////////////////////////////////////////////////////////////
 // Physics plugin using NVIDIA PhysX
-// (c) 2009 Christian Kahler / oP group Germany              
+// (c) 2009 Christian Kahler / oP group Germany
 /////////////////////////////////////////////////////////////
 #ifndef ACKPHYSX_H
 	#define ACKPHYSX_H
-	
+
 	#define PRAGMA_PRINT "\nPhysics module initialization..."
 
 	#define PRAGMA_BIND "ackphysX.dll"
@@ -72,11 +72,11 @@
 	#define	NX_RAYCAST_FACE_NORMAL		(1<<6)	// if set, the function returns the normal vector in world coords.
 	#define	NX_RAYCAST_MATERIAL			(1<<7)	// if set, the function returns the materail index of the shape.
 
-	//Body Flags: 
+	//Body Flags:
 	//Collection of flags describing the behavior of a dynamic rigid body.
 	#define	NX_BF_DISABLE_GRAVITY	 (1<<0) // disables the gravity for the actor
 	#define	NX_BF_FROZEN_POS_X		 (1<<1) // Enable/disable freezing for this body/actor.
-	#define	NX_BF_FROZEN_POS_Z		 (1<<2) 
+	#define	NX_BF_FROZEN_POS_Z		 (1<<2)
 	#define	NX_BF_FROZEN_POS_Y		 (1<<3)
 	#define	NX_BF_FROZEN_ROLL			 (1<<4)
 	#define	NX_BF_FROZEN_PAN			 (1<<5)
@@ -101,8 +101,8 @@
 	#define	NX_AF_LOCK_COM							(1<<2) // Disables COM update when computing inertial properties at creation time.
 	#define	NX_AF_FLUID_DISABLE_COLLISION		(1<<3) // Enable/disable collision with fluid. (pro version)
 	#define	NX_AF_CONTACT_MODIFICATION			(1<<4) // Turn on contact modification callback for the actor.
-	#define	NX_AF_FORCE_CONE_FRICTION			(1<<5) // Force cone friction to be used for this actor.		
-	#define	NX_AF_USER_ACTOR_PAIR_FILTERING	(1<<6) // Enable/disable custom contact filtering. 
+	#define	NX_AF_FORCE_CONE_FRICTION			(1<<5) // Force cone friction to be used for this actor.
+	#define	NX_AF_USER_ACTOR_PAIR_FILTERING	(1<<6) // Enable/disable custom contact filtering.
 
 	//Shape Flags:
 	#define	NX_TRIGGER_ON_ENTER			 		(1<<0)
@@ -139,7 +139,7 @@
 	#define	NX_CLF_DAMPING            			 (1<<8) // Enable/disable damping of internal velocities. Use NxClothDesc.dampingCoefficient to control damping.
 	#define	NX_CLF_COLLISION_TWOWAY   		 	 (1<<9) // Enable/disable two way collision of cloth with the rigid body scene.
 	#define	NX_CLF_TRIANGLE_COLLISION 			(1<<11) // Not supported in current release. Enable/disable collision detection of cloth triangles against the scene.
-	#define	NX_CLF_TEARABLE           			(1<<12) // Defines whether the cloth is tearable. 
+	#define	NX_CLF_TEARABLE           			(1<<12) // Defines whether the cloth is tearable.
 	#define	NX_CLF_HARDWARE           			(1<<13) // Defines whether this cloth is simulated on the GPU.
 	#define	NX_CLF_COMDAMPING		  				(1<<14) // Enable/disable center of mass damping of internal velocities.
 	#define	NX_CLF_VALIDBOUNDS		  			(1<<15) // If the flag NX_CLF_VALIDBOUNDS is set, cloth particles outside the volume defined by validBounds are automatically removed from the simulation.
@@ -149,7 +149,7 @@
 	#define	NX_CLF_HARD_STRETCH_LIMITATION	(1<<20) // Uses the information provided by NxCloth.setConstrainPositions() and NxCloth.setConstrainCoefficients() to make the cloth less stretchy.
 	//#define	NX_CLF_UNTANGLING             	(1<<21) // This feature is experimental, use with caution! When this NX_CLF_UNTANGLING is set, the simulator tries to untangle the cloth locally.
 	//#define	NX_CLF_INTER_COLLISION        	(1<<22) // Allows cloth to collide with soft bodies and with other cloth. Not supported yet
-	
+
 	// The attachmentFlags parameter specifies how the cloth interacts with the shape. The two possible values are shown below:
 	// The default is only object->cloth interaction (one way).
 
@@ -167,7 +167,7 @@
 	// compatibility redefines
 	#ifdef PH_COMPAT
 		#define ph_setgravity(v)						pX_setgravity(v)
-		#define phent_settype(ent,type,hull)		pXent_settype(ent,type,hull) 
+		#define phent_settype(ent,type,hull)		pXent_settype(ent,type,hull)
 		#define phent_enable(ent,fl)					pXent_enable(ent,fl)
 		#define phent_setmass(ent,mass,hull)		pXent_setmass(ent,mass)
 		#define phent_setgroup(ent,num)				pXent_setgroup(ent,num)
@@ -187,136 +187,136 @@
 		#define phent_clearvelocity(ent)				pXent_clearvelocity(ent)
 		#define phcon_add(type,ent1,ent2)			pXcon_add(type,ent1,ent2,0)
 		#define phcon_remove(ent)						pXcon_remove((void*)ent)
-		#define phcon_setmotor(ent,v1,v2,v3)		pXcon_setmotor((void*)ent,v1,v2) 
-		#define phcon_setparams1(ent,v1,v2,v3)		pXcon_setparams1((void*)ent,v1,v2,v3) 
-		#define phcon_setparams2(ent,v1,v2,v3)		pXcon_setparams2((void*)ent,v1,v2,v3) 
+		#define phcon_setmotor(ent,v1,v2,v3)		pXcon_setmotor((void*)ent,v1,v2)
+		#define phcon_setparams1(ent,v1,v2,v3)		pXcon_setparams1((void*)ent,v1,v2,v3)
+		#define phcon_setparams2(ent,v1,v2,v3)		pXcon_setparams2((void*)ent,v1,v2,v3)
 	#endif
 	////////////////////////////////////////////////////////////////////////////////////
 	float NxPiF32 = 3.141592653589793;
 
-	var CLOTH_DEFAULT[40] = 
+	var CLOTH_DEFAULT[40] =
 	{
 		// thickness: Thickness is usually a fraction of the overall extent of the cloth and should not be set to a value greater than that.
 		// A good value is the maximaldistance between two adjacent cloth particles in their rest pose.
 		// Visual artifacts or collision problems may appear if the thickness is too small.
 		0.2, // Range: [0,inf]
-		
+
 		// selfCollisionThickness: Size of the particle diameters used for self collision and inter-collision.
 		// The self collision thickness is usually a fraction of the overall extent of the cloth and should not be set to a value greater than that.
 		// A good value is the maximal distance between two adjacent cloth particles in their rest pose.
 		// Visual artifacts or collision problems may appear if the particle radius is too small.
 		0.2, // Range: [0,inf]
-		
+
 		// density: Density of the cloth (mass per area).
 		1.0, // Range: [0,inf]
-		
+
 		// bendingStiffness: Bending stiffness of the cloth. Only has an effect if the flag NX_CLF_BENDING is set.
 		1.0, // Range: [0,1]
-		
+
 		// stretchingStiffness: Stretching stiffness of the cloth. Stretching stiffness must be larger than 0.
 		1.0, // Range: [0,1]
-		
+
 		//	hardStretchLimitationFactor: Defines the hard stretch elongation limit.
 		// If the flag NX_CLF_HARD_STRETCH_LIMITATION is set, the solver pulls vertices with a maxDistance greater zero towards vertices with maxDistance zero (attached).
 		// This reduces the stretchiness even for low solver iteration counts.
 		// The process is non-physical and can yield small ghost forces.
 		// The hardStretchLimitationFactor defines by what factor the cloth is allowed to stretch.
 		1.0, // Range: [0,inf]
-		
+
 		// dampingCoefficient: Spring damping of the cloth. Only has an effect if the flag NX_CLF_DAMPING is set.
 		0.5, // Range: [0,1]
-		
+
 		// friction: Friction coefficient. Defines the damping of the velocities of cloth particles that are in contact.
 		0.5, // Range: [0,1]
-		
-		// pressure: If the flag NX_CLF_PRESSURE is set, this variable defines the volume of air inside the mesh as volume = pressure * restVolume.	
+
+		// pressure: If the flag NX_CLF_PRESSURE is set, this variable defines the volume of air inside the mesh as volume = pressure * restVolume.
 		// For pressure < 1 the mesh contracts w.r.t. the rest shape
 		// For pressure > 1 the mesh expands w.r.t. the rest shape
 		1.0, // Range: [0,inf]
-		
+
 		// tearFactor: If the flag NX_CLF_TEARABLE is set, this variable defines the elongation factor that causes the cloth to tear.
 		// When the buffer cannot hold the new vertices anymore, tearing stops.
 		1.5, //	Range: [1,inf]
-		
-		// collisionResponseCoefficient: Defines a factor for the impulse transfer from cloth to colliding rigid bodies. 
+
+		// collisionResponseCoefficient: Defines a factor for the impulse transfer from cloth to colliding rigid bodies.
 		// Only has an effect if NX_CLF_COLLISION_TWOWAY is set.
 		0.2, // Range: [0,inf]
-		
+
 		// attachmentResponseCoefficient: Defines a factor for the impulse transfer from cloth to attached rigid bodies.
 		// Only has an effect if the mode of the attachment is set to NX_CLOTH_ATTACHMENT_TWOWAY.
 		0.2, // Range: [0,1]
-		
+
 		// attachmentTearFactor: If the flag NX_CLOTH_ATTACHMENT_TEARABLE is set in the attachment method of NxCloth.
 		// This variable defines the elongation factor that causes the attachment to tear.
 		1.5, // Range: [1,inf]
-		
+
 		// toFluidResponseCoefficient: Defines a factor for the impulse transfer from this cloth to colliding fluids.
 		// Only has an effect if the NX_CLF_FLUID_COLLISION flag is set. Note: Large values can cause instabilities
 		1.0, // Range: [0,inf]
-		
+
 		// fromFluidResponseCoefficient: Defines a factor for the impulse transfer from colliding fluids to this cloth.
 		// Only has an effect if the NX_CLF_FLUID_COLLISION flag is set. Note: Large values can cause instabilities
 		1.0, // Range: [0,inf]
-		
+
 		// compressionLimit: Defines a factor up to which the cloth is weak under compression.
 		//	This factor is the lower part of a range [limit, 1].
 		// Whenever an edge is compressed to something between [limit, 1] * original length, the stretchingStiffness is multiplied with the compressionStiffness.
 		//	Since the compressionStiffness is smaller or equal to 1, this will always define a range where the cloth reacts more softly to compressed edges.
 		// This feature is useful to generate small wrinkles features on the cloth mesh outside the SDK.
 		1.0, // Range: [0,1]
-		
+
 		// compressionStiffness: Defines the stiffness of the cloth under compression.
 		// This stiffness scales the stretchingStiffness in the range defined by compressionLimit.
 		1.0, // Range: [0,1]
-		
+
 		// minAdhereVelocity: If the NX_CLF_ADHERE flag is set the cloth moves partially in the frame of the attached actor.
 		// This feature is useful when the cloth is attached to a fast moving character.
 		// In that case the cloth adheres to the shape it is attached to while only velocities below the parameter minAdhereVelocity are used for secondary effects.
 		1.0, // Range: [0,inf]
-		
+
 		// solverIterations: Number of solver iterations.
 		// Note: Small numbers make the simulation faster while the cloth gets less stiff.
 		3, // Range: [1,inf]
-		
+
 		// hierarchicalSolverIterations: Number of iterations of the hierarchical cloth solver.
 		// For the this value to have an effect, the parameter NxClothMeshDesc.numHierarchyLevels must be greater then one when cooking the cloth mesh.
 		// In this case, the hierarchical cloth solver uses the mesh hierarchy to speed up convergence, i.e. makes large pieces of cloth less stretchy.
 		2, // Range: [0,inf]
-		
+
 		// wakeUpCounter: The cloth wake up counter. Corresponds to 20 frames for the standard time step.
 		4.0, // Range: [0,inf]
-		
+
 		// sleepLinearVelocity: Maximum linear velocity at which cloth can go to sleep.
 		// If negative, the global default will be used.
 		-1.0, // Range: [-1,inf]
-		
+
 		// collisionGroup: Sets which collision group this cloth is part of.
 		0, // Range: [0, 31]
-		
+
 		// forceFieldMaterial: Force Field Material Index, index != 0 has to be created.
 		0,
-		
-		// relativeGridSpacing: This parameter defines the size of grid cells for collision detection. 
-		// Note: Setting the size of grid cells to small or to big, crashes your exe!		
+
+		// relativeGridSpacing: This parameter defines the size of grid cells for collision detection.
+		// Note: Setting the size of grid cells to small or to big, crashes your exe!
 		0.25, // Range: [0.01,inf]
-		
+
 		// externalAcceleration: External acceleration which affects all non attached particles of the cloth.
 		0, 0, 0,
 
 		// windAcceleration: Acceleration which acts normal to the cloth surface at each vertex.
 		0, 0, 0,
-		
-		// validBounds: 
+
+		// validBounds:
 		// If the flag NX_CLF_VALIDBOUNDS is set, this variable defines the volume outside of which cloth particle are automatically removed from the simulation.
 		// XYZ bounding box minimum coordinate
 		0, 0, 0,
 		// XYZ bounding box maximum coordinate
 		0, 0, 0,
-		
+
 		// Flag bits.
 		0 // NX_CLF_HARDWARE is set automatically, depending on your GPU (see above)
 	};
-	
+
 	//main functions
 	void* physX_load(); // returns NxPhysicsSDK pointer
 	function physX_destroy();
@@ -326,10 +326,10 @@
 	function pX_stats(var);
 
 	//new functions
-	
+
 	// Creates a cloth physics object (ent), with an attached entity (ent1,ent2) or NULL, the CLOTH_DEFAULT(var) and cloths flags(var) (see above)
 	function pXent_cloth(ENTITY*, ENTITY*, var, ENTITY*, var, var*);
-	
+
 	// Reset all SDK Cloths.
 	function pXent_reset_cloth();
 
@@ -370,7 +370,7 @@
 	function pXent_setbodyflagall(var mode,var flag)
 	{
 		for (you = ent_next(NULL); you; you = ent_next(you))
-		{ 
+		{
 			if (you->body) pXent_setbodyflag(you,mode,flag);
 		}
 	}
@@ -384,7 +384,7 @@
 	// sets the last parameter to 1, if you like tp perform dynamic vs. dynamic CCD collision.
 	function pXent_setccdskeleton(ENTITY*,VECTOR*,var);
 
-	//	The solver iteration count determines how accurately joints and contacts are resolved. 
+	//	The solver iteration count determines how accurately joints and contacts are resolved.
 	//	If you are having trouble with jointed bodies oscillating and behaving erratically, then
 	//	setting a higher solver iteration count may improve their stability.
 	//	Range:[1,255]
@@ -431,10 +431,10 @@
 	// direct access to a NxMaterialDesc material; vectors: standard , FrictionV, anisotropic
 	/*		material.restitution=Clamp(_FLOAT(standard->x)*0.01f,0.0f,1.0f);
 	material.staticFriction = _FLOAT(standard->y);
-	material.dynamicFriction = _FLOAT(standard->z); 
-	material.staticFrictionV = _FLOAT(FrictionV->x);  
-	material.dynamicFrictionV = _FLOAT(FrictionV->y);  
-	material.flags = _INT(FrictionV->z);  
+	material.dynamicFriction = _FLOAT(standard->z);
+	material.staticFrictionV = _FLOAT(FrictionV->x);
+	material.dynamicFrictionV = _FLOAT(FrictionV->y);
+	material.flags = _INT(FrictionV->z);
 	material.dirOfAnisotropy.set(_FLOAT(anisotropic->x),_FLOAT(anisotropic->y),_FLOAT(anisotropic->z));*/
 	function pXent_setmaterial(ENTITY*, VECTOR*, VECTOR*, VECTOR*);
 
@@ -527,7 +527,7 @@
 	// works
 	function pXent_makelocal(ENTITY*,VECTOR*,VECTOR*);
 
-	// new: last var for intern collisions between the two entities (0,1) 
+	// new: last var for intern collisions between the two entities (0,1)
 	void* pXcon_add(var,ENTITY*,ENTITY*,var);
 
 	// if Joint -> release / if Wheel -> release Wheel Shape // you have to use pXent_settype(Wheelname,1,hull) if you want a breaking look (see car.c)
@@ -572,18 +572,18 @@
 	function physX_level_load()
 	{
 		if (!NxPhysicsSDK) return;
-		
+
 		if (level_ent)
 		pXent_settype(level_ent,PH_STATIC,PH_POLY);
 		for (you = ent_next(NULL); you; you = ent_next(you))
-		{ 
-			if (you->flags & PASSABLE) continue;	
+		{
+			if (you->flags & PASSABLE) continue;
 			var type = ent_type(you);
 			if(type == 5 && (you->emask & DYNAMIC)) continue;	// only register static models
 			if(type < 2 && type > 5)  continue; // blocks, models, or terrain only
 			if(type == 4)
 			pXent_settype(you,PH_STATIC,PH_TERRAIN);
-			else	
+			else
 			pXent_settype(you,PH_STATIC,PH_POLY);
 		}
 		on_level_load_px();
@@ -592,12 +592,12 @@
 	function physX_ent_remove(ENTITY* ent)
 	{
 		//if(!NxPhysicsSDK) {printf("!NxPhysicsSDK return!"); return;}
-		//if(ent.body) {printf("ent.body"); pXent_settype(ent,0,0);}		
+		//if(ent.body) {printf("ent.body"); pXent_settype(ent,0,0);}
 		if(!NxPhysicsSDK) return;
-		if(ent->body) pXent_settype(ent,0,0);		
+		if(ent->body) pXent_settype(ent,0,0);
 		on_ent_remove_px(ent);
 	}
-	
+
 	function exit_event()
 	{
 		for(you = ent_next(NULL); you; you = ent_next(you))
@@ -615,48 +615,4 @@
 		on_exit_px();
 	}
 
-	function physX_open()
-	{
-		if(NxPhysicsSDK) return; // already initialized
-		if(version < 8) {
-			error("PhysX only supported in A8!");
-			return;
-		}
-		
-		NxPhysicsSDK = physX_load();
-		pX_setsteprate(60, 16, NX_TIMESTEP_FIXED);
-		NxScene = physX_run(0);
-		pX_setunit(1/40);
-
-		if(!on_exit) on_exit = on_exit_px0;
-		if(!on_level_load) on_level_load = on_level_load_px0;
-		if(!on_ent_remove) on_ent_remove = on_ent_remove_px0;
-
-		on_exit_px = on_exit;	// store previous on_exit function
-		on_exit = physX_close;
-		on_level_load_px = on_level_load;
-		on_level_load = physX_level_load;
-		on_ent_remove_px = on_ent_remove;
-		on_ent_remove = physX_ent_remove;
-
-		while(NxPhysicsSDK) {
-			
-#ifdef FIXED_TIME
-//				printf("FIXED_TIME");
-//This for-loop fixes the physX framerate to 60 when the frame rate is below 60 fps
-				int loc_n = integer(time_step * 60 / 16) + 1;
-				int loc_i = 0;
-				if (freeze_mode <= 0)		
-				for (; loc_i < loc_n; loc_i++)
-				physX_run(0);
-#else
-				if (freeze_mode <= 0)		
-				physX_run(time_frame/16);
-#endif
-			proc_mode = PROC_EARLY;	// call physX_run before entity actions.
-			wait(1);
-		}	
-	}
-	
 #endif // ACKPHYSX_H
-
