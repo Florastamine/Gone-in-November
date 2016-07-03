@@ -1,8 +1,26 @@
 @echo off
+title Be patient...
 setlocal
 cls
 
-title Be patient...
+>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+if '%errorlevel%' NEQ '0' (
+    echo Requesting administrative privileges...
+    goto UACPrompt
+) else ( goto req_success )
+
+:UACPrompt
+    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
+    set params = %*:"="
+    echo UAC.ShellExecute "cmd.exe", "/c %~s0 %params%", "", "runas", 1 >> "%temp%\getadmin.vbs"
+
+    "%temp%\getadmin.vbs"
+    del "%temp%\getadmin.vbs"
+    exit /B
+
+:req_success
+    pushd "%CD%"
+    CD /D "%~dp0"
 
 rem Query the architecture of Windows, in a very simple way.
 IF EXIST "%PROGRAMFILES(X86)%" (
@@ -22,4 +40,3 @@ copy %~dp0\*.dll %TPATH%\
 regsvr32 %TPATH%\OggDS.dll /s
 
 endlocal
-pause
