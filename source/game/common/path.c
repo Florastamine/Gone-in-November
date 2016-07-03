@@ -22,7 +22,7 @@
  * they are expected to be in the root folder (or in resource packages)
  * instead.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  *
  * I'm not going to bash macros all over the place like I did with <serializer>.

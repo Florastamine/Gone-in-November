@@ -44,7 +44,7 @@ void nov_scene_list_init()
 
 	int i = 0;
 	for(; i < TOTAL_DAYS; i++)
-		scene_add(day[i]);
+		scene_add( day[i] );
 }
 
 // Picks a language and perform string initialization based on the chosen language.
@@ -55,15 +55,14 @@ void nov_region_init(const char *language)
 	// Detect supported languages.
 	region_new();
 	region_scan();
-	bool b = region_set_language(language);
 
+	bool b = region_set_language(language);
 	if(b) {
 		game_log_write( str_printf( NULL, "Language successfully set to %s", _chr(region_get_language()) ) );
 	}
 
 	localized_init();
 }
-
 
 // Initializes static variables/subsystems.
 void nov_gui_static_init()
@@ -88,7 +87,7 @@ void nov_gui_static_init()
 
 	game_scene_set_desc_text_font("Times#25");
 
-	screenshot_set_name("GIN");
+	screenshot_set_name("Game");
 	on_f12 = screenshot;
 
 	game_static_init();
@@ -111,6 +110,7 @@ void nov_modules_init()
 	game_physx_new();
 	game_gui_state_new();
 	game_mplayer_new("./sound/stream/", "*.ogg");
+
 	// Post-initialization.
 	// gui_button_set_event(__GUIState_singleton->intro_lang_vn_button, EVENT_BUTTON_PUSH, NULL, __ui_flag_vn_event);
 	// gui_button_set_event(__GUIState_singleton->intro_lang_en_button, EVENT_BUTTON_PUSH, NULL, __ui_flag_en_event);
@@ -128,7 +128,7 @@ int main(int argc, char **argl)
 	const char *__err_launcher = "Please run the game through the launcher!";
 	const char *__err_language = "Language list cannot be found! Run generate_language_list.exe to let the language definition be generated once.";
 	const char *__wrn_lowres   = "The game requires a monitor with a resolution of at least 1,024 x 768. The game will still run, but certain GUI elements won't be displayed correctly.";
-	const char *__wrn_lowram   = "This game is currently not optimized for the final release, and thus it needs 4 GB RAM or more in order to run the game smoothly. If you're having less than 4 GB RAM, clicking \"OK\" will force the game to run, but it may causes unexpected issues. If you want to quit, open Task Manager and close the game's task.\n\nSorry for the inconvenience.";
+	const char *__wrn_lowram   = "You need at least 4 GB RAM in order to play the game. If you're having less than 4 GB RAM, clicking \"OK\" will force the game to run, but it may causes unexpected issues. If you want to quit now, open Task Manager and close the game process.\n\nSorry for the inconvenience.";
 
 	// See if the game was launched through the Go-based launcher.
 	#ifndef    DEBUG
@@ -152,7 +152,7 @@ int main(int argc, char **argl)
 		}
 	#endif
 
-	// Overrides some of Acknex's global variables (their default values are way too low)
+	// Overrides some of the global variables (their default values are way too low)
 	game_globals_set();
 
 	// mouse_lock(true);
@@ -187,8 +187,6 @@ int main(int argc, char **argl)
 	game_gui_set_state(STATE_INTRO);
 	game_gui_render();
 
-	command_table_new();
-
 	Vector3 tx;
 	tx.x = screen_size.x - 150.0;
 	tx.y = 15.0;
@@ -199,6 +197,7 @@ int main(int argc, char **argl)
 
 	gui_text_set_color(todo, COLOR_DARK_GREY);
 	gui_text_set_pos(todo, __GUIState_singleton->todo_texture->pos_x + 10.0, __GUIState_singleton->todo_texture->pos_y + 10.0);
+	gui_text_set_pos(txtSubtitleHandler, (screen_size.x / 2.0) - 156.0, __GUIState_singleton->todo_texture->pos_y + bmap_height(__GUIState_singleton->todo_texture->bmap) + 25.0);
 
 	// Main game loop, which can be terminated with the "Alt + F4" key.
 	while(!(__GameState_singleton->exit_switch))
@@ -214,7 +213,7 @@ int main(int argc, char **argl)
 		// Continuously update the area the player is currently in.
 		#ifndef    UI_LESS
 			if( STATE_NULL == game_gui_get_state() && game_intro_done ) // Because draw_*() functions don't take layers into account,
-			                                         // I have to rely a lot on GUI states in order to manage rendering orders of GUI objects.
+			                                                            // I have to rely a lot on GUI states in order to manage rendering orders of GUI objects.
 			{
 				draw_text(game_region_check(), tx.x, tx.y, COLOR_WHITE);
 			}
@@ -237,7 +236,7 @@ int main(int argc, char **argl)
 
 		if( key_tab && (STATE_NULL == game_gui_get_state()) )
 		{
-			switch (game_day_get())
+			switch ( game_day_get() )
 			{
 				case DAY_3:
 				case DAY_4:
@@ -264,14 +263,13 @@ int main(int argc, char **argl)
 
 					if( (todo->pstring)[0] != lstr_todo_c2 )
 						(todo->pstring)[0] = lstr_todo_c2;
-					break;
 				}
 			}
 
-			draw_obj(todo);
+			draw_obj( todo );
 		}
 
-		if(key_esc && __can_press_esc)
+		if( key_esc && __can_press_esc && (game_gui_get_state() != STATE_ENDING) )
 		{
 			while(key_esc) wait(1.0);
 

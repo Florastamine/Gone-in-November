@@ -26,7 +26,7 @@
  * ...or by following the compilation instructions on GitHub.
  *
  * Authors: TechMuc (http://techmuc.kilu.de/)
- *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ *          Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    __TEXT_READER_DLL_H__

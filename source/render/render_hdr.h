@@ -24,7 +24,7 @@
  * Queue is also available with render_hdr_set_queued().
  * 
  * Authors: Wolfgang "BoH_Havoc" Reichardt (http://dotmos.org/)
- *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ *          Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    A8_FREE

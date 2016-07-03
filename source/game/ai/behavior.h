@@ -20,7 +20,7 @@
  * Contains behaviour code aka "actions", which is (mostly) independent of the
  * game logic, with the goal of making this header as portable as possible.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    __BEHAVIOUR_H__

@@ -19,7 +19,7 @@
  * <scene>
  * Contains functionalities for adding, removing and calling scenes.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    __SCENE_H__

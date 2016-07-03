@@ -22,7 +22,7 @@
  * LBGUI is way too heavyweight and I don't want to deal with 3rd party code either.
  * This header was specifically made for <gui>, but you can use it independently.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    _GUI_UTILITIES_H_

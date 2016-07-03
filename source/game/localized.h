@@ -22,7 +22,7 @@
  * to the parameter after a language was picked.
  * Dependent of <region>.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    __LOCALIZED_H__
@@ -35,7 +35,7 @@
  *
  * Initializes the game's strings based on the chosen language.
  * If you change the current language, for example, through a call to region_set_language(),
- * call this function once again to perform re-initialization.
+ * call this function again to perform re-initialization.
  */
 void    localized_init();
 

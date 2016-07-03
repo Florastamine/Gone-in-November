@@ -21,6 +21,7 @@ void __draw_hands()
 {
     if( game_gui_get_state() != STATE_PC && game_gui_get_state() != STATE_MAIN_MENU )
     {
-        draw_obj( __GUIState_singleton->interact_icon );
+        if( !key_tab )
+            draw_obj( __GUIState_singleton->interact_icon );
     }
 }

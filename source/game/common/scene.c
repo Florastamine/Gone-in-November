@@ -19,7 +19,7 @@
  * <scene>
  * Contains functionalities for adding, removing and calling scenes.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
  ChapterData *scene_data_new(const char *name, const char *internal_name,
@@ -45,7 +45,7 @@ void scene_new()
 {
     game_log_write("Request to create a new scene list...");
 
-    if(!ChapterList_singleton)
+    if( !ChapterList_singleton )
     {
         ChapterList_singleton = ChapterListCreate();
         game_log_write("Allocated and created a brand new scene list.");

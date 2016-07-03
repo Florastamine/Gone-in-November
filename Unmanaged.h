@@ -45,8 +45,7 @@
 
 #define    SCENE_PART    skill8
 
-int g_calls = 0;
-BOOL g_init  = false;
+BOOL       g_init  = false;
 
 void init();
 void __level_load_event(var);

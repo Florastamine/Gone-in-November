@@ -13,7 +13,7 @@
  *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  * 
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  */
 //title: WDF
 #define = 

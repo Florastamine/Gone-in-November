@@ -20,7 +20,7 @@
  * Downpour's GUI code.
  * Dependent of the library <gui_utilities>.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    _GUI_H_

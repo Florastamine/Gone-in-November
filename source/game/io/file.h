@@ -19,9 +19,9 @@
  * <file>
  * Merely a wrapper for Gamestudio's file_*() family of functions with
  * the intention of making I/O easier to work with.
- * This header was deprecated and removed. (check-out 68bbc28 if you want to see it).
+ * This header was deprecated and removed. (check out commit 68bbc28 if you want to see it).
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    _FILE_H_

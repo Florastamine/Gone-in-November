@@ -23,7 +23,7 @@
  * are generated and used right away without being modified in any way -
  * whatever that would be (coding styles, algorithms, ...)
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    _UNMANAGED_H_

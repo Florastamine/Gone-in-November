@@ -295,7 +295,7 @@ float gui_panel_get_rotation( Panel *panel )
  *     Panel *p = pan_create(<...>);
  *     while( gui_panel_get_rotation(p) < 360.0 )
  *     {
- *         gui_panel_set_rotation(p, gui_panel_get_rotation() + 0.5 * time_step);
+ *         gui_panel_set_rotation(p, gui_panel_get_rotation(p) + 0.5 * time_step);
  *         wait(1.0);
  *     }
  *	}
@@ -1362,7 +1362,7 @@ void gui_pbar_update_color_front( ProgressBar *pbar, VECTOR *color )
 
 float gui_pbar_get_progress(  ProgressBar *pbar )
 {
-	return (float) ifelse(pbar != NULL, pbar->progress, -1);
+	return (float) ifelse(pbar != NULL, pbar->progress, -1.0);
 }
 
 int gui_pbar_get_layer(  ProgressBar *pbar )
@@ -1472,7 +1472,7 @@ StaticDialogue *gui_dialogue_new( const char *text_file, const char *avatar, con
 	 * can be read normally.
 	 */
 	STRING *old_delimiter = str_create(delimit_str);
-	str_cpy(delimit_str, "!##$&&^@#^^"); // Nobody would knows.
+	str_cpy(delimit_str, "!##$&&^@#^^"); // Nobody knows.
 
 	if(unicode)
 		dialog->lines = txt_loadw(dialog->__container, text_file);
@@ -2040,7 +2040,7 @@ CreditsText *gui_credits_new( const char *text_file, const char *track_file, con
 	txt_load(text->__container, text->text_file); 	/*
 													 * Parse the plain text file to the container without taking
 													 * Unicode into account. Parsing Unicode can be done through
-													 * txt_loadw() but it requires a little more work on the implementation.
+													 * txt_loadw() but it requires a little more work on the implementation side.
 													 */
 
 	return text;

@@ -29,7 +29,7 @@
  * ...or by following the compilation instructions on GitHub.
  *
  * Authors: ChrisB (www.swollen-eyeballs.org)
- *          Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ *          Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    __FSAA_DLL_H__

@@ -19,7 +19,7 @@
  *
  * Contains code for general, static entities.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 
@@ -149,7 +149,7 @@ void act_phone()
     float phone_y = (screen_size.y / 2.0) - 256.0;
 
     float aphone_x = (screen_size.x - str_width(s_0, f)) / 2.0;
-    float aphone_y = (screen_size.y / 2.0) - 256.0;
+    float aphone_y = 32.0;
 
     my->flags &= FLAG3;
 

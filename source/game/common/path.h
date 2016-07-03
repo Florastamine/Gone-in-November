@@ -22,7 +22,7 @@
  * they are expected to be in the root folder (or in resource packages)
  * instead.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    _PATH_H_

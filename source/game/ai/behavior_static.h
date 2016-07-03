@@ -19,7 +19,7 @@
  *
  * Contains code for general, static entities.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    __BEHAVIOUR_STATIC_H__

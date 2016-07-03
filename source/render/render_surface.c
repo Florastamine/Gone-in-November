@@ -27,7 +27,7 @@
  * Ocean (SM2.0) - weird rendering artifacts with HD4400?
  * Velvety (SM3.0)
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  *          Slin
  *          mocosgames
  *          ello

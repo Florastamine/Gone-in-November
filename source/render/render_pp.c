@@ -22,7 +22,7 @@
  * Contains postprocessing effects.
  * 
  * Authors: Christian Behrenberg (http://www.christian-behrenberg.com)
- *          Modified and packaged by Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ *          Modified and packaged by Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 

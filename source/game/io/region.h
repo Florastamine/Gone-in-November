@@ -22,7 +22,7 @@
  * I could write a csv-parser instead but searching for the correct tag
  * requires a very fast string algorithm.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  */
 #ifndef    _REGION_H_
 #define    _REGION_H_

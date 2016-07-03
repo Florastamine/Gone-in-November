@@ -21,7 +21,7 @@
  * rain rendering. Make sure both the scene (level_ent) and the camera entity is valid.
  * 
  * Authors: MasterQ32 (http://www.masterq32.de/)
-            Modified and optimized by Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+            Modified and optimized by Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    A8_FREE

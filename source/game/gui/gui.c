@@ -262,7 +262,7 @@ __static void ___continue_event()
 
 __static void __exit_event()
 {
-    __game_event_on_close();
+    __game_event_on_close2();
 }
 
 /*
@@ -454,7 +454,7 @@ void game_gui_state_new()
 
             const char *d = _chr(delimit_str);
             str_cpy(delimit_str, "∠"); // If My Heart Had Wings
-            txt_load(__GUIState_singleton->PC_string_table, "./etc/pc.lstr");
+            txt_load(__GUIState_singleton->PC_string_table, "./etc/pc_string_table.lstr");
             str_cpy(delimit_str, d);
         }
 
@@ -538,7 +538,7 @@ void game_gui_state_new()
         __GUIState_singleton->PC_skyde_contacts       = pan_create(NULL, LAYER_GUI_7);
         __GUIState_singleton->PC_skyde_contacts->bmap = bmap_create(game_asset_get_gui("PC_contacts.jpg"));
         __GUIState_singleton->PC_skyde_contacts->flags |= (OVERLAY);
-        gui_panel_set_pos(__GUIState_singleton->PC_skyde_contacts, __GUIState_singleton->PC_wallpaper->pos_x + 15.0 , 128.0);
+        gui_panel_set_pos(__GUIState_singleton->PC_skyde_contacts, __GUIState_singleton->PC_wallpaper->pos_x + 15.0 , __GUIState_singleton->PC_wallpaper->pos_y + 150.0);
 
         #define    __CREATE_GUI_SKYDE_CONTACTS(x, y, on, off, over) pan_setbutton(__GUIState_singleton->PC_skyde_contacts, 0, 0, ##x##, ##y##, bmap_create(game_asset_get_gui(##on##)), bmap_create(game_asset_get_gui(##off##)), bmap_create(game_asset_get_gui(##over##)), bmap_create(game_asset_get_gui(##off##)), __contacts_click, NULL, NULL)
 

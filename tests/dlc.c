@@ -20,7 +20,7 @@
  * (the buffer doesn't get freed somehow).
  * Issue posted here: http://www.opserver.de/ubb7/ubbthreads.php?ubb=showflat&Number=457189#Post457189
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #include <acknex.h>

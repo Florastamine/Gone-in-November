@@ -20,6 +20,6 @@
  * Contains code for entities that is not the soul (player) but has 
  * dynamic behaviours. 
  * 
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */

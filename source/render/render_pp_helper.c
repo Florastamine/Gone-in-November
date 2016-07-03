@@ -5,7 +5,7 @@
  * Copyright (C) 2012 by Christian Behrenberg
  * http://www.christian-behrenberg.com
  * 
- * Modified and packaged by Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Modified and packaged by Florastamine (florastamine@gmail.com)
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
  * software and associated documentation files (the "Software"), to deal in the Software

@@ -15,7 +15,7 @@
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  *
  * It's a horrible mess filled with weird-ass macros and syntax. Do not attempt to read this as your eyes will bleed badly.
- * To put it to words: Here be dragons!
+ * To put it into plain words: Here be dragons!
  * Just joking, it's not all that bad. But because I couldn't take advantage of templates, and writing the same code with different data types
  * everywhere is suck, I decided to rewrote the same parts (just with different data types) in macros, and call them in appropriate functions.
  * This style of writing code is horrible (macro abusing anyone?), but no one ever reads it anyway.
@@ -449,7 +449,7 @@ void serialize( Archive *archf, const char *file )
 void deserialize_int(Archive *arch, const char *file)
 {
 	int pos;
-	char *tag_int = "<FI=";
+	const char *tag_int = "<FI=";
 	fixed channel = file_open_read(file);
 	String *content = "";
 

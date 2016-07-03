@@ -22,7 +22,7 @@
  * to the parameter after a language was picked.
  * Dependent of <region>.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 
@@ -73,36 +73,38 @@ void    localized_init()
 
 void    localized_free()
 {
-    safe_remove(lstr_open_door);
-    safe_remove(lstr_close_door);
-    safe_remove(lstr_interact);
-    safe_remove(lstr_interact_sleep);
-    safe_remove(lstr_read_note);
-    safe_remove(lstr_room_1stbedroom);
-    safe_remove(lstr_room_2ndbedroom);
-    safe_remove(lstr_room_1sthallway);
-    safe_remove(lstr_room_2ndhallway);
-    safe_remove(lstr_rooom_kitchen);
-    safe_remove(lstr_room_livingroom);
-    safe_remove(lstr_room_bathroom);
-    safe_remove(lstr_room_yard);
-    safe_remove(lstr_room_balcony);
-    safe_remove(lstr_room_workspace);
-    safe_remove(lstr_intro_c1);
-    safe_remove(lstr_intro_c3);
-    safe_remove(lstr_not_done_jobs);
-    safe_remove(lstr_options_1);
-    safe_remove(lstr_options_2);
-    safe_remove(lstr_options_3);
-    safe_remove(lstr_beta_warning);
-    safe_remove(lstr_induction_c1);
-    safe_remove(lstr_induction_c2);
-    safe_remove(lstr_induction_c3);
-    safe_remove(lstr_induction_c4);
-    safe_remove(lstr_induction_c5);
-    safe_remove(lstr_induction_c6);
-    safe_remove(lstr_todo_c1);
-    safe_remove(lstr_todo_c2);
-    safe_remove(lstr_todo_c3);
-    safe_remove(lstr_todo_c1);
+    #ifndef    UI_LESS
+        safe_remove(lstr_open_door);
+        safe_remove(lstr_close_door);
+        safe_remove(lstr_interact);
+        safe_remove(lstr_interact_sleep);
+        safe_remove(lstr_read_note);
+        safe_remove(lstr_room_1stbedroom);
+        safe_remove(lstr_room_2ndbedroom);
+        safe_remove(lstr_room_1sthallway);
+        safe_remove(lstr_room_2ndhallway);
+        safe_remove(lstr_rooom_kitchen);
+        safe_remove(lstr_room_livingroom);
+        safe_remove(lstr_room_bathroom);
+        safe_remove(lstr_room_yard);
+        safe_remove(lstr_room_balcony);
+        safe_remove(lstr_room_workspace);
+        safe_remove(lstr_intro_c1);
+        safe_remove(lstr_intro_c3);
+        safe_remove(lstr_not_done_jobs);
+        safe_remove(lstr_options_1);
+        safe_remove(lstr_options_2);
+        safe_remove(lstr_options_3);
+        safe_remove(lstr_beta_warning);
+        safe_remove(lstr_induction_c1);
+        safe_remove(lstr_induction_c2);
+        safe_remove(lstr_induction_c3);
+        safe_remove(lstr_induction_c4);
+        safe_remove(lstr_induction_c5);
+        safe_remove(lstr_induction_c6);
+        safe_remove(lstr_todo_c1);
+        safe_remove(lstr_todo_c2);
+        safe_remove(lstr_todo_c3);
+        safe_remove(lstr_todo_c1);
+    #endif
 }

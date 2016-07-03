@@ -20,7 +20,7 @@
  * Call render_rain_new() and render_rain_start() to perform
  * rain rendering. Make sure both the scene (level_ent) and the camera entity is valid.
  * 
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 

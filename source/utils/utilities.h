@@ -20,7 +20,7 @@
  * Contains general-purpose small utilities and helper functions/macros.
  * Lightweight and has no dependency other than Gamestudio's headers.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * Version: Call library_get_version() to get the current version.
  *
  * History
@@ -165,7 +165,7 @@
 
 /*
  * Macros, which is distinguishable by their capitalized names.
- * Because of that, I strongly encourage you to use typedef-ed names for Gamestudio
+ * Because of that, I strongly encourage you to use typedef-ed names when working with A8.
  * built-in types (Materials, Panels, Texts, ...) rather than its original, capitialized name (could cause confusion).
  */
 #define __namespace(namespace)             {}
@@ -827,7 +827,7 @@ __namespace(numeric) {
     /*
      * bool var_cmp(var a, var b)
      *
-     * Compares two vars the "correct" way.
+     * Compares two vars the (almost) "correct" way.
      */
     bool var_cmp(var a, var b);
 }
@@ -886,7 +886,7 @@ __namespace(window) {
      * void window_size_set( float width, float height )
      * void window_size_set( const Pair *__size )
      *
-     * Sets the Acknex window size.
+     * Sets the window size.
      */
 	void window_size_set( __In const Pair *__size );
 	void window_size_set( __In float width, __In float height );
@@ -901,7 +901,7 @@ __namespace(window) {
     /*
      * void window_aspect_set( float ratio )
      *
-     * Sets the Acknex screen aspect ratio.
+     * Sets the screen aspect ratio.
      *
      * Valid aspects are: (from Wikipedia)
      * 4:3 (1.333) Some (not all) 20th century computer monitors (VGA, XGA, etc.), standard-definition television
@@ -1140,6 +1140,7 @@ __namespace(io) {
      * (Thanks to Reconnoiter @ http://www.opserver.de/ubb7/)
      */
     bool __mouse_state = false;
+
     void mouse_lock( __In bool s);
 }
 
@@ -1147,7 +1148,7 @@ __namespace(GUI) {
     /*
      * void fade( PANEL *p, float a, float b, float s )
      *
-     * Performs fading in/out.
+     * Performs generic fading in/out.
      */
 	void fade( __In __Out PANEL *p, __In float a, __In float b, __In float s );
 }

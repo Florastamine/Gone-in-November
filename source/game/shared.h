@@ -20,7 +20,7 @@
  * cyclic (two-way) dependencies. Not the best way to solve a problem,
  * though. No solution is.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    __SHARED_CUPCAKES_H__

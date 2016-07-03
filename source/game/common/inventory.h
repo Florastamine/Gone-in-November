@@ -21,7 +21,7 @@
  * (https://github.com/MasterQ32/TUST), which fixed, modified and added features.
  * TODO: - Custom function pointers for managing items in the inventory.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    __INVENTORY_H__

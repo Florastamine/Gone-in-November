@@ -23,7 +23,7 @@
  * managing/navigating/destroying the doubly linked list.
  * It's not commented much.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    __SCENE_LIST_H__

@@ -20,7 +20,7 @@
  * This source file was made specifically for testing the <render_pp*> family 
  * of PP effects.
  * 
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #define   PRAGMA_PATH "../"

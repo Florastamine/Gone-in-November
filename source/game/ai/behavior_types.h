@@ -19,7 +19,7 @@
  *
  * Contains various identifiers which are used for identifying object types.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    __BEHAVIOUR_TYPES_H__

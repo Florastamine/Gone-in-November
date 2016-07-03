@@ -20,7 +20,7 @@
  * Responsible for general-purpose game functionalities (scene loading, asset loading, ...)
  * and managing (loading/unloading) subsystems (physics, audio, logging,...).
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  * kay
  */
@@ -43,7 +43,7 @@
 #endif
 
 #define __PSVS_VERSION   3030
-#define __GAME_VERSION   "v0.9.1-beta"
+#define __GAME_VERSION   "v1.0.0-main"
 
 /*
  * Launch parameters.
@@ -129,8 +129,6 @@ fixed sndPhoneCallHandle   = 0;
 SOUND *sndPhoneCall        = NULL;
 
 SOUND *sndHumanFall        = NULL;
-
-MATERIAL *matCrt           = NULL;
 
 // Global dummy objects for rendering each of the game's letter.
 // Note the naming convention - it just sucks, because I don't have a lot of time.

@@ -19,7 +19,7 @@
  *
  * Contains various identifiers which are used for identifying object types.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 __static void ent_set_type(ENTITY *entity, const int type)
@@ -48,5 +48,5 @@ void ent_iterate(const void *processor)
     f = processor;
 
     for(you = ent_next(NULL); you != NULL; you = ent_next(you))
-        f(you); // F*** you!
+        f(you); // ....
 }

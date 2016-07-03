@@ -20,7 +20,7 @@
  * Responsible for general-purpose game functionalities (scene loading, asset loading, ...)
  * and managing (loading/unloading) subsystems (physics, audio, logging,...).
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 __static void __write_newline( fixed fHandle, int times )
@@ -327,6 +327,14 @@ __static void __game_event_on_close()
 	sys_exit(NULL);
 }
 
+__static void __game_event_on_close2()
+{
+	// Frees static-initialized stuff.
+	game_static_free();
+
+	sys_exit(NULL);
+}
+
 /*
  * void game_event_setup()
  *
@@ -334,8 +342,8 @@ __static void __game_event_on_close()
  */
 void game_event_setup()
 {
-	on_close         = __game_event_on_close;
-	on_exit          = __game_event_on_exit;
+	on_close         = __game_event_on_close2;
+	on_exit          = __game_event_on_close2;
 
 	#ifdef    __FSAA_DLL_H__
 		render_sky           = fsaa_eventSky;
@@ -920,8 +928,16 @@ void game_args_parse()
 
 		game_log_write(str_printf(NULL, "ID: <%i>", (int) GetCurrentProcessId()));
 		game_log_write(str_printf(NULL, "Engine release %f", (double) version));
-		game_log_write(str_printf(NULL, "Memory: %ld MBytes", (long) os_get_ram(S_MB)) );
+		game_log_write(str_printf(NULL, "Memory: %ld Mbytes", (long) os_get_ram(S_MB)) );
 		game_log_write(str_printf(NULL, "Game release %s", (char *) __GAME_VERSION));
+		game_log_write(str_printf(NULL, "utils release: %s", (char *) library_get_version()));
+
+		Pair *p = shader_get_version();
+		if(p)
+		{
+			game_log_write(str_printf(NULL, "Video card capabilities: %i;%i", (int) p->first, (int) p->second));
+			pair_free(p);
+		}
 
 		#ifdef    __FSAA_DLL_H__
 			game_log_write(str_printf(NULL, "Video card anti-aliasing level %i", (int) fsaa_maxQualityNonMaskable()));
@@ -1037,7 +1053,9 @@ void game_video_cfg_parse()
 		__game_video_set(width, height, bit_depth, fullscreen, aa, af);
 
 		file_close(f);
+
 		array_container_free(settings);
+		settings = NULL;
 	}
 }
 
@@ -1176,7 +1194,7 @@ void load(  char *file,  void *pre,  void *post )
 void game_globals_set()
 {
 	max_paths = 4096;
-	max_particles = 16777216;
+	max_particles = 65536;
 	max_entities = 65536; // By default, max_entities equals to nexus * 10.
 								// We raise that limit 12.8 times, i.e. nexus * 128.
 	clip_particles = 0.7;
@@ -1184,12 +1202,16 @@ void game_globals_set()
 	mip_levels = 6;
 	sky_blend = 1;
 	tex_share = 1;
+	time_smooth = 0.9;
+
+	/*
 	terrain_chunk = 16;
 	terrain_lod = 4;
 	detail_size = 80;
-	time_smooth = 0.9;
 	d3d_shadowdepth = 32;
 	d3d_texdepth = 32;
+	*/
+
 	random_seed(0);
 
 	// Enable standard stencil shadows if the header <render_shadows> isn't included.
@@ -1215,7 +1237,7 @@ void game_console_load()
 {
 	command_table_new(); // Initialize the internal console interface.
 
-	command_table_add("skyrim", __cfunc__skyrim);
+	command_table_add("skyrjm", __cfunc__skyrjm);
 }
 
 /*
@@ -1367,14 +1389,8 @@ void game_static_init()
 
 	txtSubtitleHandler           = txt_create(1, 1);
 	txtSubtitleHandler->font     = Normal_Text_Font;
-	txtSubtitleHandler->pos_y    = (screen_size.y / 2.0) + 64.0;
-	txtSubtitleHandler->pos_x    = (screen_size.x / 2.0) - 156.0;
-
-	/*
-	#ifndef    A8_FREE
-		matCrt = ppCrtNewMtl(PP_CRT_MODE_SCANLINE);
-	#endif
-	*/
+	txtSubtitleHandler->pos_y    = 0.0;
+	txtSubtitleHandler->pos_x    = 0.0;
 }
 
 /*
@@ -1396,10 +1412,10 @@ void game_static_free()
 	snd_remove(sndPhoneCall);
 	snd_remove(sndPCLogout);
 
-	#ifndef    A8_FREE
-		if(matCrt)
-			safe_remove(matCrt);
-	#endif
+	RemoveFontResource("./etc/Essai.ttf");
+	RemoveFontResource("./etc/UVN-remind.ttf");
+	RemoveFontResource("./etc/ank.ttf");
+	RemoveFontResource("./etc/AndesRoundedLight.otf");
 }
 
 /*

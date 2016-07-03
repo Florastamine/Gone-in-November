@@ -22,7 +22,7 @@
  * compatibility and better coding structures. As a result (and as the nature of
  * GiN), the code won't include ducking and jumping.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 #ifndef    __HOLLA_HOLLA_GET_DOLLAS__

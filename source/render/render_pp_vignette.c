@@ -5,7 +5,7 @@
  * Copyright (C) 2012 by Christian Behrenberg
  * http://www.christian-behrenberg.com
  * 
- * Modified and packaged by Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Modified and packaged by Florastamine (florastamine@gmail.com)
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
  * software and associated documentation files (the "Software"), to deal in the Software
@@ -120,7 +120,7 @@ COLOR* ppVignetteGetColor (MATERIAL* m)
  * Sets the start distance of the vignette
  * 
  * fStart
- *    Start distance of the vignette as percentage, e.g. 0.3 fÅE 30%. Should be inside the
+ *    Start distance of the vignette as percentage, e.g. 0.3 fÔøΩE 30%. Should be inside the
  *    screen (0 < fStart < 1).
  */
 void ppVignetteSetStart (MATERIAL* m, var fStart)
@@ -151,7 +151,7 @@ var ppVignetteGetStart (MATERIAL* m)
  * Sets the end distance of the vignette
  * 
  * fEnd
- *    End distance of the vignette as percentage, e.g. 0.75 fÅE 75%. Should be near the
+ *    End distance of the vignette as percentage, e.g. 0.75 fÔøΩE 75%. Should be near the
  *    border of the screen or slightly outside, e.g. 0.75 < fEnd < 1.5
  */
 void ppVignetteSetEnd (MATERIAL* m, var fEnd)

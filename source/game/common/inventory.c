@@ -20,7 +20,7 @@
  * A plain simple and rewritten inventory system from the TUST project
  * (https://github.com/MasterQ32/TUST), which fixed, modified and added features.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 Bag *bag_new(const char *background_file, const char *name, int layer, const int max_items, const float w, const float h)

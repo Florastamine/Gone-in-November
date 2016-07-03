@@ -19,7 +19,7 @@
  * void __assert( const char *message )
  *
  * A very simple assert() implementation.
- * It has to relie on the parameter alone, because Lite-C doesn't have support for __func__
+ * It has to rely on the parameter alone, because Lite-C doesn't have any support for __func__.
  */
 void __assert( const char *message )
 {
@@ -702,7 +702,7 @@ void window_title_set( const char *title )
  */
 char *window_title_get()
 {
-	char *tbuffer = MALLOC(128, char); // 128 is hard limit. Increase to your favor.
+	char *tbuffer = MALLOC(128, char); // 128 is a hard limit. Increase to your favor.
 
 	#ifdef    WINDOWS_API
 	    GetWindowText(hWnd, tbuffer, 128);
@@ -1856,7 +1856,7 @@ __static void __fade_out( PANEL *p, float f, float t, float s )
  */
 void fade( PANEL *p, float a, float b, float s )
 {
-	if( a == b || !p ) return;
+	if( var_cmp(a, b) || !p ) return;
 
 	if(a < b)
 	    __fade_in(p, a, b, s);

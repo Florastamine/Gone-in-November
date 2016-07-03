@@ -22,7 +22,7 @@
  * to easily create and manage the level list yourself without extra code for
  * managing/navigating/destroying the doubly linked list.
  *
- * Authors: Huy Nguyen (http://vn-sharing.net/forum/member.php?u=15466)
+ * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
 ChapterList *ChapterListCreate()
