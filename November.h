@@ -54,7 +54,7 @@
  * Performs file lookup in subdirectories. In published builds, data are packed into
  * resource files (.wrs or .pak), so this switch must be toggled off.
  */
-#define    PERFORM_PATH_LOOKUP
+// #define    PERFORM_PATH_LOOKUP
 
 /*
  * Performs cryptography on everything written out.
@@ -99,7 +99,7 @@
 #include "./source/game/common/common.h"
 /* #include "./source/game/common/inventory.h" */
 #include "./source/game/common/scene.h"
-/* #include "./source/game/fx/unmanaged.h" */
+#include "./source/game/fx/unmanaged.h"
 #include "./source/game/gui/gui.h"
 /* #include "./source/game/gui/gui_menu.h" */
 #include "./source/game/ai/behavior.h"

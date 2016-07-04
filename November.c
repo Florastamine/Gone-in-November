@@ -128,7 +128,7 @@ int main(int argc, char **argl)
 	const char *__err_launcher = "Please run the game through the launcher!";
 	const char *__err_language = "Language list cannot be found! Run generate_language_list.exe to let the language definition be generated once.";
 	const char *__wrn_lowres   = "The game requires a monitor with a resolution of at least 1,024 x 768. The game will still run, but certain GUI elements won't be displayed correctly.";
-	const char *__wrn_lowram   = "You need at least 4 GB RAM in order to play the game. If you're having less than 4 GB RAM, clicking \"OK\" will force the game to run, but it may causes unexpected issues. If you want to quit now, open Task Manager and close the game process.\n\nSorry for the inconvenience.";
+	const char *__wrn_lowram   = "You need at least 3 GB RAM in order to play the game. If you're having less than 3 GB RAM, clicking \"OK\" will force the game to run, but it may causes unexpected issues. If you want to quit now, open Task Manager and close the game process.\n\nSorry for the inconvenience.";
 
 	// See if the game was launched through the Go-based launcher.
 	#ifndef    DEBUG
@@ -138,7 +138,7 @@ int main(int argc, char **argl)
 	if( sys_metrics(0) < 1024.0 && sys_metrics(1) < 768.0 )
 		printf(__wrn_lowres);
 
-	if( os_get_ram(S_MB) < 4086 ) // Note that this is 4086, not 4096.
+	if( os_get_ram(S_MB) < 3072 )
 		printf(__wrn_lowram);
 
 	#ifndef    DEBUG
