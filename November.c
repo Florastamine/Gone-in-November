@@ -129,6 +129,7 @@ int main(int argc, char **argl)
 	const char *__err_language = "Language list cannot be found! Run generate_language_list.exe to let the language definition be generated once.";
 	const char *__wrn_lowres   = "The game requires a monitor with a resolution of at least 1,024 x 768. The game will still run, but certain GUI elements won't be displayed correctly.";
 	const char *__wrn_lowram   = "You need at least 3 GB RAM in order to play the game. If you're having less than 3 GB RAM, clicking \"OK\" will force the game to run, but it may causes unexpected issues. If you want to quit now, open Task Manager and close the game process.\n\nSorry for the inconvenience.";
+	const char *__wrn_redist   = "One or more required DLLs for music playback cannot be found.\n\nOn Steam, try verifying game files and make sure you've installed the redistributable files before launching the game.\n\nitch.io users can launch the game through Launcher.bat.";
 
 	// See if the game was launched through the Go-based launcher.
 	#ifndef    DEBUG
@@ -140,6 +141,15 @@ int main(int argc, char **argl)
 
 	if( os_get_ram(S_MB) < 3072 )
 		printf(__wrn_lowram);
+
+	String *temp = "";
+	str_cat(temp, os_get_system_directory());
+	str_cat(temp, "ogg.dll");
+
+	if( !file_exists(temp) )
+	{
+		printf(__wrn_redist);
+	}
 
 	#ifndef    DEBUG
 		ASSERT(file_exists("./translation/__language.pad") != 0, __err_language);
