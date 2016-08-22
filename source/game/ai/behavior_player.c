@@ -25,6 +25,8 @@
  * Authors: Florastamine (florastamine@gmail.com)
  * __________________________________________________________________
  */
+/* __static */ int __invert_y          = 1; // vodkins's request
+
  __static void __text_init_pos(Text *text) {
      if(text) {
          text->pos_x = (screen_size.x - str_width((text->pstring)[0], text->font)) * 0.5;
@@ -109,6 +111,11 @@ void act_player_new()
 
 		double d = dtimer();
 		game_log_write( str_printf(NULL, "Finished building a home for the soul. (%f seconds)", d * POW_10_6) );
+
+        /*
+        __invert_y_state[0] = 1;
+        __invert_y_state[1] = -1;
+        */
 	}
 }
 
@@ -122,8 +129,8 @@ __static void __act_player_update_camera()  // hôm qua mẹ nói
     if(!__camera_locked) {
         if(__act_player_state_singleton->can_move && __act_player_state_singleton->__move_type != MOVE_ON_LADDER)
         {
-            __act_player_state_singleton->__cam_ang.pan = cycle(__act_player_state_singleton->__cam_ang.pan - (joy_raw.z / 192) - mickey.x / 6.5 * 1.0, 0, 360);
-            __act_player_state_singleton->__cam_ang.tilt = clamp(__act_player_state_singleton->__cam_ang.tilt - (joy_rot.x / 192) - mickey.y / 6.5 * 1.0, -90, 90);
+            __act_player_state_singleton->__cam_ang.pan = cycle(__act_player_state_singleton->__cam_ang.pan - (joy_raw.z / 192) - mickey.x / 6.5 * __invert_y, 0, 360);
+            __act_player_state_singleton->__cam_ang.tilt = clamp(__act_player_state_singleton->__cam_ang.tilt - (joy_rot.x / 192) - mickey.y / 6.5 * __invert_y, -90, 90);
             __act_player_state_singleton->__cam_ang.roll = 0;
         }
 
@@ -136,7 +143,7 @@ __static void __act_player_update_camera()  // hôm qua mẹ nói
 
         camera->z -= (camera->z - __act_player_state_singleton->__cam_pos.z) * __act_player_state_singleton->cam_lerp;
         camera->z = clamp(camera->z, __act_player_state_singleton->__cam_pos.z - __act_player_state_singleton->cam_smooth_offset, __act_player_state_singleton->__cam_pos.z + __act_player_state_singleton->cam_smooth_offset);
-        // camera->arc += (int) ifelse(mouse_right != 0, -1, 1) * 3.5 * time_step; // 3.5 gives the zooming speed. Magic numbers is bad, I know, but I'm just too lazy to re-factor these.
+        // camera->arc += ifelse(mouse_right != 0, -1, 1) * 3.5 * time_step; // 3.5 gives the zooming speed. Magic numbers is bad, I know, but I'm just too lazy to re-factor these.
         camera->z += 35.0;
     }
 

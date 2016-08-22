@@ -244,6 +244,16 @@ int main(int argc, char **argl)
 		mickey.x *= sensivity_mul;
 		mickey.y *= sensivity_mul;
 
+		if( key_f1 )
+		{
+			while ( key_f1 ) wait(1.0);
+				switch( __invert_y )
+				{
+					case    1: __invert_y = -1; break;
+					case   -1: __invert_y = 1;
+				}
+		}
+
 		if( key_tab && (STATE_NULL == game_gui_get_state()) )
 		{
 			switch ( game_day_get() )

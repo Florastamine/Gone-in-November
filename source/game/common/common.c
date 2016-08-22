@@ -673,12 +673,21 @@ void game_scene_load( STRING *scene )
 	last_error = 0;
 
 	if( game_scene_get_delay() > 0.0 )
-	wait( - __SceneLoadState_singleton->delay ); // Note the minus sign - we want to wait in seconds.
+	{
+		float f = 0.0;
+		while( f < __SceneLoadState_singleton->delay )
+		{
+			f += time_step / 16.0;
+			wait(1.0);
+		}
+
+		__SceneLoadState_singleton->delay = 0.0;
+	}
 
 	t1->flags &= ~(SHOW);
 	t0->flags &= ~(SHOW);
 
-	if(game_scene_is_fade())
+	if( game_scene_is_fade() )
 	{
 		__p_fade_out(p, 100.0, 0.0, game_scene_get_fade_speed());
 		while(proc_status(__p_fade_out)) wait(1.0);
@@ -995,9 +1004,9 @@ __static void __game_video_set(
 	int   fsaa,
 	int   fsaf /* ... */
 ) {
-	if( var_cmp(width, -1) == true )
+	if( var_cmp(width, -1.0) == true )
 		width = sys_metrics(0);
-	if( var_cmp(height, -1) == true )
+	if( var_cmp(height, -1.0) == true )
 		height = sys_metrics(1);
 
 	video_set(width, height, bit_depth, ifelse(fullscreen, FULLSCREEN, WINDOWED));
